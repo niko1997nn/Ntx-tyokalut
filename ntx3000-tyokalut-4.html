@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#1F6FEB">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="NTX3000">
+<title>NTX3000 Työkalut</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%231F6FEB'/%3E%3Ctext x='50' y='62' font-family='monospace' font-size='34' font-weight='700' fill='white' text-anchor='middle'%3ENTX%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231F6FEB'/%3E%3Ctext x='50' y='62' font-family='monospace' font-size='34' font-weight='700' fill='white' text-anchor='middle'%3ENTX%3C/text%3E%3C/svg%3E">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #F4F6F8;
+    --panel: #FFFFFF;
+    --panel-2: #EEF2F6;
+    --panel-border: #D7DEE5;
+    --steel: #8A97A3;
+    --steel-light: #5C6B78;
+    --text: #1C2630;
+    --text-dim: #6B7785;
+    --amber: #1F6FEB;
+    --amber-dim: #D6E6FB;
+    --green: #1A9B6C;
+    --red: #E0392F;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    -webkit-tap-highlight-color: transparent;
+  }
+  button { font-family: inherit; cursor: pointer; -webkit-appearance: none; }
+  input[type=number] { -moz-appearance: textfield; }
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+
+  .app { display: flex; flex-direction: column; min-height: 100vh; }
+  .view { display: none; }
+  .view.active { display: flex; flex-direction: column; flex: 1; }
+
+  /* --- Yhteinen header --- */
+  header {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--panel-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+  }
+  .header-left { display: flex; align-items: center; gap: 14px; min-width: 0; }
+  .logo-mark {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 14px;
+    color: #FFFFFF;
+    background: var(--amber);
+    padding: 6px 10px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .title { font-weight: 800; font-size: 17px; letter-spacing: -0.01em; }
+  .subtitle { font-size: 11.5px; color: var(--text-dim); margin-top: 2px; }
+
+  .icon-btn {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 8px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dim);
+    flex-shrink: 0;
+  }
+  .icon-btn:active { border-color: var(--amber); color: var(--amber); }
+  .icon-btn svg { width: 20px; height: 20px; }
+
+  .back-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 0;
+  }
+  .back-btn svg { width: 16px; height: 16px; }
+
+  /* --- Välilehdet --- */
+  .tabbar {
+    display: flex;
+    gap: 6px;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--panel-border);
+    max-width: 640px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .tab-btn {
+    flex: 1;
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 9px;
+    padding: 10px 8px;
+    color: var(--text-dim);
+    font-size: 12.5px;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.3;
+  }
+  .tab-btn.active {
+    border-color: var(--amber);
+    color: var(--amber);
+    background: var(--amber-dim);
+  }
+
+  main {
+    flex: 1;
+    max-width: 640px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 24px 16px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--steel-light);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  select, input[type=text], input[type=number] {
+    width: 100%;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 14px 14px;
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 10px;
+    color: var(--text);
+    outline: none;
+  }
+  select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'><path d='M1 1L7 7L13 1' stroke='%235C6B78' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 40px;
+  }
+  select:focus, input:focus { border-color: var(--amber); }
+
+  .input-row { display: flex; gap: 12px; }
+  .input-block { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+  .input-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .input-hint { font-size: 11px; font-weight: 400; color: var(--text-dim); }
+
+  .range-note { margin-top: 12px; font-size: 13px; color: var(--text-dim); }
+  .range-warn { color: var(--red); font-weight: 700; }
+
+  .readout {
+    background: #FFFFFF;
+    border: 1px solid var(--panel-border);
+    border-radius: 12px;
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 1px 3px rgba(28,38,48,0.06);
+  }
+  .readout.warning { border-color: var(--red); }
+
+  .readout-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 44px;
+    font-weight: 700;
+    line-height: 1;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    color: var(--green);
+    flex-wrap: wrap;
+  }
+  .readout-value.negative { color: var(--red); }
+  .readout-unit { font-size: 17px; color: var(--steel-light); font-weight: 500; }
+
+  /* SP2-laskuri: kenttäosio (field-rivit, sama henki kuin alkuperäisessä) */
+  .section-card {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 10px;
+    padding: 16px 16px 4px;
+  }
+  .field {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--panel-border);
+    gap: 12px;
+  }
+  .field:last-child { border-bottom: none; }
+  .field label {
+    font-size: 13.5px;
+    color: var(--text);
+    flex: 1;
+    line-height: 1.3;
+  }
+  .field .unit-note { font-size: 11px; color: var(--text-dim); display: block; margin-top: 2px; }
+  .field input {
+    width: 140px;
+    text-align: right;
+    padding: 10px 10px;
+    font-size: 14.5px;
+  }
+
+  .result-card {
+    background: linear-gradient(135deg, #EAF1FD, #F4F8FE);
+    border: 1px solid var(--amber-dim);
+    border-radius: 10px;
+    padding: 16px 16px 4px;
+  }
+  .result-row { padding: 14px 0; border-bottom: 1px solid var(--panel-border); }
+  .result-row:last-child { border-bottom: none; }
+  .result-label { font-size: 12.5px; color: var(--text-dim); margin-bottom: 6px; }
+  .result-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--amber);
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .result-value .unit { font-size: 14px; color: var(--text-dim); font-weight: 400; }
+
+  .note {
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.5;
+    padding: 12px 14px;
+    background: var(--panel-2);
+    border-left: 2px solid var(--amber);
+    border-radius: 0 6px 6px 0;
+  }
+
+  footer {
+    text-align: center;
+    font-size: 11px;
+    color: var(--steel);
+    padding: 16px 0 24px;
+  }
+
+  /* --- Asetussivut (yhteinen tyyli) --- */
+  .pakka-box {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .pakka-box .input-label { flex-shrink: 0; }
+  .pakka-box input { width: 130px; text-align: right; }
+
+  .jaw-list { display: flex; flex-direction: column; gap: 10px; }
+  .jaw-edit-card {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 10px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .jaw-edit-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .jaw-edit-id { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 14px; color: var(--amber); }
+  .delete-btn {
+    background: none; border: none; color: var(--steel-light);
+    font-size: 12px; padding: 4px 8px; border-radius: 6px;
+  }
+  .delete-btn:active { color: var(--red); background: #FBE5E3; }
+
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .field-grid .full { grid-column: 1 / -1; }
+  .field-grid label { display: flex; flex-direction: column; gap: 4px; font-size: 11px; color: var(--text-dim); }
+  .field-grid input, .field-grid select { font-size: 14px; padding: 9px 10px; border-radius: 7px; }
+  .field-grid select { padding-right: 30px; background-position: right 10px center; }
+
+  .add-btn {
+    background: var(--panel);
+    border: 1px dashed var(--panel-border);
+    border-radius: 10px;
+    padding: 16px;
+    color: var(--text-dim);
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .add-btn:active { border-color: var(--amber); color: var(--amber); }
+
+  .save-bar {
+    position: sticky;
+    bottom: 0;
+    background: var(--bg);
+    border-top: 1px solid var(--panel-border);
+    padding: 14px 16px;
+    margin: 0 -16px -40px;
+  }
+  .save-btn {
+    width: 100%;
+    background: var(--amber);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .save-btn:active { opacity: 0.85; }
+  .save-toast { text-align: center; font-size: 12px; color: var(--green); margin-top: 8px; height: 16px; }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ===================== TYÖKALU 1: LEUKAKORJAIN ===================== -->
+  <div class="view active" id="viewJawCalc">
+    <header>
+      <div class="header-left">
+        <div class="logo-mark">NTX</div>
+        <div>
+          <div class="title">Leuan sijainti -laskuri</div>
+        </div>
+      </div>
+      <button class="icon-btn" id="openJawSettings" aria-label="Asetukset">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+      </button>
+    </header>
+
+    <div class="tabbar">
+      <button class="tab-btn active" data-tool="viewJawCalc">Leukakorjain</button>
+      <button class="tab-btn" data-tool="viewSP2Calc">SP2 hakusijainti &amp; G55</button>
+    </div>
+
+    <main>
+      <section>
+        <div class="section-label">1 — Valitse leuka</div>
+        <select id="jawSelect"></select>
+      </section>
+
+      <section>
+        <div class="section-label">2 — Kappaleen kiinnitys halkaisija</div>
+        <div class="input-row">
+          <label class="input-block">
+            <span class="input-label">
+              Kappaleen halkaisija (mm)
+              <span class="input-hint" id="halkaisijaHint">ulkohalkaisija</span>
+            </span>
+            <input type="number" id="halkaisijaInput" inputmode="decimal">
+          </label>
+        </div>
+        <div class="range-note" id="rangeNote" style="display:none;"></div>
+      </section>
+
+      <section>
+        <div class="section-label">3 — Mitta leuan perästä alusleukaan</div>
+        <div class="readout" id="readout">
+          <div class="readout-value" id="readoutValue">—<span class="readout-unit">mm</span></div>
+        </div>
+      </section>
+    </main>
+
+    <footer>NTX3000 · LEUKAKORJAIN</footer>
+  </div>
+
+  <!-- ===================== ASETUKSET: LEUKAKORJAIN ===================== -->
+  <div class="view" id="viewJawSettings">
+    <header>
+      <div class="header-left">
+        <button class="back-btn" id="closeJawSettings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7"></path>
+          </svg>
+          Takaisin
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section>
+        <div class="section-label">Pakan halkaisija</div>
+        <div class="pakka-box">
+          <span class="input-label">Pakan halkaisija (mm)</span>
+          <input type="number" id="pakkaSettingInput" inputmode="decimal">
+        </div>
+      </section>
+
+      <section>
+        <div class="section-label">Leuat</div>
+        <div class="jaw-list" id="jawList"></div>
+        <button class="add-btn" id="addJawBtn" style="margin-top:10px;">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          Lisää uusi leuka
+        </button>
+      </section>
+    </main>
+
+    <div class="save-bar">
+      <button class="save-btn" id="saveJawSettingsBtn">Tallenna muutokset</button>
+      <div class="save-toast" id="jawSaveToast"></div>
+    </div>
+  </div>
+
+  <!-- ===================== TYÖKALU 2: SP2 HAKUSIJAINTI & G55 ===================== -->
+  <div class="view" id="viewSP2Calc">
+    <header>
+      <div class="header-left">
+        <div class="logo-mark">NTX</div>
+        <div>
+          <div class="title">SP2 hakusijainti &amp; G55</div>
+          <div class="subtitle">Täytä kappalekohtaiset tiedot</div>
+        </div>
+      </div>
+      <button class="icon-btn" id="openSP2Settings" aria-label="Asetukset">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+      </button>
+    </header>
+
+    <div class="tabbar">
+      <button class="tab-btn" data-tool="viewJawCalc">Leukakorjain</button>
+      <button class="tab-btn active" data-tool="viewSP2Calc">SP2 hakusijainti &amp; G55</button>
+    </div>
+
+    <main>
+      <div class="section-card">
+        <div class="section-label">Kappaletiedot</div>
+        <div class="field">
+          <label>Kappaleen Z-koordinaatti, 1. puoli<span class="unit-note">Ohjelmoitu Z0, konekoordinaatti</span></label>
+          <input type="number" step="0.0001" id="z0" value="-703.7028">
+        </div>
+        <div class="field">
+          <label>Valmiin kappaleen pituus<span class="unit-note">mm</span></label>
+          <input type="number" step="0.01" id="kappale" value="28.5">
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-label">Leukatiedot — SP2</div>
+        <div class="field">
+          <label>SP2 leuan pituus<span class="unit-note">mm</span></label>
+          <input type="number" step="0.01" id="leuka" value="80.75">
+        </div>
+        <div class="field">
+          <label>Puristussyvyys SP2 leuoissa<span class="unit-note">mm</span></label>
+          <input type="number" step="0.01" id="puristus" value="17">
+        </div>
+      </div>
+
+      <div class="result-card">
+        <div class="section-label">Tulokset</div>
+        <div class="result-row">
+          <div class="result-label">SP2 hakusijainti — A-akseli (konekoord.)</div>
+          <div class="result-value"><span id="out-haku">—</span><span class="unit">mm</span></div>
+        </div>
+        <div class="result-row">
+          <div class="result-label">G55 Z-offset SP2:lle</div>
+          <div class="result-value"><span id="out-g55">—</span><span class="unit">mm</span></div>
+        </div>
+      </div>
+    </main>
+
+    <footer>NTX3000 · SP2 LASKURI</footer>
+  </div>
+
+  <!-- ===================== ASETUKSET: SP2 ===================== -->
+  <div class="view" id="viewSP2Settings">
+    <header>
+      <div class="header-left">
+        <button class="back-btn" id="closeSP2Settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7"></path>
+          </svg>
+          Takaisin
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section>
+        <div class="section-label">Koneen mitatut arvot</div>
+        <div class="section-card">
+          <div class="field">
+            <label>SP1 otsapinta<span class="unit-note">1. pakan otsapinta, konekoordinaatti</span></label>
+            <input type="number" step="0.0001" id="sp1">
+          </div>
+          <div class="field">
+            <label>SP2 otsapinta<span class="unit-note">2. pakan otsapinta, konekoordinaatti</span></label>
+            <input type="number" step="0.0001" id="sp2">
+          </div>
+        </div>
+      </section>
+
+      <div class="note">
+        Näitä arvoja mitataan harvoin, esim. koneen kalibroinnin yhteydessä. Arvot tallentuvat automaattisesti tähän selaimeen.
+      </div>
+    </main>
+
+    <div class="save-bar">
+      <button class="save-btn" id="saveSP2SettingsBtn">Tallenna muutokset</button>
+      <div class="save-toast" id="sp2SaveToast"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* =================================================================
+   YHTEINEN NAVIGAATIO
+================================================================= */
+const VIEWS = ['viewJawCalc', 'viewJawSettings', 'viewSP2Calc', 'viewSP2Settings'];
+function showView(id) {
+  VIEWS.forEach(v => document.getElementById(v).classList.toggle('active', v === id));
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => showView(btn.getAttribute('data-tool')));
+});
+
+/* =================================================================
+   TYÖKALU 1 — LEUKAKORJAIN
+================================================================= */
+const DEFAULT_JAWS = [
+  { id: "30-5", name: "Piikkileuka", type: "Ulkoleuka", pakkaRef: 212, halkaisija: 112, max: 139, min: 63 },
+  { id: "30-6", name: "Piikkileuka", type: "Ulkoleuka", pakkaRef: 168, halkaisija: 180, max: 198, min: 126 },
+  { id: "30-7", name: "Piikkileuka", type: "Ulkoleuka", pakkaRef: 90, halkaisija: 370, max: 262, min: 190 },
+  { id: "30-8", name: "Piikkileuka", type: "Ulkoleuka", pakkaRef: 71, halkaisija: 290, max: 327, min: 256 },
+  { id: "126-ylin", name: "Kovaleuka — ylin pykälä", type: "Ulkoleuka", pakkaRef: 45, halkaisija: 343, max: null, min: null },
+  { id: "126-keski", name: "Kovaleuka — keskimm. pykälä", type: "Sisäleuka", pakkaRef: 138, halkaisija: 103, max: null, min: null },
+  { id: "126-tanko", name: "Kovaleuka — tankopuoli", type: "Ulkoleuka", pakkaRef: 241, halkaisija: 112, max: null, min: null },
+];
+const DEFAULT_PAKKA = 313;
+
+const JAW_STORAGE_KEY = "ntx_leukakorjain_jaws_v1";
+const PAKKA_KEY = "ntx_leukakorjain_pakka_v1";
+
+function loadJaws() {
+  try {
+    const raw = localStorage.getItem(JAW_STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) {}
+  return JSON.parse(JSON.stringify(DEFAULT_JAWS));
+}
+function loadPakka() {
+  const raw = localStorage.getItem(PAKKA_KEY);
+  const v = parseFloat(raw);
+  return isNaN(v) ? DEFAULT_PAKKA : v;
+}
+function saveJaws(jaws) { localStorage.setItem(JAW_STORAGE_KEY, JSON.stringify(jaws)); }
+function savePakka(p) { localStorage.setItem(PAKKA_KEY, String(p)); }
+
+let JAWS = loadJaws();
+let PAKKA = loadPakka();
+
+const JAW_FIELDS_KEY = "ntx_leukakorjain_fields_v1";
+function loadJawFields() {
+  try {
+    const raw = localStorage.getItem(JAW_FIELDS_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) {}
+  return null;
+}
+function saveJawFields(selectedId, halkaisija) {
+  localStorage.setItem(JAW_FIELDS_KEY, JSON.stringify({ selectedId, halkaisija }));
+}
+
+const savedJawFields = loadJawFields();
+function getJaw(id) { return JAWS.find(j => j.id === id); }
+let selectedJawId = (savedJawFields && getJaw(savedJawFields.selectedId)) ? savedJawFields.selectedId : (JAWS[0] ? JAWS[0].id : null);
+
+const jawSelect = document.getElementById('jawSelect');
+const halkaisijaInput = document.getElementById('halkaisijaInput');
+const halkaisijaHint = document.getElementById('halkaisijaHint');
+const rangeNote = document.getElementById('rangeNote');
+const readout = document.getElementById('readout');
+const readoutValue = document.getElementById('readoutValue');
+
+function renderJawSelect() {
+  jawSelect.innerHTML = '';
+  JAWS.forEach(j => {
+    const opt = document.createElement('option');
+    opt.value = j.id;
+    opt.textContent = `${j.id} ${j.name} (${j.type})`;
+    jawSelect.appendChild(opt);
+  });
+  if (JAWS.length) jawSelect.value = selectedJawId;
+}
+
+function selectJaw(id) {
+  selectedJawId = id;
+  const jaw = getJaw(id);
+  if (!jaw) return;
+  const fields = loadJawFields();
+  const useHalkaisija = (fields && fields.selectedId === id && fields.halkaisija != null) ? fields.halkaisija : jaw.halkaisija;
+  halkaisijaInput.value = useHalkaisija;
+  halkaisijaHint.textContent = jaw.type === 'Sisäleuka' ? 'reijän halkaisija' : 'ulkohalkaisija';
+  calculateJaw();
+}
+
+function calculateJaw() {
+  const jaw = getJaw(selectedJawId);
+  if (!jaw) return;
+  const p = PAKKA;
+  const h = parseFloat(halkaisijaInput.value);
+  const ref = jaw.pakkaRef;
+
+  let result = null;
+  if (!isNaN(h)) result = ((ref + h) - p) / 2;
+
+  let outOfRange = false;
+  if (jaw.max != null && jaw.min != null && result != null) {
+    outOfRange = h > jaw.max || h < jaw.min;
+  }
+
+  if (jaw.max != null || jaw.min != null) {
+    rangeNote.style.display = 'block';
+    rangeNote.innerHTML = `Sallittu alue: <strong>${jaw.min} – ${jaw.max} mm</strong>` +
+      (outOfRange ? ' <span class="range-warn">· ARVO RAJOJEN ULKOPUOLELLA</span>' : '');
+  } else {
+    rangeNote.style.display = 'none';
+  }
+
+  if (result != null) {
+    readoutValue.innerHTML = result.toFixed(2) + '<span class="readout-unit">mm</span>';
+    readoutValue.classList.toggle('negative', result < 0);
+  } else {
+    readoutValue.innerHTML = '—<span class="readout-unit">mm</span>';
+    readoutValue.classList.remove('negative');
+  }
+
+  readout.classList.toggle('warning', outOfRange);
+  saveJawFields(selectedJawId, halkaisijaInput.value === '' ? null : h);
+}
+
+jawSelect.addEventListener('change', (e) => selectJaw(e.target.value));
+halkaisijaInput.addEventListener('input', calculateJaw);
+
+/* --- Leukakorjain: asetukset --- */
+const openJawSettingsBtn = document.getElementById('openJawSettings');
+const closeJawSettingsBtn = document.getElementById('closeJawSettings');
+const pakkaSettingInput = document.getElementById('pakkaSettingInput');
+const jawList = document.getElementById('jawList');
+const addJawBtn = document.getElementById('addJawBtn');
+const saveJawSettingsBtn = document.getElementById('saveJawSettingsBtn');
+const jawSaveToast = document.getElementById('jawSaveToast');
+
+let draftJaws = [];
+let draftPakka = PAKKA;
+
+function openJawSettings() {
+  draftJaws = JSON.parse(JSON.stringify(JAWS));
+  draftPakka = PAKKA;
+  pakkaSettingInput.value = draftPakka;
+  renderJawList();
+  jawSaveToast.textContent = '';
+  showView('viewJawSettings');
+}
+
+function renderJawList() {
+  jawList.innerHTML = '';
+  draftJaws.forEach((j, idx) => {
+    const card = document.createElement('div');
+    card.className = 'jaw-edit-card';
+    card.innerHTML = `
+      <div class="jaw-edit-header">
+        <span class="jaw-edit-id">Leuka ${idx + 1}</span>
+        <button class="delete-btn" data-idx="${idx}" data-action="delete">Poista</button>
+      </div>
+      <div class="field-grid">
+        <label class="full">Tunniste (id)
+          <input type="text" data-idx="${idx}" data-field="id" value="${j.id}">
+        </label>
+        <label class="full">Nimi
+          <input type="text" data-idx="${idx}" data-field="name" value="${j.name}">
+        </label>
+        <label>Tyyli
+          <select data-idx="${idx}" data-field="type">
+            <option value="Ulkoleuka" ${j.type === 'Ulkoleuka' ? 'selected' : ''}>Ulkoleuka</option>
+            <option value="Sisäleuka" ${j.type === 'Sisäleuka' ? 'selected' : ''}>Sisäleuka</option>
+          </select>
+        </label>
+        <label>Pakan vastinarvo (mm)
+          <input type="number" data-idx="${idx}" data-field="pakkaRef" value="${j.pakkaRef}">
+        </label>
+        <label>Oletushalkaisija (mm)
+          <input type="number" data-idx="${idx}" data-field="halkaisija" value="${j.halkaisija}">
+        </label>
+        <label>Max (mm, tyhjä = ei rajaa)
+          <input type="number" data-idx="${idx}" data-field="max" value="${j.max != null ? j.max : ''}">
+        </label>
+        <label>Min (mm, tyhjä = ei rajaa)
+          <input type="number" data-idx="${idx}" data-field="min" value="${j.min != null ? j.min : ''}">
+        </label>
+      </div>
+    `;
+    jawList.appendChild(card);
+  });
+}
+
+jawList.addEventListener('input', (e) => {
+  const idx = e.target.getAttribute('data-idx');
+  const field = e.target.getAttribute('data-field');
+  if (idx == null || !field) return;
+  let val = e.target.value;
+  if (field === 'max' || field === 'min' || field === 'pakkaRef' || field === 'halkaisija') {
+    val = val === '' ? null : parseFloat(val);
+  }
+  draftJaws[idx][field] = val;
+});
+
+jawList.addEventListener('click', (e) => {
+  if (e.target.getAttribute('data-action') === 'delete') {
+    const idx = e.target.getAttribute('data-idx');
+    draftJaws.splice(idx, 1);
+    renderJawList();
+  }
+});
+
+addJawBtn.addEventListener('click', () => {
+  draftJaws.push({ id: "uusi-" + (draftJaws.length + 1), name: "Uusi leuka", type: "Ulkoleuka", pakkaRef: 0, halkaisija: 0, max: null, min: null });
+  renderJawList();
+  jawList.scrollTop = jawList.scrollHeight;
+});
+
+saveJawSettingsBtn.addEventListener('click', () => {
+  const p = parseFloat(pakkaSettingInput.value);
+  if (!isNaN(p)) draftPakka = p;
+
+  const seen = new Set();
+  for (const j of draftJaws) {
+    if (!j.id || j.id.trim() === '') { jawSaveToast.textContent = 'Jokaisella leualla pitää olla tunniste.'; jawSaveToast.style.color = 'var(--red)'; return; }
+    if (seen.has(j.id)) { jawSaveToast.textContent = `Tunniste "${j.id}" on käytössä useammin kuin kerran.`; jawSaveToast.style.color = 'var(--red)'; return; }
+    seen.add(j.id);
+  }
+
+  JAWS = JSON.parse(JSON.stringify(draftJaws));
+  PAKKA = draftPakka;
+  saveJaws(JAWS);
+  savePakka(PAKKA);
+
+  if (!getJaw(selectedJawId) && JAWS.length) selectedJawId = JAWS[0].id;
+
+  renderJawSelect();
+  if (selectedJawId) selectJaw(selectedJawId);
+
+  jawSaveToast.style.color = 'var(--green)';
+  jawSaveToast.textContent = 'Tallennettu.';
+});
+
+openJawSettingsBtn.addEventListener('click', openJawSettings);
+closeJawSettingsBtn.addEventListener('click', () => showView('viewJawCalc'));
+
+/* =================================================================
+   TYÖKALU 2 — SP2 HAKUSIJAINTI & G55
+================================================================= */
+const SP_STORAGE_KEY = 'ntx3000_sp_settings';
+const DEFAULT_SP1 = -796.2501;
+const DEFAULT_SP2 = 818.2651;
+
+function loadSPSettings() {
+  try {
+    const raw = localStorage.getItem(SP_STORAGE_KEY);
+    if (raw) {
+      const data = JSON.parse(raw);
+      return {
+        sp1: data.sp1 !== undefined ? data.sp1 : DEFAULT_SP1,
+        sp2: data.sp2 !== undefined ? data.sp2 : DEFAULT_SP2,
+      };
+    }
+  } catch (e) {}
+  return { sp1: DEFAULT_SP1, sp2: DEFAULT_SP2 };
+}
+function saveSPSettings(sp1, sp2) {
+  localStorage.setItem(SP_STORAGE_KEY, JSON.stringify({ sp1, sp2 }));
+}
+
+let SP = loadSPSettings();
+
+const SP2_FIELDS_KEY = "ntx_sp2_fields_v1";
+function loadSP2Fields() {
+  try {
+    const raw = localStorage.getItem(SP2_FIELDS_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) {}
+  return null;
+}
+function saveSP2Fields() {
+  localStorage.setItem(SP2_FIELDS_KEY, JSON.stringify({
+    z0: z0Input.value,
+    kappale: kappaleInput.value,
+    leuka: leukaInput.value,
+    puristus: puristusInput.value,
+  }));
+}
+
+const z0Input = document.getElementById('z0');
+const kappaleInput = document.getElementById('kappale');
+const leukaInput = document.getElementById('leuka');
+const puristusInput = document.getElementById('puristus');
+const outHaku = document.getElementById('out-haku');
+const outG55 = document.getElementById('out-g55');
+
+const savedSP2Fields = loadSP2Fields();
+if (savedSP2Fields) {
+  if (savedSP2Fields.z0 !== undefined && savedSP2Fields.z0 !== '') z0Input.value = savedSP2Fields.z0;
+  if (savedSP2Fields.kappale !== undefined && savedSP2Fields.kappale !== '') kappaleInput.value = savedSP2Fields.kappale;
+  if (savedSP2Fields.leuka !== undefined && savedSP2Fields.leuka !== '') leukaInput.value = savedSP2Fields.leuka;
+  if (savedSP2Fields.puristus !== undefined && savedSP2Fields.puristus !== '') puristusInput.value = savedSP2Fields.puristus;
+}
+
+function fmt(n) {
+  if (!isFinite(n)) return '—';
+  const sign = n < 0 ? '−' : '';
+  const abs = Math.abs(n);
+  const fixed = abs.toFixed(4);
+  const [intPart, decPart] = fixed.split('.');
+  const withSep = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  return sign + withSep + ',' + decPart;
+}
+
+function calcSP2() {
+  const sp1 = SP.sp1, sp2 = SP.sp2;
+  const z0 = parseFloat(z0Input.value) || 0;
+  const leuka = parseFloat(leukaInput.value) || 0;
+  const puristus = parseFloat(puristusInput.value) || 0;
+  const kappale = parseFloat(kappaleInput.value) || 0;
+
+  const haku = -(sp2 - leuka + puristus - z0);
+  const g55 = sp2 - leuka + puristus - kappale;
+
+  outHaku.textContent = fmt(haku);
+  outG55.textContent = fmt(g55);
+  saveSP2Fields();
+}
+
+[z0Input, kappaleInput, leukaInput, puristusInput].forEach(el => el.addEventListener('input', calcSP2));
+
+/* --- SP2: asetukset --- */
+const openSP2SettingsBtn = document.getElementById('openSP2Settings');
+const closeSP2SettingsBtn = document.getElementById('closeSP2Settings');
+const sp1Input = document.getElementById('sp1');
+const sp2Input = document.getElementById('sp2');
+const saveSP2SettingsBtn = document.getElementById('saveSP2SettingsBtn');
+const sp2SaveToast = document.getElementById('sp2SaveToast');
+
+function openSP2Settings() {
+  sp1Input.value = SP.sp1;
+  sp2Input.value = SP.sp2;
+  sp2SaveToast.textContent = '';
+  showView('viewSP2Settings');
+}
+
+saveSP2SettingsBtn.addEventListener('click', () => {
+  const sp1 = parseFloat(sp1Input.value);
+  const sp2 = parseFloat(sp2Input.value);
+  if (isNaN(sp1) || isNaN(sp2)) {
+    sp2SaveToast.style.color = 'var(--red)';
+    sp2SaveToast.textContent = 'Tarkista arvot.';
+    return;
+  }
+  SP = { sp1, sp2 };
+  saveSPSettings(sp1, sp2);
+  calcSP2();
+  sp2SaveToast.style.color = 'var(--green)';
+  sp2SaveToast.textContent = 'Tallennettu.';
+});
+
+openSP2SettingsBtn.addEventListener('click', openSP2Settings);
+closeSP2SettingsBtn.addEventListener('click', () => showView('viewSP2Calc'));
+
+/* =================================================================
+   INIT
+================================================================= */
+renderJawSelect();
+if (selectedJawId) selectJaw(selectedJawId);
+calcSP2();
+</script>
+
+</body>
+</html>
