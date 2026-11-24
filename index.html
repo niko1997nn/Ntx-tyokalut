@@ -4437,11 +4437,16 @@ function omatHavainnot() {
       const rv = j.arvot.vc > 0 ? j.arvot.vc / perus.vc : NaN;
       const rf = (kentta && j.arvot[kentta] > 0 && perus.syotto > 0) ? j.arvot[kentta] / perus.syotto : NaN;
       if (!(rv > 0) && !(rf > 0)) return;
-      const k = tl + '|' + luokka;
-      const o = h[k] || (h[k] = { vc: [], f: [], n: 0 });
-      if (rv > 0) o.vc.push(rv);
-      if (rf > 0) o.f.push(rf);
-      o.n++;
+      /* kaksi koria: kaikki valmistajat ('') ja terän oma valmistaja */
+      const merkki = merkkiAvain(x.brand);
+      ['', merkki].forEach((m, i) => {
+        if (i === 1 && !m) return;
+        const k = tl + '|' + luokka + '|' + m;
+        const o = h[k] || (h[k] = { vc: [], f: [], n: 0 });
+        if (rv > 0) o.vc.push(rv);
+        if (rf > 0) o.f.push(rf);
+        o.n++;
+      });
     });
   });
   omatHavainnotVarasto = h;
@@ -4449,36 +4454,42 @@ function omatHavainnot() {
   return h;
 }
 
-/* Voimassa oleva kerroin: { vcK, fK, lahde: 'oma'|'auto'|'luokka'|'', n } */
-function tpKerroin(tl, luokka) {
+function merkkiAvain(b) { return String(b || '').trim().toLowerCase().split(/\s+/)[0] || ''; }
+/* Voimassa oleva kerroin: { vcK, fK, lahde: 'oma'|'auto'|'luokka'|'', n }.
+   Jos terän valmistaja tiedetään, käytetään vain saman valmistajan omia arvoja:
+   eri valmistajien taulukot poikkeavat toisistaan, eikä Walterin poran arvo
+   kerro mitään Sandvikin porasta. */
+function tpKerroin(tl, luokka, brand) {
+  const m = merkkiAvain(brand);
   const s = saato(tl, luokka);
   const vcOma = s ? rajaaKerroin(Number(s.vcK)) : NaN;
   const fOma  = s ? rajaaKerroin(Number(s.fK))  : NaN;
   let vcK = vcOma, fK = fOma, lahde = (isFinite(vcOma) || isFinite(fOma)) ? 'oma' : '', n = 0;
   if (tpAutoPaalla()) {
     const h = omatHavainnot();
-    const solu = h[tl + '|' + luokka];
+    const solu = h[tl + '|' + luokka + '|' + m];
     let autoVc = NaN, autoF = NaN, autoLahde = '';
     if (solu) {
       autoVc = rajaaKerroin(mediaani(solu.vc)); autoF = rajaaKerroin(mediaani(solu.f));
       autoLahde = 'auto'; n = solu.n;
     } else {
       const vcL = [], fL = [];
-      let m = 0;
+      let lkm = 0;
       Object.keys(h).forEach(k => {
-        if (k.indexOf(tl + '|') !== 0) return;
-        vcL.push.apply(vcL, h[k].vc); fL.push.apply(fL, h[k].f); m += h[k].n;
+        const osat = k.split('|');
+        if (osat[0] !== tl || osat[2] !== m) return;
+        vcL.push.apply(vcL, h[k].vc); fL.push.apply(fL, h[k].f); lkm += h[k].n;
       });
-      if (m >= 2) {
+      if (lkm >= 2) {
         autoVc = rajaaKerroin(mediaani(vcL)); autoF = rajaaKerroin(mediaani(fL));
-        autoLahde = 'luokka'; n = m;
+        autoLahde = 'luokka'; n = lkm;
       }
     }
     if (!isFinite(vcK) && isFinite(autoVc)) { vcK = autoVc; lahde = lahde || autoLahde; }
     if (!isFinite(fK) && isFinite(autoF)) { fK = autoF; lahde = lahde || autoLahde; }
   }
   return { vcK: isFinite(vcK) ? vcK : 1, fK: isFinite(fK) ? fK : 1, lahde: lahde, n: n,
-           vcOma: isFinite(vcOma), fOma: isFinite(fOma) };
+           vcOma: isFinite(vcOma), fOma: isFinite(fOma), merkki: m ? String(brand).trim() : '' };
 }
 function prosentti(k) {
   const p = Math.round((k - 1) * 100);
@@ -4532,7 +4543,11 @@ function omaArvo(x, mat) {
   });
   /* Kelpaa vain, jos myös syöttö saadaan (halkaisijaan sidotulla syötöllä molempien halkaisijat tunnetaan) */
   const kentta0 = syottoKentta(laji);
+  const omaMerkki = merkkiAvain(x.brand);
   const kelpaa = ehdokkaat.filter(e => {
+    /* eri valmistajan terän arvot eivät kelpaa, jos molempien valmistaja tiedetään */
+    const m = merkkiAvain(e.y.brand);
+    if (omaMerkki && m && m !== omaMerkki) return false;
     if (!kentta0) return true;
     if (!(e.j.arvot[kentta0] > 0)) return false;
     if (laji === 'fpD' || laji === 'fzD') return toolCutDia(x) > 0 && toolCutDia(e.y) > 0;
@@ -4542,6 +4557,7 @@ function omaArvo(x, mat) {
   kelpaa.forEach(e => ehdokkaat.push(e));
   if (!ehdokkaat.length) return null;
   ehdokkaat.sort((a, b) => (Number(b.sama) - Number(a.sama)) ||
+    (Number(!!omaMerkki && merkkiAvain(b.y.brand) === omaMerkki) - Number(!!omaMerkki && merkkiAvain(a.y.brand) === omaMerkki)) ||
     ((Date.parse(b.y.mod || '') || 0) - (Date.parse(a.y.mod || '') || 0)));
   const e = ehdokkaat[0];
   const out = { lahde: 'oma', vc: lukuTeksti(e.j.arvot.vc), f: '', fz: '', vcMin: '', vcMax: '', fMin: '', fMax: '',
@@ -4572,7 +4588,7 @@ function tietopankkiArvo(x, mat) {
   const laji = TIETOPANKKI.laji[tl] || '';
   const kentta = syottoKentta(laji);
   const D = toolCutDia(x);
-  const kerroin = tpKerroin(tl, luokka);
+  const kerroin = tpKerroin(tl, luokka, x.brand);
   const vcPerus = lukuTeksti(r.vc[1]);
   const out = { lahde: 'tp', vc: lukuTeksti(r.vc[1] * kerroin.vcK), vcMin: lukuTeksti(r.vc[0]), vcMax: lukuTeksti(r.vc[2]),
                 vcPerus: vcPerus, fPerus: '', kerroin: kerroin,
@@ -4643,7 +4659,8 @@ function suositusLaatikkoHTML(x, c, so, monta) {
     if (kr && kr.lahde && (Math.abs(kr.vcK - 1) > 0.005 || Math.abs(kr.fK - 1) > 0.005)) {
       yla += '<br><span class="suositus-saato">Hienosäädetty ' +
         (kr.lahde === 'oma' ? 'omalla säädölläsi' :
-          (kr.lahde === 'auto' ? 'omien arvojesi mukaan (' + kr.n + ')' : 'saman luokan omien arvojesi mukaan (' + kr.n + ')')) +
+          (kr.lahde === 'auto' ? 'omien ' + (kr.merkki ? esc(kr.merkki) + '-' : '') + 'arvojesi mukaan (' + kr.n + ')'
+                               : 'saman luokan omien ' + (kr.merkki ? esc(kr.merkki) + '-' : '') + 'arvojesi mukaan (' + kr.n + ')')) +
         ': Vc ' + prosentti(kr.vcK) + (so.fPerus ? ', syöttö ' + prosentti(kr.fK) : '') + '</span>';
       miksi = '<p><b>Tietopankin arvo ennen säätöä:</b> Vc ' + esc(so.vcPerus) +
         (so.fPerus ? ' \u00B7 ' + (so.fz ? 'fz ' : 'f ') + esc(so.fPerus) : '') + '</p>' + miksi;
@@ -7507,7 +7524,7 @@ let tpPaluu = 'viewData';
 function avaaTietopankki(paluu) {
   tpPaluu = paluu || 'viewData';
   const h = omatHavainnot();
-  const ensimmainen = Object.keys(SUOS_LUOKKA_NIMI).find(tl => Object.keys(h).some(k => k.indexOf(tl + '|') === 0));
+  const ensimmainen = Object.keys(SUOS_LUOKKA_NIMI).find(tl => Object.keys(h).some(k => k.indexOf(tl + '|') === 0 && /\|$/.test(k)));
   if (!tpValittu || !TIETOPANKKI.rivit[tpValittu]) tpValittu = ensimmainen || 'sorvaus';
   renderTietopankki();
   showView('viewTietopankki');
@@ -7519,7 +7536,7 @@ function renderTietopankki() {
     b.classList.toggle('active', (b.getAttribute('data-tpauto') === '1') === auto));
   const h = omatHavainnot();
   document.getElementById('tpLuokat').innerHTML = Object.keys(SUOS_LUOKKA_NIMI).filter(tl => TIETOPANKKI.rivit[tl]).map(tl => {
-    const n = Object.keys(h).filter(k => k.indexOf(tl + '|') === 0).reduce((m, k) => m + h[k].n, 0);
+    const n = Object.keys(h).filter(k => k.indexOf(tl + '|') === 0 && /\|$/.test(k)).reduce((m, k) => m + h[k].n, 0);
     return '<button type="button" class="filter-chip' + (tl === tpValittu ? ' active' : '') + '" data-tpluokka="' + tl + '">' +
       esc(SUOS_LUOKKA_NIMI[tl]) + (n ? ' (' + n + ')' : '') + '</button>';
   }).join('');
@@ -7531,7 +7548,7 @@ function renderTietopankki() {
     const r = TIETOPANKKI.rivit[tl][l];
     if (!r || !r.vc || !r.vc[1]) return '';
     const kr = tpKerroin(tl, l);
-    const solu = h[tl + '|' + l];
+    const solu = h[tl + '|' + l + '|'];
     const f0 = r.f && r.f[0] ? (halk ? r.f[0] * 10 : r.f[0]) : NaN;
     const vali = (a, b) => (a && b) ? ' (' + lukuTeksti(a) + '\u2013' + lukuTeksti(b) + ')' : '';
     const perus = 'Vc ' + lukuTeksti(r.vc[1]) + vali(r.vc[0], r.vc[2]) +
@@ -7568,7 +7585,13 @@ function renderTietopankki() {
       '</div>' +
     '</div>';
   }).join('');
-  document.getElementById('tpRivit').innerHTML = rivit +
+  const merkit = {};
+  Object.keys(h).forEach(k => { const o = k.split('|'); if (o[0] === tl && o[2]) merkit[o[2]] = (merkit[o[2]] || 0) + h[k].n; });
+  const merkkiLista = Object.keys(merkit).map(m => m.charAt(0).toUpperCase() + m.slice(1) + ' ' + merkit[m]).join(', ');
+  document.getElementById('tpRivit').innerHTML =
+    (merkkiLista ? '<div class="note" style="margin-bottom:4px;">Omia arvoja valmistajittain: ' + esc(merkkiLista) +
+      '. Työkalukortissa suositus säätyy vain saman valmistajan omilla arvoilla; tämä taulukko näyttää kaikki yhdessä.</div>' : '') +
+    rivit +
     (halk ? '<div class="note" style="margin-top:4px;">Syöttö näytetään halkaisijalle \u00D810. Työkalukortissa se lasketaan terän omalla halkaisijalla.</div>' : '');
 }
 document.getElementById('asetTpBtn').addEventListener('click', () => avaaTietopankki('viewData'));
