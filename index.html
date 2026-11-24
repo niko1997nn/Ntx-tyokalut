@@ -1754,6 +1754,14 @@
   .tp-nappi.palauta { margin-left: auto; font-family: var(--sans); color: var(--text-dim); background: transparent; }
   .tp-nappi:active { border-color: var(--accent); }
   .suositus-saato { color: var(--text); font-weight: 600; }
+  .koko-lista { border: 1px solid var(--panel-border); border-radius: 12px; overflow: hidden; }
+  .koko-rivi { display: flex; align-items: center; gap: 12px; min-height: 46px; padding: 6px 10px 6px 12px; border-top: 1px solid var(--panel-border); }
+  .koko-rivi:first-child { border-top: none; }
+  .koko-k { width: 70px; flex-shrink: 0; font-size: 12px; color: var(--text-dim); }
+  .koko-v { flex: 1; min-width: 0; font-size: 13.5px; overflow-wrap: anywhere; }
+  .koko-v .mono { color: var(--text-dim); font-size: 12.5px; }
+  .koko-v b + .mono { display: block; margin-top: 1px; }
+  .kokoonpano-grid { margin-top: 10px !important; }
 </style>
 </head>
 <body>
@@ -5333,7 +5341,8 @@ function korosta(teksti, q) {
 /* Hakulinkit teräpalalle ja pitimelle, kun koodi on annettu */
 function tuoteLinkitHTML(x) {
   const linkit = [linkkiChip('teräpala', x.insert, x.brand),
-                  linkkiChip('pidin', x.holder, x.brand)].filter(Boolean);
+                  linkkiChip('pidin', x.holder, x.brand),
+                  linkkiChip('istukka', x.istukka, x.brand)].filter(Boolean);
   if (!linkit.length) return '';
 
   let jalkiosa = '';
@@ -5361,7 +5370,9 @@ function tyokaluTekstina(x) {
   const muut = muutPalat(x);
   if (muut.length) rivit.push('Muut palat: ' + muut.map(p => (p.code || '?') + (has(p.grade) ? ' (' + p.grade + ')' : '') +
                                                        (has(p.use) ? ' \u2014 ' + p.use : '')).join(', '));
-  if (has(x.holder)) rivit.push('Pidin: ' + x.holder);
+  const nimiKoodi = (n, k) => [n, k].filter(v => has(v) && String(v).trim() !== '').join(' \u2014 ');
+  if (has(x.holderNimi) || has(x.holder)) rivit.push('Pidin: ' + nimiKoodi(x.holderNimi, x.holder));
+  if (has(x.istukkaNimi) || has(x.istukka)) rivit.push('Istukka: ' + nimiKoodi(x.istukkaNimi, x.istukka));
   if (has(x.ulkonema)) rivit.push('Ulkonema: ' + x.ulkonema + ' mm');
 
   const geo = [];
@@ -5452,11 +5463,10 @@ function lukutilaHTML(x) {
   if (p.thread && has(x.threadSize)) ruudut.push(arvoRuutu('Kierre', x.threadSize));
   if (p.dir && has(x.threadDir))  ruudut.push(arvoRuutu('Pyörintä', x.threadDir, isReverseDir(x.threadDir) ? 'neg' : ''));
   if (has(x.spindle))             ruudut.push(arvoRuutu('Kara', x.spindle));
-  if (has(x.ulkonema))            ruudut.push(arvoRuutu('Ulkonema', x.ulkonema + ' mm'));
 
   const tausta = [];
   if (has(x.brand))  tausta.push(esc(x.brand));
-  if (has(x.holder)) tausta.push('pidin <span class="mono">' + esc(x.holder) + '</span>');
+
 
   const palat = kaikkiPalat(x);
   const palaRivit = palat.map(pl =>
@@ -5478,10 +5488,23 @@ function lukutilaHTML(x) {
         : '') +
     '</div>').join('');
 
+  const kokoRivi = (otsikko, nimi, koodi) => (has(nimi) || has(koodi))
+    ? '<div class="koko-rivi"><span class="koko-k">' + otsikko + '</span><span class="koko-v">' +
+        (has(nimi) ? '<b>' + esc(nimi) + '</b>' : '') +
+        (has(koodi) ? (has(nimi) ? ' ' : '') + '<span class="mono">' + esc(koodi) + '</span>' : '') +
+      '</span>' +
+      (has(koodi) ? '<a class="pala-linkki" href="' + esc(tuoteHaku(koodi, x.brand, false)) +
+        '" target="_blank" rel="noopener" aria-label="Hae valmistajan sivulta">\u2197</a>' : '') +
+      '</div>'
+    : '';
+  const kokoonpano = kokoRivi('Pidin', x.holderNimi, x.holder) + kokoRivi('Istukka', x.istukkaNimi, x.istukka) +
+    (has(x.ulkonema) ? '<div class="koko-rivi"><span class="koko-k">Ulkonema</span><span class="koko-v"><b class="mono">' +
+      esc(x.ulkonema) + ' mm</b></span></div>' : '');
   const cuts = (x.cuts || []).filter(c => c.mat);
   return '<div class="luku">' +
     (ruudut.length ? '<div class="spec-grid">' + ruudut.join('') + '</div>' : '') +
     (tausta.length ? '<div class="luku-tausta">' + tausta.join(' \u00B7 ') + '</div>' : '') +
+    (kokoonpano ? '<div class="luku-otsikko"><span>Kokoonpano</span></div><div class="koko-lista">' + kokoonpano + '</div>' : '') +
     '<div class="luku-otsikko"><span>Teräpalat' + (palat.length ? ' <b>' + palat.length + '</b>' : '') + '</span>' +
       '<button type="button" class="pieni-btn" data-action="add-pala" data-uid="' + uid + '">+ Lisää</button></div>' +
     (palat.length ? '<div class="pala-lista">' + palaRivit + '</div>'
@@ -5568,6 +5591,8 @@ function renderTools() {
     (qKoodi.length >= 4 && (koodiAvain(x.insert).indexOf(qKoodi) !== -1 ||
                             koodiAvain(x.holder).indexOf(qKoodi) !== -1)) ||
     String(x.holder || '').toLowerCase().indexOf(q) !== -1 ||
+    [x.holderNimi, x.istukka, x.istukkaNimi].some(v => String(v || '').toLowerCase().indexOf(q) !== -1) ||
+    (qKoodi.length >= 4 && koodiAvain(x.istukka).indexOf(qKoodi) !== -1) ||
     String(x.grade || '').toLowerCase().indexOf(q) !== -1 ||
     String(x.insertUse || '').toLowerCase().indexOf(q) !== -1 ||
     muutPalat(x).some(p =>
@@ -5674,11 +5699,20 @@ function renderTools() {
               '<option value="' + ADD_BRAND + '">+ Lisää uusi valmistaja…</option>' +
             '</select>' +
           '</label>' +
-          '<label class="full">Pidin' + inputHTML(x.uid, 'holder', x.holder) + '</label>' +
-          '<label>Ulkonema (mm)' + inputHTML(x.uid, 'ulkonema', x.ulkonema, 'number') +
-            '<span class="kentta-vihje">Terän pituus pitimestä, jotta kokoonpano kasataan aina samoin.</span></label>' +
         '</div>' +
         palatMuokkausHTML(x) +
+
+        '<div class="group-label">Kokoonpano</div>' +
+        '<div class="kentta-vihje" style="margin-top:4px;">Täytä oma nimi, valmistajan koodi tai molemmat. ' +
+          'Valmistajan koodista tehdään haku valmistajan sivulle.</div>' +
+        '<div class="field-grid kokoonpano-grid">' +
+          '<label>Pidin, oma nimi' + inputHTML(x.uid, 'holderNimi', x.holderNimi) + '</label>' +
+          '<label>Pidin, valmistajan koodi' + inputHTML(x.uid, 'holder', x.holder) + '</label>' +
+          '<label>Istukka / holkki, oma nimi' + inputHTML(x.uid, 'istukkaNimi', x.istukkaNimi) + '</label>' +
+          '<label>Istukka / holkki, valmistajan koodi' + inputHTML(x.uid, 'istukka', x.istukka) + '</label>' +
+          '<label>Ulkonema (mm)' + inputHTML(x.uid, 'ulkonema', x.ulkonema, 'number') +
+            '<span class="kentta-vihje">Terän pituus pitimestä tai istukasta.</span></label>' +
+        '</div>' +
         tuoteLinkitHTML(x) +
 
         '<div class="group-label">Työstöarvot materiaaleittain</div>' +
@@ -6232,6 +6266,7 @@ function lisaaTyokalu(tNumero) {
     minBore: '', maxDia: '', teeth: '', multiEdge: '',
     threadStd: '', threadSize: '', threadDir: '',
     brand: '', insert: '', grade: '', insertUse: '', muutPalat: [], ulkonema: '',
+    holderNimi: '', istukka: '', istukkaNimi: '',
     holder: '', spindle: '', status: '', notes: '', cuts: [],
     mod: new Date().toISOString()
   });
@@ -6387,7 +6422,8 @@ const CSV_COLS = [
   ['threadStd', 'Kierrestandardi'], ['threadSize', 'Kierrekoko'],
   ['threadDir', 'Pyorintasuunta'], ['brand', 'Valmistaja'], ['insert', 'Terapala'], ['grade', 'Laatu'],
   ['insertUse', 'Terapalan kaytto'], ['muutPalatTxt', 'Muut terapalat'],
-  ['holder', 'Pidin'], ['ulkonema', 'Ulkonema'], ['spindle', 'Kara'], ['status', 'Tila'], ['notes', 'Muistiinpanot']
+  ['holder', 'Pidin'], ['holderNimi', 'Pidin oma nimi'], ['istukka', 'Istukka'], ['istukkaNimi', 'Istukka oma nimi'],
+  ['ulkonema', 'Ulkonema'], ['spindle', 'Kara'], ['status', 'Tila'], ['notes', 'Muistiinpanot']
 ];
 const CSV_CUT_COLS = [
   ['mat', 'Materiaali'], ['vc', 'Vc'], ['rpm', 'n'], ['f', 'f'], ['fz', 'fz'],
@@ -6556,7 +6592,8 @@ const TUONTI_KENTAT = [
   ['teeth', 'z'], ['multiEdge', 'Monisärmäinen'], ['threadStd', 'Kierrestd'], ['threadSize', 'Kierre'],
   ['threadDir', 'Pyörintä'], ['brand', 'Valmistaja'], ['insert', 'Teräpala'], ['grade', 'Laatu'],
   ['insertUse', 'Palan käyttö'], ['muutPalatTxt', 'Muut palat'],
-  ['holder', 'Pidin'], ['ulkonema', 'Ulkonema'], ['spindle', 'Kara'], ['status', 'Tila'], ['notes', 'Muistiinpanot']
+  ['holder', 'Pidin'], ['holderNimi', 'Pidin, nimi'], ['istukka', 'Istukka'], ['istukkaNimi', 'Istukka, nimi'],
+  ['ulkonema', 'Ulkonema'], ['spindle', 'Kara'], ['status', 'Tila'], ['notes', 'Muistiinpanot']
 ];
 const CUT_KENTAT = ['vc', 'rpm', 'f', 'fz', 'ap', 'ae', 'life'];
 
