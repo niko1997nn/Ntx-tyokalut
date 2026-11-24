@@ -1820,12 +1820,21 @@
   .ty-tulos .result-value { font-size: 20px; flex-wrap: nowrap; white-space: nowrap; }
   .ty-yks { font-size: 10.5px; color: var(--text-dim); }
   .ty-tulos .result-label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .ty-pros { font-size: 12px; font-weight: 600; color: var(--orange); margin-left: 5px; font-family: var(--mono); }
   .ty-keha { padding: 4px 0 12px; border-bottom: 1px solid var(--panel-border); }
   .ty-keha .seg-btn { flex: 1 1 0; text-align: center; padding: 9px 6px; }
   .ty-keha .seg-name { font-size: 12.5px; }
-  .ty-keha-info { margin-top: 8px; font-size: 12.5px; line-height: 1.45; color: var(--text-dim); }
-  .ty-keha-info.virhe { color: var(--red); }
+  .ty-keha-info { margin-top: 10px; }
+  .ty-keha-viesti { margin-top: 8px; font-size: 12.5px; line-height: 1.45; color: var(--text-dim); }
+  .ty-keha-viesti.virhe { color: var(--red); margin-top: 0; }
+  .ty-keha-laatikko { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .ty-keha-solu { border: 1px solid var(--panel-border); border-radius: 12px; padding: 10px 12px; background: var(--panel-2, var(--panel)); min-width: 0; }
+  .ty-keha-solu.uusi { border-color: var(--accent); background: var(--accent-dim); cursor: pointer; }
+  .ty-keha-nimi { font-size: 12px; font-weight: 600; color: var(--text-dim); }
+  .ty-keha-solu.uusi .ty-keha-nimi { color: var(--accent); }
+  .ty-keha-arvo { font: 700 24px var(--mono); margin-top: 4px; white-space: nowrap; }
+  .ty-keha-arvo span { font-size: 12px; font-weight: 500; color: var(--text-dim); margin-left: 5px; }
+  .ty-keha-solu.uusi .ty-keha-arvo { color: var(--accent); }
+  .ty-keha-alla { font-size: 11.5px; color: var(--text-dim); margin-top: 3px; }
   .ty-laskettu input { color: var(--accent-text, var(--accent)); background: transparent; }
   .ty-valinnat .field select { width: 100%; max-width: 62vw; }
   #viewTyosto .field { gap: 10px; }
@@ -1869,6 +1878,34 @@
   .ty-kierre-tulos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 12px; padding-top: 12px; }
   .ty-kierre-tulos .result-value { font-size: 20px; }
   .ty-kierre-tulos .result-label { margin-bottom: 2px; }
+
+  /* ═══ Oma numeronäppäimistö ═══ */
+  .numpad {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 200;
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 7px;
+    padding: 8px 8px calc(10px + env(safe-area-inset-bottom, 0px));
+    background: var(--panel-2); border-top: 1px solid var(--panel-border);
+    box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.18);
+    transform: translateY(110%); transition: transform 0.16s ease-out; visibility: hidden;
+  }
+  .numpad.auki { transform: none; visibility: visible; }
+  .numpad button {
+    height: 52px; border: none; border-radius: 12px; background: var(--panel); color: var(--text);
+    font-family: var(--mono); font-size: 22px; font-weight: 600; touch-action: manipulation;
+    -webkit-user-select: none; user-select: none;
+  }
+  .numpad button.toiminto { font-family: inherit; font-size: 15px; color: var(--text-dim); }
+  .numpad button.ok { background: var(--accent); color: var(--on-accent); font-size: 22px; }
+  .numpad button:active { filter: brightness(1.15); transform: scale(0.97); }
+  .numpad button:disabled { opacity: 0.35; }
+  body.dark .numpad { background: #1B2026; }
+  body.dark .numpad button { background: #2A3139; }
+  body.dark .numpad button.toiminto { background: #232930; }
+  body.dark .numpad button.ok { background: var(--accent); color: var(--on-accent); }
+  body.numpad-auki { padding-bottom: var(--numpad-h, 260px); }
+  body.numpad-auki .tabbar { display: none; }
+  #numpadRow .seg-btn { flex: 1 1 0; text-align: center; padding: 11px 6px; }
+  #numpadRow .seg-name { font-size: 12.5px; }
 </style>
 </head>
 <body>
@@ -2437,6 +2474,12 @@
           <button class="seg-btn" data-kaavat="0"><span class="seg-name">Piilossa</span></button>
           <button class="seg-btn" data-kaavat="1"><span class="seg-name">Näytä laskukaavat</span></button>
         </div>
+        <div class="aset-ala-otsikko" style="margin-top:14px;">Numeronäppäimistö</div>
+        <div class="seg-row" id="numpadRow">
+          <button class="seg-btn" data-numpad="1"><span class="seg-name">Sovelluksen oma</span></button>
+          <button class="seg-btn" data-numpad="0"><span class="seg-name">Puhelimen oma</span></button>
+        </div>
+        <div class="kentta-vihje" style="margin-top:6px;">Oma näppäimistö avautuu numerokenttiin puhelimella ja tabletilla. Tekstikentissä aukeaa aina puhelimen näppäimistö.</div>
       </section>
     </main>
 
@@ -2656,6 +2699,19 @@
 </div>
 
 <div class="toast" id="toast"></div>
+
+<!-- Oma numeronäppäimistö -->
+<div class="numpad" id="numpad" aria-hidden="true" role="group" aria-label="Numeronäppäimistö">
+  <button type="button" data-np="7">7</button><button type="button" data-np="8">8</button><button type="button" data-np="9">9</button>
+  <button type="button" data-np="del" class="toiminto" aria-label="Poista merkki">⌫</button>
+  <button type="button" data-np="4">4</button><button type="button" data-np="5">5</button><button type="button" data-np="6">6</button>
+  <button type="button" data-np="tyhja" class="toiminto" aria-label="Tyhjennä kenttä">C</button>
+  <button type="button" data-np="1">1</button><button type="button" data-np="2">2</button><button type="button" data-np="3">3</button>
+  <button type="button" data-np="pm" class="toiminto" aria-label="Vaihda etumerkki">±</button>
+  <button type="button" data-np="piste" aria-label="Desimaalipiste">.</button><button type="button" data-np="0">0</button>
+  <button type="button" data-np="seur" class="toiminto" aria-label="Seuraava kenttä">Seur.</button>
+  <button type="button" data-np="ok" class="ok" aria-label="Valmis">✓</button>
+</div>
 
 <div class="pikahaku" id="pikahaku" role="dialog" aria-modal="true" aria-label="Avaa työkalu T-numerolla">
   <div class="pikahaku-sisus">
@@ -9112,9 +9168,7 @@ function tyPaivitaTulokset() {
   if (TY.ohjaaF === 'vf') h += solu(m === 'jyrsinta' ? 'fz' : 'f', (tySyottoTeksti(o.syotto) || '—').replace('.', ','), m === 'jyrsinta' ? 'mm' : 'mm/r', 'syotto');
   else h += solu('Vf', fmt(o.vf, 0), 'mm/min', 'vf');
   if (m === 'jyrsinta' && (isFinite(o.kehaKerroin) || o.kehaVirhe)) {
-    const pros = isFinite(o.kehaKerroin) ? Math.round((o.kehaKerroin - 1) * 100) : NaN;
-    h += solu('Ohjelmaan', (o.kehaVirhe ? '—' : fmt(o.vfKeski, 0)) +
-      (isFinite(pros) && !o.kehaVirhe ? '<span class="ty-pros">' + (pros > 0 ? '+' : (pros < 0 ? '\u2212' : '')) + Math.abs(pros) + '\u00A0%</span>' : ''), 'mm/min', 'vfKeski');
+    h += solu('Uusi Vf', o.kehaVirhe ? '—' : fmt(o.vfKeski, 0), 'mm/min', 'vfKeski');
   }
   h += solu('Q', fmt(o.q, 1), 'cm³/min');
   if (m === 'sorvaus') h += solu('Ra teor.', fmt(o.ra, 2), 'µm');
@@ -9123,13 +9177,26 @@ function tyPaivitaTulokset() {
   document.getElementById('tyTulokset').innerHTML = h;
   const kv = document.getElementById('tyKehaInfo');
   if (kv) {
-    const k = TY.k[m] || {};
-    kv.textContent = o.kehaVirhe ? o.kehaVirhe
-      : (isFinite(o.kehaKerroin) ? (k.keha === 'ulko'
-          ? 'Ulkopuolella terän reuna kulkee hitaammin kuin keskiö, joten ohjelmaan tulee ' + Math.round((o.kehaKerroin - 1) * 100) + ' % suurempi syöttö.'
-          : 'Reiässä terän reuna kulkee nopeammin kuin keskiö, joten ohjelmaan tulee ' + Math.round((1 - o.kehaKerroin) * 100) + ' % pienempi syöttö.')
-        : 'Ohjaus syöttää työkalun keskipisteen rataa. Anna halkaisija, niin laskin korjaa syötön terän reunalle.');
-    kv.classList.toggle('virhe', !!o.kehaVirhe);
+    const k = TY.k[m] || {}, ulko = k.keha === 'ulko';
+    if (o.kehaVirhe) {
+      kv.innerHTML = '<div class="ty-keha-viesti virhe">' + esc(o.kehaVirhe) + '</div>';
+    } else if (isFinite(o.kehaKerroin)) {
+      const pros = Math.round(Math.abs(o.kehaKerroin - 1) * 100);
+      kv.innerHTML =
+        '<div class="ty-keha-laatikko">' +
+          '<div class="ty-keha-solu"><div class="ty-keha-nimi">Reunan syöttö</div>' +
+            '<div class="ty-keha-arvo">' + fmt(o.vf, 0) + '<span>mm/min</span></div>' +
+            '<div class="ty-keha-alla">terän reuna, laskettu fz:stä</div></div>' +
+          '<div class="ty-keha-solu uusi copyable" data-tykopio="vfKeski"><div class="ty-keha-nimi">Uusi syöttö ohjelmaan</div>' +
+            '<div class="ty-keha-arvo">' + fmt(o.vfKeski, 0) + '<span>mm/min</span></div>' +
+            '<div class="ty-keha-alla">' + (ulko ? pros + ' % suurempi' : pros + ' % pienempi') + ' · keskipisteen rata</div></div>' +
+        '</div>' +
+        '<div class="ty-keha-viesti">' + (ulko
+          ? 'Tapin ulkopuolella terän reuna kulkee hitaammin kuin keskipiste, joten ohjelmaan tulee suurempi syöttö.'
+          : 'Reiässä terän reuna kulkee nopeammin kuin keskipiste, joten ohjelmaan tulee pienempi syöttö.') + ' Napauta uutta syöttöä kopioidaksesi.</div>';
+    } else {
+      kv.innerHTML = '<div class="ty-keha-viesti">Anna reiän tai tapin halkaisija, niin laskin antaa uuden syötön ohjelmaan.</div>';
+    }
   }
   /* lasketut kentät näyttävät arvonsa heti */
   const aseta = (id, teksti) => {
@@ -9449,6 +9516,195 @@ function tyValitseOsio(osio) { TY.osio = osio; tallennaTy(); renderTyosto(); win
 
 /* halkaisijaa kirjoittaessa vain arvolaatikko päivittyy, jotta kenttä ei menetä fokusta */
 function tyPiirraArvotSailyttaen() { tyPiirraArvot(); }
+
+
+/* =================================================================
+   OMA NUMERONÄPPÄIMISTÖ
+   Numerokentät (inputmode decimal/numeric, type=number) käyttävät sovelluksen
+   omaa näppäimistöä kosketusnäytöllä. Tekstikentissä aukeaa puhelimen tavallinen
+   näppäimistö. Asetus on laitekohtainen (ntx_numpad), vakiona päällä.
+   ================================================================= */
+const K_NUMPAD = 'ntx_numpad';
+let numpadPaalla = (function () { try { return localStorage.getItem(K_NUMPAD) !== '0'; } catch (e) { return true; } })();
+const numpad = document.getElementById('numpad');
+let npKentta = null;
+
+function npKosketus() {
+  if (!window.matchMedia) return true;
+  return !window.matchMedia('(min-width: 900px) and (pointer: fine)').matches &&
+    window.matchMedia('(pointer: coarse)').matches;
+}
+function npOnNumerokentta(el) {
+  if (!el || el.tagName !== 'INPUT' || el.disabled || el.readOnly) return false;
+  if (el.closest && el.closest('#pikahaku')) return false;
+  const im = el.dataset.im || el.getAttribute('inputmode') || '';
+  return im === 'decimal' || im === 'numeric' || el.type === 'number';
+}
+function npKaytossa() { return numpadPaalla && npKosketus(); }
+
+/* inputmode="none" estää puhelimen näppäimistön, kursori ja valinta toimivat silti */
+function npValmistele(el) {
+  if (!el.dataset.im) el.dataset.im = el.getAttribute('inputmode') || (el.type === 'number' ? 'decimal' : 'numeric');
+  if (npKaytossa()) {
+    /* type=number tyhjentää keskeneräisen arvon kuten "120." – tekstikenttänä desimaalit toimivat */
+    if (el.type === 'number') {
+      const fokuksessa = document.activeElement === el;
+      el.dataset.oliNumero = '1'; el.type = 'text';
+      if (fokuksessa) { try { el.select(); } catch (e) {} }
+    }
+    el.setAttribute('inputmode', 'none');
+  } else el.setAttribute('inputmode', el.dataset.im);
+}
+['pointerdown', 'touchstart', 'mousedown'].forEach(t => document.addEventListener(t, e => {
+  const el = e.target;
+  if (npOnNumerokentta(el)) npValmistele(el);
+}, { capture: true, passive: true }));
+
+function npAvaa(el) {
+  npKentta = el;
+  el.dataset.np0 = el.value;
+  numpad.classList.add('auki');
+  numpad.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('numpad-auki');
+  document.documentElement.style.setProperty('--numpad-h', numpad.offsetHeight + 'px');
+  const plusmiinus = numpad.querySelector('[data-np="pm"]');
+  if (plusmiinus) plusmiinus.disabled = el.getAttribute('min') !== null && Number(el.getAttribute('min')) >= 0;
+  el.dataset.npEka = '1';
+  el.dataset.npKorvaa = '1';
+  npNaytaKentta(el);
+}
+/* fyysisellä näppäimistöllä kirjoittaminen ohittaa "ensimmäinen painallus korvaa" -tilan */
+document.addEventListener('input', e => {
+  if (e.isTrusted && e.target === npKentta) { npKentta.dataset.npKorvaa = ''; npKentta.dataset.npEka = ''; }
+});
+/* ensimmäinen napautus avauksen jälkeen valitsee koko arvon, seuraavat siirtävät kursoria */
+document.addEventListener('click', e => {
+  const el = e.target;
+  if (el === npKentta && el.dataset.npEka === '1') { el.dataset.npEka = ''; try { el.select(); } catch (err) {} }
+  else if (el === npKentta) el.dataset.npKorvaa = '';
+});
+function npSulje() {
+  numpad.classList.remove('auki');
+  numpad.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('numpad-auki');
+  npKentta = null;
+}
+/* vieritä kenttä näkyviin näppäimistön yläpuolelle */
+function npNaytaKentta(el) {
+  requestAnimationFrame(() => {
+    const r = el.getBoundingClientRect();
+    const ala = window.innerHeight - numpad.offsetHeight - 12;
+    if (r.bottom > ala) window.scrollBy({ top: r.bottom - ala, behavior: 'smooth' });
+    else if (r.top < 60) window.scrollBy({ top: r.top - 80, behavior: 'smooth' });
+  });
+}
+
+document.addEventListener('focusin', e => {
+  const el = e.target;
+  if (npOnNumerokentta(el) && npKaytossa()) { npValmistele(el); npAvaa(el); }
+  else if (npKentta && el !== npKentta) npSulje();
+});
+document.addEventListener('focusout', e => {
+  const el = e.target;
+  if (el !== npKentta) return;
+  /* change-tapahtuma, jos arvo muuttui omalla näppäimistöllä (selain ei lähetä sitä itse) */
+  if (el.dataset.npMuokattu === '1' && el.value !== el.dataset.np0) {
+    el.dataset.npMuokattu = '';
+    el.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+  setTimeout(() => {
+    if (!npOnNumerokentta(document.activeElement)) npSulje();
+  }, 0);
+});
+
+function npAseta(el, arvo, kursori) {
+  el.value = arvo;
+  if (el.type !== 'number' && kursori != null) { try { el.setSelectionRange(kursori, kursori); } catch (e) {} }
+  el.dataset.npMuokattu = '1';
+  el.dispatchEvent(new Event('input', { bubbles: true }));
+}
+function npValinta(el) {
+  if (el.dataset.npKorvaa === '1') { el.dataset.npKorvaa = ''; return [0, el.value.length]; }
+  if (el.type === 'number') return [el.value.length, el.value.length];
+  let a = el.selectionStart, b = el.selectionEnd;
+  if (a == null) { a = b = el.value.length; }
+  return [a, b];
+}
+function npKirjoita(el, merkki) {
+  const v = el.value;
+  if (merkki === '.' || merkki === ',') {
+    if (/[.,]/.test(v)) return;
+    merkki = el.type === 'number' ? '.' : (v.indexOf(',') >= 0 ? ',' : '.');
+    if (v === '' || v === '-') merkki = '0' + merkki;
+  }
+  const [a, b] = npValinta(el);
+  /* kentän ensimmäinen painallus korvaa vanhan arvon, jos se oli kokonaan valittuna */
+  npAseta(el, v.slice(0, a) + merkki + v.slice(b), a + merkki.length);
+}
+function npPoista(el) {
+  const v = el.value;
+  el.dataset.npKorvaa = '';
+  let [a, b] = npValinta(el);
+  if (el.type !== 'number' && a === 0 && b === v.length && v.length) { a = b = v.length; }
+  if (a === b) { if (a === 0) return; a -= 1; }
+  npAseta(el, v.slice(0, a) + v.slice(b), a);
+}
+function npEtumerkki(el) {
+  const v = el.value.trim();
+  const uusi = v.charAt(0) === '-' ? v.slice(1) : '-' + v;
+  npAseta(el, uusi, uusi.length);
+  const wrap = el.closest('.num-wrap');
+  if (wrap && typeof syncSignButtons === 'function') syncSignButtons(wrap);
+}
+function npSeuraava(el) {
+  const kaikki = [...document.querySelectorAll('input')].filter(i => npOnNumerokentta(i) && i.offsetParent !== null);
+  const idx = kaikki.indexOf(el);
+  const seur = kaikki[idx + 1];
+  if (!seur) { el.blur(); return; }
+  const tunniste = seur.id ? '#' + seur.id : null;
+  npValmistele(seur);
+  el.blur();
+  /* blur voi piirtää näkymän uudelleen, haetaan kenttä tarvittaessa uudestaan */
+  let kohde = seur.isConnected ? seur : (tunniste ? document.querySelector(tunniste) : null);
+  if (!kohde) {
+    const uudet = [...document.querySelectorAll('input')].filter(i => npOnNumerokentta(i) && i.offsetParent !== null);
+    kohde = uudet[idx + 1];
+  }
+  if (kohde) { npValmistele(kohde); kohde.focus(); try { kohde.select(); } catch (e) {} }
+}
+
+/* napit eivät saa viedä fokusta kentältä */
+numpad.addEventListener('pointerdown', e => { if (e.target.closest('button')) e.preventDefault(); });
+numpad.addEventListener('mousedown', e => e.preventDefault());
+numpad.addEventListener('click', e => {
+  const b = e.target.closest('button[data-np]');
+  if (!b || !npKentta) return;
+  const el = npKentta, k = b.getAttribute('data-np');
+  if (navigator.vibrate) { try { navigator.vibrate(8); } catch (err) {} }
+  if (/^\d$/.test(k)) npKirjoita(el, k);
+  else if (k === 'piste') npKirjoita(el, '.');
+  else if (k === 'del') npPoista(el);
+  else if (k === 'tyhja') npAseta(el, '', 0);
+  else if (k === 'pm') npEtumerkki(el);
+  else if (k === 'seur') npSeuraava(el);
+  else if (k === 'ok') el.blur();
+});
+
+/* asetus */
+function kaytaNumpad() {
+  document.querySelectorAll('#numpadRow .seg-btn').forEach(b =>
+    b.classList.toggle('active', (b.getAttribute('data-numpad') === '1') === numpadPaalla));
+  if (!numpadPaalla && npKentta) npSulje();
+}
+document.addEventListener('click', e => {
+  const btn = e.target.closest && e.target.closest('#numpadRow .seg-btn');
+  if (!btn) return;
+  numpadPaalla = btn.getAttribute('data-numpad') === '1';
+  try { localStorage.setItem(K_NUMPAD, numpadPaalla ? '1' : '0'); } catch (err) {}
+  document.querySelectorAll('input[data-im]').forEach(i => i.setAttribute('inputmode', numpadPaalla && npKosketus() ? 'none' : i.dataset.im));
+  kaytaNumpad();
+});
+kaytaNumpad();
 
 (function palautaNakyma() {
   const tila = store.getJSON(K_NAKYMA);
