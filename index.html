@@ -439,7 +439,7 @@
   .field-grid select { padding-right: 30px; background-position: right 10px center; }
   .vastin-kuva { display: none; grid-column: 1 / -1; background: var(--panel-2); border: 1px solid var(--panel-border); border-radius: 8px; padding: 8px; }
   .vastin-kuva.auki { display: block; }
-  .vastin-kuva svg { display: block; width: 100%; max-width: 420px; height: auto; margin: 0 auto; }
+  .vastin-kuva svg { display: block; width: auto; max-width: 100%; height: 200px; margin: 0 auto; }
 
   .add-btn {
     background: var(--panel);
@@ -3279,6 +3279,7 @@ function renderJawList() {
         '<label class="full">Nimi' +
           '<input type="text" data-idx="' + idx + '" data-field="name" value="' + esc(j.name) + '">' +
         '</label>' +
+        '<div class="vastin-kuva">' + VASTIN_A_SVG.replace(/vaNuoli/g, 'vaNuoli' + idx) + '</div>' +
         '<label>Tyyppi' +
           '<select data-idx="' + idx + '" data-field="type">' +
             '<option value="Ulkoleuka"' + (j.type === 'Ulkoleuka' ? ' selected' : '') + '>Ulkoleuka</option>' +
@@ -3288,7 +3289,6 @@ function renderJawList() {
         '<label>Vastinmitta A (mm)' +
           '<input type="number" inputmode="decimal" step="0.01" data-idx="' + idx + '" data-field="vastinA" value="' + esc(vastinA(j)) + '">' +
         '</label>' +
-        '<div class="vastin-kuva">' + VASTIN_A_SVG.replace(/vaNuoli/g, 'vaNuoli' + idx) + '</div>' +
         '<label>Oletushalkaisija (mm)' +
           '<input type="number" inputmode="decimal" step="0.1" data-idx="' + idx + '" data-field="halkaisija" value="' + esc(j.halkaisija) + '">' +
         '</label>' +
@@ -3390,7 +3390,11 @@ jawListEl.addEventListener('focusin', e => {
   if (e.target.getAttribute('data-field') !== 'vastinA') return;
   const card = e.target.closest('.edit-card');
   const kuva = card && card.querySelector('.vastin-kuva');
-  if (kuva) kuva.classList.add('auki');
+  if (!kuva) return;
+  kuva.classList.add('auki');
+  /* kuva on kentän yläpuolella: vieritetään niin, että kuva ja kenttä näkyvät
+     molemmat näppäimistön yläpuolella */
+  if (kuva.scrollIntoView) setTimeout(() => kuva.scrollIntoView({ block: 'start', behavior: 'smooth' }), 50);
 });
 jawListEl.addEventListener('focusout', e => {
   if (e.target.getAttribute('data-field') !== 'vastinA') return;
