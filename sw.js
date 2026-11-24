@@ -3,7 +3,7 @@
      Välimuistissa oleva kopio käytetään vain, jos verkkoa ei ole.
    - Fontit ja kuvakkeet tulevat välimuistista.
    - Pilvisynkronointiin (Apps Script) ja muihin osoitteisiin ei kosketa. */
-const VERSIO = 'konetyokalut-1';
+const VERSIO = 'konetyokalut-2';
 const YDIN = ['./', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png'];
 
 self.addEventListener('install', e => {
