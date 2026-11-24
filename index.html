@@ -5362,6 +5362,7 @@ function tyokaluTekstina(x) {
   if (muut.length) rivit.push('Muut palat: ' + muut.map(p => (p.code || '?') + (has(p.grade) ? ' (' + p.grade + ')' : '') +
                                                        (has(p.use) ? ' \u2014 ' + p.use : '')).join(', '));
   if (has(x.holder)) rivit.push('Pidin: ' + x.holder);
+  if (has(x.ulkonema)) rivit.push('Ulkonema: ' + x.ulkonema + ' mm');
 
   const geo = [];
   if (has(x.offset))   geo.push('suuntaus ' + x.offset);
@@ -5451,6 +5452,7 @@ function lukutilaHTML(x) {
   if (p.thread && has(x.threadSize)) ruudut.push(arvoRuutu('Kierre', x.threadSize));
   if (p.dir && has(x.threadDir))  ruudut.push(arvoRuutu('Pyörintä', x.threadDir, isReverseDir(x.threadDir) ? 'neg' : ''));
   if (has(x.spindle))             ruudut.push(arvoRuutu('Kara', x.spindle));
+  if (has(x.ulkonema))            ruudut.push(arvoRuutu('Ulkonema', x.ulkonema + ' mm'));
 
   const tausta = [];
   if (has(x.brand))  tausta.push(esc(x.brand));
@@ -5673,6 +5675,8 @@ function renderTools() {
             '</select>' +
           '</label>' +
           '<label class="full">Pidin' + inputHTML(x.uid, 'holder', x.holder) + '</label>' +
+          '<label>Ulkonema (mm)' + inputHTML(x.uid, 'ulkonema', x.ulkonema, 'number') +
+            '<span class="kentta-vihje">Terän pituus pitimestä, jotta kokoonpano kasataan aina samoin.</span></label>' +
         '</div>' +
         palatMuokkausHTML(x) +
         tuoteLinkitHTML(x) +
@@ -6227,7 +6231,7 @@ function lisaaTyokalu(tNumero) {
     dia: '', stickout: '', radius: '', bAngle: '', width: '', maxDepth: '',
     minBore: '', maxDia: '', teeth: '', multiEdge: '',
     threadStd: '', threadSize: '', threadDir: '',
-    brand: '', insert: '', grade: '', insertUse: '', muutPalat: [],
+    brand: '', insert: '', grade: '', insertUse: '', muutPalat: [], ulkonema: '',
     holder: '', spindle: '', status: '', notes: '', cuts: [],
     mod: new Date().toISOString()
   });
@@ -6383,7 +6387,7 @@ const CSV_COLS = [
   ['threadStd', 'Kierrestandardi'], ['threadSize', 'Kierrekoko'],
   ['threadDir', 'Pyorintasuunta'], ['brand', 'Valmistaja'], ['insert', 'Terapala'], ['grade', 'Laatu'],
   ['insertUse', 'Terapalan kaytto'], ['muutPalatTxt', 'Muut terapalat'],
-  ['holder', 'Pidin'], ['spindle', 'Kara'], ['status', 'Tila'], ['notes', 'Muistiinpanot']
+  ['holder', 'Pidin'], ['ulkonema', 'Ulkonema'], ['spindle', 'Kara'], ['status', 'Tila'], ['notes', 'Muistiinpanot']
 ];
 const CSV_CUT_COLS = [
   ['mat', 'Materiaali'], ['vc', 'Vc'], ['rpm', 'n'], ['f', 'f'], ['fz', 'fz'],
@@ -6552,7 +6556,7 @@ const TUONTI_KENTAT = [
   ['teeth', 'z'], ['multiEdge', 'Monisärmäinen'], ['threadStd', 'Kierrestd'], ['threadSize', 'Kierre'],
   ['threadDir', 'Pyörintä'], ['brand', 'Valmistaja'], ['insert', 'Teräpala'], ['grade', 'Laatu'],
   ['insertUse', 'Palan käyttö'], ['muutPalatTxt', 'Muut palat'],
-  ['holder', 'Pidin'], ['spindle', 'Kara'], ['status', 'Tila'], ['notes', 'Muistiinpanot']
+  ['holder', 'Pidin'], ['ulkonema', 'Ulkonema'], ['spindle', 'Kara'], ['status', 'Tila'], ['notes', 'Muistiinpanot']
 ];
 const CUT_KENTAT = ['vc', 'rpm', 'f', 'fz', 'ap', 'ae', 'life'];
 
