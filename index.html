@@ -3102,6 +3102,7 @@ function suljeModal(arvo) {
 
 function avaaModal(opts) {
   return new Promise(resolve => {
+    if (!modalBack.classList.contains('show') && typeof historiaKerros === 'function') historiaKerros();
     if (modalResolve) suljeModal(null);
     modalResolve = resolve;
     modalTitle.textContent = opts.title || '';
@@ -3290,12 +3291,55 @@ window.addEventListener('pagehide', tallennaNakyma);
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'hidden') tallennaNakyma();
 });
+/* Puhelimen takaisin-nappi: jokainen siirtymä näkymästä toiseen tallennetaan selaimen historiaan.
+   histValmis kytketään päälle vasta kun aloitusnäkymä on palautettu. */
+let histValmis = false, histPalautus = false;
+let histI = 0, histPino = [], histOhitaPop = false;
+function historiaTila(id) {
+  const t = { nakyma: id || nykyinenNakyma() };
+  if (t.nakyma === 'viewTyosto' && typeof TY !== 'undefined' && TY) t.osio = TY.osio;
+  return t;
+}
+function historiaSama(a, b) { return !!(a && b && a.nakyma === b.nakyma && a.osio === b.osio); }
+function historiaTallennaVieritys() {
+  if (!histValmis || histPalautus) return;
+  try { history.replaceState(Object.assign({}, history.state || historiaTila(), { y: window.scrollY, i: histI }), ''); } catch (e) {}
+}
+function historiaLisaa(id) {
+  if (!histValmis || histPalautus || !window.history || !history.pushState) return;
+  const uusi = historiaTila(id);
+  if (historiaSama(histPino[histI], uusi)) return;
+  /* sovelluksen oma "takaisin" edelliseen näkymään = selaimen historiassa askel taaksepäin,
+     ettei puhelimen takaisin-nappi palaa juuri suljettuun sivuun */
+  if (histI > 0 && historiaSama(histPino[histI - 1], uusi)) {
+    histOhitaPop = true;
+    histI -= 1;
+    try { history.back(); } catch (e) { histOhitaPop = false; }
+    return;
+  }
+  histI += 1;
+  histPino.length = histI;
+  histPino[histI] = uusi;
+  try { history.pushState(Object.assign({ i: histI }, uusi), ''); } catch (e) {}
+}
+/* Avautuva kerros (numeronäppäimistö, pikahaku, kysely) saa oman historia-askeleen,
+   jotta takaisin-nappi sulkee sen eikä poistu sovelluksesta */
+function historiaKerros() {
+  if (!histValmis || histPalautus || !window.history || !history.pushState) return;
+  histI += 1;
+  histPino.length = histI;
+  histPino[histI] = historiaTila();
+  try { history.pushState(Object.assign({ i: histI, kerros: 1 }, histPino[histI]), ''); } catch (e) {}
+}
 function showView(id, sailytaVieritys) {
+  const vaihtuu = nykyinenNakyma() !== id;
+  if (vaihtuu) historiaTallennaVieritys();
   VIEWS.forEach(v => document.getElementById(v).classList.toggle('active', v === id));
   if (!sailytaVieritys) window.scrollTo({ top: 0, behavior: 'instant' });
   if (id === 'viewTyosto' && typeof TY !== 'undefined') renderTyosto();
   if (typeof paivitaTabbarKorkeus === 'function') paivitaTabbarKorkeus();
   tallennaNakyma();
+  if (vaihtuu) historiaLisaa(id);
 }
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -6666,6 +6710,7 @@ function renderPikahaku() {
 }
 function avaaPikahaku() {
   if (nykyinenNakyma() !== 'viewToolList') showView('viewToolList');
+  if (!pikahakuEl.classList.contains('show')) historiaKerros();
   pikaSyote = '';
   renderPikahaku();
   pikahakuEl.classList.add('show');
@@ -9436,7 +9481,12 @@ function renderTyosto() {
   else if (TY.osio === 'materiaalit') tyPiirraMateriaalit();
   else { document.getElementById('tyKD').value = TY.kD; document.getElementById('tyKP').value = TY.kP; tyPiirraKierteet(); }
 }
-function tyValitseOsio(osio) { TY.osio = osio; tallennaTy(); renderTyosto(); window.scrollTo({ top: 0, behavior: 'instant' }); }
+function tyValitseOsio(osio) {
+  const vaihtuu = TY.osio !== osio;
+  if (vaihtuu) historiaTallennaVieritys();
+  TY.osio = osio; tallennaTy(); renderTyosto(); window.scrollTo({ top: 0, behavior: 'instant' });
+  if (vaihtuu && nykyinenNakyma() === 'viewTyosto') historiaLisaa('viewTyosto');
+}
 
 (function tyKuuntelijat() {
   const v = document.getElementById('viewTyosto');
@@ -9562,6 +9612,7 @@ new MutationObserver(() => {
 }, { capture: true, passive: true }));
 
 function npAvaa(el) {
+  if (!numpad.classList.contains('auki')) historiaKerros();
   npKentta = el;
   el.dataset.np0 = el.value;
   numpad.classList.add('auki');
@@ -9748,6 +9799,59 @@ kaytaNumpad();
     setTimeout(() => window.scrollTo(0, y), 120);
   }
 })();
+
+/* Takaisin-napin käsittely */
+const HIST_AVAAJAT = {
+  viewJawSettings: () => openJawSettings(),
+  viewSP2Settings: () => openSP2Settings(),
+  viewData:        () => openData(typeof dataPaluu !== 'undefined' && dataPaluu ? dataPaluu : 'viewToolList'),
+  viewToolTypes:   () => { renderTypes(); showView('viewToolTypes'); },
+  viewMachines:    () => avaaKoneet('viewData'),
+  viewTietopankki: () => avaaTietopankki(typeof tpPaluu !== 'undefined' && tpPaluu ? tpPaluu : 'viewData'),
+  viewQuality:     () => avaaTarkistus(),
+  viewImport:      () => showView('viewToolList')
+};
+function avoinKerros() {
+  return !!(npKentta || pikahakuEl.classList.contains('show') || modalBack.classList.contains('show'));
+}
+function suljeKerrokset() {
+  if (modalBack.classList.contains('show')) suljeModal(null);
+  if (pikahakuEl.classList.contains('show')) suljePikahaku();
+  if (npKentta) { const el = npKentta; el.blur(); npSulje(); }
+}
+window.addEventListener('popstate', e => {
+  if (histOhitaPop) { histOhitaPop = false; return; }   /* sovellus itse palasi askeleen */
+  const st = e.state || { nakyma: 'viewToolList', i: 0 };
+  /* auki oleva näppäimistö, pikahaku tai kysely suljetaan ensin, näkymä pysyy */
+  if (avoinKerros()) {
+    suljeKerrokset();
+    histI = Number(st.i) || 0;
+    return;
+  }
+  if (VIEWS.indexOf(st.nakyma) === -1) return;
+  /* jo suljetun kerroksen askel: sama näkymä kuin nyt, ohitetaan ettei painallus mene hukkaan */
+  if (historiaSama(st, historiaTila()) && (Number(st.i) || 0) > 0) {
+    histI = Number(st.i) || 0;
+    try { history.back(); } catch (err) {}
+    return;
+  }
+  histI = Number(st.i) || 0;
+  histPino[histI] = { nakyma: st.nakyma, osio: st.osio };
+  histPalautus = true;
+  try {
+    if (st.nakyma === 'viewTyosto' && st.osio && typeof TY !== 'undefined') { TY.osio = st.osio; tallennaTy(); }
+    if (HIST_AVAAJAT[st.nakyma]) HIST_AVAAJAT[st.nakyma]();
+    else showView(st.nakyma);
+    if (st.nakyma === 'viewTyosto') renderTyosto();
+  } finally { histPalautus = false; }
+  const y = Number(st.y) || 0;
+  window.scrollTo(0, y);
+  if (y > 0) setTimeout(() => window.scrollTo(0, y), 60);
+});
+histPino = [historiaTila()];
+histI = 0;
+try { history.replaceState(Object.assign({ i: 0 }, histPino[0]), ''); } catch (e) {}
+histValmis = true;
 
 alustusKesken = false;   /* tästä eteenpäin muutokset merkitään synkronointia varten */
 
