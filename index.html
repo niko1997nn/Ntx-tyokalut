@@ -1803,6 +1803,66 @@
   @media not all and (min-width: 900px) and (pointer: fine) {
     .tulos-yla { top: 0; }
   }
+
+  /* ═══ TYÖSTÖ-välilehti ═══ */
+  .ty-osio { display: none; }
+  .ty-osio.auki { display: block; }
+  .ty-osiot { margin-bottom: 12px; flex-wrap: nowrap !important; overflow: visible !important; }
+  .ty-osiot .filter-chip { flex: 1 1 auto; justify-content: center; text-align: center; padding-left: 8px; padding-right: 8px; }
+  .ty-tila { margin: 12px 0; }
+  .ty-tila .seg-btn { flex: 1 1 0; text-align: center; padding: 11px 6px; }
+  #tyKSarja { margin: 14px 0 10px; }
+  #tyKSarja .seg-btn { flex: 1 1 0; text-align: center; padding: 10px 6px; }
+  #tyKSarja .seg-name, .ty-tila .seg-name { font-size: 13px; }
+  .tulos-yla .ty-tulokset { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 10px; padding: 10px 12px; }
+  .ty-tulos { min-width: 0; cursor: pointer; }
+  .ty-tulos .result-label { font-size: 11.5px; margin-bottom: 2px; }
+  .ty-tulos .result-value { font-size: 20px; flex-wrap: nowrap; white-space: nowrap; }
+  .ty-yks { font-size: 10.5px; color: var(--text-dim); }
+  .ty-tulos .result-label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ty-laskettu input { color: var(--accent-text, var(--accent)); background: transparent; }
+  .ty-valinnat .field select { width: 100%; max-width: 62vw; }
+  #viewTyosto .field { gap: 10px; }
+  .ty-matkortti { display: flex; flex-direction: column; gap: 3px; margin: 14px 0 10px; }
+  .ty-matkortti b { font-size: 16px; }
+  .ty-matkortti span { font-size: 12.5px; color: var(--text-dim); }
+  .ty-suos { border: 1px solid var(--accent-dim); border-radius: 14px; padding: 12px 14px; background: var(--panel); }
+  .ty-suos-yla { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .ty-merkki { font: 700 10.5px var(--mono); letter-spacing: 0.06em; padding: 3px 7px; border-radius: 6px;
+    color: var(--orange); background: var(--orange-dim); }
+  .ty-luot { font-size: 12px; color: var(--text-dim); }
+  .ty-suos-arvot { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .ty-suos-arvot .result-label { margin-bottom: 2px; }
+  .ty-suos-arvot .result-value { font-size: 24px; }
+  .ty-vali { font: 500 12px var(--mono); color: var(--text-dim); margin-top: 3px; }
+  .ty-saato { margin-top: 10px; font-size: 12.5px; color: var(--accent-text, var(--accent)); }
+  .ty-peruste { margin-top: 10px; font-size: 12.5px; line-height: 1.45; color: var(--text); }
+  .ty-lahde { margin-top: 6px; font-size: 11.5px; line-height: 1.4; color: var(--text-dim); }
+  .ty-vie { margin-top: 12px; }
+  .ty-otsikko { margin-top: 20px; }
+  .ty-taulu-kehys { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--panel-border);
+    border-radius: 12px; background: var(--panel); }
+  .ty-taulu { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .ty-taulu th { text-align: left; font: 600 10.5px var(--mono); letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--text-dim); padding: 8px 10px; border-bottom: 1px solid var(--panel-border); white-space: nowrap; }
+  .ty-taulu td { padding: 8px 10px; border-top: 1px solid var(--panel-border); vertical-align: top; }
+  .ty-taulu tbody tr:first-child td { border-top: none; }
+  .ty-taulu td.mono { font-family: var(--mono); white-space: nowrap; }
+  .ty-taulu tr[data-tyavaa], .ty-taulu tr[data-tymat] { cursor: pointer; }
+  .ty-taulu tr.sama td:first-child { box-shadow: inset 3px 0 0 var(--accent); }
+  .ty-pieni { font-size: 11.5px; color: var(--text-dim); font-weight: 400; }
+  .ty-vihje { margin-top: 10px; }
+  .ty-vinkit, .ty-ryhma { margin-top: 12px; border: 1px solid var(--panel-border); border-radius: 12px;
+    background: var(--panel); padding: 0 12px; }
+  .ty-vinkit summary, .ty-ryhma summary { cursor: pointer; padding: 12px 0; font-size: 14px; display: flex; gap: 8px; align-items: baseline; }
+  .ty-ryhma summary .ty-pieni { margin-left: auto; }
+  .ty-ryhma[open] { padding-bottom: 12px; }
+  .ty-ryhma .ty-taulu-kehys { border-radius: 10px; }
+  .ty-vinkit ul, .ty-vinkkilista { margin: 0 0 12px; padding-left: 18px; font-size: 13px; line-height: 1.5; }
+  .ty-vinkkilista { margin-top: 10px; }
+  .ty-kierre-tulos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 12px; padding-top: 12px; }
+  .ty-kierre-tulos .result-value { font-size: 20px; }
+  .ty-kierre-tulos .result-label { margin-bottom: 2px; }
 </style>
 </head>
 <body>
@@ -1829,6 +1889,7 @@
       <button class="tab-btn" data-tool="viewToolList"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg><span>Työkalut</span></button>
       <button class="tab-btn active" data-tool="viewJawCalc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg><span>Leuka</span></button>
       <button class="tab-btn" data-tool="viewSP2Calc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="4"/></svg><span>SP2 &amp; G55</span></button>
+      <button class="tab-btn" data-tool="viewTyosto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.3 19a9 9 0 1 1 17.4 0"/><path d="M12 14l4.5-4.5"/><circle cx="12" cy="14" r="1.5"/></svg><span>Työstö</span></button>
       <button class="tab-btn" data-nav="tarkistus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg><span>Tarkistus</span><span class="tab-badge"></span></button>
       <button class="tab-btn" data-nav="asetukset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Asetukset</span></button>
     </nav>
@@ -1951,6 +2012,7 @@
       <button class="tab-btn" data-tool="viewToolList"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg><span>Työkalut</span></button>
       <button class="tab-btn" data-tool="viewJawCalc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg><span>Leuka</span></button>
       <button class="tab-btn active" data-tool="viewSP2Calc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="4"/></svg><span>SP2 &amp; G55</span></button>
+      <button class="tab-btn" data-tool="viewTyosto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.3 19a9 9 0 1 1 17.4 0"/><path d="M12 14l4.5-4.5"/><circle cx="12" cy="14" r="1.5"/></svg><span>Työstö</span></button>
       <button class="tab-btn" data-nav="tarkistus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg><span>Tarkistus</span><span class="tab-badge"></span></button>
       <button class="tab-btn" data-nav="asetukset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Asetukset</span></button>
     </nav>
@@ -2066,6 +2128,7 @@
       <button class="tab-btn active" data-tool="viewToolList"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg><span>Työkalut</span></button>
       <button class="tab-btn" data-tool="viewJawCalc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg><span>Leuka</span></button>
       <button class="tab-btn" data-tool="viewSP2Calc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="4"/></svg><span>SP2 &amp; G55</span></button>
+      <button class="tab-btn" data-tool="viewTyosto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.3 19a9 9 0 1 1 17.4 0"/><path d="M12 14l4.5-4.5"/><circle cx="12" cy="14" r="1.5"/></svg><span>Työstö</span></button>
       <button class="tab-btn" data-nav="tarkistus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg><span>Tarkistus</span><span class="tab-badge"></span></button>
       <button class="tab-btn" data-nav="asetukset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Asetukset</span></button>
     </nav>
@@ -2133,6 +2196,109 @@
   </div>
 
   <!-- ===================== ASETUKSET ===================== -->
+  <!-- ===================== TYÖSTÖ: LASTUAMISARVOT JA KONEISTUSTIETO ===================== -->
+  <div class="view" id="viewTyosto">
+    <header>
+      <div class="header-left">
+        <div class="logo-mark machine-abbr">NTX</div>
+        <div>
+          <div class="title">Työstö</div>
+          <div class="subtitle">Lastuamisarvot ja koneistustieto</div>
+        </div>
+      </div>
+      <button class="icon-btn teksti-btn" id="tyAvaaTp" aria-label="Avaa työstötietopankki ja hienosäätö">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+        <span>Säädä</span>
+      </button>
+    </header>
+
+    <nav class="tabbar" aria-label="Päävalikko">
+      <button class="tab-btn" data-tool="viewToolList"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg><span>Työkalut</span></button>
+      <button class="tab-btn" data-tool="viewJawCalc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg><span>Leuka</span></button>
+      <button class="tab-btn" data-tool="viewSP2Calc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="4"/></svg><span>SP2 &amp; G55</span></button>
+      <button class="tab-btn active" data-tool="viewTyosto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.3 19a9 9 0 1 1 17.4 0"/><path d="M12 14l4.5-4.5"/><circle cx="12" cy="14" r="1.5"/></svg><span>Työstö</span></button>
+      <button class="tab-btn" data-nav="tarkistus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg><span>Tarkistus</span><span class="tab-badge"></span></button>
+      <button class="tab-btn" data-nav="asetukset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Asetukset</span></button>
+    </nav>
+
+    <div class="machine-bar"></div>
+
+    <main>
+      <div class="filter-row ty-osiot" id="tyOsiot">
+        <button type="button" class="filter-chip" data-tyosio="laskin">Laskin</button>
+        <button type="button" class="filter-chip" data-tyosio="arvot">Arvot</button>
+        <button type="button" class="filter-chip" data-tyosio="materiaalit">Materiaalit</button>
+        <button type="button" class="filter-chip" data-tyosio="kierteet">Kierteet</button>
+      </div>
+
+      <!-- LASKIN -->
+      <div class="ty-osio" data-osio="laskin">
+        <div class="tulos-yla">
+          <div class="result-card ty-tulokset" id="tyTulokset"></div>
+        </div>
+        <div class="seg-row ty-tila" id="tyTila">
+          <button type="button" class="seg-btn" data-tytila="sorvaus"><span class="seg-name">Sorvaus</span></button>
+          <button type="button" class="seg-btn" data-tytila="poraus"><span class="seg-name">Poraus</span></button>
+          <button type="button" class="seg-btn" data-tytila="jyrsinta"><span class="seg-name">Jyrsintä</span></button>
+        </div>
+        <div class="section-card" id="tyKentat"></div>
+        <button class="add-btn" id="tyTyhjenna">Tyhjennä laskin</button>
+        <div class="note kaava" id="tyKaavat"></div>
+      </div>
+
+      <!-- TYÖSTÖARVOT -->
+      <div class="ty-osio" data-osio="arvot">
+        <section>
+          <div class="section-label">Työkalu</div>
+          <div class="filter-row ty-luokat" id="tyLuokat"></div>
+        </section>
+        <div class="section-card ty-valinnat">
+          <div class="field">
+            <label for="tyMat">Materiaali</label>
+            <select id="tyMat"></select>
+          </div>
+          <div class="field" id="tyHalkRivi">
+            <label for="tyHalk">Työkalun halkaisija<span class="unit-note">mm, syöttö riippuu halkaisijasta</span></label>
+            <div class="num-wrap"><input type="text" id="tyHalk" inputmode="decimal" value="10"></div>
+          </div>
+        </div>
+        <div id="tyArvot"></div>
+      </div>
+
+      <!-- MATERIAALIT -->
+      <div class="ty-osio" data-osio="materiaalit">
+        <div class="note">Materiaalit on ryhmitelty työstöluokittain. Luokka ratkaisee, mitä tietopankin suositusta käytetään.
+          Avaa ryhmä nähdäksesi materiaalit ja työstövinkit.</div>
+        <div id="tyMateriaalit"></div>
+      </div>
+
+      <!-- KIERTEET -->
+      <div class="ty-osio" data-osio="kierteet">
+        <div class="section-card">
+          <div class="section-label">Oma kierre</div>
+          <div class="field">
+            <label for="tyKD">Nimellishalkaisija D<span class="unit-note">mm</span></label>
+            <div class="num-wrap"><input type="text" id="tyKD" inputmode="decimal" placeholder="esim. 20"></div>
+          </div>
+          <div class="field">
+            <label for="tyKP">Nousu P<span class="unit-note">mm</span></label>
+            <div class="num-wrap"><input type="text" id="tyKP" inputmode="decimal" placeholder="esim. 2.5"></div>
+          </div>
+          <div class="ty-kierre-tulos" id="tyKTulos"></div>
+        </div>
+        <div class="seg-row" id="tyKSarja">
+          <button type="button" class="seg-btn" data-tyksarja="karkea"><span class="seg-name">M karkea</span></button>
+          <button type="button" class="seg-btn" data-tyksarja="hieno"><span class="seg-name">M hieno</span></button>
+          <button type="button" class="seg-btn" data-tyksarja="g"><span class="seg-name">G-putki</span></button>
+        </div>
+        <div class="ty-taulu-kehys" id="tyKierteet"></div>
+        <div class="note" id="tyKierreHuom"></div>
+      </div>
+    </main>
+
+    <footer><span class="machine-name">NTX3000</span> · TYÖSTÖ · v3.0</footer>
+  </div>
+
   <div class="view" id="viewData">
     <header>
       <div class="header-left">
@@ -2602,7 +2768,7 @@ const K_SYNC_VERSIO = 'ntx_sync_versio';      /* viimeksi tiedossa ollut palveli
 const K_LAHETYS_PYYNTO = 'ntx_lahetys_pyynto';/* lähetä heti seuraavassa käynnistyksessä */
 let alustusKesken = true;   /* käynnistyksen migraatiot eivät ole käyttäjän muutoksia */
 const META_AVAIMET = ['ntx_muokattu', 'ntx_sync', 'ntx_teema', 'ntx_kaavat', 'ntx_viimeksi', 'ntx_varmuuskopio_pvm',
-                      'ntx_sync_haettu', 'ntx_nakyma',
+                      'ntx_sync_haettu', 'ntx_nakyma', 'ntx_tyosto',
                       K_POISTOT, K_TILANNE, K_SYNC_VERSIO, K_LAHETYS_PYYNTO];
 
 /* -----------------------------------------------------------------
@@ -2797,7 +2963,8 @@ function activeMachine() { return MACHINES.find(m => m.id === activeMachineId) |
 const TAB_DEFS = [
   ['tools', 'viewToolList', 'Työkalut'],
   ['jaw',   'viewJawCalc',  'Leuka'],
-  ['sp2',   'viewSP2Calc',  'SP2 & G55']
+  ['sp2',   'viewSP2Calc',  'SP2 & G55'],
+  ['tyosto', 'viewTyosto',  'Työstö']
 ];
 function tabNakyy(kone, avain) {
   if (!kone || !kone.tabs) return true;
@@ -3029,7 +3196,7 @@ document.addEventListener('input', e => {
    ================================================================= */
 const VIEWS = ['viewToolList', 'viewJawCalc', 'viewJawSettings', 'viewSP2Calc',
                'viewSP2Settings', 'viewToolTypes', 'viewData', 'viewMachines',
-               'viewImport', 'viewQuality', 'viewTietopankki'];
+               'viewImport', 'viewQuality', 'viewTietopankki', 'viewTyosto'];
 
 /* Näkymä, vieritys ja avatut kortit säilyvät sivun päivityksen yli */
 const K_NAKYMA = 'ntx_nakyma';
@@ -3066,6 +3233,7 @@ document.addEventListener('visibilitychange', () => {
 function showView(id, sailytaVieritys) {
   VIEWS.forEach(v => document.getElementById(v).classList.toggle('active', v === id));
   if (!sailytaVieritys) window.scrollTo({ top: 0, behavior: 'instant' });
+  if (id === 'viewTyosto' && typeof TY !== 'undefined') renderTyosto();
   if (typeof paivitaTabbarKorkeus === 'function') paivitaTabbarKorkeus();
   tallennaNakyma();
 }
@@ -7705,7 +7873,7 @@ function renderTietopankki() {
     (halk ? '<div class="note" style="margin-top:4px;">Syöttö näytetään halkaisijalle \u00D810. Työkalukortissa se lasketaan terän omalla halkaisijalla.</div>' : '');
 }
 document.getElementById('asetTpBtn').addEventListener('click', () => avaaTietopankki('viewData'));
-document.getElementById('closeTp').addEventListener('click', () => openData(dataPaluu));
+document.getElementById('closeTp').addEventListener('click', () => tpPaluu === 'viewTyosto' ? showView('viewTyosto') : openData(dataPaluu));
 document.getElementById('tpAutoRow').addEventListener('click', e => {
   const b = e.target.closest('[data-tpauto]');
   if (!b) return;
@@ -7801,7 +7969,7 @@ document.addEventListener('keydown', e => {
   if (modalBack.classList.contains('show')) return;
 
   /* välilehdet: Alt + numero */
-  if (e.altKey && !e.ctrlKey && !e.metaKey && ['1', '2', '3'].indexOf(e.key) !== -1) {
+  if (e.altKey && !e.ctrlKey && !e.metaKey && ['1', '2', '3', '4'].indexOf(e.key) !== -1) {
     const maaritys = TAB_DEFS[Number(e.key) - 1];
     if (maaritys && tabNakyy(activeMachine(), maaritys[0])) {
       e.preventDefault();
@@ -8834,6 +9002,378 @@ kaytaTeema();
 
 /* Automaattinen tarkistus käynnistyksessä */
 /* --- Näkymän palautus päivityksen jälkeen --- */
+
+/* =================================================================
+   TYÖSTÖ — lastuamisarvolaskin, tietopankin arvot, materiaalit, kierteet
+   Tila on laitekohtainen (ntx_tyosto), ei synkronoida.
+   ================================================================= */
+const K_TYOSTO = 'ntx_tyosto';
+const TY_OLETUS = {
+  osio: 'laskin', tila: 'sorvaus', ohjaa: 'vc',
+  k: { sorvaus: {}, poraus: {}, jyrsinta: {} },
+  tl: 'sorvaus', mat: '1.4462', D: '10', ksarja: 'karkea', kD: '', kP: ''
+};
+var TY = (function () {
+  const d = store.getJSON(K_TYOSTO);
+  const t = JSON.parse(JSON.stringify(TY_OLETUS));
+  if (d && typeof d === 'object') {
+    Object.keys(t).forEach(k => { if (d[k] != null && k !== 'k') t[k] = d[k]; });
+    if (d.k && typeof d.k === 'object') ['sorvaus', 'poraus', 'jyrsinta'].forEach(m => { if (d.k[m]) t.k[m] = d.k[m]; });
+  }
+  return t;
+})();
+function tallennaTy() { store.setJSON(K_TYOSTO, TY); }
+
+/* ---- laskin ---- */
+const TY_KENTAT = {
+  sorvaus:  [['D', 'Työstöhalkaisija', 'mm'], ['vc', 'Lastuamisnopeus vc', 'm/min'], ['n', 'Kierrosluku n', 'r/min'],
+             ['f', 'Syöttö f', 'mm/r'], ['ap', 'Lastuamissyvyys ap', 'mm'], ['r', 'Nirkon säde r', 'mm'], ['L', 'Työstöpituus L', 'mm, valinnainen']],
+  poraus:   [['D', 'Poran halkaisija', 'mm'], ['vc', 'Lastuamisnopeus vc', 'm/min'], ['n', 'Kierrosluku n', 'r/min'],
+             ['f', 'Syöttö f', 'mm/r'], ['L', 'Reiän syvyys L', 'mm, valinnainen']],
+  jyrsinta: [['D', 'Jyrsimen halkaisija', 'mm'], ['z', 'Terien määrä z', 'kpl'], ['vc', 'Lastuamisnopeus vc', 'm/min'], ['n', 'Kierrosluku n', 'r/min'],
+             ['fz', 'Syöttö per terä fz', 'mm'], ['ap', 'Aksiaalinen syvyys ap', 'mm'], ['ae', 'Radiaalinen leveys ae', 'mm'], ['L', 'Työstöpituus L', 'mm, valinnainen']]
+};
+
+function tyLaske() {
+  const m = TY.tila, k = TY.k[m] || {};
+  const D = num(k.D), z = num(k.z), f = num(k.f), fz = num(k.fz), ap = num(k.ap), ae = num(k.ae), r = num(k.r), L = num(k.L);
+  let vc = num(k.vc), n = num(k.n);
+  if (TY.ohjaa === 'n') { vc = (D > 0 && n > 0) ? Math.PI * D * n / 1000 : NaN; }
+  else { n = (D > 0 && vc > 0) ? vc * 1000 / (Math.PI * D) : NaN; }
+  const out = { vc, n };
+  if (m === 'jyrsinta') out.vf = (fz > 0 && z > 0 && n > 0) ? fz * z * n : NaN;
+  else out.vf = (f > 0 && n > 0) ? f * n : NaN;
+  if (m === 'sorvaus') {
+    out.q = (vc > 0 && ap > 0 && f > 0) ? vc * ap * f : NaN;
+    out.ra = (f > 0 && r > 0) ? f * f / r * 50 : NaN;
+  } else if (m === 'poraus') {
+    out.q = (D > 0 && out.vf > 0) ? Math.PI * D * D / 4 * out.vf / 1000 : NaN;
+  } else {
+    out.q = (ap > 0 && ae > 0 && out.vf > 0) ? ap * ae * out.vf / 1000 : NaN;
+    if (fz > 0 && D > 0 && ae > 0 && ae <= D) {
+      const kulma = Math.asin(ae / D) * 180 / Math.PI;
+      out.hm = 180 * ae * fz / (Math.PI * D * kulma);
+    } else out.hm = NaN;
+  }
+  out.aika = (L > 0 && out.vf > 0) ? L / out.vf : NaN;
+  return out;
+}
+
+function tyAikaTeksti(min) {
+  if (!isFinite(min)) return '—';
+  const s = Math.round(min * 60);
+  if (s < 60) return s + ' s';
+  return Math.floor(s / 60) + ' min ' + String(s % 60).padStart(2, '0') + ' s';
+}
+
+function tyPaivitaTulokset() {
+  const o = tyLaske(), m = TY.tila;
+  const solu = (nimi, arvo, yks, id) => '<div class="ty-tulos copyable"' + (id ? ' data-tykopio="' + id + '"' : '') + '>' +
+    '<div class="result-label">' + nimi + (yks ? ' <span class="ty-yks">' + yks + '</span>' : '') + '</div>' +
+    '<div class="result-value"><span>' + arvo + '</span></div></div>';
+  let h = TY.ohjaa === 'n' ? solu('vc', fmt(o.vc, 0), 'm/min', 'vc') : solu('n', fmt(o.n, 0), 'r/min', 'n');
+  h += solu('Vf', fmt(o.vf, 0), 'mm/min', 'vf');
+  h += solu('Q', fmt(o.q, 1), 'cm³/min');
+  if (m === 'sorvaus') h += solu('Ra teor.', fmt(o.ra, 2), 'µm');
+  else if (m === 'jyrsinta') h += solu('hm', fmt(o.hm, 3), 'mm');
+  h += solu('Aika', tyAikaTeksti(o.aika), '');
+  document.getElementById('tyTulokset').innerHTML = h;
+  /* ohjattu kenttä näyttää lasketun arvon */
+  const toinen = TY.ohjaa === 'n' ? 'vc' : 'n';
+  const el = document.querySelector('#tyKentat input[data-tyk="' + toinen + '"]');
+  if (el && document.activeElement !== el) {
+    const v = toinen === 'vc' ? o.vc : o.n;
+    el.value = isFinite(v) ? String(Math.round(v)) : '';
+  }
+  window.__tyTulos = o;
+}
+
+function tyPiirraKentat() {
+  const k = TY.k[TY.tila] || {};
+  document.getElementById('tyKentat').innerHTML = TY_KENTAT[TY.tila].map(([id, nimi, yks]) => {
+    const ohjattu = (id === 'vc' || id === 'n') && TY.ohjaa !== id;
+    return '<div class="field' + (ohjattu ? ' ty-laskettu' : '') + '">' +
+      '<label>' + esc(nimi) + '<span class="unit-note">' + esc(yks) + (ohjattu ? ' · laskettu' : '') + '</span></label>' +
+      '<div class="num-wrap"><input type="text" inputmode="decimal" data-tyk="' + id + '" value="' + esc(k[id] || '') + '"></div></div>';
+  }).join('');
+  const kaavat = {
+    sorvaus: 'n = vc × 1000 / (π × D) · Vf = f × n · Q = vc × ap × f · Ra ≈ f² / r × 50 (µm, Sandvik)',
+    poraus: 'n = vc × 1000 / (π × D) · Vf = f × n · Q = π × D² / 4 × Vf / 1000',
+    jyrsinta: 'n = vc × 1000 / (π × D) · Vf = fz × z × n · Q = ap × ae × Vf / 1000 · hm = 180 × ae × fz / (π × D × arcsin(ae/D)°)'
+  };
+  document.getElementById('tyKaavat').innerHTML = '<strong>Kaavat:</strong><br>' + esc(kaavat[TY.tila]) + '<br>t = L / Vf';
+  document.querySelectorAll('#tyTila .seg-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-tytila') === TY.tila));
+  tyPaivitaTulokset();
+}
+
+/* ---- työstöarvot ---- */
+const TY_LASKINTILA = { sorvaus: 'sorvaus', ura: 'sorvaus', kierresorvaus: 'sorvaus', pora: 'poraus', pora_hss: 'poraus',
+  upora: 'poraus', kalvin: 'poraus', kierretappi: 'poraus', jyrsin: 'jyrsinta', jyrsin_hss: 'jyrsinta',
+  otsajyrsin: 'jyrsinta', kierrejyrsin: 'jyrsinta' };
+
+function tySuositus(tl, luokka, D) {
+  const r = TIETOPANKKI.rivit[tl] && TIETOPANKKI.rivit[tl][luokka];
+  if (!r) return null;
+  const laji = TIETOPANKKI.laji[tl] || '';
+  const halk = laji === 'fpD' || laji === 'fzD';
+  const kerroin = halk ? (D > 0 ? D : NaN) : 1;
+  const kr = tpKerroin(tl, luokka);
+  const out = { r, laji, halk, syottoNimi: syottoKentta(laji), kr, ok: !!(r.vc && r.vc[1]) };
+  if (!out.ok) return out;
+  let vc = r.vc[1] * kr.vcK;
+  let f = (r.f && r.f[0]) ? r.f[0] * kerroin * kr.fK : NaN;
+  if (kr.lahde === 'luokka') {
+    if (r.vc[0]) vc = Math.max(vc, r.vc[0]);
+    if (r.vc[2]) vc = Math.min(vc, r.vc[2]);
+    if (r.f && r.f[1]) f = Math.max(f, r.f[1] * kerroin);
+    if (r.f && r.f[2]) f = Math.min(f, r.f[2] * kerroin);
+  }
+  out.vc = vc; out.vcMin = r.vc[0]; out.vcMax = r.vc[2];
+  out.f = f;
+  out.fMin = (r.f && r.f[1]) ? r.f[1] * kerroin : NaN;
+  out.fMax = (r.f && r.f[2]) ? r.f[2] * kerroin : NaN;
+  out.vcPerus = r.vc[1];
+  out.fPerus = (r.f && r.f[0]) ? r.f[0] * kerroin : NaN;
+  return out;
+}
+
+function tyMateriaaliValinta() {
+  const sel = document.getElementById('tyMat');
+  const ryhmat = {};
+  Object.keys(MAT_LUOKKA).forEach(m => { (ryhmat[MAT_LUOKKA[m]] = ryhmat[MAT_LUOKKA[m]] || []).push(m); });
+  sel.innerHTML = ['P', 'M', 'D', 'SD', 'K', 'N', 'Ti', 'Ni', 'H'].filter(l => ryhmat[l]).map(l =>
+    '<optgroup label="' + esc(l + ' · ' + (MAT_LUOKKA_NIMI[l] || l)) + '">' +
+    ryhmat[l].map(m => '<option value="' + esc(m) + '"' + (m === TY.mat ? ' selected' : '') + '>' +
+      esc((TIETOPANKKI.materiaalit[m] && TIETOPANKKI.materiaalit[m].nimi) || m) + '</option>').join('') +
+    '</optgroup>').join('');
+  if (!MAT_LUOKKA[TY.mat]) { TY.mat = '1.4462'; sel.value = TY.mat; }
+}
+
+function tyOmatArvot(tl, luokka, mat) {
+  const rivit = [];
+  TOOLS.forEach(x => {
+    if (tyokaluLuokka(x) !== tl) return;
+    (x.cuts || []).forEach(c => {
+      if (MAT_LUOKKA[c.mat] !== luokka) return;
+      if (!has(c.vc) && !has(c.rpm) && !has(c.f) && !has(c.fz)) return;
+      rivit.push({ x, c, sama: c.mat === mat });
+    });
+  });
+  rivit.sort((a, b) => (b.sama - a.sama) || (num(a.x.t) - num(b.x.t)));
+  return rivit;
+}
+
+function tyPiirraArvot() {
+  document.getElementById('tyLuokat').innerHTML = Object.keys(SUOS_LUOKKA_NIMI).filter(tl => TIETOPANKKI.rivit[tl]).map(tl =>
+    '<button type="button" class="filter-chip' + (tl === TY.tl ? ' active' : '') + '" data-tyluokka="' + tl + '">' + esc(SUOS_LUOKKA_NIMI[tl]) + '</button>').join('');
+  const luokka = MAT_LUOKKA[TY.mat];
+  const laji = TIETOPANKKI.laji[TY.tl] || '';
+  const halk = laji === 'fpD' || laji === 'fzD';
+  document.getElementById('tyHalkRivi').style.display = halk ? '' : 'none';
+  const D = num(TY.D);
+  const s = tySuositus(TY.tl, luokka, D);
+  const mi = TIETOPANKKI.materiaalit[TY.mat] || {};
+  const syottoNimi = s ? s.syottoNimi : '';
+  const syottoYks = syottoNimi === 'fz' ? 'mm/terä' : 'mm/r';
+  let h = '<div class="ty-matkortti"><b>' + esc(mi.nimi || TY.mat) + '</b>' +
+    '<span>' + esc((luokka || '?') + ' · ' + (MAT_LUOKKA_NIMI[luokka] || '')) + (mi.cmc ? ' · CMC ' + esc(mi.cmc) : '') + (mi.hb ? ' · ' + esc(mi.hb) + (/HRC/.test(mi.hb) ? '' : ' HB') : '') + '</span></div>';
+  if (!s || !s.ok) {
+    h += '<div class="note">Tietopankissa ei ole suositusta tälle yhdistelmälle' +
+      (s && s.r && s.r.peruste ? ': ' + esc(s.r.peruste) : '.') + '</div>';
+  } else {
+    const vali = (a, b, d) => (isFinite(a) && isFinite(b) && a > 0 && b > 0) ? (d ? pyoristaSyotto(a) + '–' + pyoristaSyotto(b) : lukuTeksti(a) + '–' + lukuTeksti(b)) : '';
+    const muutettu = Math.abs(s.kr.vcK - 1) > 0.005 || Math.abs(s.kr.fK - 1) > 0.005;
+    h += '<div class="ty-suos">' +
+      '<div class="ty-suos-yla"><span class="ty-merkki">SUOSITUS ' + esc(s.r.luot || '') + '</span>' +
+        '<span class="ty-luot">' + esc(LUOTETTAVUUS_NIMI[s.r.luot] || '') + '</span></div>' +
+      '<div class="ty-suos-arvot">' +
+        '<div><div class="result-label">vc</div><div class="result-value"><span>' + lukuTeksti(s.vc) + '</span><span class="unit">m/min</span></div>' +
+          '<div class="ty-vali">' + (vali(s.vcMin, s.vcMax) ? 'tietopankki ' + vali(s.vcMin, s.vcMax) : '') + '</div></div>' +
+        (s.syottoNimi && isFinite(s.f) ? '<div><div class="result-label">' + syottoNimi + (s.halk ? ' (Ø' + fmt(D, D % 1 ? 1 : 0) + ')' : '') + '</div>' +
+          '<div class="result-value"><span>' + pyoristaSyotto(s.f) + '</span><span class="unit">' + syottoYks + '</span></div>' +
+          '<div class="ty-vali">' + (vali(s.fMin, s.fMax, true) ? 'tietopankki ' + vali(s.fMin, s.fMax, true) : '') + '</div></div>'
+          : (s.halk && !(D > 0) ? '<div><div class="result-label">' + syottoNimi + '</div><div class="ty-vali">anna halkaisija</div></div>' : '')) +
+      '</div>' +
+      (muutettu ? '<div class="ty-saato">Hienosäädetty omien arvojen mukaan: tietopankissa vc ' + lukuTeksti(s.vcPerus) +
+        (isFinite(s.fPerus) ? ', ' + syottoNimi + ' ' + pyoristaSyotto(s.fPerus) : '') + '</div>' : '') +
+      (s.r.peruste ? '<div class="ty-peruste">' + esc(s.r.peruste) + '</div>' : '') +
+      (s.r.lahde ? '<div class="ty-lahde">Lähde: ' + s.r.lahde.split(/,\s*/).map(k => esc((TIETOPANKKI.lahteet && TIETOPANKKI.lahteet[k]) || k)).join('; ') + '</div>' : '') +
+      '<button type="button" class="add-btn ty-vie" id="tyVieLaskimeen">Vie laskimeen</button>' +
+    '</div>';
+  }
+  const omat = tyOmatArvot(TY.tl, luokka, TY.mat);
+  h += '<div class="section-label ty-otsikko">Omat arvot · ' + esc(SUOS_LUOKKA_NIMI[TY.tl]) + ', ' + esc(MAT_LUOKKA_NIMI[luokka] || '') + '</div>';
+  if (!omat.length) h += '<div class="note">Työkalukorteissa ei vielä ole arvoja tälle työkalu- ja materiaaliluokalle.</div>';
+  else h += '<div class="ty-taulu-kehys"><table class="ty-taulu"><thead><tr><th>T</th><th>Työkalu</th><th>Materiaali</th><th>vc</th><th>f / fz</th></tr></thead><tbody>' +
+    omat.slice(0, 40).map(({ x, c, sama }) => '<tr' + (sama ? ' class="sama"' : '') + ' data-tyavaa="' + esc(x.uid) + '">' +
+      '<td class="mono">' + esc(x.t) + '</td><td>' + esc(x.name || '') + (c.src === 'suositus' ? ' <span class="ty-pieni">suositus</span>' : '') + '</td>' +
+      '<td>' + esc(c.mat) + '</td><td class="mono">' + esc(c.vc || '') + '</td><td class="mono">' + esc(c.fz || c.f || '') + '</td></tr>').join('') +
+    '</tbody></table></div>' + (omat.length > 40 ? '<div class="ty-pieni">Näytetään 40 / ' + omat.length + '</div>' : '');
+  const vinkit = (TIETOPANKKI.vinkit && TIETOPANKKI.vinkit[luokka]) || [];
+  if (vinkit.length) h += '<details class="ty-vinkit"><summary>Työstövinkit: ' + esc(MAT_LUOKKA_NIMI[luokka] || luokka) + '</summary><ul>' +
+    vinkit.map(v => '<li>' + esc(v) + '</li>').join('') + '</ul></details>';
+  document.getElementById('tyArvot').innerHTML = h;
+  window.__tySuositus = s;
+}
+
+/* ---- materiaalit ---- */
+function tyPiirraMateriaalit() {
+  const ryhmat = {};
+  Object.keys(MAT_LUOKKA).forEach(m => { (ryhmat[MAT_LUOKKA[m]] = ryhmat[MAT_LUOKKA[m]] || []).push(m); });
+  const omat = (typeof CUSTOM_MATERIALS !== 'undefined' ? CUSTOM_MATERIALS : []).filter(m => !MAT_LUOKKA[m]);
+  let h = ['P', 'M', 'D', 'SD', 'K', 'N', 'Ti', 'Ni', 'H'].filter(l => ryhmat[l]).map(l => {
+    const vinkit = (TIETOPANKKI.vinkit && TIETOPANKKI.vinkit[l]) || [];
+    return '<details class="ty-ryhma"><summary><b>' + esc(l) + '</b> ' + esc(MAT_LUOKKA_NIMI[l] || '') + '<span class="ty-pieni">' + ryhmat[l].length + '</span></summary>' +
+      '<div class="ty-taulu-kehys"><table class="ty-taulu"><thead><tr><th>Materiaali</th><th>CMC</th><th>Kovuus</th></tr></thead><tbody>' +
+      ryhmat[l].map(m => { const i = TIETOPANKKI.materiaalit[m] || {};
+        return '<tr data-tymat="' + esc(m) + '"><td>' + esc(i.nimi || m) + '</td><td class="mono">' + esc(i.cmc || '') + '</td><td class="mono">' + esc(i.hb || '') + '</td></tr>'; }).join('') +
+      '</tbody></table></div>' +
+      (vinkit.length ? '<ul class="ty-vinkkilista">' + vinkit.map(v => '<li>' + esc(v) + '</li>').join('') + '</ul>' : '') +
+      '</details>';
+  }).join('');
+  if (omat.length) h += '<details class="ty-ryhma"><summary><b>?</b> Omat materiaalit ilman luokkaa<span class="ty-pieni">' + omat.length + '</span></summary>' +
+    '<div class="note">Näille ei tule tietopankin suositusta, koska työstöluokka ei ole tiedossa: ' + omat.map(esc).join(', ') + '.</div></details>';
+  h += '<div class="ty-pieni ty-vihje">Napauta materiaalia nähdäksesi sen työstöarvot.</div>';
+  document.getElementById('tyMateriaalit').innerHTML = h;
+}
+
+/* ---- kierteet ----
+   Metrinen ISO 261/724: porausmitta = D − P. Kierteen syvyys teräpalalle: ulko 0.6134 × P, sisä 0.5413 × P.
+   Sisäkierteen pienin halkaisija D1 = D − 1.0825 × P. G-putkikierre ISO 228-1. */
+/* [D, P, porausmitta DIN 336] */
+const TY_M_KARKEA = [[3, 0.5, 2.5], [4, 0.7, 3.3], [5, 0.8, 4.2], [6, 1, 5], [8, 1.25, 6.8], [10, 1.5, 8.5], [12, 1.75, 10.2],
+  [14, 2, 12], [16, 2, 14], [18, 2.5, 15.5], [20, 2.5, 17.5], [22, 2.5, 19.5], [24, 3, 21], [27, 3, 24], [30, 3.5, 26.5],
+  [33, 3.5, 29.5], [36, 4, 32], [39, 4, 35], [42, 4.5, 37.5], [45, 4.5, 40.5], [48, 5, 43], [52, 5, 47], [56, 5.5, 50.5], [64, 6, 58]];
+const TY_M_HIENO = [[8, 1], [10, 1], [10, 1.25], [12, 1.25], [12, 1.5], [14, 1.5], [16, 1.5], [18, 1.5], [20, 1.5], [20, 2],
+  [22, 1.5], [24, 1.5], [24, 2], [27, 2], [30, 1.5], [30, 2], [33, 2], [36, 1.5], [36, 3], [42, 2], [42, 3], [48, 2], [48, 3], [56, 4], [64, 4]];
+const TY_G = [['G 1/16', 28, 7.723, 6.8], ['G 1/8', 28, 9.728, 8.8], ['G 1/4', 19, 13.157, 11.8], ['G 3/8', 19, 16.662, 15.25],
+  ['G 1/2', 14, 20.955, 19], ['G 5/8', 14, 22.911, 21], ['G 3/4', 14, 26.441, 24.5], ['G 1', 11, 33.249, 30.75],
+  ['G 1 1/4', 11, 41.910, 39.5], ['G 1 1/2', 11, 47.803, 45.25], ['G 2', 11, 59.614, 57]];
+
+function tyLyhyt(v, d) { return isFinite(v) ? String(Math.round(v * Math.pow(10, d)) / Math.pow(10, d)).replace('.', ',') : '—'; }
+
+function tyPiirraKierteet() {
+  document.querySelectorAll('#tyKSarja .seg-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-tyksarja') === TY.ksarja));
+  let h;
+  if (TY.ksarja === 'g') {
+    h = '<table class="ty-taulu"><thead><tr><th>Koko</th><th>TPI</th><th>Nousu</th><th>Ulko-Ø</th><th>Poraus</th></tr></thead><tbody>' +
+      TY_G.map(([k, tpi, d, p]) => '<tr><td>' + k + '</td><td class="mono">' + tpi + '</td><td class="mono">' + tyLyhyt(25.4 / tpi, 3) +
+        '</td><td class="mono">' + tyLyhyt(d, 3) + '</td><td class="mono"><b>' + tyLyhyt(p, 2) + '</b></td></tr>').join('') + '</tbody></table>';
+    document.getElementById('tyKierreHuom').textContent = 'G-kierre (ISO 228-1) on lieriömäinen putkikierre, kulma 55°. Porausmitta on yleisesti käytetty suositus.';
+  } else {
+    const lista = TY.ksarja === 'hieno' ? TY_M_HIENO : TY_M_KARKEA;
+    h = '<table class="ty-taulu"><thead><tr><th>Koko</th><th>Nousu</th><th>Poraus</th><th>Syv. ulko</th><th>Syv. sisä</th></tr></thead><tbody>' +
+      lista.map(([d, p, pr]) => '<tr><td>M' + d + (TY.ksarja === 'hieno' ? '×' + tyLyhyt(p, 2) : '') + '</td><td class="mono">' + tyLyhyt(p, 2) +
+        '</td><td class="mono"><b>' + tyLyhyt(pr || Math.round((d - p) * 10 + 1e-9) / 10, 2) + '</b></td><td class="mono">' + tyLyhyt(0.6134 * p, 2) +
+        '</td><td class="mono">' + tyLyhyt(0.5413 * p, 2) + '</td></tr>').join('') + '</tbody></table>';
+    document.getElementById('tyKierreHuom').textContent = 'Porausmitta: karkea DIN 336, hieno D − P pyöristettynä 0,1 mm:iin. Syvyys on kierteen säteittäinen syvyys sorvaukseen (ulko 0,6134 × P, sisä 0,5413 × P).';
+  }
+  document.getElementById('tyKierteet').innerHTML = h;
+  tyOmaKierre();
+}
+
+function tyOmaKierre() {
+  const D = num(TY.kD), P = num(TY.kP);
+  const el = document.getElementById('tyKTulos');
+  if (!(D > 0 && P > 0)) { el.innerHTML = '<span class="ty-pieni">Anna halkaisija ja nousu.</span>'; return; }
+  const r = (n, v) => '<div><div class="result-label">' + n + '</div><div class="result-value"><span>' + tyLyhyt(v, 3) + '</span><span class="unit">mm</span></div></div>';
+  el.innerHTML = r('Poraus D − P', D - P) + r('Sisä-Ø pienin D1', D - 1.0825 * P) + r('Syvyys ulko', 0.6134 * P) + r('Syvyys sisä', 0.5413 * P);
+}
+
+/* ---- yhteinen ---- */
+function renderTyosto() {
+  document.querySelectorAll('#tyOsiot .filter-chip').forEach(b => b.classList.toggle('active', b.getAttribute('data-tyosio') === TY.osio));
+  document.querySelectorAll('#viewTyosto .ty-osio').forEach(o => o.classList.toggle('auki', o.getAttribute('data-osio') === TY.osio));
+  if (TY.osio === 'laskin') tyPiirraKentat();
+  else if (TY.osio === 'arvot') { tyMateriaaliValinta(); document.getElementById('tyHalk').value = TY.D; tyPiirraArvot(); }
+  else if (TY.osio === 'materiaalit') tyPiirraMateriaalit();
+  else { document.getElementById('tyKD').value = TY.kD; document.getElementById('tyKP').value = TY.kP; tyPiirraKierteet(); }
+}
+function tyValitseOsio(osio) { TY.osio = osio; tallennaTy(); renderTyosto(); window.scrollTo({ top: 0, behavior: 'instant' }); }
+
+(function tyKuuntelijat() {
+  const v = document.getElementById('viewTyosto');
+  if (!v) return;
+  v.addEventListener('click', e => {
+    const t = e.target;
+    const osio = t.closest('[data-tyosio]');
+    if (osio) return tyValitseOsio(osio.getAttribute('data-tyosio'));
+    const tila = t.closest('[data-tytila]');
+    if (tila) { TY.tila = tila.getAttribute('data-tytila'); tallennaTy(); return tyPiirraKentat(); }
+    const kop = t.closest('[data-tykopio]');
+    if (kop && window.__tyTulos) {
+      const o = window.__tyTulos, k = kop.getAttribute('data-tykopio');
+      if (isFinite(o[k])) copyText(String(Math.round(o[k])));
+      return;
+    }
+    const tl = t.closest('[data-tyluokka]');
+    if (tl) { TY.tl = tl.getAttribute('data-tyluokka'); tallennaTy(); return tyPiirraArvot(); }
+    if (t.closest('#tyVieLaskimeen')) {
+      const s = window.__tySuositus;
+      if (!s || !s.ok) return;
+      const tila2 = TY_LASKINTILA[TY.tl] || 'sorvaus';
+      const k = TY.k[tila2] = TY.k[tila2] || {};
+      k.vc = lukuTeksti(s.vc); k.n = '';
+      if (s.halk && num(TY.D) > 0) k.D = String(TY.D);
+      if (isFinite(s.f)) { if (tila2 === 'jyrsinta') k.fz = pyoristaSyotto(s.f); else k.f = pyoristaSyotto(s.f); }
+      TY.tila = tila2; TY.ohjaa = 'vc';
+      return tyValitseOsio('laskin');
+    }
+    const avaa = t.closest('[data-tyavaa]');
+    if (avaa) {
+      const uid = avaa.getAttribute('data-tyavaa');
+      if (typeof openTools === 'object') openTools[uid] = true;
+      showView('viewToolList');
+      renderTools();
+      const kortti = document.querySelector('.tool-card[data-uid="' + uid + '"]');
+      if (kortti) kortti.scrollIntoView({ block: 'start' });
+      return;
+    }
+    const mat = t.closest('[data-tymat]');
+    if (mat) { TY.mat = mat.getAttribute('data-tymat'); return tyValitseOsio('arvot'); }
+    const sarja = t.closest('[data-tyksarja]');
+    if (sarja) { TY.ksarja = sarja.getAttribute('data-tyksarja'); tallennaTy(); return tyPiirraKierteet(); }
+    if (t.closest('#tyTyhjenna')) { TY.k[TY.tila] = {}; tallennaTy(); return tyPiirraKentat(); }
+  });
+  v.addEventListener('input', e => {
+    const t = e.target;
+    const kentta = t.getAttribute && t.getAttribute('data-tyk');
+    if (kentta) {
+      const k = TY.k[TY.tila] = TY.k[TY.tila] || {};
+      k[kentta] = t.value;
+      if (kentta === 'vc' || kentta === 'n') {
+        if (TY.ohjaa !== kentta) {
+          TY.ohjaa = kentta;
+          document.querySelectorAll('#tyKentat .field').forEach(f => {
+            const i = f.querySelector('input'); const id = i && i.getAttribute('data-tyk');
+            if (id === 'vc' || id === 'n') {
+              const laskettu = id !== kentta;
+              f.classList.toggle('ty-laskettu', laskettu);
+              const yks = f.querySelector('.unit-note');
+              if (yks) yks.textContent = yks.textContent.replace(' · laskettu', '') + (laskettu ? ' · laskettu' : '');
+            }
+          });
+        }
+      }
+      tallennaTy();
+      return tyPaivitaTulokset();
+    }
+    if (t.id === 'tyHalk') { TY.D = t.value; tallennaTy(); return tyPiirraArvotSailyttaen(); }
+    if (t.id === 'tyKD' || t.id === 'tyKP') { TY[t.id === 'tyKD' ? 'kD' : 'kP'] = t.value; tallennaTy(); return tyOmaKierre(); }
+  });
+  v.addEventListener('change', e => {
+    if (e.target.id === 'tyMat') { TY.mat = e.target.value; tallennaTy(); tyPiirraArvot(); }
+  });
+  document.getElementById('tyAvaaTp').addEventListener('click', () => {
+    tpValittu = TY.tl;
+    avaaTietopankki('viewTyosto');
+    tpValittu = TY.tl; renderTietopankki();
+  });
+})();
+
+/* halkaisijaa kirjoittaessa vain arvolaatikko päivittyy, jotta kenttä ei menetä fokusta */
+function tyPiirraArvotSailyttaen() { tyPiirraArvot(); }
+
 (function palautaNakyma() {
   const tila = store.getJSON(K_NAKYMA);
   nakymaPalautettu = true;
