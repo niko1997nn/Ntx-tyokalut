@@ -437,6 +437,9 @@
   .field-grid label { display: flex; flex-direction: column; gap: 4px; font-size: 11px; color: var(--text-dim); }
   .field-grid input, .field-grid select { font-size: 14px; padding: 9px 10px; border-radius: 7px; }
   .field-grid select { padding-right: 30px; background-position: right 10px center; }
+  .vastin-kuva { display: none; grid-column: 1 / -1; background: var(--panel-2); border: 1px solid var(--panel-border); border-radius: 8px; padding: 8px; }
+  .vastin-kuva.auki { display: block; }
+  .vastin-kuva svg { display: block; width: auto; max-width: 100%; height: 200px; margin: 0 auto; }
 
   .add-btn {
     background: var(--panel);
@@ -1788,9 +1791,9 @@
 
       <div class="note">
         Muutokset tallentuvat itsestään.<br>
-        <span class="kaava"><strong>Kaava:</strong> mitta = (pakan vastinarvo + kappaleen halkaisija − (pakan halkaisija − puristuskohdan säätö)) / 2.<br></span>
+        <span class="kaava"><strong>Kaava:</strong> mitta = (2 × A + kappaleen halkaisija − (pakan halkaisija − puristuskohdan säätö)) / 2.<br></span>
         <strong>Puristuskohdan säätö</strong> valitsee, mihin kohtaan pakan liikerataa puristus pysähtyy.<span class="kaava"> Se vähennetään vain pakan halkaisijasta (pakka 315 ja säätö 5 → laskennassa 310).</span> Arvo muistetaan pakkakohtaisesti.<br>
-        <strong>Pakan vastinarvo</strong> on se kappaleen halkaisija, jolla leuka on tasan pakan reunan tasalla (mitta = 0).
+        <strong>Vastinmitta A</strong> mitataan leuan tartuntapinnasta leuan takapäähän.<span class="kaava"> Ohjelma laskee 2 × A itse.</span> Kuva aukeaa, kun painat kenttää.
         Jokainen leuka kuuluu yhteen pakkaan, ja laskennassa käytetään aina sen pakan halkaisijaa.
       </div>
     </main>
@@ -3243,6 +3246,15 @@ function renderPakkaList() {
   });
 }
 
+/* Vastinmitta A: mitataan tartuntapinnasta leuan takapäähän (kuva).
+   Tallennettu pakkaRef on edelleen halkaisija-arvo = 2 × A, joten laskenta,
+   synkronointi ja vanhat laitteet toimivat ennallaan. Kenttä näyttää A = pakkaRef / 2. */
+const VASTIN_A_SVG = '<svg viewBox="130 20 470 440" role="img" aria-label="Vastinmitta A: tartuntapinnasta leuan takapäähän"><defs><marker id="vaNuoli" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="var(--orange)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><path d="M150 440 V257 H185 V229 H341 V205 L336 200 V190 L341 185 V140 L336 135 V125 L341 120 V100 L347 95 L361 92 H524 L579 145 V440 L576 444 L573 440 L570 444 L567 440 L564 444 L561 440 L558 444 L555 440 L552 444 L549 440 L546 444 L543 440 L540 444 L537 440 L534 444 L531 440 L528 444 L525 440 L522 444 L519 440 L516 444 L513 440 L510 444 L507 440 L504 444 L501 440 L498 444 L495 440 L492 444 L489 440 L486 444 L483 440 L480 444 L477 440 L474 444 L471 440 L468 444 L465 440 L462 444 L459 440 L456 444 L453 440 L450 444 L447 440 L444 444 L441 440 L438 444 L435 440 L432 444 L429 440 L426 444 L423 440 L420 444 L417 440 L414 444 L411 440 L408 444 L405 440 L402 444 L399 440 L396 444 L393 440 L390 444 L387 440 L384 444 L381 440 L378 444 L375 440 L372 444 L369 440 L366 444 L363 440 L360 444 L357 440 L354 444 L351 440 L348 444 L345 440 L342 444 L339 440 L336 444 L333 440 L330 444 L327 440 L324 444 L321 440 L318 444 L315 440 L312 444 L309 440 L306 444 L303 440 L300 444 L297 440 L294 444 L291 440 L288 444 L285 440 L282 444 L279 440 L276 444 L273 440 L270 444 L267 440 L264 444 L261 440 L258 444 L255 440 L252 444 L249 440 L246 444 L243 440 L240 444 L237 440 L234 444 L231 440 L228 444 L225 440 L222 444 L219 440 L216 444 L213 440 L210 444 L207 440 L204 444 L201 440 L198 444 L195 440 L192 444 L189 440 L186 444 L183 440 L180 444 L177 440 L174 444 L171 440 L168 444 L165 440 L162 444 L159 440 L156 444 L153 440 L150 444 L147 440 L150 442 Z" fill="var(--panel)" stroke="var(--text)" stroke-width="1.5"/><path d="M341 227 V205 L336 200 V190 L341 185 V140 L336 135 V125 L341 120 V100" fill="none" stroke="var(--orange)" stroke-width="4" stroke-linejoin="round"/><line x1="579" y1="148" x2="579" y2="438" stroke="var(--orange)" stroke-width="4"/><path d="M341 88 V44 M579 140 V44" fill="none" stroke="var(--orange)" stroke-width="1.2"/><line x1="343" y1="56" x2="577" y2="56" stroke="var(--orange)" stroke-width="1.8" marker-start="url(#vaNuoli)" marker-end="url(#vaNuoli)"/><text x="460" y="40" text-anchor="middle" font-size="20" font-weight="700" fill="var(--orange)">A</text></svg>';
+function vastinA(j) {
+  const v = num(j.pakkaRef);
+  return isNaN(v) ? '' : Math.round(v / 2 * 1000) / 1000;
+}
+
 function renderJawList() {
   jawListEl.innerHTML = '';
   draftJaws.forEach((j, idx) => {
@@ -3267,14 +3279,15 @@ function renderJawList() {
         '<label class="full">Nimi' +
           '<input type="text" data-idx="' + idx + '" data-field="name" value="' + esc(j.name) + '">' +
         '</label>' +
+        '<div class="vastin-kuva">' + VASTIN_A_SVG.replace(/vaNuoli/g, 'vaNuoli' + idx) + '</div>' +
         '<label>Tyyppi' +
           '<select data-idx="' + idx + '" data-field="type">' +
             '<option value="Ulkoleuka"' + (j.type === 'Ulkoleuka' ? ' selected' : '') + '>Ulkoleuka</option>' +
             '<option value="Sisäleuka"' + (j.type === 'Sisäleuka' ? ' selected' : '') + '>Sisäleuka</option>' +
           '</select>' +
         '</label>' +
-        '<label>Pakan vastinarvo (mm)' +
-          '<input type="number" inputmode="decimal" step="0.1" data-idx="' + idx + '" data-field="pakkaRef" value="' + esc(j.pakkaRef) + '">' +
+        '<label>Vastinmitta A (mm)' +
+          '<input type="number" inputmode="decimal" step="0.01" data-idx="' + idx + '" data-field="vastinA" value="' + esc(vastinA(j)) + '">' +
         '</label>' +
         '<label>Oletushalkaisija (mm)' +
           '<input type="number" inputmode="decimal" step="0.1" data-idx="' + idx + '" data-field="halkaisija" value="' + esc(j.halkaisija) + '">' +
@@ -3318,6 +3331,11 @@ function readEdit(target, arr) {
   const idx = parseInt(idxAttr, 10);
   if (!arr[idx]) return false;
   let val = target.value;
+  if (field === 'vastinA') {
+    const a = num(val);
+    arr[idx].pakkaRef = isNaN(a) ? 0 : Math.round(a * 2 * 1000) / 1000;
+    return true;
+  }
   if (NUM_FIELDS.indexOf(field) !== -1) {
     const n = num(val);
     val = (field === 'min' || field === 'max') ? (isNaN(n) ? null : n) : (isNaN(n) ? 0 : n);
@@ -3365,6 +3383,24 @@ pakkaListEl.addEventListener('click', e => {
     renderJawList();
     toast('Palautettu');
   });
+});
+
+/* Kuva aukeaa, kun vastinmitta-kenttä on aktiivinen */
+jawListEl.addEventListener('focusin', e => {
+  if (e.target.getAttribute('data-field') !== 'vastinA') return;
+  const card = e.target.closest('.edit-card');
+  const kuva = card && card.querySelector('.vastin-kuva');
+  if (!kuva) return;
+  kuva.classList.add('auki');
+  /* kuva on kentän yläpuolella: vieritetään niin, että kuva ja kenttä näkyvät
+     molemmat näppäimistön yläpuolella */
+  if (kuva.scrollIntoView) setTimeout(() => kuva.scrollIntoView({ block: 'start', behavior: 'smooth' }), 50);
+});
+jawListEl.addEventListener('focusout', e => {
+  if (e.target.getAttribute('data-field') !== 'vastinA') return;
+  const card = e.target.closest('.edit-card');
+  const kuva = card && card.querySelector('.vastin-kuva');
+  if (kuva) kuva.classList.remove('auki');
 });
 
 jawListEl.addEventListener('click', e => {
