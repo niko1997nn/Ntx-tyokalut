@@ -1670,6 +1670,7 @@
   .cut-vals.suositus b { color: var(--orange); }
   .tab-badge { color: #FFFFFF; }
   body.dark .tab-badge { color: #1A1204; }
+  .kentta-vihje { display: block; font-size: 11.5px; font-weight: 400; color: var(--text-dim); margin: 2px 0 2px; }
 </style>
 </head>
 <body>
@@ -1712,15 +1713,6 @@
       <section>
         <div class="section-label">1 — Valitse pakka</div>
         <div class="seg-row" id="pakkaSeg"></div>
-        <div class="input-row" style="margin-top:12px;">
-          <label class="input-block">
-            <span class="input-label">
-              Puristuskohdan säätö (mm)
-              <span class="input-hint" id="saatoHint">mihin kohtaan liikerataa puristus pysähtyy</span>
-            </span>
-            <input type="number" id="saatoInput" inputmode="decimal" step="0.1" placeholder="0">
-          </label>
-        </div>
       </section>
 
       <section>
@@ -1797,7 +1789,7 @@
       <div class="note">
         Muutokset tallentuvat itsestään.<br>
         <span class="kaava"><strong>Kaava:</strong> mitta = (pakan vastinarvo + kappaleen halkaisija − (pakan halkaisija − puristuskohdan säätö)) / 2.<br></span>
-        <strong>Puristuskohdan säätö</strong> valitsee, mihin kohtaan pakan liikerataa puristus pysähtyy. Se vähennetään vain pakan halkaisijasta<span class="kaava"> (pakka 315 ja säätö 5 → laskennassa 310)</span>. Arvo muistetaan pakkakohtaisesti.<br>
+        <strong>Puristuskohdan säätö</strong> valitsee, mihin kohtaan pakan liikerataa puristus pysähtyy.<span class="kaava"> Se vähennetään vain pakan halkaisijasta (pakka 315 ja säätö 5 → laskennassa 310).</span> Arvo muistetaan pakkakohtaisesti.<br>
         <strong>Pakan vastinarvo</strong> on se kappaleen halkaisija, jolla leuka on tasan pakan reunan tasalla (mitta = 0).
         Jokainen leuka kuuluu yhteen pakkaan, ja laskennassa käytetään aina sen pakan halkaisijaa.
       </div>
@@ -3036,8 +3028,6 @@ const halkaisijaHint = document.getElementById('halkaisijaHint');
 const rangeNote      = document.getElementById('rangeNote');
 const readout        = document.getElementById('readout');
 const readoutValue   = document.getElementById('readoutValue');
-const saatoInput     = document.getElementById('saatoInput');
-const saatoHint      = document.getElementById('saatoHint');
 
 /* Puristuskohdan säätö vähennetään vain pakan halkaisijasta */
 function pakanSaato(p) { const s = num(p && p.saato); return isNaN(s) ? 0 : s; }
@@ -3055,20 +3045,7 @@ function renderPakkaSeg() {
                     (pakanSaato(p) ? '<span class="kaava"> \u2192 ' + esc(lyhyt(pakanLaskentaHalk(p))) + '</span>' : '') + '</span>';
     pakkaSeg.appendChild(b);
   });
-  const sel = getPakka(selectedPakkaUid);
-  if (document.activeElement !== saatoInput) saatoInput.value = sel && pakanSaato(sel) ? sel.saato : '';
-  saatoInput.disabled = !sel;
 }
-
-saatoInput.addEventListener('input', () => {
-  const p = getPakka(selectedPakkaUid);
-  if (!p) return;
-  const n = num(saatoInput.value);
-  p.saato = isNaN(n) ? 0 : n;
-  savePakatAndJaws();
-  renderPakkaSeg();
-  calculateJaw();
-});
 
 pakkaSeg.addEventListener('click', (e) => {
   const btn = e.target.closest('.seg-btn');
@@ -3146,10 +3123,6 @@ function calculateJaw() {
   }
 
   const h = num(halkaisijaInput.value);
-  const s = pakanSaato(pakka);
-  saatoHint.textContent = (s && kaavatNakyvissa)
-    ? 'laskennassa \u00D8 ' + lyhyt(pakka.halkaisija) + ' \u2212 ' + lyhyt(s) + ' = ' + lyhyt(pakanLaskentaHalk(pakka)) + ' mm'
-    : 'mihin kohtaan liikerataa puristus pysähtyy';
   const result = isNaN(h) ? null : ((jaw.pakkaRef + h) - pakanLaskentaHalk(pakka)) / 2;
   lastJawResult = result;
 
@@ -3261,7 +3234,8 @@ function renderPakkaList() {
         '<label class="full">Pakan halkaisija (mm)' +
           '<input type="number" inputmode="decimal" step="0.1" data-idx="' + idx + '" data-field="halkaisija" value="' + esc(p.halkaisija) + '">' +
         '</label>' +
-        '<label class="full">Puristuskohdan säätö (mm, vähennetään halkaisijasta)' +
+        '<label class="full">Puristuskohdan säätö (mm)' +
+          '<span class="kentta-vihje">Mihin kohtaan pakan liikerataa puristus pysähtyy. Tyhjä = 0.</span>' +
           '<input type="number" inputmode="decimal" step="0.1" data-idx="' + idx + '" data-field="saato" value="' + (pakanSaato(p) ? esc(p.saato) : '') + '" placeholder="0">' +
         '</label>' +
       '</div>';
