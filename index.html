@@ -1793,7 +1793,7 @@
         Muutokset tallentuvat itsestään.<br>
         <span class="kaava"><strong>Kaava:</strong> mitta = (2 × A + kappaleen halkaisija − (pakan halkaisija − puristuskohdan säätö)) / 2.<br></span>
         <strong>Puristuskohdan säätö</strong> valitsee, mihin kohtaan pakan liikerataa puristus pysähtyy.<span class="kaava"> Se vähennetään vain pakan halkaisijasta (pakka 315 ja säätö 5 → laskennassa 310).</span> Arvo muistetaan pakkakohtaisesti.<br>
-        <strong>Vastinmitta A</strong> mitataan leuan tartuntapinnasta leuan takapäähän. Syötä se kerran, ohjelma laskee 2 × A itse. Kuva aukeaa, kun painat kenttää.
+        <strong>Vastinmitta A</strong> mitataan leuan tartuntapinnasta leuan takapäähän.<span class="kaava"> Ohjelma laskee 2 × A itse.</span> Kuva aukeaa, kun painat kenttää.
         Jokainen leuka kuuluu yhteen pakkaan, ja laskennassa käytetään aina sen pakan halkaisijaa.
       </div>
     </main>
@@ -3288,7 +3288,7 @@ function renderJawList() {
         '<label>Vastinmitta A (mm)' +
           '<input type="number" inputmode="decimal" step="0.01" data-idx="' + idx + '" data-field="vastinA" value="' + esc(vastinA(j)) + '">' +
         '</label>' +
-        '<div class="vastin-kuva">' + VASTIN_A_SVG + '</div>' +
+        '<div class="vastin-kuva">' + VASTIN_A_SVG.replace(/vaNuoli/g, 'vaNuoli' + idx) + '</div>' +
         '<label>Oletushalkaisija (mm)' +
           '<input type="number" inputmode="decimal" step="0.1" data-idx="' + idx + '" data-field="halkaisija" value="' + esc(j.halkaisija) + '">' +
         '</label>' +
