@@ -1770,6 +1770,27 @@
   .tool-body .group-label.ensimmainen { border-top: none; padding-top: 0; }
   .tool-body .group-label + .field-grid, .tool-body .group-label + .geo-hint { margin-top: 10px; }
   .muistio-kentta { width: 100%; box-sizing: border-box; margin-top: 10px; font-family: var(--sans); }
+
+  /* leukalaskurin tulos pysyy yläreunassa, myös kun näppäimistö on auki */
+  .tulos-yla {
+    position: sticky; top: 0; z-index: 25;
+    background: var(--bg);
+    margin: -8px -16px 0; padding: 8px 16px 10px;
+    border-bottom: 1px solid var(--panel-border);
+  }
+  .tulos-yla .section-label { margin-bottom: 6px; }
+  .tulos-yla .readout { padding: 12px 16px; gap: 4px; }
+  .tulos-yla .readout-value { font-size: 40px; }
+  .tulos-yla .copy-hint { font-size: 11px; }
+  @media (min-width: 700px) {
+    .tulos-yla { top: var(--tabbar-h, 52px); margin: 0 -22px; padding: 10px 22px; }
+  }
+  @media (min-width: 900px) and (pointer: fine) {
+    .tulos-yla { position: static; margin: 0; padding: 0; border-bottom: none; background: transparent; }
+  }
+  @media not all and (min-width: 900px) and (pointer: fine) {
+    .tulos-yla { top: 0; }
+  }
 </style>
 </head>
 <body>
@@ -1807,6 +1828,14 @@
     </div>
 
     <main>
+      <section class="tulos-yla">
+        <div class="section-label">Mitta leuan perästä alusleukaan</div>
+        <div class="readout copyable" id="readout">
+          <div class="readout-value" id="readoutValue">—<span class="readout-unit">mm</span></div>
+          <div class="copy-hint">Napauta kopioidaksesi arvon</div>
+        </div>
+      </section>
+
       <section>
         <div class="section-label">1 — Valitse pakka</div>
         <div class="seg-row" id="pakkaSeg"></div>
@@ -1835,13 +1864,6 @@
         <div class="range-note" id="rangeNote" style="display:none;"></div>
       </section>
 
-      <section>
-        <div class="section-label">4 — Mitta leuan perästä alusleukaan</div>
-        <div class="readout copyable" id="readout">
-          <div class="readout-value" id="readoutValue">—<span class="readout-unit">mm</span></div>
-          <div class="copy-hint">Napauta kopioidaksesi arvon</div>
-        </div>
-      </section>
     </main>
 
     <footer><span class="machine-name">NTX3000</span> · LEUKAKORJAIN · v3.0</footer>
