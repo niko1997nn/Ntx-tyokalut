@@ -1730,6 +1730,30 @@
   .cut-vals .ohje.oma { color: var(--accent-text); }
   .aset-rivi.staattinen { cursor: default; }
   .aset-rivi.staattinen:active { background: transparent; }
+  /* tietopankki ja omat säädöt */
+  .tp-luokat { flex-wrap: wrap; }
+  .tp-rivit { display: flex; flex-direction: column; gap: 8px; }
+  .tp-rivi { border: 1px solid var(--panel-border); border-radius: 14px; background: var(--panel); padding: 12px 14px; }
+  .tp-rivi.saadetty { border-color: var(--orange-line); }
+  .tp-yla { display: flex; align-items: center; gap: 8px; }
+  .tp-yla b { font-size: 14.5px; text-transform: capitalize; }
+  .tp-luot { font-family: var(--mono); font-size: 11px; font-weight: 700; padding: 2px 6px; border-radius: 5px; background: var(--chip); color: var(--steel-light); }
+  .tp-lahde { margin-left: auto; font-size: 11.5px; color: var(--text-dim); text-align: right; }
+  .tp-perus { margin-top: 6px; font-family: var(--mono); font-size: 12.5px; color: var(--text-dim); }
+  .tp-kaytossa { margin-top: 3px; font-size: 13px; }
+  .tp-kaytossa b { font-family: var(--mono); color: var(--orange); }
+  .tp-pros { font-family: var(--mono); font-size: 12px; color: var(--text-dim); }
+  .tp-omat { margin-top: 3px; font-size: 12px; color: var(--accent-text); }
+  .tp-napit { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .tp-napit > span { font-family: var(--mono); font-size: 12px; color: var(--text-dim); margin-left: 4px; }
+  .tp-napit > span:first-child { margin-left: 0; }
+  .tp-nappi {
+    min-height: 38px; min-width: 56px; padding: 0 10px; border-radius: 10px; border: 1px solid var(--panel-border);
+    background: var(--panel-2); color: var(--text); font-family: var(--mono); font-size: 13px; font-weight: 600;
+  }
+  .tp-nappi.palauta { margin-left: auto; font-family: var(--sans); color: var(--text-dim); background: transparent; }
+  .tp-nappi:active { border-color: var(--accent); }
+  .suositus-saato { color: var(--text); font-weight: 600; }
 </style>
 </head>
 <body>
@@ -2094,7 +2118,7 @@
         <div class="section-label">Luettelot</div>
         <div class="aset-ryhma">
           <button type="button" class="aset-rivi" id="goTypesBtn"><span class="aset-teksti"><b>Työkalutyypit</b><span>Tyypit ja niiden mittakentät</span></span><span class="scope kaikki">KAIKKI</span><svg class="aset-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button>
-          <div class="aset-rivi staattinen"><span class="aset-teksti"><b>Työstötietopankki</b><span id="tpVersio"></span></span><span class="scope kaikki">KAIKKI</span></div>
+          <button type="button" class="aset-rivi" id="asetTpBtn"><span class="aset-teksti"><b>Työstötietopankki ja omat säädöt</b><span id="tpVersio"></span></span><span class="scope kaikki">KAIKKI</span><svg class="aset-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button>
         </div>
         <div class="edit-card" style="margin-top:12px;">
           <div class="edit-header"><span class="edit-id">Materiaalit</span><span class="scope kaikki">KAIKKI</span></div>
@@ -2329,7 +2353,46 @@
     <footer><span class="machine-name">NTX3000</span> · TUONTI · v3.0</footer>
   </div>
 
-  <!-- ===================== TARKISTUS ===================== -->
+  <!-- ===================== TYÖSTÖTIETOPANKKI JA OMAT SÄÄDÖT ===================== -->
+  <div class="view" id="viewTietopankki">
+    <header>
+      <div class="header-left">
+        <button class="back-btn" id="closeTp" aria-label="Takaisin">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7"></path>
+          </svg>
+        </button>
+        <div>
+          <div class="title">Työstötietopankki</div>
+          <div class="subtitle" id="tpAli"></div>
+        </div>
+      </div>
+    </header>
+    <main>
+      <div class="note">
+        Suositukset tulevat tietopankista. Sovellus vertaa niitä omiin työstöarvoihisi ja siirtää suositusta
+        lähemmäs sitä, mitä oikeasti ajat. Voit myös säätää jokaista riviä itse <b>−5 % / +5 %</b> -napeilla.
+        Oma säätö voittaa automaattisen. Suositukset näkyvät edelleen merkinnällä SUOSITUS.
+      </div>
+      <section>
+        <div class="section-label">Automaattinen hienosäätö <span class="scope laite">LAITE</span></div>
+        <div class="seg-row" id="tpAutoRow">
+          <button class="seg-btn" data-tpauto="1"><span class="seg-name">Päällä</span></button>
+          <button class="seg-btn" data-tpauto="0"><span class="seg-name">Pois</span></button>
+        </div>
+      </section>
+      <section>
+        <div class="section-label">Työkaluluokka</div>
+        <div class="filter-row tp-luokat" id="tpLuokat"></div>
+      </section>
+      <section>
+        <div class="tp-rivit" id="tpRivit"></div>
+      </section>
+    </main>
+    <footer><span class="machine-name">NTX3000</span> · TIETOPANKKI · v3.0</footer>
+  </div>
+
+<!-- ===================== TARKISTUS ===================== -->
   <div class="view" id="viewQuality">
     <header>
       <div class="header-left">
@@ -2913,7 +2976,7 @@ document.addEventListener('input', e => {
    ================================================================= */
 const VIEWS = ['viewToolList', 'viewJawCalc', 'viewJawSettings', 'viewSP2Calc',
                'viewSP2Settings', 'viewToolTypes', 'viewData', 'viewMachines',
-               'viewImport', 'viewQuality'];
+               'viewImport', 'viewQuality', 'viewTietopankki'];
 
 /* Näkymä, vieritys ja avatut kortit säilyvät sivun päivityksen yli */
 const K_NAKYMA = 'ntx_nakyma';
@@ -3545,7 +3608,8 @@ function backupPayload() {
     types: TYPES,
     materials: CUSTOM_MATERIALS,
     brands: CUSTOM_BRANDS,
-    stock: STOCK
+    stock: STOCK,
+    saadot: SAADOT
   };
 }
 
@@ -3624,6 +3688,10 @@ function tuoVarmuuskopio(data) {
     if (Array.isArray(data.stock)) {
       STOCK = data.stock.filter(r => r && r.uid && r.code);
       saveStock();
+    }
+    if (Array.isArray(data.saadot)) {
+      SAADOT = data.saadot.filter(r => r && r.uid);
+      saveSaadot();
     }
     if (Array.isArray(data.tools)) {
       TOOLS = data.tools.filter(x => x && x.uid);
@@ -4309,6 +4377,113 @@ const MAT_LUOKKA_NIMI = { P: 'teräs', H: 'karkaistu', M: 'ruostumaton', D: 'dup
    Päivitys: rakenna uudelleen uudesta tietopankkiversiosta. */
 const TIETOPANKKI = {"versio":"Versio 2 · 24.11.2026","rivit":{"sorvaus":{"P":{"vc":[190.0,260.0,450.0],"f":[0.3,0.1,0.6],"luot":"A","peruste":"Walter WPP20G: P1 450/330/270, P2 350/250/190 kun f 0.1/0.4/0.6. Kennametal KCU25B P2 125–220.","lahde":"WAL-T, KEN"},"M":{"vc":[130.0,205.0,265.0],"f":[0.25,0.15,0.4],"luot":"B","peruste":"Sandvik GC2025 05.21: 240/175/130 kun f 0.2/0.4/0.6 (lohko kohdistettu). Kennametal KCU25B 100–265. Walter WEP10C 210/190/160.","lahde":"SAN-T, KEN, WAL-T"},"D":{"vc":[90.0,135.0,160.0],"f":[0.3,0.2,0.4],"luot":"B","peruste":"1.4462: Sandvik GC2025 05.52 150/120/90 (f 0.2/0.4/0.6); IMOA 2205 rouhinta 90–120, viimeistely 120–160. Oma ajo: f 0.4, ap 3 toimii.","lahde":"SAN-T, IMOA, KEN"},"SD":{"vc":[50.0,75.0,105.0],"f":[0.3,0.15,0.4],"luot":"A","peruste":"IMOA 2507: rouhinta 50–70 (f 0.3–0.6), viimeistely 70–105 (f 0.05–0.3). Alleima-koe: CNMG 120412-MM GC2025, f 0.3, vc 60–125 Ø100-tangossa. Sandvik/Alleima-vertailu 2507 Ø100: 80–100 m/min tasainen kuluminen, f 0.3, ap 2–3.","lahde":"IMOA, ALL, ALL2"},"K":{"vc":[225.0,290.0,445.0],"f":[0.3,0.2,0.6],"luot":"B","peruste":"Sandvik GC3210: harmaa 08.2 355/290/245, pallografiitti 09.2 325/275/225 (f 0.2/0.4/0.6; rivit kohdistettu).","lahde":"SAN-T"},"N":{"vc":[250.0,500.0,2000.0],"f":[0.25,0.15,0.8],"luot":"A","peruste":"Sandvik H10/CD10: muokattu Al 2000 (250–2500), messinki/Cu-Pb 500, pronssi 300. Aloitus 500 sopii Cu-seoksille; alumiinilla kara rajoittaa.","lahde":"SAN-T"},"Ti":{"vc":[55.0,70.0,85.0],"f":[0.2,0.1,0.3],"luot":"B","peruste":"Sandvik 23.21 Ti-seos 85/70/55 (f 0.1/0.2/0.3); puhdas Ti 205/170/145. Kennametal KCU25B S4 10–115.","lahde":"SAN-T, KEN"},"Ni":{"vc":[25.0,45.0,85.0],"f":[0.15,0.1,0.25],"luot":"B","peruste":"Kennametal S3 Ni-pohjaiset: KCU25B 15–85, KCM15B 30–120, KCM25B 10–60. Inconel 718 vanhennettu: haarukan alapää.","lahde":"KEN"},"H":{"vc":[30.0,50.0,80.0],"f":[0.1,0.05,0.2],"luot":"B","peruste":"Tungaloy AH8005 (kovametalli): 49 HRC vc 66; 60 HRC vc 80, f 0.2, ap 2; 63 HRC vc 30, f 0.1. AH8000-sarja enintään ~50 m/min, ap ≥ 0.5. CBN (BXA20) 50–58 HRC: vc 120–180, f 0.05–0.1, ap 0.1–0.5 – CBN on oma luokkansa.","lahde":"WAL-T, SAN-T, TUN-HT"}},"ura":{"P":{"vc":[98.0,140.0,290.0],"f":[0.1,0.06,0.18],"luot":"A","peruste":"Sandvik esimerkki: QD-NH-0400 GC1125, teräs 02.1, vc 140, fn 0.18 (uran sorvaus). Q-Cut GC3115/GC3020 02.1: 290–135, 01.2: 330–140 m/min (fn 0.05→0.5).","lahde":"SAN-PG, SAN-QC"},"M":{"vc":[100.0,140.0,215.0],"f":[0.06,0.036,0.108],"luot":"A","peruste":"Sandvik Q-Cut GC1125 05.21: 215–100 m/min (fn 0.05→0.5), GC1005/GC1105: 435–190. Aloitus haarukan alakolmannes. Tarkkuusjäähdytyksellä +30–50 %; katkaisussa sammuta jäähdytys keskiön lähellä.","lahde":"SAN-QC"},"D":{"vc":[70.0,100.0,150.0],"f":[0.06,0.036,0.108],"luot":"A","peruste":"Sandvik Q-Cut GC1125 05.52 (1.4462): 150–70 m/min, 05.51: 180–85; GC1105 05.52: 300–130 (fn 0.05→0.5). Aloitus haarukan alakolmannes.","lahde":"SAN-QC"},"SD":{"vc":[45.0,65.0,90.0],"f":[0.05,0.03,0.09],"luot":"C","peruste":"Johdettu: duplexin Q-Cut-arvo × ~0.6 (IMOA:n superduplex-suhde). Varmista teräpakkauksesta.","lahde":"SAN-QC, IMOA"},"K":{"vc":[120.0,165.0,250.0],"f":[0.1,0.06,0.18],"luot":"A","peruste":"Sandvik Q-Cut GC3115 08.2 (harmaa, luja): 250–120, 08.1: 290–140 m/min (fn 0.05→0.5).","lahde":"SAN-QC"},"N":{"vc":[210.0,300.0,390.0],"f":[0.08,0.048,0.144],"luot":"C","peruste":"Johdettu: n. 0.6–0.7 × sorvauksen arvo samassa materiaalissa. Varmista teräpakkauksesta.","lahde":"APP"},"Ti":{"vc":[31.0,45.0,58.0],"f":[0.05,0.03,0.09],"luot":"C","peruste":"Johdettu: n. 0.6–0.7 × sorvauksen arvo samassa materiaalissa. Varmista teräpakkauksesta.","lahde":"APP"},"Ni":{"vc":[50.0,65.0,90.0],"f":[0.04,0.024,0.072],"luot":"A","peruste":"Sandvik Q-Cut GC1105 20.21 Ni hehkutettu: 90–55, 20.22 vanhennettu: 80–50; S05F 100–60 m/min (fn 0.05→0.3).","lahde":"SAN-QC"},"H":{"vc":[null,null,null],"f":null,"luot":"C","peruste":"Ei suositusta kovametallilla.","lahde":"APP"}},"kierresorvaus":{"P":{"vc":[110.0,150.0,190.0],"f":null,"luot":"A","peruste":"Iscar IC908 ryhmät 1–2: 110–190; nuorrutettu 70–135.","lahde":"ISC-TT"},"M":{"vc":[90.0,115.0,140.0],"f":null,"luot":"A","peruste":"Iscar IC908 ryhmä 14 (austeniittinen/duplex): 90–140. Sandvik: GC1135 ensisijainen ruostumattomalle.","lahde":"ISC-TT"},"D":{"vc":[90.0,100.0,140.0],"f":null,"luot":"B","peruste":"Iscar ryhmä 14 sisältää duplexin; aloitus haarukan alapäästä.","lahde":"ISC-TT"},"SD":{"vc":[55.0,70.0,90.0],"f":null,"luot":"C","peruste":"Johdettu: duplex × IMOA:n superduplex-suhde (~0.6).","lahde":"ISC-TT, IMOA"},"K":{"vc":[125.0,140.0,160.0],"f":null,"luot":"A","peruste":"Iscar IC908 ryhmä 15 harmaa: 125–160; pallografiitti 70–130.","lahde":"ISC-TT"},"N":{"vc":[100.0,200.0,365.0],"f":null,"luot":"A","peruste":"Iscar IC908: Al muokattu 100–365, Cu-seokset 80–255.","lahde":"ISC-TT"},"Ti":{"vc":[50.0,60.0,70.0],"f":null,"luot":"A","peruste":"Iscar IC908 ryhmä 37 (Ti-seos, karkaistu): 50–70.","lahde":"ISC-TT"},"Ni":{"vc":[15.0,25.0,30.0],"f":null,"luot":"A","peruste":"Iscar IC908: Ni/Co hehkutettu 20–30, vanhennettu 15–25.","lahde":"ISC-TT"},"H":{"vc":[45.0,50.0,60.0],"f":null,"luot":"A","peruste":"Iscar IC908: karkaistu 55–60 HRC 45–60.","lahde":"ISC-TT"}},"pora":{"P":{"vc":[100.0,125.0,150.0],"f":[0.033,0.026,0.04],"luot":"A","peruste":"CoroDrill 460 2–3×D IK: seostamaton 100–125–150, Ø10 f 0.264–0.33–0.396. Nuorrutettu 275 HB: 75, f Ø10 0.25. Mapal MEGA-Speed-Drill-Inox P1.1: 150 (IK), f Ø9.5 0.20.","lahde":"SAN-460, MAP-MSD"},"M":{"vc":[32.0,45.0,80.0],"f":[0.02,0.014,0.03],"luot":"A","peruste":"CoroDrill 460: 32–40–48, Ø10 f 0.25. Walter X·treme Inox 3×D: 53, VRR6 (Ø10 ≈ 0.14). Mapal MEGA-Speed-Drill-Inox M1.1 (IK): 80, ulk. jäähdytys 50, f Ø9.5 0.17 (fpD 0.018).","lahde":"SAN-460, WAL-SCD, MAP-MSD"},"D":{"vc":[28.0,35.0,75.0],"f":[0.016,0.014,0.02],"luot":"A","peruste":"CoroDrill 460 duplex: 28–35–42, Ø10 f 0.136–0.17–0.204. Walter X·treme Inox M3: 53. Mapal MEGA-Speed-Drill-Inox M1.2 duplex (IK): 75, ulk. jäähdytys 45, f Ø9.5 0.15 / Ø14 0.19 (fpD 0.014–0.016). Superduplexille ei omaa riviä.","lahde":"SAN-460, WAL-SCD, MAP-MSD"},"SD":{"vc":[26.0,35.0,40.0],"f":[0.009,0.009,0.013],"luot":"B","peruste":"Alleima SAF 2507 -koe: CoroDrill 860 Ø8.7 5×D (GC2214), vc 40, f 0.08 (fpD 0.009) → 168 reikää. Aloitus 35 varmuusvaralla.","lahde":"ALL, SAN-460"},"K":{"vc":[88.0,110.0,132.0],"f":[0.033,0.025,0.04],"luot":"A","peruste":"CoroDrill 460 harmaa valurauta: 88–110–132, Ø10 f 0.33; pallografiitti 64–80–96, f 0.25.","lahde":"SAN-460"},"N":{"vc":[200.0,250.0,300.0],"f":[0.033,0.026,0.04],"luot":"A","peruste":"CoroDrill 460 Al: 200–250–300, Ø10 f 0.33; Cu-Pb 220.","lahde":"SAN-460"},"Ti":{"vc":[32.0,40.0,55.0],"f":[0.017,0.014,0.025],"luot":"A","peruste":"CoroDrill 460 Ti-seos S4.2: 32–40–48, Ø10 f 0.17; puhdas Ti 55, f 0.25. Mapal Ti-seos < 1200 N/mm²: 35/25.","lahde":"SAN-460, MAP-MSD"},"Ni":{"vc":[19.0,30.0,42.0],"f":[0.012,0.009,0.014],"luot":"B","peruste":"Walter X·treme 3×D: Ni-pohj. hehkutettu 34–42, vanhennettu 19–26; VRR5 (Ø10 ≈ 0.12). Mapal Ni-seos: 25/20, vaikeimmat 20/10.","lahde":"WAL-SCD, MAP-MSD"},"H":{"vc":[24.0,30.0,36.0],"f":[0.017,0.014,0.02],"luot":"A","peruste":"CoroDrill 460 50 HRC: 24–30–36, Ø10 f 0.17.","lahde":"SAN-460"}},"pora_hss":{"P":{"vc":[39.0,39.0,56.0],"f":[0.028,0.02,0.028],"luot":"B","peruste":"Walter A1149XPL (HSS-E, XPL-pinnoite) 3×D: P1–P7 56–63, VRR12 (Ø10 ≈ 0.28). Pinnoittamaton HSS n. −30 %. Aloitus = 0.7 × Walterin pinnoitetun HSS-E:n arvo (pinnoittamaton HSS); max = Walterin arvo.","lahde":"WAL-H"},"M":{"vc":[10.0,10.0,15.0],"f":[0.012,0.012,0.021],"luot":"B","peruste":"Walter: austeniittinen 14 (VRR5) / Inox-pora A1154TFT 16 (VRR9). Aloitus = 0.7 × Walterin pinnoitetun HSS-E:n arvo (pinnoittamaton HSS); max = Walterin arvo.","lahde":"WAL-H"},"D":{"vc":[10.0,10.0,15.0],"f":[0.009,0.009,0.016],"luot":"B","peruste":"Walter: duplex 18 (VRR4) / 14 (VRR7). Aloitus = 0.7 × Walterin pinnoitetun HSS-E:n arvo (pinnoittamaton HSS); max = Walterin arvo.","lahde":"WAL-H"},"SD":{"vc":[7.0,7.0,10.0],"f":[0.008,0.006,0.009],"luot":"C","peruste":"Johdettu duplexista. Superduplexiin mieluummin VHM-pora. Aloitus = 0.7 × Walterin pinnoitetun HSS-E:n arvo (pinnoittamaton HSS); max = Walterin arvo.","lahde":"WAL-H, IMOA"},"K":{"vc":[35.0,35.0,50.0],"f":[0.03,0.028,0.038],"luot":"B","peruste":"Walter: harmaa valurauta 45–56, VRR16 (Ø10 ≈ 0.38). Aloitus = 0.7 × Walterin pinnoitetun HSS-E:n arvo (pinnoittamaton HSS); max = Walterin arvo.","lahde":"WAL-H"},"N":{"vc":[71.0,77.0,110.0],"f":[0.028,0.024,0.028],"luot":"B","peruste":"Walter: muokattu Al 110 (VRR12), Al-valu 63–71, messinki 71–80. Aloitus = 0.7 × Walterin pinnoitetun HSS-E:n arvo (pinnoittamaton HSS); max = Walterin arvo.","lahde":"WAL-H"},"Ti":{"vc":[10.0,11.0,16.0],"f":[0.009,0.009,0.009],"luot":"B","peruste":"Walter: puhdas Ti 16, VRR4. Ti-seoksille ei HSS-arvoa. Aloitus = 0.7 × Walterin pinnoitetun HSS-E:n arvo (pinnoittamaton HSS); max = Walterin arvo.","lahde":"WAL-H"},"Ni":{"vc":[6.0,8.0,11.0],"f":[0.009,0.007,0.009],"luot":"B","peruste":"Walter: Fe-pohj. 11–14, Ni-pohj. hehkutettu 16, karkaistu 6. Aloitus = 0.7 × Walterin pinnoitetun HSS-E:n arvo (pinnoittamaton HSS); max = Walterin arvo.","lahde":"WAL-H"},"H":{"vc":[null,null,null],"f":null,"luot":"A","peruste":"Ei HSS-suositusta karkaistulle.","lahde":"WAL-H"}},"upora":{"P":{"vc":[180.0,200.0,240.0],"f":[0.1,0.06,0.13],"luot":"B","peruste":"Walter D4120 WKP35S: P2 220/200/180 kun f 0.06/0.10/0.16. Syöttö koko 3: 0.10 (Ø13.5–16: 0.07, Ø42–59: 0.19).","lahde":"WAL-H"},"M":{"vc":[150.0,180.0,220.0],"f":[0.08,0.06,0.1],"luot":"B","peruste":"Walter D4120 austeniittinen 220/200/180 … 150/130/110 laatusarakkeesta riippuen. Syöttö koko 3: 0.08.","lahde":"WAL-H"},"D":{"vc":[80.0,100.0,120.0],"f":[0.08,0.06,0.1],"luot":"B","peruste":"Walter D4120 duplex M3: 120/100/80 … 70/60. Syöttö koko 3: 0.08.","lahde":"WAL-H"},"SD":{"vc":[50.0,65.0,80.0],"f":[0.06,0.05,0.08],"luot":"C","peruste":"Johdettu duplexista (~0.65).","lahde":"WAL-H, IMOA"},"K":{"vc":[120.0,170.0,200.0],"f":[0.15,0.1,0.18],"luot":"B","peruste":"Walter D4120 harmaa valurauta 200/190/170 … 160/140/120. Syöttö koko 3: 0.15.","lahde":"WAL-H"},"N":{"vc":[250.0,300.0,450.0],"f":[0.1,0.08,0.15],"luot":"B","peruste":"Walter D4120 Al: 300–450 (kaikilla syötöillä).","lahde":"WAL-H"},"Ti":{"vc":[40.0,45.0,50.0],"f":[0.07,0.05,0.08],"luot":"B","peruste":"Walter D4120 Ti: 40–50.","lahde":"WAL-H"},"Ni":{"vc":[35.0,45.0,60.0],"f":[0.06,0.05,0.08],"luot":"B","peruste":"Walter D4120 Ni-pohj.: hehkutettu 50–60, karkaistu 35–50.","lahde":"WAL-H"},"H":{"vc":[null,null,null],"f":null,"luot":"A","peruste":"Ei suositusta.","lahde":"WAL-H"}},"kalvin":{"P":{"vc":[22.0,40.0,45.0],"f":[0.019,0.015,0.024],"luot":"A","peruste":"Walter F2481 (K10F) P1–P7 40–45, F2162 22–24; VRR8 (Ø10 ≈ 0.19). TMS-pinnoitettu F2481TMS jopa 190, VRR20. Monisärmäinen HPC-kalvin (Gühring HR 500): vc 180, f Ø10 1.75 – käytä sen omia arvoja, jos kalvin on tätä tyyppiä.","lahde":"WAL-H, GUE-HR500"},"M":{"vc":[8.0,10.0,12.0],"f":[0.019,0.015,0.019],"luot":"B","peruste":"Walter: austeniittinen 8, PH 12 (VRR8). Huom. sovelluksen nykyinen 20 on 2× tätä. Monisärmäinen HPC-kalvin (Gühring HR 500): vc 80, f Ø10 0.70 – käytä sen omia arvoja, jos kalvin on tätä tyyppiä.","lahde":"WAL-H, GUE-HR500"},"D":{"vc":[5.0,6.0,8.0],"f":[0.019,0.015,0.019],"luot":"B","peruste":"Walter: duplex 6 (VRR8). Monisärmäinen HPC-kalvin (Gühring HR 500): vc 50, f Ø10 0.70 – käytä sen omia arvoja, jos kalvin on tätä tyyppiä.","lahde":"WAL-H, GUE-HR500"},"SD":{"vc":[4.0,5.0,6.0],"f":[0.015,0.012,0.019],"luot":"C","peruste":"Johdettu duplexista. Monisärmäinen HPC-kalvin (Gühring HR 500): vc duplex-rivi 50, f Ø10 0.70 – käytä sen omia arvoja, jos kalvin on tätä tyyppiä.","lahde":"WAL-H, IMOA, GUE-HR500"},"K":{"vc":[16.0,35.0,45.0],"f":[0.019,0.015,0.024],"luot":"A","peruste":"Walter F2481: valurauta 30–45; F2162 16–24. Monisärmäinen HPC-kalvin (Gühring HR 500): vc 80, f Ø10 1.40 – käytä sen omia arvoja, jos kalvin on tätä tyyppiä.","lahde":"WAL-H, GUE-HR500"},"N":{"vc":[63.0,90.0,115.0],"f":[0.024,0.019,0.024],"luot":"A","peruste":"Walter: Al 115 (F2481, VRR8) / 63 (F2162, VRR10). Monisärmäinen HPC-kalvin (Gühring HR 500): vc 220, f Ø10 2.15 – käytä sen omia arvoja, jos kalvin on tätä tyyppiä.","lahde":"WAL-H, GUE-HR500"},"Ti":{"vc":[6.0,10.0,12.0],"f":[0.019,0.015,0.019],"luot":"B","peruste":"Walter: Ti 6–12. Monisärmäinen HPC-kalvin (Gühring HR 500): vc 40, f Ø10 0.70 – käytä sen omia arvoja, jos kalvin on tätä tyyppiä.","lahde":"WAL-H, GUE-HR500"},"Ni":{"vc":[6.0,8.0,10.0],"f":[0.019,0.015,0.019],"luot":"B","peruste":"Walter: Ni-pohj. hehkutettu 10, vanhennettu 6. Monisärmäinen HPC-kalvin (Gühring HR 500): vc 40, f Ø10 0.70 – käytä sen omia arvoja, jos kalvin on tätä tyyppiä.","lahde":"WAL-H, GUE-HR500"},"H":{"vc":[null,null,null],"f":null,"luot":"A","peruste":"Ei suositusta.","lahde":"WAL-H"}},"jyrsin":{"P":{"vc":[155.0,190.0,235.0],"f":[0.007,0.004,0.008],"luot":"A","peruste":"Plura HD ae 0.5D: P1.2 234 (D02), P2.2 189 (D02, Ø10 fz 0.070). Täysura ae 1D: 156–195, fz D01/D04.","lahde":"SAN-PHD"},"M":{"vc":[104.0,130.0,182.0],"f":[0.0067,0.004,0.009],"luot":"A","peruste":"Plura HD M1: ae 1D 104 (D04), 0.5D 130 (D05, Ø10 0.067), 0.25D 182. Dura 1–2×D: 70–120. Dynaaminen (Dura/Walter MD133): 150–165. Mapal OptiMill-Inox-HPC (neste, ae 0.1–0.25D): 160, fz Ø10 0.080.","lahde":"SAN-PHD, SAN-DUR, MAP-OMI"},"D":{"vc":[80.0,95.0,150.0],"f":[0.0042,0.004,0.005],"luot":"A","peruste":"Plura HD M3 (duplex): ae 1D 80, 0.5D 95 (D08, Ø10 0.042), 0.25D 135. Dura 60–90. Dynaaminen: 110–143. Mapal OptiMill-Inox-HPC duplex (neste, ae 0.1–0.25D): 150, fz Ø10 0.066. Superduplex: valitse seuraava vaikeampi ryhmä (Cr+Mo+Ni+V+W > 8 %).","lahde":"SAN-PHD, SAN-DUR, WAL-M, MAP-OMI"},"SD":{"vc":[50.0,60.0,85.0],"f":[0.0035,0.003,0.0042],"luot":"C","peruste":"Johdettu duplexista × ~0.6 (IMOA-suhde).","lahde":"SAN-PHD, IMOA"},"K":{"vc":[195.0,235.0,325.0],"f":[0.007,0.005,0.008],"luot":"A","peruste":"Plura HD harmaa valurauta: 195 / 234 / 325 (D01/D02/D03).","lahde":"SAN-PHD"},"N":{"vc":[680.0,835.0,1140.0],"f":[0.0079,0.0055,0.0092],"luot":"A","peruste":"Dura muokattu Al: 680 / 835 (F03, Ø10 0.079); Al-valu Si>12 % 100–130; Cu 130–170. Kara rajoittaa.","lahde":"SAN-DUR"},"Ti":{"vc":[40.0,50.0,60.0],"f":[0.0042,0.0035,0.005],"luot":"A","peruste":"Plura HD Ti-seos: 40 / 50 / 60 (D07–D09). Dynaaminen (Dura): 120.","lahde":"SAN-PHD, SAN-DUR"},"Ni":{"vc":[20.0,25.0,32.0],"f":[0.0042,0.0035,0.005],"luot":"A","peruste":"Plura HD Ni-superseos: 20 / 25 / 32. Dynaaminen (Dura): 55.","lahde":"SAN-PHD, SAN-DUR"},"H":{"vc":[null,80.0,null],"f":[0.003,null,null],"luot":"D","peruste":"Ei lähdettä (karkaistulle omat jyrsinsarjat). Plura HD 380 HB nuorrutettu: 88–149.","lahde":"APP"}},"jyrsin_hss":{"P":{"vc":[14.0,25.0,37.0],"f":[0.004,0.004,0.005],"luot":"B","peruste":"Haas HSS-Co 4-särmäiset: teräs 45–120 SFM (14–37 m/min), fz 1/2\" 0.0025\" (Ø12.7 → fz/D 0.005), 1/4\" 0.0010\", 1\" 0.0039\". Pitkä terä: syöttö −50 %.","lahde":"HAAS-HSS"},"M":{"vc":[null,12.0,null],"f":[0.003,null,null],"luot":"D","peruste":"Ei löydetty valmistajan taulukkoa; nykyinen yleisarvio.","lahde":"APP"},"D":{"vc":[null,10.0,null],"f":[0.0025,null,null],"luot":"D","peruste":"Ei löydetty valmistajan taulukkoa; nykyinen yleisarvio.","lahde":"APP"},"SD":{"vc":[null,8.0,null],"f":[0.002,null,null],"luot":"D","peruste":"Ei löydetty valmistajan taulukkoa; nykyinen yleisarvio.","lahde":"APP"},"K":{"vc":[null,20.0,null],"f":[0.004,null,null],"luot":"D","peruste":"Ei löydetty valmistajan taulukkoa; nykyinen yleisarvio.","lahde":"APP"},"N":{"vc":[90.0,95.0,110.0],"f":[0.0045,0.004,0.005],"luot":"B","peruste":"Haas HSS-Co: alumiini 305–365 SFM (93–111 m/min), fz 1/2\" 0.0022\".","lahde":"HAAS-HSS"},"Ti":{"vc":[null,8.0,null],"f":[0.002,null,null],"luot":"D","peruste":"Ei löydetty valmistajan taulukkoa; nykyinen yleisarvio.","lahde":"APP"},"Ni":{"vc":[null,5.0,null],"f":[0.0015,null,null],"luot":"D","peruste":"Ei löydetty valmistajan taulukkoa; nykyinen yleisarvio.","lahde":"APP"},"H":{"vc":[null,null,null],"f":null,"luot":"D","peruste":"Ei löydetty valmistajan taulukkoa; nykyinen yleisarvio.","lahde":"APP"}},"otsajyrsin":{"P":{"vc":[195.0,240.0,335.0],"f":[0.15,0.1,0.25],"luot":"B","peruste":"CoroMill 490 GC1030 (hex 0.05/0.1/0.2): 01.2 335/305/250, 02.1 265/240/195; GC2030 02.1 205/170/115. Iscar ryhmät 6–8: 100–240.","lahde":"SAN-490, ISC-MI"},"M":{"vc":[150.0,200.0,250.0],"f":[0.12,0.08,0.2],"luot":"B","peruste":"CoroMill 490 GC1030 05.21: 250/225/180; GC2040 200/160/130 (lohko kohdistettu). Iscar ryhmä 14: 70–160.","lahde":"SAN-490, ISC-MI"},"D":{"vc":[80.0,140.0,205.0],"f":[0.12,0.08,0.2],"luot":"B","peruste":"GC1030 05.52 175/155/125, 05.51 205/185/145; GC2040 05.52 135/110/85. IMOA 2205 varovaisempi: rouhinta 50–80, viimeistely 80–110.","lahde":"SAN-490, IMOA, ISC-MI"},"SD":{"vc":[30.0,70.0,105.0],"f":[0.1,0.08,0.2],"luot":"B","peruste":"IMOA 2507: rouhinta 30–50, viimeistely 50–70. Sandvik-arvoista × 0.6 ≈ 85–105.","lahde":"IMOA, SAN-490"},"K":{"vc":[160.0,250.0,320.0],"f":[0.15,0.1,0.25],"luot":"B","peruste":"Iscar: harmaa 180 HB 220–320, 260 HB 200–300; pallografiitti 160–250.","lahde":"ISC-MI"},"N":{"vc":[760.0,900.0,990.0],"f":[0.12,0.1,0.2],"luot":"A","peruste":"CoroMill 490 GC1030/H10: Al 850–990, Al-Si>12 % 255–395. Kara rajoittaa.","lahde":"SAN-490"},"Ti":{"vc":[36.0,50.0,65.0],"f":[0.1,0.08,0.15],"luot":"B","peruste":"CoroMill 490 23.21: GC1030 60/55/50, GC2030 50/45/40. Iscar Ti-seos 30–70.","lahde":"SAN-490, ISC-MI"},"Ni":{"vc":[27.0,35.0,60.0],"f":[0.08,0.06,0.12],"luot":"B","peruste":"CoroMill 490 20.21 hehkutettu 50–60, 20.22 vanhennettu 30–37. Iscar 20–50.","lahde":"SAN-490, ISC-MI"},"H":{"vc":[80.0,95.0,110.0],"f":[0.08,0.05,0.12],"luot":"A","peruste":"CoroMill 490 GC1010 04.1: 110/95/80 (hex 0.07/0.12/0.2).","lahde":"SAN-490"}},"kierretappi":{"P":{"vc":[10.0,15.0,25.0],"f":null,"luot":"B","peruste":"Tungaloy HSS-E: seostamaton 10–25 (pinnoitettu 15–45); nuorrutettu 6–15.","lahde":"TUN-TAP"},"M":{"vc":[5.0,7.0,9.0],"f":null,"luot":"B","peruste":"Tungaloy ryhmä 14 (austeniittinen/duplex): 5–9, pinnoitettu 8–15.","lahde":"TUN-TAP"},"D":{"vc":[4.0,6.0,9.0],"f":null,"luot":"B","peruste":"Sama ryhmä 14 kuin austeniittisella; aloitus alempaa.","lahde":"TUN-TAP"},"SD":{"vc":[3.0,4.0,6.0],"f":null,"luot":"B","peruste":"Alleima SAF 2507 -koe: kierretappi vc 4 m/min → 168 reikää.","lahde":"ALL, TUN-TAP"},"K":{"vc":[8.0,12.0,15.0],"f":null,"luot":"B","peruste":"Tungaloy harmaa valurauta 10–15, pallografiitti 8–12.","lahde":"TUN-TAP"},"N":{"vc":[12.0,25.0,35.0],"f":null,"luot":"B","peruste":"Tungaloy muokattu Al 25–35, Al-valu 10–15, Cu-Pb 25–35.","lahde":"TUN-TAP"},"Ti":{"vc":[6.0,6.0,10.0],"f":null,"luot":"B","peruste":"Tungaloy titaani 6–10.","lahde":"TUN-TAP"},"Ni":{"vc":[2.0,3.0,4.0],"f":null,"luot":"B","peruste":"Tungaloy Ni/Co: 2–4.","lahde":"TUN-TAP"},"H":{"vc":[null,null,null],"f":null,"luot":"B","peruste":"Ei HSS-tappia karkaistuun.","lahde":"TUN-TAP"}},"kierrejyrsin":{"P":{"vc":[100.0,150.0,250.0],"f":[0.008,0.005,0.008],"luot":"A","peruste":"Iscar ryhmä 1: 100–250, fz Ø10 0.08. Seostettu (6–7): 65–200, fz 0.05.","lahde":"ISC-TM"},"M":{"vc":[85.0,90.0,100.0],"f":[0.005,0.004,0.005],"luot":"A","peruste":"Iscar ryhmä 14: 85–100, fz Ø10 0.05. Vahvistus: Vargus HCN/VTH austeniittinen 60–130, fz 0.02–0.05; Carmex 61–119, fz Ø10 0.05. Pitkä jyrsin: syöttö −40 %, sisääntulo −70 %.","lahde":"ISC-TM, VAR-TM, CAR-TM"},"D":{"vc":[85.0,85.0,100.0],"f":[0.005,0.004,0.005],"luot":"B","peruste":"Iscar ryhmä 14 (sis. duplex).","lahde":"ISC-TM"},"SD":{"vc":[50.0,60.0,70.0],"f":[0.004,0.003,0.005],"luot":"C","peruste":"Johdettu duplexista.","lahde":"ISC-TM, IMOA"},"K":{"vc":[70.0,110.0,150.0],"f":[0.008,0.005,0.008],"luot":"A","peruste":"Iscar ryhmä 15 harmaa 70–150, 16 110–140; fz Ø10 0.08.","lahde":"ISC-TM"},"N":{"vc":[160.0,200.0,300.0],"f":[0.008,0.005,0.008],"luot":"A","peruste":"Iscar ryhmä 21 Al: 160–300; fz Ø10 0.08.","lahde":"ISC-TM"},"Ti":{"vc":[20.0,40.0,70.0],"f":[0.003,0.002,0.003],"luot":"B","peruste":"Iscar ryhmä 37: 20–80, fz Ø10 0.03; Vargus α+β-seos 20–45, fz 0.01–0.02. Aloitus alempaa.","lahde":"ISC-TM, VAR-TM"},"Ni":{"vc":[15.0,25.0,35.0],"f":[0.003,0.002,0.003],"luot":"B","peruste":"Iscar ryhmä 33: 20–80; Vargus hehkutettu 15–30, vanhennettu 15–25, fz 0.01–0.03; Carmex Ni/Ti 21–79, fz Ø10 0.03. Aloitus alempaa.","lahde":"ISC-TM, VAR-TM, CAR-TM"},"H":{"vc":[25.0,40.0,70.0],"f":[0.005,0.004,0.008],"luot":"B","peruste":"Vargus MilliPro HD: 45–50 HRC 25–70, fz 0.04–0.08; 51–55 HRC 25–60, fz 0.03–0.07; 56–62 HRC 25–50, fz 0.02–0.06. Vain karkaistulle tarkoitetulla jyrsimellä.","lahde":"VAR-TM"}}},"laji":{"sorvaus":"f","ura":"f","kierresorvaus":"","pora":"fpD","pora_hss":"fpD","upora":"f","kalvin":"fpD","jyrsin":"fzD","jyrsin_hss":"fzD","otsajyrsin":"fz","kierretappi":"","kierrejyrsin":"fzD"},"materiaalit":{"S235JR":{"luokka":"P","cmc":"01.1 / P1.1","hb":"~125","nimi":"S235JR / 1.0038"},"S355J2":{"luokka":"P","cmc":"01.2 / P1.2","hb":"~150–190","nimi":"S355J2 / 1.0577"},"C45E":{"luokka":"P","cmc":"01.2 / P1.2","hb":"~190","nimi":"C45E / 1.1191"},"42CrMo4":{"luokka":"P","cmc":"02.1–02.2 / P2.1–P2.5","hb":"175 (hehk.) – 300 (nuorr.)","nimi":"42CrMo4 / 1.7225"},"34CrNiMo6":{"luokka":"P","cmc":"02.2 / P2.5","hb":"~275–350","nimi":"34CrNiMo6 / 1.6582"},"16MnCr5":{"luokka":"P","cmc":"02.1 / P2.1","hb":"~175","nimi":"16MnCr5 / 1.7131"},"11SMn30":{"luokka":"P","cmc":"01.1 (lyhytlastuinen) / P1.1","hb":"~125","nimi":"11SMn30 / 1.0715 automaatti"},"Karkaistu teräs":{"luokka":"H","cmc":"04.1 / H1.1","hb":"45–60 HRC","nimi":"Karkaistu 45–60 HRC"},"1.4301":{"luokka":"M","cmc":"05.21 / M1.0.Z.AQ","hb":"~180–200","nimi":"1.4301 / 304"},"1.4307":{"luokka":"M","cmc":"05.21","hb":"~180","nimi":"1.4307 / 304L"},"1.4401":{"luokka":"M","cmc":"05.21","hb":"~180–200","nimi":"1.4401 / 316"},"1.4404":{"luokka":"M","cmc":"05.21 / M1.0.Z.AQ","hb":"~180–200","nimi":"1.4404 / 316L"},"1.4435":{"luokka":"M","cmc":"05.21","hb":"~180–200","nimi":"1.4435 / 316L Mo+"},"1.4571":{"luokka":"M","cmc":"05.21","hb":"~180–200","nimi":"1.4571 / 316Ti"},"1.4541":{"luokka":"M","cmc":"05.21","hb":"~180–200","nimi":"1.4541 / 321"},"1.4305":{"luokka":"M","cmc":"05.21 (helpompi)","hb":"~180–200","nimi":"1.4305 / 303 (automaatti)"},"1.4021":{"luokka":"M→P5","cmc":"05.11–05.13 / P5","hb":"200–330","nimi":"1.4021 / 420 martensiittinen"},"1.4057":{"luokka":"M→P5","cmc":"05.12–05.13","hb":"~250–300","nimi":"1.4057 / 431 martensiittinen"},"1.4539":{"luokka":"M","cmc":"05.23 superausteniittinen / M2.0","hb":"~200","nimi":"1.4539 / 904L"},"1.4547":{"luokka":"M","cmc":"05.23 / M2.0","hb":"~200","nimi":"1.4547 / 254 SMO"},"1.4835":{"luokka":"M","cmc":"05.21–05.23","hb":"~200","nimi":"1.4835 / 253 MA"},"1.4362":{"luokka":"D","cmc":"05.51 / M3.1","hb":"~230","nimi":"1.4362 / 2304 lean duplex"},"1.4462":{"luokka":"D","cmc":"05.52 / M3.2.Z.AQ","hb":"~260","nimi":"1.4462 / 2205"},"1.4460":{"luokka":"D","cmc":"05.51","hb":"~230","nimi":"1.4460 / 329"},"1.4410":{"luokka":"SD","cmc":"(05.52+) – IMOA 2507","hb":"~260–290","nimi":"1.4410 / 2507 superduplex"},"1.4501":{"luokka":"SD","cmc":"(05.52+)","hb":"~260–290","nimi":"1.4501 / Zeron 100 superduplex"},"EN-GJL-250":{"luokka":"K","cmc":"08.2 / K2.2","hb":"~245","nimi":"EN-GJL-250 / GG25"},"EN-GJS-500-7":{"luokka":"K","cmc":"09.2 / K3.2","hb":"~215","nimi":"EN-GJS-500-7 / GGG50"},"EN AW-6082":{"luokka":"N","cmc":"30.12 / N1.2.Z.AG","hb":"~100","nimi":"EN AW-6082"},"EN AW-7075":{"luokka":"N","cmc":"30.12","hb":"~150","nimi":"EN AW-7075"},"EN AW-5083":{"luokka":"N","cmc":"30.11","hb":"~75","nimi":"EN AW-5083"},"CuZn39Pb3":{"luokka":"N","cmc":"33.1 / N3.3","hb":"~110","nimi":"CuZn39Pb3 messinki"},"CuSn12":{"luokka":"N","cmc":"33.3","hb":"~90","nimi":"CuSn12 tinapronssi"},"Ti Gr2":{"luokka":"Ti","cmc":"23.1 / S4.1","hb":"~200","nimi":"Ti Gr2 (puhdas)"},"Ti Gr5":{"luokka":"Ti","cmc":"23.21–23.22 / S4.2","hb":"~320–330","nimi":"Ti Gr5 / Ti6Al4V"},"Inconel 625":{"luokka":"Ni","cmc":"20.21 / S2.0 (hehk.)","hb":"~250","nimi":"Inconel 625 / 2.4856"},"Inconel 718":{"luokka":"Ni","cmc":"20.22 / S2.0.Z.AG (vanh.)","hb":"~350","nimi":"Inconel 718 / 2.4668"}},"vinkit":{"D":["Myötölujuus on noin kaksinkertainen austeniittisiin nähden; lastut ovat vahvoja ja kuluttavia (IMOA).","Superduplexin vc on noin 55–65 % duplexin 2205 arvoista (IMOA).","Pidä ap ja syöttö riittävän suurina, ettei terä hankaa muokkauslujittunutta pintaa: sorvauksessa ap ≥ nirkon säde (DNMG 150612: ap ≥ 1–1.5 mm).","Vältä katkoleikkuuta ja pidä kiinnitys ja ulkonema jäykkinä.","Jyrsinnässä myötäjyrsintä, hm ≥ 0.1 mm; rouhinta palajyrsimellä ilman nestettä (IMOA).","Superduplexin varmistetut arvot (Alleima SAF 2507 -koe): sorvaus CNMG 120412-MM GC2025, f 0.3, vc 60–125; poraus CoroDrill 860 Ø8.7 5×D, vc 40, f 0.08; kierretappi vc 4.","Oma koeteltu: 1.4462 Ø300 × 330, Schunk-piikkileuat 25 mm otto, ap 3, f 0.4 – toimi.","Superduplexin sorvausvertailu (Sandvik/Alleima, 2507 Ø100): 80–100 m/min antoi tasaisimman kulumisen, f 0.3, ap 2–3 (ALL2).","PrimeTurning superduplexissa (Ferralium 255-SD50, CoroTurn Prime B, H3): vc 100, f 1.0, ap 1.5, kesto 15 min – lastu ei katkea (LANG).","Ryhmävalinta: jos Cr+Mo+Ni+V+W > 8 % (superduplex), valitse valmistajan taulukosta seuraava vaikeampi ryhmä (MAP-OMI).","Katkaisu ja uritus: Sandvik GC1125 duplexissa 150–70 m/min, kovemmalla GC1105:llä jopa 300–130 – nopeus laskee syötön kasvaessa (SAN-QC)."],"SD":["Myötölujuus on noin kaksinkertainen austeniittisiin nähden; lastut ovat vahvoja ja kuluttavia (IMOA).","Superduplexin vc on noin 55–65 % duplexin 2205 arvoista (IMOA).","Pidä ap ja syöttö riittävän suurina, ettei terä hankaa muokkauslujittunutta pintaa: sorvauksessa ap ≥ nirkon säde (DNMG 150612: ap ≥ 1–1.5 mm).","Vältä katkoleikkuuta ja pidä kiinnitys ja ulkonema jäykkinä.","Jyrsinnässä myötäjyrsintä, hm ≥ 0.1 mm; rouhinta palajyrsimellä ilman nestettä (IMOA).","Superduplexin varmistetut arvot (Alleima SAF 2507 -koe): sorvaus CNMG 120412-MM GC2025, f 0.3, vc 60–125; poraus CoroDrill 860 Ø8.7 5×D, vc 40, f 0.08; kierretappi vc 4.","Oma koeteltu: 1.4462 Ø300 × 330, Schunk-piikkileuat 25 mm otto, ap 3, f 0.4 – toimi.","Superduplexin sorvausvertailu (Sandvik/Alleima, 2507 Ø100): 80–100 m/min antoi tasaisimman kulumisen, f 0.3, ap 2–3 (ALL2).","PrimeTurning superduplexissa (Ferralium 255-SD50, CoroTurn Prime B, H3): vc 100, f 1.0, ap 1.5, kesto 15 min – lastu ei katkea (LANG).","Ryhmävalinta: jos Cr+Mo+Ni+V+W > 8 % (superduplex), valitse valmistajan taulukosta seuraava vaikeampi ryhmä (MAP-OMI).","Katkaisu ja uritus: Sandvik GC1125 duplexissa 150–70 m/min, kovemmalla GC1105:llä jopa 300–130 – nopeus laskee syötön kasvaessa (SAN-QC)."],"M":["Tarttuu ja muodostaa kertymäsärmää matalalla nopeudella → nosta vc tai käytä PVD-laatua ja positiivista geometriaa (Sandvik).","Kalvinta: tavallinen kovametallikalvin vain 8–12 m/min (Walter); monisärmäinen HPC-kalvin (esim. Gühring HR 500) jopa vc 80, f 0.7 (Ø10) – tarkista kalvimen tyyppi.","Leikkaa muokkauslujittuneen kerroksen alta: ap riittävän suureksi ja vaihda pala useammin kuin hiiliteräksellä (Outokumpu)."],"Ti":["Ti6Al4V sorvaus 55–85 m/min, Inconel 718 vanhennettu haarukan alapää (15–45 m/min kovametallilla).","Pyöröterillä lastunohennus on suurempi, mikä hyödyttää kuumalujia seoksia jyrsinnässä (Sandvik C-2920-40).","Kierretappi Ni-seoksiin 2–4 m/min, mieluummin kierrejyrsin (15–35 m/min, Vargus/Iscar).","Kovasorvaus: kovametalli 50–80 m/min 49–60 HRC; CBN 120–180 m/min pienellä ap:lla (Tungaloy)."],"Ni":["Ti6Al4V sorvaus 55–85 m/min, Inconel 718 vanhennettu haarukan alapää (15–45 m/min kovametallilla).","Pyöröterillä lastunohennus on suurempi, mikä hyödyttää kuumalujia seoksia jyrsinnässä (Sandvik C-2920-40).","Kierretappi Ni-seoksiin 2–4 m/min, mieluummin kierrejyrsin (15–35 m/min, Vargus/Iscar).","Kovasorvaus: kovametalli 50–80 m/min 49–60 HRC; CBN 120–180 m/min pienellä ap:lla (Tungaloy)."]},"lahteet":{"WAL-T":"Walter Technical Compendium – Turning 2025 (Työstö-kansio)","WAL-H":"Walter Technical Compendium – Holemaking 2025 (Työstö-kansio)","WAL-SCD":"Walter Titex: Competence in solid carbide drilling (projekti)","WAL-M":"Walter Technical Compendium – Milling 2025, MD133 Supreme (Työstö-kansio)","SAN-T":"Sandvik Coromant: Schnittdaten T-Max P / CoroTurn 107 (2017)","SAN-460":"Sandvik Coromant: CoroDrill 460 lastuamisarvot (fi) (Työstö-kansio)","SAN-PHD":"Sandvik Coromant: CoroMill Plura HD lastuamisarvot (fi) (Työstö-kansio)","SAN-DUR":"Sandvik Coromant: CoroMill Dura lastuamisarvot (fi) (Työstö-kansio)","SAN-490":"Sandvik Coromant: Schnittdaten CoroMill 490 (2017)","SAN-PG":"Sandvik Coromant: Parting & grooving -vinkit (QD, GC1125)","KEN":"Kennametal: KCU10B/KCU25B application data","IMOA":"IMOA/ISER: Practical Guidelines for the Fabrication of Duplex Stainless Steels","ISC-TT":"Iscar Threading catalog s. 107 (kierresorvaus)","ISC-TM":"Iscar Threading catalog s. 302 (VHM-kierrejyrsimet)","ISC-MI":"Iscar Milling catalog s. 226 (palajyrsimet)","TUN-TAP":"Tungaloy: kierretappien lastuamisnopeudet","ALL":"Alleima: SAF 2507 Sanmac -koneistettavuuskoe (sorvaus, poraus, kierteitys)","SAN-HB":"Sandvik Coromant: Metal Cutting Technology C-2920-40 (Työstö-kansio): kovuus- ja kestoaikakertoimet, ulkonemat, lastunohennus","APP":"Konetyökalujen nykyinen yleisarvio (ei lähdettä)","SAN-QC":"Sandvik Coromant: Schnittdaten T-Max Q-Cut (2017)","MAP-MSD":"MAPAL MEGA-Speed-Drill-Inox","MAP-OMI":"MAPAL OptiMill-Inox-HPC","GUE-HR500":"Gühring HR 500 High Performance Reamers","HAAS-HSS":"Haas Tooling: Cobalt End Mill Speeds and Feeds","VAR-TM":"Vargus MultiFlute / MilliPro Thread Mills","CAR-TM":"Carmex Thread Milling Parameters","TUN-HT":"Tungaloy Hard Turning","ALL2":"Metal Working World: Better and more cost-effective machining with super-duplex stainless steels (2018)","LANG":"Langley Alloys: Ferralium 255-SD50, CoroTurn Prime"}};
 const LUOTETTAVUUS_NIMI = { A: 'valmistajan taulukko', B: 'taulukot yhdistetty', C: 'johdettu', D: 'arvio, ei lähdettä' };
+
+/* -----------------------------------------------------------------
+   OMAT SÄÄDÖT
+   Tietopankin suositusta kerrotaan kertoimella, joka saadaan
+     1. käyttäjän omasta säädöstä (SAADOT, synkronoidaan, kaikki koneet)
+     2. automaattisesti omista työstöarvoista: oma arvo / tietopankin arvo
+        samassa työkaluluokassa ja materiaaliluokassa (mediaani)
+     3. saman työkaluluokan muista materiaaleista, jos omia arvoja on ≥ 2
+   SAADOT = [{ uid: 'luokka|materiaaliluokka', vcK, fK, mod }]  (kertoimet, '' = ei säätöä)
+   ----------------------------------------------------------------- */
+const K_SAADOT = 'ntx_tp_saadot_v1';
+function loadSaadot() {
+  const d = store.getJSON(K_SAADOT);
+  return Array.isArray(d) ? d.filter(r => r && r.uid) : [];
+}
+let SAADOT = loadSaadot();
+function saveSaadot() { store.setJSON(K_SAADOT, SAADOT); }
+function tpAutoPaalla() { try { return localStorage.getItem('ntx_tp_auto') !== '0'; } catch (e) { return true; } }
+function saato(tl, luokka) { return SAADOT.find(r => r.uid === tl + '|' + luokka) || null; }
+function mediaani(lista) {
+  const a = lista.filter(v => isFinite(v) && v > 0).sort((x, y) => x - y);
+  if (!a.length) return NaN;
+  const m = Math.floor(a.length / 2);
+  return a.length % 2 ? a[m] : (a[m - 1] + a[m]) / 2;
+}
+function rajaaKerroin(k) { return isFinite(k) && k > 0 ? Math.min(2, Math.max(0.5, k)) : NaN; }
+
+/* Tietopankin perusarvot ilman säätöjä: { vc, syotto } tai null. Syöttö on
+   halkaisijaan sidotuilla luokilla jo kerrottu halkaisijalla D. */
+function tpPerus(tl, luokka, D) {
+  const r = TIETOPANKKI.rivit[tl] && TIETOPANKKI.rivit[tl][luokka];
+  if (!r || !r.vc || !r.vc[1]) return null;
+  const laji = TIETOPANKKI.laji[tl] || '';
+  let syotto = NaN;
+  if (r.f && r.f[0]) syotto = (laji === 'fpD' || laji === 'fzD') ? (D > 0 ? r.f[0] * D : NaN) : r.f[0];
+  return { vc: r.vc[1], syotto };
+}
+
+/* Omat havainnot: { 'tl|luokka': { vc: [suhteet], f: [suhteet], n } } */
+let omatHavainnotVarasto = null, omatHavainnotAvain = '';
+function omatHavainnot() {
+  const avain = TOOLS.length + '|' + TOOLS.reduce((m, x) => (x.mod && x.mod > m ? x.mod : m), '');
+  if (omatHavainnotVarasto && omatHavainnotAvain === avain) return omatHavainnotVarasto;
+  const h = {};
+  TOOLS.forEach(x => {
+    const tl = tyokaluLuokka(x);
+    if (!tl) return;
+    const laji = TIETOPANKKI.laji[tl] || '';
+    const kentta = syottoKentta(laji);
+    const D = toolCutDia(x);
+    (x.cuts || []).forEach(c => {
+      if (c.src) return;
+      const luokka = MAT_LUOKKA[c.mat];
+      if (!luokka) return;
+      const perus = tpPerus(tl, luokka, D);
+      if (!perus) return;
+      const j = johdetut(x, c);
+      const rv = j.arvot.vc > 0 ? j.arvot.vc / perus.vc : NaN;
+      const rf = (kentta && j.arvot[kentta] > 0 && perus.syotto > 0) ? j.arvot[kentta] / perus.syotto : NaN;
+      if (!(rv > 0) && !(rf > 0)) return;
+      const k = tl + '|' + luokka;
+      const o = h[k] || (h[k] = { vc: [], f: [], n: 0 });
+      if (rv > 0) o.vc.push(rv);
+      if (rf > 0) o.f.push(rf);
+      o.n++;
+    });
+  });
+  omatHavainnotVarasto = h;
+  omatHavainnotAvain = avain;
+  return h;
+}
+
+/* Voimassa oleva kerroin: { vcK, fK, lahde: 'oma'|'auto'|'luokka'|'', n } */
+function tpKerroin(tl, luokka) {
+  const s = saato(tl, luokka);
+  const vcOma = s ? rajaaKerroin(Number(s.vcK)) : NaN;
+  const fOma  = s ? rajaaKerroin(Number(s.fK))  : NaN;
+  let vcK = vcOma, fK = fOma, lahde = (isFinite(vcOma) || isFinite(fOma)) ? 'oma' : '', n = 0;
+  if (tpAutoPaalla()) {
+    const h = omatHavainnot();
+    const solu = h[tl + '|' + luokka];
+    let autoVc = NaN, autoF = NaN, autoLahde = '';
+    if (solu) {
+      autoVc = rajaaKerroin(mediaani(solu.vc)); autoF = rajaaKerroin(mediaani(solu.f));
+      autoLahde = 'auto'; n = solu.n;
+    } else {
+      const vcL = [], fL = [];
+      let m = 0;
+      Object.keys(h).forEach(k => {
+        if (k.indexOf(tl + '|') !== 0) return;
+        vcL.push.apply(vcL, h[k].vc); fL.push.apply(fL, h[k].f); m += h[k].n;
+      });
+      if (m >= 2) {
+        autoVc = rajaaKerroin(mediaani(vcL)); autoF = rajaaKerroin(mediaani(fL));
+        autoLahde = 'luokka'; n = m;
+      }
+    }
+    if (!isFinite(vcK) && isFinite(autoVc)) { vcK = autoVc; lahde = lahde || autoLahde; }
+    if (!isFinite(fK) && isFinite(autoF)) { fK = autoF; lahde = lahde || autoLahde; }
+  }
+  return { vcK: isFinite(vcK) ? vcK : 1, fK: isFinite(fK) ? fK : 1, lahde: lahde, n: n,
+           vcOma: isFinite(vcOma), fOma: isFinite(fOma) };
+}
+function prosentti(k) {
+  const p = Math.round((k - 1) * 100);
+  return (p > 0 ? '+' : (p < 0 ? '\u2212' : '\u00B1')) + Math.abs(p) + ' %';
+}
 const SUOS_LUOKKA_NIMI = {
   sorvaus: 'sorvaus', ura: 'ura/katkaisu', kierresorvaus: 'kierresorvaus', pora: 'VHM-pora',
   pora_hss: 'HSS-pora', upora: 'U-pora', kalvin: 'kalvin', jyrsin: 'VHM-jyrsin', jyrsin_hss: 'HSS-jyrsin',
@@ -4397,16 +4572,33 @@ function tietopankkiArvo(x, mat) {
   const laji = TIETOPANKKI.laji[tl] || '';
   const kentta = syottoKentta(laji);
   const D = toolCutDia(x);
-  const out = { lahde: 'tp', vc: lukuTeksti(r.vc[1]), vcMin: lukuTeksti(r.vc[0]), vcMax: lukuTeksti(r.vc[2]),
+  const kerroin = tpKerroin(tl, luokka);
+  const vcPerus = lukuTeksti(r.vc[1]);
+  const out = { lahde: 'tp', vc: lukuTeksti(r.vc[1] * kerroin.vcK), vcMin: lukuTeksti(r.vc[0]), vcMax: lukuTeksti(r.vc[2]),
+                vcPerus: vcPerus, fPerus: '', kerroin: kerroin,
+                /* (vc rajataan alla, jos säätö on johdettu muista materiaaleista) */
                 f: '', fz: '', fMin: '', fMax: '', luot: r.luot || '', peruste: r.peruste || '',
                 lahteet: String(r.lahde || '').split(/,\s*/).filter(Boolean).map(k => TIETOPANKKI.lahteet[k] || k),
                 selite: SUOS_LUOKKA_NIMI[tl] + ', ' + MAT_LUOKKA_NIMI[luokka] };
+  if (kerroin.lahde === 'luokka') {
+    let v = r.vc[1] * kerroin.vcK;
+    if (r.vc[0]) v = Math.max(v, r.vc[0]);
+    if (r.vc[2]) v = Math.min(v, r.vc[2]);
+    out.vc = lukuTeksti(v);
+  }
   if (kentta && r.f && r.f[0]) {
     const halk = laji === 'fpD' || laji === 'fzD';
     if (!halk || D > 0) {
       const k = halk ? D : 1;
       const raja = laji === 'fpD' ? 0.02 : (laji === 'fzD' ? 0.005 : 0);
-      out[kentta] = pyoristaSyotto(Math.max(raja, r.f[0] * k));
+      out.fPerus = pyoristaSyotto(Math.max(raja, r.f[0] * k));
+      let fArvo = Math.max(raja, r.f[0] * k * kerroin.fK);
+      /* muista materiaaleista johdettu säätö pidetään tietopankin haarukassa */
+      if (kerroin.lahde === 'luokka') {
+        if (r.f[1]) fArvo = Math.max(fArvo, r.f[1] * k);
+        if (r.f[2]) fArvo = Math.min(fArvo, r.f[2] * k);
+      }
+      out[kentta] = pyoristaSyotto(fArvo);
       if (r.f[1]) out.fMin = pyoristaSyotto(r.f[1] * k);
       if (r.f[2]) out.fMax = pyoristaSyotto(r.f[2] * k);
     }
@@ -4447,6 +4639,15 @@ function suositusLaatikkoHTML(x, c, so, monta) {
       (LUOTETTAVUUS_NIMI[so.luot] ? ' (' + esc(LUOTETTAVUUS_NIMI[so.luot]) + ')' : '');
     miksi = '<p>' + esc(so.peruste) + '</p>' +
       (so.lahteet.length ? '<p><b>Lähde:</b> ' + esc(so.lahteet.join('; ')) + '</p>' : '');
+    const kr = so.kerroin;
+    if (kr && kr.lahde && (Math.abs(kr.vcK - 1) > 0.005 || Math.abs(kr.fK - 1) > 0.005)) {
+      yla += '<br><span class="suositus-saato">Hienosäädetty ' +
+        (kr.lahde === 'oma' ? 'omalla säädölläsi' :
+          (kr.lahde === 'auto' ? 'omien arvojesi mukaan (' + kr.n + ')' : 'saman luokan omien arvojesi mukaan (' + kr.n + ')')) +
+        ': Vc ' + prosentti(kr.vcK) + (so.fPerus ? ', syöttö ' + prosentti(kr.fK) : '') + '</span>';
+      miksi = '<p><b>Tietopankin arvo ennen säätöä:</b> Vc ' + esc(so.vcPerus) +
+        (so.fPerus ? ' \u00B7 ' + (so.fz ? 'fz ' : 'f ') + esc(so.fPerus) : '') + '</p>' + miksi;
+    }
   }
   if (m) miksi += '<p><b>' + esc(m.nimi) + '</b> · CMC/MC ' + esc(m.cmc) + ' · ' + esc(m.hb) + ' HB</p>';
   if (vinkit.length) miksi += '<ul>' + vinkit.map(v => '<li>' + esc(v) + '</li>').join('') + '</ul>';
@@ -7297,9 +7498,127 @@ function palaaAlasivulta(oletus) {
 
 (function () {
   const el = document.getElementById('tpVersio');
-  if (el) el.textContent = TIETOPANKKI.versio + ' \u00B7 suositukset merkitään SUOSITUS ja luotettavuus A\u2013D ' +
-    '(A valmistajan taulukko, B yhdistetty, C johdettu, D arvio)';
+  if (el) el.textContent = TIETOPANKKI.versio + ' \u00B7 suositusten hienosäätö omien arvojen mukaan';
 })();
+
+/* --- Tietopankki-näkymä --- */
+let tpValittu = 'sorvaus';
+let tpPaluu = 'viewData';
+function avaaTietopankki(paluu) {
+  tpPaluu = paluu || 'viewData';
+  const h = omatHavainnot();
+  const ensimmainen = Object.keys(SUOS_LUOKKA_NIMI).find(tl => Object.keys(h).some(k => k.indexOf(tl + '|') === 0));
+  if (!tpValittu || !TIETOPANKKI.rivit[tpValittu]) tpValittu = ensimmainen || 'sorvaus';
+  renderTietopankki();
+  showView('viewTietopankki');
+}
+function renderTietopankki() {
+  document.getElementById('tpAli').textContent = TIETOPANKKI.versio;
+  const auto = tpAutoPaalla();
+  document.querySelectorAll('#tpAutoRow .seg-btn').forEach(b =>
+    b.classList.toggle('active', (b.getAttribute('data-tpauto') === '1') === auto));
+  const h = omatHavainnot();
+  document.getElementById('tpLuokat').innerHTML = Object.keys(SUOS_LUOKKA_NIMI).filter(tl => TIETOPANKKI.rivit[tl]).map(tl => {
+    const n = Object.keys(h).filter(k => k.indexOf(tl + '|') === 0).reduce((m, k) => m + h[k].n, 0);
+    return '<button type="button" class="filter-chip' + (tl === tpValittu ? ' active' : '') + '" data-tpluokka="' + tl + '">' +
+      esc(SUOS_LUOKKA_NIMI[tl]) + (n ? ' (' + n + ')' : '') + '</button>';
+  }).join('');
+  const tl = tpValittu;
+  const laji = TIETOPANKKI.laji[tl] || '';
+  const halk = laji === 'fpD' || laji === 'fzD';
+  const syottoNimi = (laji === 'fz' || laji === 'fzD') ? 'fz' : 'f';
+  const rivit = ['P', 'M', 'D', 'SD', 'K', 'N', 'Ti', 'Ni', 'H'].map(l => {
+    const r = TIETOPANKKI.rivit[tl][l];
+    if (!r || !r.vc || !r.vc[1]) return '';
+    const kr = tpKerroin(tl, l);
+    const solu = h[tl + '|' + l];
+    const f0 = r.f && r.f[0] ? (halk ? r.f[0] * 10 : r.f[0]) : NaN;
+    const vali = (a, b) => (a && b) ? ' (' + lukuTeksti(a) + '\u2013' + lukuTeksti(b) + ')' : '';
+    const perus = 'Vc ' + lukuTeksti(r.vc[1]) + vali(r.vc[0], r.vc[2]) +
+      (f0 > 0 ? ' \u00B7 ' + syottoNimi + (halk ? ' \u00D810 ' : ' ') + pyoristaSyotto(f0) : '');
+    /* sama rajaus kuin työkalukortin suosituksessa */
+    let vcNyt = r.vc[1] * kr.vcK, fNyt = f0 * kr.fK;
+    if (kr.lahde === 'luokka') {
+      if (r.vc[0]) vcNyt = Math.max(vcNyt, r.vc[0]);
+      if (r.vc[2]) vcNyt = Math.min(vcNyt, r.vc[2]);
+      const k = halk ? 10 : 1;
+      if (r.f && r.f[1]) fNyt = Math.max(fNyt, r.f[1] * k);
+      if (r.f && r.f[2]) fNyt = Math.min(fNyt, r.f[2] * k);
+    }
+    const kaytossa = 'Vc ' + lukuTeksti(vcNyt) +
+      (f0 > 0 ? ' \u00B7 ' + syottoNimi + (halk ? ' \u00D810 ' : ' ') + pyoristaSyotto(fNyt) : '');
+    const muutettu = Math.abs(kr.vcK - 1) > 0.005 || Math.abs(kr.fK - 1) > 0.005;
+    const lahdeTeksti = kr.lahde === 'oma' ? 'oma säätö'
+      : (kr.lahde === 'auto' ? 'omista arvoista (' + kr.n + ')'
+      : (kr.lahde === 'luokka' ? 'luokan omista arvoista (' + kr.n + ')' : 'ei säätöä'));
+    const nappi = (kentta, suunta, teksti) => '<button type="button" class="tp-nappi" data-tpsaato="' + tl + '|' + l + '|' + kentta + '|' + suunta + '">' + teksti + '</button>';
+    return '<div class="tp-rivi' + (muutettu ? ' saadetty' : '') + '">' +
+      '<div class="tp-yla"><b>' + esc(MAT_LUOKKA_NIMI[l] || l) + '</b><span class="tp-luot">' + esc(r.luot) + '</span>' +
+        '<span class="tp-lahde">' + esc(lahdeTeksti) + '</span></div>' +
+      '<div class="tp-perus">Tietopankki: ' + esc(perus) + '</div>' +
+      '<div class="tp-kaytossa">Suositus nyt: <b>' + esc(kaytossa) + '</b>' +
+        (muutettu ? ' <span class="tp-pros">(Vc ' + prosentti(vcNyt / r.vc[1]) + (f0 > 0 ? ', ' + syottoNimi + ' ' + prosentti(fNyt / f0) : '') +
+          (kr.lahde === 'luokka' ? ', rajattu tietopankin haarukkaan' : '') + ')</span>' : '') + '</div>' +
+      (solu ? '<div class="tp-omat">Omia arvoja ' + solu.n + ': Vc keskimäärin ' + prosentti(mediaani(solu.vc)) +
+        (solu.f.length ? ', ' + syottoNimi + ' ' + prosentti(mediaani(solu.f)) : '') + ' tietopankkiin nähden</div>' : '') +
+      '<div class="tp-napit">' +
+        '<span>Vc</span>' + nappi('vcK', '-', '\u22125 %') + nappi('vcK', '+', '+5 %') +
+        (f0 > 0 ? '<span>' + syottoNimi + '</span>' + nappi('fK', '-', '\u22125 %') + nappi('fK', '+', '+5 %') : '') +
+        (kr.vcOma || kr.fOma ? '<button type="button" class="tp-nappi palauta" data-tppalauta="' + tl + '|' + l + '">Palauta</button>' : '') +
+      '</div>' +
+    '</div>';
+  }).join('');
+  document.getElementById('tpRivit').innerHTML = rivit +
+    (halk ? '<div class="note" style="margin-top:4px;">Syöttö näytetään halkaisijalle \u00D810. Työkalukortissa se lasketaan terän omalla halkaisijalla.</div>' : '');
+}
+document.getElementById('asetTpBtn').addEventListener('click', () => avaaTietopankki('viewData'));
+document.getElementById('closeTp').addEventListener('click', () => openData(dataPaluu));
+document.getElementById('tpAutoRow').addEventListener('click', e => {
+  const b = e.target.closest('[data-tpauto]');
+  if (!b) return;
+  try { localStorage.setItem('ntx_tp_auto', b.getAttribute('data-tpauto')); } catch (err) {}
+  renderTietopankki();
+  renderTools();
+});
+document.getElementById('tpLuokat').addEventListener('click', e => {
+  const b = e.target.closest('[data-tpluokka]');
+  if (!b) return;
+  tpValittu = b.getAttribute('data-tpluokka');
+  renderTietopankki();
+});
+document.getElementById('tpRivit').addEventListener('click', e => {
+  const b = e.target.closest('[data-tpsaato]');
+  if (b) {
+    const [tl, l, kentta, suunta] = b.getAttribute('data-tpsaato').split('|');
+    const nyt = tpKerroin(tl, l);
+    const lahto = kentta === 'vcK' ? nyt.vcK : nyt.fK;
+    const uusi = Math.round((lahto + (suunta === '+' ? 0.05 : -0.05)) * 100) / 100;
+    let r = saato(tl, l);
+    if (!r) { r = { uid: tl + '|' + l, vcK: '', fK: '' }; SAADOT.push(r); }
+    r[kentta] = String(rajaaKerroin(uusi));
+    /* toinen kerroin lukitaan nykyiseen, jotta automaattinen ei vaihda sitä huomaamatta */
+    const toinen = kentta === 'vcK' ? 'fK' : 'vcK';
+    if (r[toinen] === '' || r[toinen] == null) r[toinen] = String(Math.round((kentta === 'vcK' ? nyt.fK : nyt.vcK) * 100) / 100);
+    r.mod = new Date().toISOString();
+    saveSaadot();
+    renderTietopankki();
+    return;
+  }
+  const p = e.target.closest('[data-tppalauta]');
+  if (p) {
+    const [tl, l] = p.getAttribute('data-tppalauta').split('|');
+    const r = saato(tl, l);
+    if (!r) return;
+    const ennen = { vcK: r.vcK, fK: r.fK };
+    r.vcK = ''; r.fK = ''; r.mod = new Date().toISOString();
+    saveSaadot();
+    renderTietopankki();
+    toastAction('Oma säätö poistettu', 'Kumoa', () => {
+      r.vcK = ennen.vcK; r.fK = ennen.fK; r.mod = new Date().toISOString();
+      saveSaadot(); renderTietopankki(); toast('Palautettu');
+    });
+  }
+});
 
 function paivitaTallennusTila() {
   const el = document.getElementById('tallennusTila');
@@ -7503,6 +7822,7 @@ function syncPaketti() {
     materials: CUSTOM_MATERIALS,
     brands: CUSTOM_BRANDS,
     stock: STOCK,
+    saadot: SAADOT,
     koneet: koneet,
     poistot: poistotKaikki()
   };
@@ -7619,6 +7939,7 @@ function yhdistaPaketit(oma, pilvi) {
     materials: yhdistaLista(oma.materials, pilvi.materials, omaAika, pilviAika, poistot[K_MATERIALS]),
     brands:    yhdistaLista(oma.brands,    pilvi.brands,    omaAika, pilviAika, poistot[K_BRANDS]),
     stock:     yhdistaLista(oma.stock,     pilvi.stock,     omaAika, pilviAika, poistot[K_STOCK]),
+    saadot:    yhdistaLista(oma.saadot,    pilvi.saadot,    omaAika, pilviAika, poistot[K_SAADOT]),
     koneet: koneet,
     poistot: poistot
   };
@@ -7628,7 +7949,7 @@ function yhdistaPaketit(oma, pilvi) {
 function pakettiSisalto(p) {
   return JSON.stringify({
     machines: p.machines, types: p.types, materials: p.materials,
-    brands: p.brands, stock: p.stock || [], koneet: p.koneet
+    brands: p.brands, stock: p.stock || [], saadot: p.saadot || [], koneet: p.koneet
   });
 }
 
@@ -7740,6 +8061,7 @@ function otaPakettiKayttoonSisalto(data) {
   if (Array.isArray(data.materials)) { CUSTOM_MATERIALS = data.materials; saveCustomMaterials(); }
   if (Array.isArray(data.brands)) { CUSTOM_BRANDS = data.brands; saveCustomBrands(); }
   if (Array.isArray(data.stock)) { STOCK = data.stock.filter(r => r && r.uid && r.code); saveStock(); }
+  if (Array.isArray(data.saadot)) { SAADOT = data.saadot.filter(r => r && r.uid); saveSaadot(); }
 
   if (data.koneet && typeof data.koneet === 'object') {
     Object.keys(data.koneet).forEach(koneId => {
@@ -8406,7 +8728,8 @@ kaytaTeema();
     viewSP2Settings: () => openSP2Settings(),
     viewData:        () => openData('viewToolList'),
     viewToolTypes:   () => { renderTypes(); showView('viewToolTypes', true); },
-    viewMachines:    () => avaaKoneet('viewData')
+    viewMachines:    () => avaaKoneet('viewData'),
+    viewTietopankki: () => avaaTietopankki('viewData')
   };
   if (avaajat[tila.view]) avaajat[tila.view]();
   else showView(tila.view, true);
