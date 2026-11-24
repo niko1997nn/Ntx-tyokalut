@@ -1762,6 +1762,14 @@
   .koko-v .mono { color: var(--text-dim); font-size: 12.5px; }
   .koko-v b + .mono { display: block; margin-top: 1px; }
   .kokoonpano-grid { margin-top: 10px !important; }
+  /* kortin osiot */
+  .luku-otsikko.ensimmainen { margin-top: 2px; }
+  .group-label.ensimmainen { margin-top: 14px; }
+  .tool-body .group-label { margin-top: 22px; padding-top: 14px; border-top: 1px solid var(--panel-border);
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim); }
+  .tool-body .group-label.ensimmainen { border-top: none; padding-top: 0; }
+  .tool-body .group-label + .field-grid, .tool-body .group-label + .geo-hint { margin-top: 10px; }
+  .muistio-kentta { width: 100%; box-sizing: border-box; margin-top: 10px; font-family: var(--sans); }
 </style>
 </head>
 <body>
@@ -5177,23 +5185,20 @@ function cutsHTML(x) {
 }
 
 /* ---------- työkalukortti ---------- */
-function geoRowHTML(x) {
+function mittaSolu(x) {
   const p = typeProps(x.typeId);
-  const kolmas = p.geo === 'dia'
-    ? '<label>Halkaisija \u00D8' + inputHTML(x.uid, 'radius', x.radius, 'number') + '</label>'
-    : (p.geo === 'radius'
-        ? '<label>Säde R' + inputHTML(x.uid, 'radius', x.radius, 'number') + '</label>'
-        : '');
-  return '<div class="geo-grid' + (kolmas ? '' : ' two') + '">' +
-    '<label>X-korjain' + inputHTML(x.uid, 'dia', x.dia, 'signed') + '</label>' +
-    '<label>Z-korjain' + inputHTML(x.uid, 'stickout', x.stickout, 'signed') + '</label>' +
-    kolmas +
-  '</div>';
+  if (p.geo === 'dia') return '<label>Halkaisija \u00D8 (mm)' + inputHTML(x.uid, 'radius', x.radius, 'number') + '</label>';
+  if (p.geo === 'radius') return '<label>Säde R (mm)' + inputHTML(x.uid, 'radius', x.radius, 'number') + '</label>';
+  return '';
+}
+function mitatHTML(x) {
+  if (!x.typeId) return '<div class="geo-hint">Valitse tyyppi, niin tähän tulevat sen mitat.</div>';
+  return extraFieldsHTML(x, mittaSolu(x));
 }
 
-function extraFieldsHTML(x) {
+function extraFieldsHTML(x, alkuSolu) {
   const p = typeProps(x.typeId);
-  const cells = [];
+  const cells = alkuSolu ? [alkuSolu] : [];
   if (p.b)     cells.push('<label>B-kulma (\u00B0)' + inputHTML(x.uid, 'bAngle', x.bAngle, 'signed') + '</label>');
   if (p.width) cells.push('<label>Terän leveys (mm)' + inputHTML(x.uid, 'width', x.width, 'number') + '</label>');
   if (p.depth) cells.push('<label>' + esc(depthLabel(x)) + inputHTML(x.uid, 'maxDepth', x.maxDepth, 'number') + '</label>');
@@ -5212,7 +5217,7 @@ function extraFieldsHTML(x) {
     : '';
 
   if (!cells.length && !sarmaRasti) return '';
-  let out = (cells.length ? '<div class="field-grid" style="margin-top:10px;">' + cells.join('') + '</div>' : '') + sarmaRasti;
+  let out = (cells.length ? '<div class="field-grid">' + cells.join('') + '</div>' : '') + sarmaRasti;
 
   if (p.depth && onAksiaalinen(x)) {
     const suhde = depthRatio(x);
@@ -5444,29 +5449,29 @@ function arvoRuutu(otsikko, arvo, luokka) {
 function lukutilaHTML(x) {
   const p = typeProps(x.typeId);
   const uid = esc(x.uid);
+  /* Koneessa: mihin ja miten terä on koneessa */
+  const kone = [];
+  if (has(x.offset))  kone.push(arvoRuutu('Suuntaus', x.offset));
+  kone.push(arvoRuutu('X-korj.', x.dia));
+  kone.push(arvoRuutu('Z-korj.', x.stickout));
+  if (has(x.spindle)) kone.push(arvoRuutu('Kara', x.spindle));
+  /* Mitat: terän oma geometria */
   const ruudut = [];
-  if (has(x.offset)) ruudut.push(arvoRuutu('Suuntaus', x.offset));
   if (p.geo === 'dia')    ruudut.push(arvoRuutu('Halkaisija', has(x.radius) ? '\u00D8' + x.radius : ''));
   if (p.geo === 'radius') ruudut.push(arvoRuutu('Säde', has(x.radius) ? 'R' + x.radius : ''));
-  ruudut.push(arvoRuutu('X-korj.', x.dia));
-  ruudut.push(arvoRuutu('Z-korj.', x.stickout));
   if (p.b && has(x.bAngle))       ruudut.push(arvoRuutu('B-kulma', x.bAngle + '\u00B0', String(x.bAngle).trim().charAt(0) === '-' ? 'neg' : ''));
   if (p.width && has(x.width))    ruudut.push(arvoRuutu('Leveys', x.width));
   if (p.depth && has(x.maxDepth)) {
     const suhde = onAksiaalinen(x) ? depthRatio(x) : '';
-    ruudut.push(arvoRuutu(onAksiaalinen(x) ? 'Syvyys' : (p.int && !p.width ? 'Pituus' : 'Max syvyys'),
-      x.maxDepth + (suhde ? ' (' + suhde + '\u00D7D)' : '')));
+    ruudut.push(arvoRuutu((onAksiaalinen(x) ? 'Syvyys' : (p.int && !p.width ? 'Pituus' : 'Max syvyys')) +
+      (suhde ? ' ' + suhde + '\u00D7D' : ''), x.maxDepth));
   }
   if (p.int && has(x.minBore))    ruudut.push(arvoRuutu(p.maxDia ? 'Pienin \u00D8' : 'Min. reikä', x.minBore));
   if (p.maxDia && has(x.maxDia))  ruudut.push(arvoRuutu('Suurin \u00D8', x.maxDia));
   if ((p.teeth || x.multiEdge === '1') && has(x.teeth)) ruudut.push(arvoRuutu('Hampaat', 'z' + x.teeth));
   if (p.thread && has(x.threadSize)) ruudut.push(arvoRuutu('Kierre', x.threadSize));
   if (p.dir && has(x.threadDir))  ruudut.push(arvoRuutu('Pyörintä', x.threadDir, isReverseDir(x.threadDir) ? 'neg' : ''));
-  if (has(x.spindle))             ruudut.push(arvoRuutu('Kara', x.spindle));
-
   const tausta = [];
-  if (has(x.brand))  tausta.push(esc(x.brand));
-
 
   const palat = kaikkiPalat(x);
   const palaRivit = palat.map(pl =>
@@ -5502,13 +5507,14 @@ function lukutilaHTML(x) {
       esc(x.ulkonema) + ' mm</b></span></div>' : '');
   const cuts = (x.cuts || []).filter(c => c.mat);
   return '<div class="luku">' +
-    (ruudut.length ? '<div class="spec-grid">' + ruudut.join('') + '</div>' : '') +
-    (tausta.length ? '<div class="luku-tausta">' + tausta.join(' \u00B7 ') + '</div>' : '') +
-    (kokoonpano ? '<div class="luku-otsikko"><span>Kokoonpano</span></div><div class="koko-lista">' + kokoonpano + '</div>' : '') +
+    '<div class="luku-otsikko ensimmainen"><span>Koneessa</span></div>' +
+    '<div class="spec-grid">' + kone.join('') + '</div>' +
+    (ruudut.length ? '<div class="luku-otsikko"><span>Mitat</span></div><div class="spec-grid">' + ruudut.join('') + '</div>' : '') +
     '<div class="luku-otsikko"><span>Teräpalat' + (palat.length ? ' <b>' + palat.length + '</b>' : '') + '</span>' +
       '<button type="button" class="pieni-btn" data-action="add-pala" data-uid="' + uid + '">+ Lisää</button></div>' +
     (palat.length ? '<div class="pala-lista">' + palaRivit + '</div>'
                   : '<div class="luku-tyhja">Teräpalaa ei ole merkitty.</div>') +
+    (kokoonpano ? '<div class="luku-otsikko"><span>Kokoonpano</span></div><div class="koko-lista">' + kokoonpano + '</div>' : '') +
     '<div class="luku-otsikko"><span>Työstöarvot' + (cuts.length ? ' <b>' + cuts.length + '</b>' : '') + '</span>' +
       '<button type="button" class="pieni-btn" data-action="add-cut-edit" data-uid="' + uid + '">+ Lisää</button></div>' +
     (cuts.length ? '<div class="luku-arvot">' + cuts.map(c =>
@@ -5677,22 +5683,13 @@ function renderTools() {
       '<div class="tool-body">' +
       (muokataan ? muokkausPalkkiHTML(x) : lukutilaHTML(x)) +
       (!muokataan ? '' :
+        '<div class="group-label ensimmainen">Perustiedot</div>' +
         '<div class="field-grid">' +
           '<label>T-numero' + inputHTML(x.uid, 't', x.t, 'number') + '</label>' +
           '<label>Pot (makasiinipaikka)' + inputHTML(x.uid, 'pot', x.pot, 'number') + '</label>' +
-          '<label class="full">Suuntaus' + selectHTML(x.uid, 'offset', x.offset, OFFSETS) + '</label>' +
           '<label class="full">Nimi' + inputHTML(x.uid, 'name', x.name) + '</label>' +
-          '<label class="full">Tyyppi' + typeSelectHTML(x.uid, x.typeId) + '</label>' +
-        '</div>' +
-
-        '<div class="group-label">Geometria</div>' +
-        geoRowHTML(x) +
-        extraFieldsHTML(x) +
-        (p.thread ? threadFieldsHTML(x) : '') +
-        (p.dir ? dirFieldHTML(x) : '') +
-
-        '<div class="field-grid" style="margin-top:12px;">' +
-          '<label class="full">Valmistaja' +
+          '<label>Tyyppi' + typeSelectHTML(x.uid, x.typeId) + '</label>' +
+          '<label>Valmistaja' +
             '<select data-uid="' + esc(x.uid) + '" data-field="brand">' +
               brandOptions(x.brand).map(b => '<option value="' + esc(b) + '"' +
                 (b === (x.brand || '') ? ' selected' : '') + '>' + (b === '' ? '—' : esc(b)) + '</option>').join('') +
@@ -5700,6 +5697,21 @@ function renderTools() {
             '</select>' +
           '</label>' +
         '</div>' +
+
+        '<div class="group-label">Koneessa</div>' +
+        '<div class="field-grid">' +
+          '<label>Suuntaus' + selectHTML(x.uid, 'offset', x.offset, OFFSETS) + '</label>' +
+          '<label>Kara' + selectHTML(x.uid, 'spindle', x.spindle, SPINDLES) + '</label>' +
+          '<label>X-korjain' + inputHTML(x.uid, 'dia', x.dia, 'signed') + '</label>' +
+          '<label>Z-korjain' + inputHTML(x.uid, 'stickout', x.stickout, 'signed') + '</label>' +
+          '<label class="full">Tila' + selectHTML(x.uid, 'status', x.status, TOOL_STATUSES) + '</label>' +
+        '</div>' +
+
+        '<div class="group-label">Mitat</div>' +
+        mitatHTML(x) +
+        (p.thread ? threadFieldsHTML(x) : '') +
+        (p.dir ? dirFieldHTML(x) : '') +
+
         palatMuokkausHTML(x) +
 
         '<div class="group-label">Kokoonpano</div>' +
@@ -5718,15 +5730,9 @@ function renderTools() {
         '<div class="group-label">Työstöarvot materiaaleittain</div>' +
         cutsHTML(x) +
 
-        '<div class="group-label">Muut</div>' +
-        '<div class="field-grid">' +
-          '<label>Kara' + selectHTML(x.uid, 'spindle', x.spindle, SPINDLES) + '</label>' +
-          '<label>Tila' + selectHTML(x.uid, 'status', x.status, TOOL_STATUSES) + '</label>' +
-          '<label class="full">Muistiinpanot' +
-            '<textarea rows="3" data-uid="' + esc(x.uid) + '" data-field="notes">' +
-            esc(x.notes || '') + '</textarea>' +
-          '</label>' +
-        '</div>' +
+        '<div class="group-label">Muistiinpanot</div>' +
+        '<textarea rows="3" class="muistio-kentta" aria-label="Muistiinpanot" data-uid="' + esc(x.uid) + '" data-field="notes">' +
+          esc(x.notes || '') + '</textarea>' +
 
         '<div class="btn-row" style="margin-top:14px;">' +
           '<button class="ensisijainen-btn" style="margin-top:0;" data-action="done-edit" data-uid="' + esc(x.uid) + '">Valmis</button>' +
