@@ -3,12 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<meta name="theme-color" content="#F4F6F8">
+<meta name="theme-color" content="#F3F5F7">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Konetyökalut">
 <title>Konetyökalut</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22NTX3000%20Ty%C3%B6kalut%22%2C%22short_name%22%3A%22NTX3000%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23101010%22%2C%22theme_color%22%3A%22%23101010%22%7D">
 <link rel="icon" type="image/png" sizes="512x512" href="data:image/png;base64,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PbW1tVq1apV1jLSyYcMGT7+LwGkUgE5oaGjQggULzMafO3euAoGA2fgAvCMSiaiwsFBNTU3WUdJCW1ubpy+duIEC0EmPPPKI2Ru6RowYoauuuspkbADes3nzZk9vseslDzzwgN555x3rGKYoAJ0UCoVMr73deeedyszMNBsfgLc89NBDWrlypXUMT/vb3/6me++91zqGOQpACixbtkwbN240GXvYsGGaMGGCydgAvCcajWrKlCnav3+/dRRPamlpUUFBgVpbW62jmKMApEA4HFZFRYXZ+MXFxcrNzTUbH4C3bNu2TXfeead1DE+qqqrSe++9Zx3DEygAKfL888+bXU86+uijNWnSJJOxAXjTY489ppdfftk6hqe89dZbqq2ttY7hGRSAFLJ8nGT69Onq2bOn2fgAvGfatGnas2ePdQxPaG5uVmFhocLhsHUUz6AApNCrr76q1157zWTsPn36aPr06SZjA/Cmzz77jNeIH3T33Xdr06ZN1jE8hQKQYvfcc4/Z2AUFBerfv7/Z+AC85+mnn9azzz5rHcPU66+/rl//+tfWMTyHApBi77zzjl544QWTsbt160bbB/Att912m3bu3Gkdw0RDQ4MmT56saDRqHcVzKAAOqKioMLvOdOONN2rIkCEmYwPwps8///yr1/L6zZw5c7R161brGJ5EAXDAhg0b9MQTT5iMnZWVpZKSEpOxAXjX8uXLtWzZMusYrvrjH/+oRx991DqGZ1EAHFJVVWW2x/TVV1+tU045xWRsAN41e/Zss63L3fbFF19o6tSp1jE8jQLgkO3bt+u3v/2tydjBYFClpaUmYwPwrn379mnq1Km+uB5eXFysTz/91DqGp1EAHLRgwQI1NDSYjH3ZZZfpe9/7nsnYALxrxYoVWrp0qXUMR73wwgt66qmnrGN4HgXAQbt27dLixYvNxi8rKzMbG4B3lZaWasuWLdYxHPGPf/xDt956q3WMtEABcNiiRYu0e/duk7EvuOACjR492mRsAN7V2NiooqIiRSIR6ygpd+utt2rXrl3WMdICBcBhDQ0NWrBggdn4c+fOVSAQMBsfgDe9+eabqqurs46RUk8++aRefPFF6xhpgwLggkceecTsztszzjhDV111lcnYALytoqJC69evt46REp988olmzZplHSOtUABcEAqFVFVVZTZ+SUmJMjMzzcYH4E2hUEiF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">
 <link rel="icon" type="image/png" sizes="192x192" href="data:image/png;base64,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">
@@ -1122,16 +1125,6 @@
   .chip.tila-tilattu { background: var(--orange-dim); color: var(--orange); font-weight: 700; }
   .tool-card.tila-pois .tool-name { opacity: 0.6; }
 
-  .stock-box {
-    margin-top: 12px; padding: 10px 12px; border-radius: 8px; background: var(--panel-2);
-    display: flex; flex-direction: column; gap: 8px; font-size: 13px;
-  }
-  .stock-box .stock-line { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
-  .stock-box .stock-num { font-family: var(--mono); font-size: 18px; font-weight: 700; }
-  .stock-box.low .stock-num { color: var(--red); }
-  .stock-box .stock-sub { font-size: 11.5px; color: var(--text-dim); }
-  .stock-box .btn-row { margin: 0; }
-  .stock-box .add-cut-btn { margin-top: 0; }
 
   /* ═══ TABLETTI ═══
      Leveämpi asettelu ja kaksi saraketta, mutta kosketuskoot säilyvät.
@@ -1312,6 +1305,371 @@
     letter-spacing: 0.05em;
   }
   .toast { display: flex; align-items: center; }
+
+  /* ═══════════════════════════════════════════════════════════════
+     v3 — GRAFIITTI-ILME
+     Kerros vanhojen tyylien päällä: värit, fontit, kortit, alapalkki
+     sekä uudet osat (lukutila, teräpalat, pikahaku, viimeksi avatut).
+     Fontit ladataan verkosta; ilman yhteyttä käytetään järjestelmän fontteja.
+     ═══════════════════════════════════════════════════════════════ */
+  :root {
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Roboto Mono', monospace;
+    --bg: #F3F5F7;
+    --panel: #FFFFFF;
+    --panel-2: #EEF1F4;
+    --panel-border: #DFE4E9;
+    --steel: #7D8894;
+    --steel-light: #4E5A66;
+    --text: #14191E;
+    --text-dim: #5B6773;
+    --accent: #0F8C80;
+    --accent-dim: #E2F4F2;
+    --accent-text: #0B6B62;
+    --on-accent: #FFFFFF;
+    --green: #1B9A5A;
+    --green-dim: #E3F5EA;
+    --red: #D93A2F;
+    --orange: #9A5A00;
+    --orange-dim: #FFF4E0;
+    --orange-line: #F1D29A;
+    --chip: #EEF1F4;
+    --bar: #FFFFFF;
+  }
+  body.dark {
+    --bg: #0F1215;
+    --panel: #171B20;
+    --panel-2: #1F252C;
+    --panel-border: #262D35;
+    --steel: #6B7682;
+    --steel-light: #B4BEC8;
+    --text: #E8ECEF;
+    --text-dim: #9AA5B0;
+    --accent: #4FD1C5;
+    --accent-dim: #0F2A28;
+    --accent-text: #4FD1C5;
+    --on-accent: #0B1F1D;
+    --green: #5BD68A;
+    --green-dim: #14301F;
+    --red: #FF7A70;
+    --orange: #F2A93B;
+    --orange-dim: #2A2012;
+    --orange-line: #4A3618;
+    --chip: #222930;
+    --bar: #13171B;
+  }
+  body { -webkit-font-smoothing: antialiased; }
+
+  /* yläosa */
+  header { border-bottom: none; padding: 18px 18px 10px; }
+  .title { font-weight: 700; font-size: 19px; letter-spacing: -0.015em; }
+  .subtitle { font-size: 12px; }
+  .logo-mark { background: var(--accent-dim); color: var(--accent-text); border-radius: 9px; padding: 7px 10px; }
+  .icon-btn { width: 44px; height: 44px; border-radius: 12px; color: var(--text); }
+  .back-btn { font-size: 14px; min-height: 44px; color: var(--text); }
+  .section-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim); }
+  main { gap: 22px; padding-top: 14px; }
+  footer { color: var(--steel); }
+
+  /* kentät ja napit */
+  select, input[type=text], input[type=number], textarea {
+    border-radius: 11px;
+    background-color: var(--panel);
+  }
+  select:focus, input:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
+  .add-btn { border-radius: 12px; border-style: solid; min-height: 48px; padding: 12px 16px; }
+  .add-cut-btn { border-radius: 11px; min-height: 44px; }
+  .delete-btn { border-radius: 10px; min-height: 40px; }
+  .seg-btn { border-radius: 12px; }
+  .seg-btn.active { border-color: var(--accent); background: var(--accent-dim); color: var(--accent-text); }
+  .note { border-radius: 12px; }
+  .edit-card, .section-card, .result-card { border-radius: 14px; }
+  .readout { border-radius: 16px; }
+  .modal { border-radius: 18px; }
+  .modal-btn { border-radius: 12px; min-height: 46px; }
+  .modal-btn.primary, .save-btn { background: var(--accent); color: var(--on-accent); }
+  body.dark .modal-btn.primary, body.dark .save-btn { color: var(--on-accent); }
+
+  /* haku, suodattimet */
+  .search-row input { min-height: 48px; border-radius: 14px; font-family: var(--sans); }
+  .filter-chip { border-radius: 18px; padding: 8px 14px; font-size: 13px; }
+  .filter-chip.active { border-color: var(--text); background: var(--text); color: var(--bg); }
+  .filter-chip.sort.active { border-color: var(--accent); background: var(--accent-dim); color: var(--accent-text); }
+  .quality-bar { border-radius: 12px; border-color: var(--orange-line); min-height: 44px; }
+
+  /* työkalukortti */
+  .tool-card { border-radius: 14px; }
+  .tool-head { padding: 12px; }
+  .tool-t {
+    background: var(--accent-dim); color: var(--accent-text);
+    border-radius: 10px; font-size: 16px; padding: 9px 6px;
+  }
+  body.dark .tool-t { color: var(--accent-text); }
+  .tool-card.dup .tool-t { background: var(--red); color: #FFFFFF; }
+  .tool-pot { background: transparent; border: none; color: var(--text-dim); padding: 0; font-size: 11px; }
+  .tool-name { font-size: 15px; }
+  .tool-type { font-size: 12px; }
+  .tool-brand { color: var(--text-dim); font-weight: 500; }
+  .chip { border-radius: 6px; background: var(--chip); color: var(--steel-light); font-weight: 600; }
+  .chip.key { background: var(--accent-dim); color: var(--accent-text); }
+  .chip.mats { border-color: var(--accent-dim); color: var(--accent-text); background: transparent; }
+  .chip.tila-koneessa, body.dark .chip.tila-koneessa { background: var(--green-dim); color: var(--green); }
+  .tool-card.editing { border-color: var(--accent); overflow: visible; }
+  .tool-body { border-top-color: var(--panel-border); }
+  .peek-row { border-radius: 10px; }
+  .cut-row { border-radius: 12px; }
+  .group-label { font-size: 10.5px; color: var(--text-dim); }
+  mark { background: #FFE08A; color: #14191E; }
+
+  /* lukutila */
+  .luku { padding-top: 12px; }
+  .spec-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(86px, 1fr)); gap: 8px; }
+  .spec { background: var(--panel-2); border-radius: 10px; padding: 8px 10px; min-width: 0; }
+  .spec-k { display: block; font-size: 11px; color: var(--text-dim); }
+  .spec-v {
+    display: block; font-family: var(--mono); font-weight: 700; font-size: 16px; margin-top: 2px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .spec-v.tyhja { color: var(--steel); font-weight: 500; }
+  .spec.neg .spec-v { color: var(--red); }
+  .mono { font-family: var(--mono); }
+  .luku-tausta { font-size: 12.5px; color: var(--text-dim); margin-top: 10px; line-height: 1.45; }
+  .luku-otsikko {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    margin: 18px 0 8px; font-size: 13.5px; font-weight: 700;
+  }
+  .luku-otsikko b { font-family: var(--mono); font-size: 12px; color: var(--text-dim); margin-left: 4px; }
+  .luku-tyhja { font-size: 12.5px; color: var(--text-dim); }
+  .luku-arvot .peek-row:first-child { margin-top: 0; }
+  .peek-alias { font-weight: 500; color: var(--text-dim); font-size: 11.5px; margin-left: 4px; }
+  .luku-muistio {
+    white-space: pre-wrap; font-size: 13.5px; line-height: 1.45;
+    background: var(--panel-2); border-radius: 10px; padding: 10px 12px;
+  }
+  .luku-napit { display: flex; gap: 8px; margin-top: 16px; }
+  .luku-napit > * { flex: 1; margin-top: 0; }
+  .luku-napit.toissijainen { margin-top: 8px; }
+  .pieni-btn {
+    min-height: 36px; padding: 0 12px; border-radius: 10px; flex-shrink: 0;
+    border: 1px solid var(--panel-border); background: transparent; color: var(--text);
+    font-family: var(--sans); font-size: 13px; font-weight: 600;
+  }
+  .pieni-btn:active { border-color: var(--accent); color: var(--accent-text); }
+  .ensisijainen-btn {
+    min-height: 46px; padding: 0 16px; border-radius: 12px; border: none;
+    background: var(--accent); color: var(--on-accent);
+    font-family: var(--sans); font-size: 14px; font-weight: 700;
+  }
+  .ensisijainen-btn.pieni { min-height: 38px; padding: 0 14px; font-size: 13px; }
+  .ensisijainen-btn:active { filter: brightness(0.92); }
+
+  /* teräpalat */
+  .pala-lista { border: 1px solid var(--panel-border); border-radius: 12px; overflow: hidden; }
+  .pala-luku { display: flex; align-items: center; gap: 12px; padding: 9px 10px 9px 12px; border-top: 1px solid var(--panel-border); }
+  .pala-luku:first-child { border-top: none; }
+  .pala-luku.terassa { background: var(--accent-dim); }
+  .pala-radio {
+    position: relative; flex-shrink: 0; width: 22px; height: 22px; padding: 0;
+    border-radius: 50%; border: 1.5px solid var(--steel); background: transparent; display: inline-block;
+  }
+  .pala-radio::before { content: ''; position: absolute; inset: -11px; }   /* 44 px kosketusalue */
+  .pala-radio.on { border: 6px solid var(--accent-dim); background: var(--accent); box-shadow: 0 0 0 1.5px var(--accent); }
+  .pala-teksti { flex: 1; min-width: 0; }
+  .pala-koodi { font-family: var(--mono); font-size: 13.5px; font-weight: 600; overflow-wrap: anywhere; }
+  .pala-koodi .tyhja { color: var(--text-dim); font-family: var(--sans); font-weight: 500; }
+  .pala-ala { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-top: 3px; font-size: 12px; color: var(--text-dim); }
+  .pala-laatu { font-family: var(--mono); font-size: 11px; font-weight: 600; background: var(--chip); color: var(--steel-light); padding: 2px 6px; border-radius: 5px; }
+  .pala-linkki {
+    flex-shrink: 0; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;
+    border-radius: 10px; border: 1px solid var(--panel-border); color: var(--text-dim); text-decoration: none; font-size: 15px;
+  }
+  .pala-muokkaukset { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+  .pala-muokkaus { border: 1px solid var(--panel-border); border-radius: 12px; padding: 10px; background: var(--panel-2); }
+  .pala-muokkaus.terassa { border-color: var(--accent); }
+  .pala-muokkaus-otsikko { display: flex; align-items: center; gap: 12px; font-size: 12.5px; font-weight: 600; color: var(--text-dim); min-height: 30px; }
+  .pala-muokkaus-otsikko > span:not(.pala-radio) { flex: 1; }
+  .pala-muokkaus .field-grid { margin-top: 8px !important; }
+  .pala-muokkaus + .pala-muokkaus { margin-top: 0; }
+
+  /* muokkaustila */
+  .muokkaus-palkki {
+    position: sticky; top: 0; z-index: 6;
+    display: flex; align-items: center; gap: 8px;
+    margin: 0 -14px; padding: 10px 14px;
+    background: var(--panel); border-bottom: 1px solid var(--panel-border);
+  }
+  .muokkaus-tila { flex: 1; min-width: 0; display: flex; flex-direction: column; font-size: 13.5px; line-height: 1.25; }
+  .muokkaus-tila span { font-size: 11.5px; color: var(--green); }
+
+  /* haku + pikahaku-nappi + viimeksi avatut */
+  .haku-rivi { display: flex; gap: 8px; align-items: stretch; }
+  .haku-rivi .search-row { flex: 1; min-width: 0; }
+  .pika-btn {
+    flex-shrink: 0; display: flex; align-items: center; gap: 6px; padding: 0 14px; min-height: 48px;
+    border-radius: 14px; border: none; background: var(--accent-dim); color: var(--accent-text);
+    font-family: var(--mono); font-size: 15px; font-weight: 700;
+  }
+  .pika-btn svg { width: 18px; height: 18px; }
+  .viimeksi { display: flex; align-items: center; gap: 6px; margin-top: 10px; overflow-x: auto; scrollbar-width: none; }
+  .viimeksi::-webkit-scrollbar { display: none; }
+  .viimeksi-otsikko {
+    flex-shrink: 0; margin-right: 2px; font-family: var(--mono); font-size: 10.5px; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-dim);
+  }
+  .viimeksi-nappi {
+    flex-shrink: 0; height: 36px; padding: 0 12px; border-radius: 10px;
+    border: 1px solid var(--panel-border); background: var(--panel); color: var(--text);
+    font-family: var(--mono); font-size: 13px; font-weight: 600;
+  }
+  .viimeksi-nappi:active { border-color: var(--accent); color: var(--accent-text); }
+
+  /* pikahaku */
+  .pikahaku {
+    position: fixed; inset: 0; z-index: 60; display: none;
+    align-items: flex-end; justify-content: center; background: rgba(6, 8, 10, 0.55);
+  }
+  .pikahaku.show { display: flex; }
+  body.pikahaku-auki { overflow: hidden; }
+  .pikahaku-sisus {
+    width: 100%; max-width: 480px; max-height: 100%; overflow-y: auto;
+    display: flex; flex-direction: column; background: var(--bg);
+    border-radius: 20px 20px 0 0; padding-bottom: env(safe-area-inset-bottom);
+  }
+  @media (min-width: 600px) {
+    .pikahaku { align-items: center; padding: 20px; }
+    .pikahaku-sisus { border-radius: 20px; }
+  }
+  .pikahaku-yla { display: flex; align-items: center; gap: 8px; padding: 10px 10px 0; }
+  .pikahaku-sulje {
+    width: 44px; height: 44px; border: none; background: transparent; color: var(--text);
+    border-radius: 12px; display: flex; align-items: center; justify-content: center;
+  }
+  .pikahaku-sulje svg { width: 22px; height: 22px; }
+  .pikahaku-otsikko { font-size: 15px; font-weight: 700; }
+  .pikahaku-naytto {
+    display: flex; align-items: center; gap: 4px; min-height: 72px; padding: 12px 20px 4px;
+    font-family: var(--mono); font-size: 52px; font-weight: 700; line-height: 1.1;
+  }
+  .pikahaku-t { color: var(--steel); }
+  .pikahaku-kursori { width: 3px; height: 46px; background: var(--accent); margin-left: 2px; animation: pika-vilkku 1s steps(1) infinite; }
+  @keyframes pika-vilkku { 50% { opacity: 0; } }
+  .pikahaku-tulokset { display: flex; flex-direction: column; gap: 6px; min-height: 140px; padding: 8px 16px 0; }
+  .pika-tulos {
+    display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px 12px; text-align: left;
+    border-radius: 12px; border: 1px solid var(--panel-border); background: var(--panel); color: var(--text);
+    font-family: var(--sans);
+  }
+  .pika-tulos.paras { background: var(--accent-dim); border-color: var(--accent); }
+  .pika-t { min-width: 56px; font-family: var(--mono); font-size: 16px; font-weight: 700; color: var(--text-dim); }
+  .pika-tulos.paras .pika-t { color: var(--accent-text); }
+  .pika-nimi { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .pika-nimi b { font-size: 14.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pika-nimi span { font-size: 12px; color: var(--text-dim); }
+  .pika-avaa { flex-shrink: 0; font-size: 13px; font-weight: 700; color: var(--accent-text); }
+  .pika-ei { font-size: 13px; color: var(--text-dim); line-height: 1.45; padding: 6px 2px; }
+  .pikahaku-viimeksi { padding: 12px 16px 0; }
+  .pika-otsikko {
+    margin-bottom: 8px; font-family: var(--mono); font-size: 10.5px; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-dim);
+  }
+  .pika-viim-rivi { display: flex; gap: 6px; flex-wrap: wrap; }
+  .pikahaku-nappaimet {
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px;
+    margin-top: 14px; padding: 10px 8px 14px; background: var(--panel-2); border-top: 1px solid var(--panel-border);
+  }
+  .pikahaku-nappaimet button {
+    height: 56px; border: none; border-radius: 12px; background: var(--panel); color: var(--text);
+    font-family: var(--mono); font-size: 22px; font-weight: 600;
+  }
+  body.dark .pikahaku-nappaimet { background: #1B2026; }
+  body.dark .pikahaku-nappaimet button { background: #2A3139; }
+  .pikahaku-nappaimet button.toiminto, body.dark .pikahaku-nappaimet button.toiminto { background: transparent; color: var(--text-dim); }
+  .pikahaku-nappaimet button.ok, body.dark .pikahaku-nappaimet button.ok { background: var(--accent); color: var(--on-accent); }
+  .pikahaku-nappaimet button:active { filter: brightness(1.15); }
+
+  /* välilehdet: kuvake + teksti */
+  .tab-btn { position: relative; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .tab-btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+  .tab-badge {
+    min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px;
+    background: var(--orange); color: #1A1204; font-family: var(--mono); font-size: 10.5px; font-weight: 700;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .tab-badge:empty { display: none; }
+
+  /* puhelin ja tabletti: välilehdet alapalkkiin peukalon ulottuville */
+  @media not all and (min-width: 900px) and (pointer: fine) {
+    .tabbar {
+      position: fixed; left: 0; right: 0; bottom: 0; top: auto; z-index: 30;
+      max-width: none; margin: 0; gap: 0; justify-content: space-around;
+      padding: 4px 4px calc(6px + env(safe-area-inset-bottom));
+      background: var(--bar); border-top: 1px solid var(--panel-border); border-bottom: none;
+    }
+    .tab-btn {
+      flex: 1 1 0; min-width: 0; min-height: 54px; flex-direction: column; gap: 3px;
+      padding: 6px 2px 4px; border: none; border-radius: 10px; background: transparent;
+      color: var(--text-dim); font-size: 11px; font-weight: 600;
+    }
+    .tab-btn.active { border: none; background: transparent; color: var(--accent-text); }
+    .tab-btn svg { width: 22px; height: 22px; }
+    .tab-badge { position: absolute; top: 3px; left: calc(50% + 5px); }
+    .tabbar ~ footer { padding-bottom: calc(86px + env(safe-area-inset-bottom)); }
+    .machine-bar { top: 0 !important; }
+    .toast { bottom: calc(88px + env(safe-area-inset-bottom)); }
+  }
+
+  /* ilmoitus */
+  .toast { border-radius: 14px; padding: 12px 16px; background: #1F252C; color: #E8ECEF; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+  .toast .toast-btn { color: #4FD1C5; }
+  body.dark .toast { background: #E8ECEF; color: #0F1215; }
+  body.dark .toast .toast-btn { color: #0B6B62; }
+
+  /* asetukset */
+  .tallennus-tila {
+    flex-shrink: 0; display: inline-flex; align-items: center; gap: 7px; height: 30px; padding: 0 11px;
+    border-radius: 15px; background: var(--green-dim); color: var(--green); font-size: 12px; font-weight: 600;
+  }
+  .tallennus-tila::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+  .tallennus-tila.odottaa { background: var(--orange-dim); color: var(--orange); }
+  #viewData .header-left { gap: 6px; }
+  #viewData .back-btn { width: 44px; justify-content: center; }
+  #viewData .back-btn svg { width: 22px; height: 22px; }
+  .aset-koskee {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 6px 6px;
+    font-size: 11.5px; color: var(--text-dim);
+  }
+  .aset-koskee > span:not(.scope) { margin-right: 6px; }
+  .scope {
+    flex-shrink: 0; display: inline-block; font-family: var(--mono); font-size: 10px; font-weight: 600;
+    letter-spacing: 0.02em; padding: 3px 6px; border-radius: 6px; line-height: 1.2; vertical-align: middle;
+    text-transform: none;
+  }
+  .scope.kone { background: var(--accent-dim); color: var(--accent-text); }
+  .scope.kaikki { background: #E6ECFF; color: #3354B8; }
+  body.dark .scope.kaikki { background: #1A2440; color: #9DB6FF; }
+  .scope.laite { background: var(--chip); color: var(--steel-light); }
+  .section-label .scope, .edit-id .scope, .aset-ala-otsikko .scope { margin-left: 8px; letter-spacing: 0.02em; }
+  .aset-ryhma { border: 1px solid var(--panel-border); border-radius: 14px; background: var(--panel); overflow: hidden; }
+  .aset-rivi {
+    display: flex; align-items: center; gap: 10px; width: 100%; min-height: 56px; padding: 8px 12px 8px 14px;
+    border: none; border-top: 1px solid var(--panel-border); background: transparent; color: var(--text); text-align: left;
+    font-family: var(--sans);
+  }
+  .aset-rivi:first-child { border-top: none; }
+  .aset-rivi:active { background: var(--panel-2); }
+  .aset-teksti { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .aset-teksti b { font-size: 14.5px; font-weight: 600; }
+  .aset-teksti span { font-size: 12px; color: var(--text-dim); }
+  .aset-chev { width: 16px; height: 16px; color: var(--steel); flex-shrink: 0; }
+  .aset-ala-otsikko { font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+  #viewData .edit-card { margin-top: 12px; }
+
+  /* työstöarvot: syötetyt tekstin värillä, lasketut korostusvärillä */
+  .cut-vals b { color: var(--text); }
+  .cut-vals b.laskettu-arvo { color: var(--accent-text); }
+  .cut-vals.suositus b { color: var(--orange); }
+  .tab-badge { color: #FFFFFF; }
+  body.dark .tab-badge { color: #1A1204; }
 </style>
 </head>
 <body>
@@ -1336,11 +1694,13 @@
       </button>
     </header>
 
-    <div class="tabbar">
-      <button class="tab-btn" data-tool="viewToolList">Työkalut</button>
-      <button class="tab-btn active" data-tool="viewJawCalc">Leuka</button>
-      <button class="tab-btn" data-tool="viewSP2Calc">SP2 &amp; G55</button>
-    </div>
+    <nav class="tabbar" aria-label="Päävalikko">
+      <button class="tab-btn" data-tool="viewToolList"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg><span>Työkalut</span></button>
+      <button class="tab-btn active" data-tool="viewJawCalc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg><span>Leuka</span></button>
+      <button class="tab-btn" data-tool="viewSP2Calc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="4"/></svg><span>SP2 &amp; G55</span></button>
+      <button class="tab-btn" data-nav="tarkistus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg><span>Tarkistus</span><span class="tab-badge"></span></button>
+      <button class="tab-btn" data-nav="asetukset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Asetukset</span></button>
+    </nav>
 
     <div class="machine-bar"></div>
     <div class="storage-warn">
@@ -1395,7 +1755,7 @@
       </section>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · LEUKAKORJAIN · v2.2</footer>
+    <footer><span class="machine-name">NTX3000</span> · LEUKAKORJAIN · v3.0</footer>
   </div>
 
   <!-- ===================== ASETUKSET: LEUKAKORJAIN ===================== -->
@@ -1431,7 +1791,7 @@
       </section>
 
       <section>
-        <button class="add-btn" id="goDataBtn">Varmuuskopiot ja luettelot</button>
+        <button class="add-btn" id="goDataBtn">Kaikki asetukset</button>
       </section>
 
       <div class="note">
@@ -1466,11 +1826,13 @@
       </button>
     </header>
 
-    <div class="tabbar">
-      <button class="tab-btn" data-tool="viewToolList">Työkalut</button>
-      <button class="tab-btn" data-tool="viewJawCalc">Leuka</button>
-      <button class="tab-btn active" data-tool="viewSP2Calc">SP2 &amp; G55</button>
-    </div>
+    <nav class="tabbar" aria-label="Päävalikko">
+      <button class="tab-btn" data-tool="viewToolList"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg><span>Työkalut</span></button>
+      <button class="tab-btn" data-tool="viewJawCalc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg><span>Leuka</span></button>
+      <button class="tab-btn active" data-tool="viewSP2Calc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="4"/></svg><span>SP2 &amp; G55</span></button>
+      <button class="tab-btn" data-nav="tarkistus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg><span>Tarkistus</span><span class="tab-badge"></span></button>
+      <button class="tab-btn" data-nav="asetukset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Asetukset</span></button>
+    </nav>
 
     <div class="machine-bar"></div>
     <div class="storage-warn">
@@ -1526,7 +1888,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · SP2 LASKURI · v2.2</footer>
+    <footer><span class="machine-name">NTX3000</span> · SP2 LASKURI · v3.0</footer>
   </div>
 
   <!-- ===================== ASETUKSET: SP2 ===================== -->
@@ -1590,11 +1952,13 @@
       </div>
     </header>
 
-    <div class="tabbar">
-      <button class="tab-btn active" data-tool="viewToolList">Työkalut</button>
-      <button class="tab-btn" data-tool="viewJawCalc">Leuka</button>
-      <button class="tab-btn" data-tool="viewSP2Calc">SP2 &amp; G55</button>
-    </div>
+    <nav class="tabbar" aria-label="Päävalikko">
+      <button class="tab-btn active" data-tool="viewToolList"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg><span>Työkalut</span></button>
+      <button class="tab-btn" data-tool="viewJawCalc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg><span>Leuka</span></button>
+      <button class="tab-btn" data-tool="viewSP2Calc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="4"/></svg><span>SP2 &amp; G55</span></button>
+      <button class="tab-btn" data-nav="tarkistus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg><span>Tarkistus</span><span class="tab-badge"></span></button>
+      <button class="tab-btn" data-nav="asetukset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Asetukset</span></button>
+    </nav>
 
     <div class="machine-bar"></div>
     <div class="storage-warn">
@@ -1605,10 +1969,16 @@
 
     <main>
       <section>
-        <div class="search-row">
-          <input type="text" id="toolSearch" placeholder="Hae: T-numero, nimi, teräpala, materiaali…" autocomplete="off">
-          <button type="button" class="search-clear" id="toolSearchClear" aria-label="Tyhjennä haku">×</button>
+        <div class="haku-rivi">
+          <div class="search-row">
+            <input type="text" id="toolSearch" placeholder="Hae: nimi, teräpala, materiaali…" autocomplete="off">
+            <button type="button" class="search-clear" id="toolSearchClear" aria-label="Tyhjennä haku">×</button>
+          </div>
+          <button type="button" class="pika-btn" id="pikahakuBtn" aria-label="Avaa työkalu T-numerolla">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 5h2M11 5h2M17 5h2M5 11h2M11 11h2M17 11h2M5 17h2M11 17h2M17 17h2"></path></svg>T#
+          </button>
         </div>
+        <div class="viimeksi" id="viimeksiRow"></div>
         <div class="filter-wrap"><div class="filter-row" id="typeFilterRow"></div></div>
         <div class="list-meta" id="toolListMeta"></div>
         <button type="button" class="quality-bar" id="qualityBar"></button>
@@ -1627,7 +1997,7 @@
         </div>
         <div class="btn-row" style="margin-top:8px;">
           <button class="add-btn" id="pasteToolsBtn" style="margin-top:0;">Liitä rivit</button>
-          <button class="add-btn" id="openQualityBtn" style="margin-top:0;">Tarkista ja varasto</button>
+          <button class="add-btn" id="openQualityBtn" style="margin-top:0;">Tarkista lista</button>
         </div>
         <input type="file" id="importToolsFile" accept=".csv,text/csv" style="display:none;">
       </section>
@@ -1641,53 +2011,67 @@
       </div>
 
       <div class="note">
-        Muutokset tallentuvat itsestään. Vain <strong>T-numero</strong> ja <strong>nimi</strong> ovat pakollisia —
-        muut kentät voi täyttää sitä mukaa kun tieto karttuu. Samanlaisen terän saa nopeasti
-        napista <strong>Kopioi työkalu</strong>. Yläkulman nuoli vie listan CSV:nä; koko sovelluksen
-        varmuuskopio löytyy Leuka-välilehden asetuksista.
+        Kortti aukeaa lukutilaan; <strong>Muokkaa</strong> avaa kentät ja <strong>Kumoa muutokset</strong>
+        palauttaa kortin siihen mitä se oli ennen muokkausta. Muutokset tallentuvat itsestään.
+        <strong>T#</strong>-napista avaat työkalun suoraan numerolla. Samanlaisen terän saa nopeasti
+        napista <strong>Kopioi uudeksi</strong>. Yläkulman nuoli vie listan CSV:nä; koko sovelluksen
+        varmuuskopio löytyy kohdasta Asetukset.
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · TYÖKALULISTA · v2.2</footer>
+    <footer><span class="machine-name">NTX3000</span> · TYÖKALULISTA · v3.0</footer>
   </div>
 
-  <!-- ===================== TIEDOT JA ASETUKSET ===================== -->
+  <!-- ===================== ASETUKSET ===================== -->
   <div class="view" id="viewData">
     <header>
       <div class="header-left">
-        <button class="back-btn" id="closeData">
+        <button class="back-btn" id="closeData" aria-label="Takaisin">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M19 12H5M12 19l-7-7 7-7"></path>
           </svg>
-          Takaisin
         </button>
+        <div class="title">Asetukset</div>
       </div>
+      <div class="tallennus-tila" id="tallennusTila">Tallennettu</div>
     </header>
 
     <main>
+      <div class="aset-koskee">Koskee:
+        <span class="scope kone machine-abbr">NTX</span><span>tämä kone</span>
+        <span class="scope kaikki">KAIKKI</span><span>kaikki koneet</span>
+        <span class="scope laite">LAITE</span><span>vain tämä laite</span>
+      </div>
+
       <section>
-        <div class="section-label">Ulkoasu</div>
-        <div class="seg-row" id="themeRow">
-          <button class="seg-btn" data-theme="auto"><span class="seg-name">Automaattinen</span></button>
-          <button class="seg-btn" data-theme="light"><span class="seg-name">Vaalea</span></button>
-          <button class="seg-btn" data-theme="dark"><span class="seg-name">Tumma</span></button>
+        <div class="section-label">Kone</div>
+        <div class="aset-ryhma">
+          <button type="button" class="aset-rivi" id="asetPakatBtn"><span class="aset-teksti"><b>Pakat ja leuat</b><span>Leukalaskurin pakat, puristuskohdat ja leuat</span></span><span class="scope kone machine-abbr">NTX</span><svg class="aset-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button>
+          <button type="button" class="aset-rivi" id="asetSp2Btn"><span class="aset-teksti"><b>SP2 ja G55</b><span>2. karan otsapinta ja nollapiste</span></span><span class="scope kone machine-abbr">NTX</span><svg class="aset-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button>
+          <button type="button" class="aset-rivi" id="goMachinesBtn"><span class="aset-teksti"><b>Koneet ja välilehdet</b><span>Koneiden nimet ja näkyvät välilehdet</span></span><span class="scope kaikki">KAIKKI</span><svg class="aset-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button>
         </div>
       </section>
 
       <section>
-        <div class="section-label">Laskukaavat</div>
-        <div class="seg-row" id="kaavaRow">
-          <button class="seg-btn" data-kaavat="0"><span class="seg-name">Piilossa</span></button>
-          <button class="seg-btn" data-kaavat="1"><span class="seg-name">Näytä laskukaavat</span></button>
+        <div class="section-label">Luettelot</div>
+        <div class="aset-ryhma">
+          <button type="button" class="aset-rivi" id="goTypesBtn"><span class="aset-teksti"><b>Työkalutyypit</b><span>Tyypit ja niiden mittakentät</span></span><span class="scope kaikki">KAIKKI</span><svg class="aset-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button>
         </div>
+        <div class="edit-card" style="margin-top:12px;">
+          <div class="edit-header"><span class="edit-id">Materiaalit</span><span class="scope kaikki">KAIKKI</span></div>
+          <div class="mat-list" id="matList"></div>
+          <button class="add-cut-btn" id="addMatBtn" style="margin-top:10px;">+ Lisää materiaali</button>
+        </div>
+        <div class="edit-card" style="margin-top:12px;">
+          <div class="edit-header"><span class="edit-id">Valmistajat</span><span class="scope kaikki">KAIKKI</span></div>
+          <div class="mat-list" id="brandList"></div>
+          <button class="add-cut-btn" id="addBrandBtn" style="margin-top:10px;">+ Lisää valmistaja</button>
+        </div>
+        <div class="save-toast" id="dataToast" style="margin-top:10px;"></div>
       </section>
 
       <section>
-        <button class="add-btn" id="goMachinesBtn">Koneet ja välilehdet</button>
-      </section>
-
-      <section>
-        <div class="section-label">Synkronointi</div>
+        <div class="section-label">Synkronointi <span class="scope laite">LAITE</span></div>
         <div class="edit-card">
           <div class="field-grid">
             <label class="full">Palvelimen osoite
@@ -1727,7 +2111,8 @@
       </section>
 
       <section>
-        <div class="section-label">1 — Koko sovelluksen varmuuskopio</div>
+        <div class="section-label">Varmuuskopio ja siirto</div>
+        <div class="aset-ala-otsikko">Koko sovellus (JSON) <span class="scope kone machine-abbr">NTX</span><span class="scope kaikki">KAIKKI</span></div>
         <div class="btn-row">
           <button class="add-btn" id="exportBtn">Vie JSON</button>
           <button class="add-btn" id="importBtn">Tuo JSON</button>
@@ -1739,10 +2124,7 @@
           tyypit, materiaalit ja valmistajat.
           Tuonti korvaa nykyiset tiedot. Tämä on se tiedosto jonka otat talteen ennen puhelimen vaihtoa.
         </div>
-      </section>
-
-      <section>
-        <div class="section-label">2 — Vain työkalulista</div>
+        <div class="aset-ala-otsikko" style="margin-top:18px;">Vain työkalulista (CSV) <span class="scope kone machine-abbr">NTX</span></div>
         <div class="btn-row">
           <button class="add-btn" id="exportToolsBtn2">Vie CSV</button>
           <button class="add-btn" id="importToolsBtn2">Tuo CSV</button>
@@ -1756,23 +2138,21 @@
       </section>
 
       <section>
-        <div class="section-label">3 — Luettelot</div>
-        <button class="add-btn" id="goTypesBtn">Työkalutyypit ja niiden kentät</button>
-        <div class="edit-card" style="margin-top:12px;">
-          <div class="edit-header"><span class="edit-id">Materiaalit</span></div>
-          <div class="mat-list" id="matList"></div>
-          <button class="add-cut-btn" id="addMatBtn" style="margin-top:10px;">+ Lisää materiaali</button>
+        <div class="section-label">Ulkoasu <span class="scope laite">LAITE</span></div>
+        <div class="seg-row" id="themeRow">
+          <button class="seg-btn" data-theme="auto"><span class="seg-name">Automaattinen</span></button>
+          <button class="seg-btn" data-theme="light"><span class="seg-name">Vaalea</span></button>
+          <button class="seg-btn" data-theme="dark"><span class="seg-name">Tumma</span></button>
         </div>
-        <div class="edit-card" style="margin-top:12px;">
-          <div class="edit-header"><span class="edit-id">Valmistajat</span></div>
-          <div class="mat-list" id="brandList"></div>
-          <button class="add-cut-btn" id="addBrandBtn" style="margin-top:10px;">+ Lisää valmistaja</button>
+        <div class="aset-ala-otsikko" style="margin-top:14px;">Laskukaavat</div>
+        <div class="seg-row" id="kaavaRow">
+          <button class="seg-btn" data-kaavat="0"><span class="seg-name">Piilossa</span></button>
+          <button class="seg-btn" data-kaavat="1"><span class="seg-name">Näytä laskukaavat</span></button>
         </div>
-        <div class="save-toast" id="dataToast" style="margin-top:10px;"></div>
       </section>
     </main>
 
-    <footer>NTX3000 · TIEDOT · v2.2</footer>
+    <footer><span class="machine-name">NTX3000</span> · ASETUKSET · v3.0</footer>
   </div>
 
   <!-- ===================== KONEET ===================== -->
@@ -1806,7 +2186,7 @@
       </div>
     </main>
 
-    <footer>KONEET · v2.2</footer>
+    <footer>KONEET · v3.0</footer>
   </div>
 
   <!-- ===================== TYÖKALUTYYPPIEN HALLINTA ===================== -->
@@ -1839,7 +2219,7 @@
       </section>
     </main>
 
-    <footer>NTX3000 · TYÖKALUTYYPIT · v2.2</footer>
+    <footer>NTX3000 · TYÖKALUTYYPIT · v3.0</footer>
   </div>
 
   <!-- ===================== TUONTI: ESIKATSELU ===================== -->
@@ -1907,10 +2287,10 @@
         </div>
       </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TUONTI · v2.2</footer>
+    <footer><span class="machine-name">NTX3000</span> · TUONTI · v3.0</footer>
   </div>
 
-  <!-- ===================== TARKISTUS JA VARASTO ===================== -->
+  <!-- ===================== TARKISTUS ===================== -->
   <div class="view" id="viewQuality">
     <header>
       <div class="header-left">
@@ -1927,17 +2307,8 @@
         <div class="section-label">Listan tarkistus</div>
         <div class="edit-list" id="qualityList"></div>
       </section>
-      <section>
-        <div class="section-label">Teräpalavarasto</div>
-        <div class="edit-list" id="stockList"></div>
-        <div class="note" style="margin-top:10px;">
-          Varasto on teräpalakoodikohtainen ja yhteinen kaikille koneille: sama DNMG 150608 näkyy
-          jokaisella työkalulla joka käyttää sitä. Kirjaa vaihto työkalukortin <strong>Pala vaihdettu</strong>
-          -napista, niin kulutus kertyy tänne.
-        </div>
-      </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TARKISTUS · v2.2</footer>
+    <footer><span class="machine-name">NTX3000</span> · TARKISTUS · v3.0</footer>
   </div>
 
 </div>
@@ -1958,6 +2329,28 @@
 </div>
 
 <div class="toast" id="toast"></div>
+
+<div class="pikahaku" id="pikahaku" role="dialog" aria-modal="true" aria-label="Avaa työkalu T-numerolla">
+  <div class="pikahaku-sisus">
+    <div class="pikahaku-yla">
+      <button type="button" class="pikahaku-sulje" id="pikahakuSulje" aria-label="Sulje">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"></path></svg>
+      </button>
+      <div class="pikahaku-otsikko">Avaa työkalu numerolla</div>
+    </div>
+    <div class="pikahaku-naytto"><span class="pikahaku-t">T</span><span id="pikahakuNumero"></span><span class="pikahaku-kursori"></span></div>
+    <div class="pikahaku-tulokset" id="pikahakuTulokset"></div>
+    <div class="pikahaku-viimeksi" id="pikahakuViimeksi"></div>
+    <div class="pikahaku-nappaimet" id="pikahakuNappaimet">
+      <button type="button" data-n="1">1</button><button type="button" data-n="2">2</button><button type="button" data-n="3">3</button>
+      <button type="button" data-n="4">4</button><button type="button" data-n="5">5</button><button type="button" data-n="6">6</button>
+      <button type="button" data-n="7">7</button><button type="button" data-n="8">8</button><button type="button" data-n="9">9</button>
+      <button type="button" data-n="del" class="toiminto" aria-label="Poista numero">⌫</button>
+      <button type="button" data-n="0">0</button>
+      <button type="button" data-n="ok" class="ok" aria-label="Avaa">✓</button>
+    </div>
+  </div>
+</div>
 
 <script>
 'use strict';
@@ -2003,7 +2396,7 @@ function kaytaTeema() {
   const tumma = tummaKaytossa();
   document.body.classList.toggle('dark', tumma);
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.setAttribute('content', tumma ? '#14181C' : '#F4F6F8');
+  if (meta) meta.setAttribute('content', tumma ? '#0F1215' : '#F3F5F7');
   document.querySelectorAll('#themeRow .seg-btn').forEach(b => {
     b.classList.toggle('active', b.getAttribute('data-theme') === teema);
   });
@@ -2053,7 +2446,7 @@ const K_TILANNE     = 'ntx_tilannekuvat';     /* paikalliset palautuspisteet */
 const K_SYNC_VERSIO = 'ntx_sync_versio';      /* viimeksi tiedossa ollut palvelimen versio */
 const K_LAHETYS_PYYNTO = 'ntx_lahetys_pyynto';/* lähetä heti seuraavassa käynnistyksessä */
 let alustusKesken = true;   /* käynnistyksen migraatiot eivät ole käyttäjän muutoksia */
-const META_AVAIMET = ['ntx_muokattu', 'ntx_sync', 'ntx_teema', 'ntx_kaavat', 'ntx_varmuuskopio_pvm',
+const META_AVAIMET = ['ntx_muokattu', 'ntx_sync', 'ntx_teema', 'ntx_kaavat', 'ntx_viimeksi', 'ntx_varmuuskopio_pvm',
                       'ntx_sync_haettu', 'ntx_nakyma',
                       K_POISTOT, K_TILANNE, K_SYNC_VERSIO, K_LAHETYS_PYYNTO];
 
@@ -2522,7 +2915,12 @@ function showView(id, sailytaVieritys) {
   tallennaNakyma();
 }
 document.querySelectorAll('.tab-btn').forEach(btn => {
-  btn.addEventListener('click', () => showView(btn.getAttribute('data-tool')));
+  btn.addEventListener('click', () => {
+    const nav = btn.getAttribute('data-nav');
+    if (nav === 'tarkistus') return avaaTarkistus();
+    if (nav === 'asetukset') return openData(nykyinenNakyma());
+    showView(btn.getAttribute('data-tool'));
+  });
 });
 
 /* =================================================================
@@ -2981,11 +3379,18 @@ pakkaListEl.addEventListener('click', e => {
   }
   if (!isArmed(e.target)) return;
   disarm();
-  draftPakat.splice(idx, 1);
+  const poistettuPakka = draftPakat.splice(idx, 1)[0];
   tallennaLeuat();
   renderPakkaList();
   renderJawList();
   jawSaveToast.textContent = '';
+  toastAction((poistettuPakka.name || 'Pakka') + ' poistettu', 'Kumoa', () => {
+    draftPakat.splice(Math.min(idx, draftPakat.length), 0, poistettuPakka);
+    tallennaLeuat();
+    renderPakkaList();
+    renderJawList();
+    toast('Palautettu');
+  });
 });
 
 jawListEl.addEventListener('click', e => {
@@ -3040,7 +3445,7 @@ addJawBtn.addEventListener('click', () => addJaw(selectedPakkaUid));
 
 
 openJawSettingsBtn.addEventListener('click', openJawSettings);
-closeJawSettingsBtn.addEventListener('click', () => showView('viewJawCalc'));
+closeJawSettingsBtn.addEventListener('click', () => palaaAlasivulta('viewJawCalc'));
 
 /* Tyhjän pakan pikanappi: avaa asetukset ja luo leuan suoraan valitulle pakalle */
 if (goAddJawBtn) {
@@ -3290,7 +3695,7 @@ saveSP2SettingsBtn.addEventListener('click', () => {
 });
 
 openSP2SettingsBtn.addEventListener('click', openSP2Settings);
-closeSP2SettingsBtn.addEventListener('click', () => showView('viewSP2Calc'));
+closeSP2SettingsBtn.addEventListener('click', () => palaaAlasivulta('viewSP2Calc'));
 
 
 /* =================================================================
@@ -3742,6 +4147,55 @@ TOOLS.forEach(x => {
 function saveTools() { store.setJSON(mk(K_TOOLS), TOOLS); }
 
 /* -----------------------------------------------------------------
+   TERÄPALAT
+   x.insert / x.grade / x.insertUse = terässä nyt oleva pala.
+   x.muutPalat = [{ uid, code, grade, use }] = muut terään sopivat palat.
+   Vanhat kentät pysyvät ennallaan, joten vanhemmat versiot, CSV ja
+   tarkistukset toimivat kuten ennenkin.
+   ----------------------------------------------------------------- */
+function palaTaytetty(p) { return !!p && (has(p.code) || has(p.grade) || has(p.use)); }
+function muutPalat(x) {
+  return Array.isArray(x.muutPalat) ? x.muutPalat.filter(palaTaytetty) : [];
+}
+function kaikkiPalat(x) {
+  const lista = [];
+  if (has(x.insert) || has(x.grade) || has(x.insertUse)) {
+    lista.push({ uid: '', code: x.insert || '', grade: x.grade || '', use: x.insertUse || '', terassa: true });
+  }
+  muutPalat(x).forEach(p => lista.push({ uid: p.uid, code: p.code || '', grade: p.grade || '', use: p.use || '', terassa: false }));
+  return lista;
+}
+/* CSV-muoto: "KOODI / LAATU / käyttö | KOODI / LAATU / käyttö" */
+function palatTekstiksi(lista) {
+  return (lista || []).filter(palaTaytetty).map(p => {
+    const osat = [String(p.code || '').trim(), String(p.grade || '').trim(), String(p.use || '').trim()];
+    while (osat.length > 1 && osat[osat.length - 1] === '') osat.pop();
+    return osat.join(' / ');
+  }).join(' | ');
+}
+function palatTekstista(teksti) {
+  return String(teksti || '').split('|').map(osa => {
+    const k = osa.split(/\s+\/\s+/).map(v => v.trim());
+    return { uid: newUid('p'), code: k[0] || '', grade: k[1] || '', use: k.slice(2).join(' / ') };
+  }).filter(palaTaytetty);
+}
+/* Vaihtaa valitun palan terään; entinen terässä ollut siirtyy muihin paloihin */
+function asennaPala(x, palaUid) {
+  if (!Array.isArray(x.muutPalat)) return false;
+  const i = x.muutPalat.findIndex(p => p.uid === palaUid);
+  if (i === -1) return false;
+  const uusi = x.muutPalat[i];
+  const vanha = { uid: newUid('p'), code: x.insert || '', grade: x.grade || '', use: x.insertUse || '' };
+  x.insert = uusi.code || '';
+  x.grade = uusi.grade || '';
+  x.insertUse = uusi.use || '';
+  if (palaTaytetty(vanha)) x.muutPalat.splice(i, 1, vanha);
+  else x.muutPalat.splice(i, 1);
+  x.mod = new Date().toISOString();
+  return true;
+}
+
+/* -----------------------------------------------------------------
    TYÖKALUN TILA
    Tyhjä = ei merkitty. "Pois käytöstä" -tilat himmennetään listassa
    eikä niiltä vaadita makasiinipaikkaa tarkistuksessa.
@@ -3757,8 +4211,9 @@ function statusChipClass(st) {
 }
 
 /* -----------------------------------------------------------------
-   TERÄPALAVARASTO
-   Yksi rivi teräpalakoodia kohti, yhteinen kaikille koneille.
+   TERÄPALAVARASTO (poistettu käytöstä v3:ssa)
+   Vanhat varastorivit säilytetään ja synkronoidaan edelleen, jotta
+   mikään tieto ei katoa, mutta niitä ei enää näytetä eikä muokata.
    { uid, code, stock, min, log: [{ aika, n, t, kone }], mod }
    stock ja min ovat tekstiä kuten muutkin kentät; tyhjä = ei tiedossa.
    ----------------------------------------------------------------- */
@@ -3772,42 +4227,6 @@ let STOCK = loadStock();
 function saveStock() { store.setJSON(K_STOCK, STOCK); }
 /* "DNMG 15 06 08-MF" ja "dnmg150608-mf" ovat sama koodi */
 function koodiAvain(koodi) { return String(koodi || '').toUpperCase().replace(/[\s.]/g, ''); }
-function stockRivi(koodi) {
-  const k = koodiAvain(koodi);
-  return k ? (STOCK.find(r => koodiAvain(r.code) === k) || null) : null;
-}
-function stockRiviLuo(koodi) {
-  let r = stockRivi(koodi);
-  if (!r) {
-    r = { uid: newUid('s'), code: String(koodi).trim(), stock: '', min: '', log: [], mod: new Date().toISOString() };
-    STOCK.push(r);
-  }
-  if (!Array.isArray(r.log)) r.log = [];
-  return r;
-}
-function stockVahissa(r) {
-  if (!r || !has(r.stock) || !has(r.min)) return false;
-  const a = num(r.stock), m = num(r.min);
-  return !isNaN(a) && !isNaN(m) && a <= m;
-}
-/* Kulutus viimeisen N päivän ajalta */
-function stockKulutus(r, paivia) {
-  if (!r || !Array.isArray(r.log)) return 0;
-  const raja = Date.now() - paivia * 86400000;
-  return r.log.reduce((s, e) => {
-    const t = Date.parse(e.aika);
-    return (!isNaN(t) && t >= raja && num(e.n) < 0) ? s - num(e.n) : s;
-  }, 0);
-}
-function stockKirjaa(r, n, tool) {
-  r.log.push({ aika: new Date().toISOString(), n: n, t: tool && has(tool.t) ? String(tool.t) : '',
-               kone: activeMachine().name });
-  if (r.log.length > STOCK_LOG_MAX) r.log = r.log.slice(r.log.length - STOCK_LOG_MAX);
-  if (has(r.stock) && !isNaN(num(r.stock))) r.stock = String(Math.max(0, num(r.stock) + n));
-  r.mod = new Date().toISOString();
-  saveStock();
-}
-
 /* -----------------------------------------------------------------
    ALOITUSARVOT
    Yleiset lähtöarvot pinnoitetulle kovametallille ja HSS:lle, kun omaa
@@ -3910,6 +4329,8 @@ let sortMode = 't';   /* 't' = T-numero, 'pot' = makasiinipaikka */
 let openTools = {};   /* uid -> koko kortti avattu */
 let openMats  = {};   /* uid -> työstöarvojen pikakatselu avattu */
 let openCuts  = {};   /* materiaalirivin uid -> auki */
+let editTools = {};   /* uid -> kortti muokkaustilassa (muuten lukutila) */
+let editSnap  = {};   /* uid -> työkalun tiedot muokkauksen alussa, kumoamista varten */
 
 /* ---------- apufunktiot ---------- */
 function has(v) { return v !== '' && v != null; }
@@ -4072,10 +4493,9 @@ function toolChips(x) {
   if ((p.teeth || x.multiEdge === '1') && has(x.teeth)) chips.push({ txt: 'z' + x.teeth });
   if (p.dir && has(x.threadDir) && !isReverseDir(x.threadDir)) chips.push({ txt: x.threadDir });
 
-  if (has(x.insert)) {
-    const sr = stockRivi(x.insert);
-    chips.push({ txt: x.insert, warn: stockVahissa(sr) });
-  }
+  if (has(x.insert)) chips.push({ txt: x.insert });
+  const muita = muutPalat(x).length;
+  if (muita) chips.push({ txt: '+' + muita + (muita === 1 ? ' pala' : ' palaa') });
   if (has(x.grade))   chips.push({ txt: x.grade });
   if (has(x.spindle)) chips.push({ txt: x.spindle });
   if (has(x.status))  chips.push({ txt: x.status, cls: statusChipClass(x.status) });
@@ -4444,11 +4864,9 @@ function renderTypeFilter() {
 
   if (!TOOLS.length) { typeFilterRow.innerHTML = ''; return; }
   const tilat = TOOL_STATUSES.filter(st => st && TOOLS.some(x => x.status === st));
-  const tilattavia = TOOLS.filter(x => has(x.insert) && stockVahissa(stockRivi(x.insert))).length;
-  const erikois = typeFilter === '__ei__' || typeFilter === '__tilaa__' || typeFilter.indexOf('__tila__:') === 0;
+  const erikois = typeFilter === '__ei__' || typeFilter.indexOf('__tila__:') === 0;
   if (typeFilter && !erikois && !kaytossa.some(t => t.id === typeFilter)) typeFilter = '';
   if (typeFilter.indexOf('__tila__:') === 0 && tilat.indexOf(typeFilter.slice(9)) === -1) typeFilter = '';
-  if (typeFilter === '__tilaa__' && !tilattavia) typeFilter = '';
 
   let html = '<button class="filter-chip sort' + (sortMode === 't' ? ' active' : '') +
       '" data-sort="t">T-järjestys</button>' +
@@ -4471,16 +4889,12 @@ function renderTypeFilter() {
     html += '<button class="filter-chip' + (typeFilter === '__ei__' ? ' active' : '') +
       '" data-filter="__ei__">Ei tyyppiä (' + n + ')</button>';
   }
-  if (tilat.length || tilattavia) html += '<span class="filter-sep"></span>';
+  if (tilat.length) html += '<span class="filter-sep"></span>';
   tilat.forEach(st => {
     const n = TOOLS.filter(x => x.status === st).length;
     html += '<button class="filter-chip' + (typeFilter === '__tila__:' + st ? ' active' : '') +
       '" data-filter="__tila__:' + esc(st) + '">' + esc(st) + ' (' + n + ')</button>';
   });
-  if (tilattavia) {
-    html += '<button class="filter-chip' + (typeFilter === '__tilaa__' ? ' active' : '') +
-      '" data-filter="__tilaa__">Tilattavat palat (' + tilattavia + ')</button>';
-  }
   typeFilterRow.innerHTML = html;
   paivitaFilterHaivytys();
 }
@@ -4566,7 +4980,11 @@ function tyokaluTekstina(x) {
              (has(x.pot) ? '  (Pot ' + x.pot + ')' : ''));
   rivit.push((x.name || 'Nimetön') + (x.typeId ? '  \u2014  ' + typeName(x.typeId) : ''));
   if (has(x.brand)) rivit.push('Valmistaja: ' + x.brand);
-  if (has(x.insert)) rivit.push('Teräpala: ' + x.insert + (has(x.grade) ? '  (' + x.grade + ')' : ''));
+  if (has(x.insert)) rivit.push('Teräpala: ' + x.insert + (has(x.grade) ? '  (' + x.grade + ')' : '') +
+                                (has(x.insertUse) ? '  \u2014 ' + x.insertUse : ''));
+  const muut = muutPalat(x);
+  if (muut.length) rivit.push('Muut palat: ' + muut.map(p => (p.code || '?') + (has(p.grade) ? ' (' + p.grade + ')' : '') +
+                                                       (has(p.use) ? ' \u2014 ' + p.use : '')).join(', '));
   if (has(x.holder)) rivit.push('Pidin: ' + x.holder);
 
   const geo = [];
@@ -4625,11 +5043,139 @@ function suodatetutTyokalut(kaikki) {
     const st = typeFilter.slice(9);
     return kaikki.filter(x => (x.status || '') === st);
   }
-  if (typeFilter === '__tilaa__') return kaikki.filter(x => has(x.insert) && stockVahissa(stockRivi(x.insert)));
   return typeFilter ? kaikki.filter(x => x.typeId === typeFilter) : kaikki;
 }
 
+/* --- Työkalukortti: lukutila ja muokkaustila --- */
+function arvoRuutu(otsikko, arvo, luokka) {
+  const tyhja = !has(arvo) || String(arvo).trim() === '';
+  return '<div class="spec' + (luokka ? ' ' + luokka : '') + '"><span class="spec-k">' + esc(otsikko) + '</span>' +
+    '<span class="spec-v' + (tyhja ? ' tyhja' : '') + '">' + (tyhja ? '\u2014' : esc(arvo)) + '</span></div>';
+}
+
+function lukutilaHTML(x) {
+  const p = typeProps(x.typeId);
+  const uid = esc(x.uid);
+  const ruudut = [];
+  if (has(x.offset)) ruudut.push(arvoRuutu('Suuntaus', x.offset));
+  if (p.geo === 'dia')    ruudut.push(arvoRuutu('Halkaisija', has(x.radius) ? '\u00D8' + x.radius : ''));
+  if (p.geo === 'radius') ruudut.push(arvoRuutu('Säde', has(x.radius) ? 'R' + x.radius : ''));
+  ruudut.push(arvoRuutu('X-korj.', x.dia));
+  ruudut.push(arvoRuutu('Z-korj.', x.stickout));
+  if (p.b && has(x.bAngle))       ruudut.push(arvoRuutu('B-kulma', x.bAngle + '\u00B0', String(x.bAngle).trim().charAt(0) === '-' ? 'neg' : ''));
+  if (p.width && has(x.width))    ruudut.push(arvoRuutu('Leveys', x.width));
+  if (p.depth && has(x.maxDepth)) {
+    const suhde = onAksiaalinen(x) ? depthRatio(x) : '';
+    ruudut.push(arvoRuutu(onAksiaalinen(x) ? 'Syvyys' : (p.int && !p.width ? 'Pituus' : 'Max syvyys'),
+      x.maxDepth + (suhde ? ' (' + suhde + '\u00D7D)' : '')));
+  }
+  if (p.int && has(x.minBore))    ruudut.push(arvoRuutu(p.maxDia ? 'Pienin \u00D8' : 'Min. reikä', x.minBore));
+  if (p.maxDia && has(x.maxDia))  ruudut.push(arvoRuutu('Suurin \u00D8', x.maxDia));
+  if ((p.teeth || x.multiEdge === '1') && has(x.teeth)) ruudut.push(arvoRuutu('Hampaat', 'z' + x.teeth));
+  if (p.thread && has(x.threadSize)) ruudut.push(arvoRuutu('Kierre', x.threadSize));
+  if (p.dir && has(x.threadDir))  ruudut.push(arvoRuutu('Pyörintä', x.threadDir, isReverseDir(x.threadDir) ? 'neg' : ''));
+  if (has(x.spindle))             ruudut.push(arvoRuutu('Kara', x.spindle));
+
+  const tausta = [];
+  if (has(x.brand))  tausta.push(esc(x.brand));
+  if (has(x.holder)) tausta.push('pidin <span class="mono">' + esc(x.holder) + '</span>');
+
+  const palat = kaikkiPalat(x);
+  const palaRivit = palat.map(pl =>
+    '<div class="pala-luku' + (pl.terassa ? ' terassa' : '') + '">' +
+      (pl.terassa
+        ? '<span class="pala-radio on" title="Terässä nyt" aria-label="Terässä nyt"></span>'
+        : '<button type="button" class="pala-radio" data-action="mount-pala" data-uid="' + uid +
+            '" data-pala="' + esc(pl.uid) + '" aria-label="Merkitse terässä olevaksi"></button>') +
+      '<div class="pala-teksti">' +
+        '<div class="pala-koodi">' + (has(pl.code) ? esc(pl.code) : '<span class="tyhja">koodi puuttuu</span>') + '</div>' +
+        ((has(pl.grade) || has(pl.use))
+          ? '<div class="pala-ala">' + (has(pl.grade) ? '<span class="pala-laatu">' + esc(pl.grade) + '</span>' : '') +
+            (has(pl.use) ? '<span>' + esc(pl.use) + '</span>' : '') + '</div>'
+          : '') +
+      '</div>' +
+      (has(pl.code)
+        ? '<a class="pala-linkki" href="' + esc(tuoteHaku(pl.code, x.brand, false)) +
+          '" target="_blank" rel="noopener" aria-label="Hae pala valmistajan sivulta">\u2197</a>'
+        : '') +
+    '</div>').join('');
+
+  const cuts = (x.cuts || []).filter(c => c.mat);
+  return '<div class="luku">' +
+    (ruudut.length ? '<div class="spec-grid">' + ruudut.join('') + '</div>' : '') +
+    (tausta.length ? '<div class="luku-tausta">' + tausta.join(' \u00B7 ') + '</div>' : '') +
+    '<div class="luku-otsikko"><span>Teräpalat' + (palat.length ? ' <b>' + palat.length + '</b>' : '') + '</span>' +
+      '<button type="button" class="pieni-btn" data-action="add-pala" data-uid="' + uid + '">+ Lisää</button></div>' +
+    (palat.length ? '<div class="pala-lista">' + palaRivit + '</div>'
+                  : '<div class="luku-tyhja">Teräpalaa ei ole merkitty.</div>') +
+    '<div class="luku-otsikko"><span>Työstöarvot' + (cuts.length ? ' <b>' + cuts.length + '</b>' : '') + '</span>' +
+      '<button type="button" class="pieni-btn" data-action="add-cut-edit" data-uid="' + uid + '">+ Lisää</button></div>' +
+    (cuts.length ? '<div class="luku-arvot">' + cuts.map(c =>
+        '<div class="peek-row"><div class="peek-mat">' + esc(c.mat) +
+          (materialAlias(c.mat) ? ' <span class="peek-alias">' + esc(materialAlias(c.mat)) + '</span>' : '') +
+          (c.src === 'suositus' ? '<span class="cut-tag">aloitusarvo</span>' : '') + '</div>' +
+        cutSummaryHTML(c, p.teeth || x.multiEdge === '1', x) + '</div>').join('') + '</div>'
+      : '<div class="luku-tyhja">Ei työstöarvoja vielä.</div>') +
+    (has(x.notes) ? '<div class="luku-otsikko"><span>Muistiinpanot</span></div><div class="luku-muistio">' + esc(x.notes) + '</div>' : '') +
+    (x.mod ? '<div class="mod-note">Muokattu ' + esc(pvm(x.mod)) + '</div>' : '') +
+    '<div class="luku-napit">' +
+      '<button type="button" class="ensisijainen-btn" data-action="edit-tool" data-uid="' + uid + '">Muokkaa</button>' +
+      '<button type="button" class="add-cut-btn" data-action="copy-text" data-uid="' + uid + '">Kopioi tekstinä</button>' +
+    '</div>' +
+    '<div class="luku-napit toissijainen">' +
+      '<button type="button" class="add-cut-btn" data-action="copy-tool" data-uid="' + uid + '">Kopioi uudeksi</button>' +
+      '<button type="button" class="add-cut-btn" data-action="copy-machine" data-uid="' + uid + '">Kopioi koneelle</button>' +
+    '</div>' +
+  '</div>';
+}
+
+function muokkausPalkkiHTML(x) {
+  const uid = esc(x.uid);
+  return '<div class="muokkaus-palkki">' +
+    '<span class="muokkaus-tila"><b>Muokkaustila</b><span>tallentuu automaattisesti</span></span>' +
+    '<button type="button" class="pieni-btn" data-action="undo-edit" data-uid="' + uid + '">Kumoa muutokset</button>' +
+    '<button type="button" class="ensisijainen-btn pieni" data-action="done-edit" data-uid="' + uid + '">Valmis</button>' +
+  '</div>';
+}
+
+function palatMuokkausHTML(x) {
+  const uid = esc(x.uid);
+  const muut = Array.isArray(x.muutPalat) ? x.muutPalat : [];
+  const palaInput = (pala, field, value, label, full) =>
+    '<label' + (full ? ' class="full"' : '') + '>' + label +
+      '<input type="text" data-uid="' + uid + '" data-pala="' + esc(pala) + '" data-field="' + field +
+      '" value="' + esc(value == null ? '' : value) + '"></label>';
+  const terassa =
+    '<div class="pala-muokkaus terassa">' +
+      '<div class="pala-muokkaus-otsikko"><span class="pala-radio on"></span>Terässä nyt</div>' +
+      '<div class="field-grid">' +
+        '<label>Teräpala' + inputHTML(x.uid, 'insert', x.insert) + '</label>' +
+        '<label>Laatu' + inputHTML(x.uid, 'grade', x.grade) + '</label>' +
+        '<label class="full">Käyttö' + inputHTML(x.uid, 'insertUse', x.insertUse) + '</label>' +
+      '</div>' +
+    '</div>';
+  const muutHTML = muut.map(pl =>
+    '<div class="pala-muokkaus">' +
+      '<div class="pala-muokkaus-otsikko">' +
+        '<button type="button" class="pala-radio" data-action="mount-pala" data-uid="' + uid + '" data-pala="' + esc(pl.uid) +
+          '" aria-label="Vaihda tämä pala terään"></button>' +
+        '<span>Vaihtoehtoinen pala</span>' +
+        '<button type="button" class="cut-del" data-action="del-pala" data-uid="' + uid + '" data-pala="' + esc(pl.uid) +
+          '" aria-label="Poista pala">\u00D7</button>' +
+      '</div>' +
+      '<div class="field-grid">' +
+        palaInput(pl.uid, 'code', pl.code, 'Teräpala') +
+        palaInput(pl.uid, 'grade', pl.grade, 'Laatu') +
+        palaInput(pl.uid, 'use', pl.use, 'Käyttö', true) +
+      '</div>' +
+    '</div>').join('');
+  return '<div class="group-label">Teräpalat</div>' +
+    '<div class="pala-muokkaukset">' + terassa + muutHTML + '</div>' +
+    '<button type="button" class="add-cut-btn" data-action="add-pala" data-uid="' + uid + '">+ Lisää teräpala</button>';
+}
+
 function renderTools() {
+  renderViimeksi();
   renderTypeFilter();
   const q = toolSearchEl.value.trim().toLowerCase();
   const qKoodi = koodiAvain(q);
@@ -4645,6 +5191,10 @@ function renderTools() {
                             koodiAvain(x.holder).indexOf(qKoodi) !== -1)) ||
     String(x.holder || '').toLowerCase().indexOf(q) !== -1 ||
     String(x.grade || '').toLowerCase().indexOf(q) !== -1 ||
+    String(x.insertUse || '').toLowerCase().indexOf(q) !== -1 ||
+    muutPalat(x).some(p =>
+      [p.code, p.grade, p.use].some(v => String(v || '').toLowerCase().indexOf(q) !== -1) ||
+      (qKoodi.length >= 4 && koodiAvain(p.code).indexOf(qKoodi) !== -1)) ||
     String(x.status || '').toLowerCase().indexOf(q) !== -1 ||
     String(x.brand || '').toLowerCase().indexOf(q) !== -1 ||
     typeName(x.typeId).toLowerCase().indexOf(q) !== -1 ||
@@ -4684,7 +5234,8 @@ function renderTools() {
     const p = typeProps(x.typeId);
     const isDup = !isNaN(num(x.t)) && dup[num(x.t)];
     const card = document.createElement('div');
-    card.className = 'tool-card' + (openTools[x.uid] ? ' open' : '') +
+    const muokataan = !!(openTools[x.uid] && editTools[x.uid]);
+    card.className = 'tool-card' + (openTools[x.uid] ? ' open' : '') + (muokataan ? ' editing' : '') +
       (openMats[x.uid] ? ' mats-open' : '') + (isDup ? ' dup' : '') +
       (STATUS_POIS.indexOf(x.status) !== -1 ? ' tila-pois' : '');
     card.dataset.uid = x.uid;
@@ -4721,6 +5272,8 @@ function renderTools() {
         : '') +
       matsPeekHTML(x) +
       '<div class="tool-body">' +
+      (muokataan ? muokkausPalkkiHTML(x) : lukutilaHTML(x)) +
+      (!muokataan ? '' :
         '<div class="field-grid">' +
           '<label>T-numero' + inputHTML(x.uid, 't', x.t, 'number') + '</label>' +
           '<label>Pot (makasiinipaikka)' + inputHTML(x.uid, 'pot', x.pot, 'number') + '</label>' +
@@ -4743,12 +5296,10 @@ function renderTools() {
               '<option value="' + ADD_BRAND + '">+ Lisää uusi valmistaja…</option>' +
             '</select>' +
           '</label>' +
-          '<label>Teräpala' + inputHTML(x.uid, 'insert', x.insert) + '</label>' +
-          '<label>Laatu' + inputHTML(x.uid, 'grade', x.grade) + '</label>' +
           '<label class="full">Pidin' + inputHTML(x.uid, 'holder', x.holder) + '</label>' +
         '</div>' +
+        palatMuokkausHTML(x) +
         tuoteLinkitHTML(x) +
-        stockBoxHTML(x) +
 
         '<div class="group-label">Työstöarvot materiaaleittain</div>' +
         cutsHTML(x) +
@@ -4763,15 +5314,12 @@ function renderTools() {
           '</label>' +
         '</div>' +
 
-        (x.mod ? '<div class="mod-note">Muokattu ' + esc(pvm(x.mod)) + '</div>' : '') +
-        '<div class="btn-row" style="margin-top:12px;">' +
-          '<button class="add-cut-btn" style="margin-top:0;" data-action="copy-tool" data-uid="' + esc(x.uid) + '">Kopioi</button>' +
-          '<button class="add-cut-btn" style="margin-top:0;" data-action="copy-machine" data-uid="' + esc(x.uid) + '">Kopioi koneelle</button>' +
-          '<button class="add-cut-btn" style="margin-top:0;" data-action="copy-text" data-uid="' + esc(x.uid) + '">Kopioi tekstinä</button>' +
+        '<div class="btn-row" style="margin-top:14px;">' +
+          '<button class="ensisijainen-btn" style="margin-top:0;" data-action="done-edit" data-uid="' + esc(x.uid) + '">Valmis</button>' +
         '</div>' +
         '<div class="edit-header" style="justify-content:flex-end;">' +
-          '<button class="delete-btn" data-action="delete-tool" data-uid="' + esc(x.uid) + '">Poista</button>' +
-        '</div>' +
+          '<button class="delete-btn" data-action="delete-tool" data-uid="' + esc(x.uid) + '">Poista työkalu</button>' +
+        '</div>') +
       '</div>';
 
     toolListEl.appendChild(card);
@@ -4780,34 +5328,137 @@ function renderTools() {
   paivitaLaatuPalkki();
 }
 
-/* Teräpalan varastotieto työkalukortissa */
-function stockBoxHTML(x) {
-  if (!has(x.insert)) return '';
-  const r = stockRivi(x.insert);
-  const uid = esc(x.uid);
-  const muut = TOOLS.filter(y => y.uid !== x.uid && has(y.insert) &&
-                               koodiAvain(y.insert) === koodiAvain(x.insert))
-                    .map(y => 'T' + (has(y.t) ? y.t : '?'));
-  const kulutus = stockKulutus(r, 30);
-  const onMaara = r && has(r.stock);
-  return '<div class="stock-box' + (stockVahissa(r) ? ' low' : '') + '">' +
-    '<div class="stock-line">' +
-      (onMaara ? '<span class="stock-num">' + esc(r.stock) + ' kpl</span>' : '') +
-      '<span class="stock-sub">' + esc(x.insert) + (onMaara ? ' varastossa' : ' \u00B7 varastomäärää ei kirjattu') +
-      (r && has(r.min) ? ' \u00B7 tilausraja ' + esc(r.min) : '') +
-      (stockVahissa(r) ? ' \u00B7 <b>TILAA</b>' : '') + '</span></div>' +
-    '<div class="stock-sub">' +
-      (kulutus ? 'Kulutus 30 pv: ' + kulutus + ' kpl' : 'Ei kirjattua kulutusta 30 päivään') +
-      (muut.length ? ' \u00B7 sama pala myös: ' + esc(muut.join(', ')) : '') + '</div>' +
-    '<div class="btn-row">' +
-      '<button class="add-cut-btn" data-action="stock-use" data-uid="' + uid + '">Pala vaihdettu \u22121</button>' +
-      '<button class="add-cut-btn" data-action="stock-add" data-uid="' + uid + '">+ Saapui</button>' +
-      '<button class="add-cut-btn" data-action="stock-edit" data-uid="' + uid + '">Määrä ja raja</button>' +
-    '</div></div>';
+/* ---------- klikkaukset ---------- */
+function toolByUid(uid) { return TOOLS.find(x => x.uid === uid) || null; }
+function aloitaMuokkaus(uid) {
+  const x = toolByUid(uid);
+  if (!x) return;
+  if (!editTools[uid]) editSnap[uid] = JSON.stringify(x);
+  editTools[uid] = true;
+  openTools[uid] = true;
+}
+function lopetaMuokkaus(uid) { delete editTools[uid]; delete editSnap[uid]; }
+function fokusoiKortinKentta(uid, valitsin) {
+  const card = toolListEl.querySelector('.tool-card[data-uid="' + uid + '"]');
+  const el = card && card.querySelector(valitsin);
+  if (el) { el.focus(); if (el.scrollIntoView) el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
 }
 
-/* ---------- klikkaukset ---------- */
 toolListEl.addEventListener('click', e => {
+  const muokkaa = e.target.closest('[data-action="edit-tool"]');
+  if (muokkaa) {
+    aloitaMuokkaus(muokkaa.getAttribute('data-uid'));
+    renderTools();
+    return;
+  }
+  const valmis = e.target.closest('[data-action="done-edit"]');
+  if (valmis) {
+    const uid = valmis.getAttribute('data-uid');
+    lopetaMuokkaus(uid);
+    renderTools();
+    const card = toolListEl.querySelector('.tool-card[data-uid="' + uid + '"]');
+    if (card && card.getBoundingClientRect && card.getBoundingClientRect().top < 0) card.scrollIntoView({ block: 'start' });
+    return;
+  }
+  const kumoa = e.target.closest('[data-action="undo-edit"]');
+  if (kumoa) {
+    const uid = kumoa.getAttribute('data-uid');
+    const x = toolByUid(uid);
+    const snap = editSnap[uid];
+    if (!x || !snap) { lopetaMuokkaus(uid); renderTools(); return; }
+    if (snap === JSON.stringify(x)) { toast('Ei muutoksia kumottavaksi'); return; }
+    const ennen = JSON.parse(snap);
+    Object.keys(x).forEach(k => { delete x[k]; });
+    Object.assign(x, ennen);
+    x.mod = new Date().toISOString();   /* palautus on uusi muutos, jotta se synkronoituu */
+    lopetaMuokkaus(uid);
+    saveTools();
+    renderTools();
+    toast('Muutokset kumottu');
+    return;
+  }
+
+  const lisaaPala = e.target.closest('[data-action="add-pala"]');
+  if (lisaaPala) {
+    const uid = lisaaPala.getAttribute('data-uid');
+    const x = toolByUid(uid);
+    if (!x) return;
+    aloitaMuokkaus(uid);
+    if (!Array.isArray(x.muutPalat)) x.muutPalat = [];
+    let kohde;
+    if (!has(x.insert) && !has(x.grade) && !has(x.insertUse)) {
+      kohde = '[data-field="insert"]';           /* ensimmäinen pala menee terään */
+    } else {
+      const uusi = { uid: newUid('p'), code: '', grade: '', use: '' };
+      x.muutPalat.push(uusi);
+      kohde = '[data-pala="' + uusi.uid + '"][data-field="code"]';
+      x.mod = new Date().toISOString();
+      saveTools();
+    }
+    renderTools();
+    fokusoiKortinKentta(uid, kohde);
+    return;
+  }
+
+  const asenna = e.target.closest('[data-action="mount-pala"]');
+  if (asenna) {
+    const uid = asenna.getAttribute('data-uid');
+    const x = toolByUid(uid);
+    if (!x) return;
+    const ennen = JSON.stringify(x);
+    if (!asennaPala(x, asenna.getAttribute('data-pala'))) return;
+    saveTools();
+    renderTools();
+    toastAction('Terässä nyt: ' + (x.insert || 'pala'), 'Kumoa', () => {
+      const y = toolByUid(uid);
+      if (!y) return;
+      Object.keys(y).forEach(k => { delete y[k]; });
+      Object.assign(y, JSON.parse(ennen), { mod: new Date().toISOString() });
+      saveTools(); renderTools(); toast('Palautettu');
+    });
+    return;
+  }
+
+  const poistaPala = e.target.closest('[data-action="del-pala"]');
+  if (poistaPala) {
+    const uid = poistaPala.getAttribute('data-uid');
+    const x = toolByUid(uid);
+    if (!x || !Array.isArray(x.muutPalat)) return;
+    const i = x.muutPalat.findIndex(p => p.uid === poistaPala.getAttribute('data-pala'));
+    if (i === -1) return;
+    const pois = x.muutPalat.splice(i, 1)[0];
+    x.mod = new Date().toISOString();
+    saveTools();
+    renderTools();
+    if (palaTaytetty(pois)) {
+      toastAction('Pala ' + (pois.code || '') + ' poistettu', 'Kumoa', () => {
+        const y = toolByUid(uid);
+        if (!y) return;
+        if (!Array.isArray(y.muutPalat)) y.muutPalat = [];
+        y.muutPalat.splice(Math.min(i, y.muutPalat.length), 0, pois);
+        y.mod = new Date().toISOString();
+        saveTools(); renderTools(); toast('Palautettu');
+      });
+    }
+    return;
+  }
+
+  const lisaaArvo = e.target.closest('[data-action="add-cut-edit"]');
+  if (lisaaArvo) {
+    const uid = lisaaArvo.getAttribute('data-uid');
+    const x = toolByUid(uid);
+    if (!x) return;
+    aloitaMuokkaus(uid);
+    if (!Array.isArray(x.cuts)) x.cuts = [];
+    const nc = { uid: newUid('c'), mat: '', vc: '', rpm: '', f: '', fz: '', ap: '', ae: '', life: '' };
+    x.cuts.push(nc);
+    openCuts[nc.uid] = true;
+    saveTools();
+    renderTools();
+    fokusoiKortinKentta(uid, '[data-cut="' + nc.uid + '"][data-field="mat"]');
+    return;
+  }
+
   const kayta = e.target.closest('[data-action="use-suggest"]');
   if (kayta) {
     const tool = TOOLS.find(x => x.uid === kayta.getAttribute('data-uid'));
@@ -4829,13 +5480,6 @@ toolListEl.addEventListener('click', e => {
     return;
   }
 
-  const stockBtn = e.target.closest('[data-action^="stock-"]');
-  if (stockBtn) {
-    const tool = TOOLS.find(x => x.uid === stockBtn.getAttribute('data-uid'));
-    if (tool && has(tool.insert)) varastoToiminto(stockBtn.getAttribute('data-action'), tool.insert, tool);
-    return;
-  }
-
   const del = e.target.closest('[data-action="delete-tool"]');
   if (del) {
     if (!isArmed(del)) return;
@@ -4844,6 +5488,7 @@ toolListEl.addEventListener('click', e => {
     const kohta = TOOLS.indexOf(poistettu);
     TOOLS = TOOLS.filter(x => x.uid !== uid);
     delete openTools[uid];
+    lopetaMuokkaus(uid);
     disarm();
     saveTools();
     renderTools();
@@ -4907,7 +5552,7 @@ toolListEl.addEventListener('click', e => {
       copy.mod = new Date().toISOString();
       copy.cuts = (copy.cuts || []).map(c => Object.assign({}, c, { uid: newUid('c') }));
       TOOLS.push(copy);
-      openTools[copy.uid] = true;
+      aloitaMuokkaus(copy.uid);
       saveTools();
       renderTools();
       toast('Kopioitu työkaluksi T' + copy.t);
@@ -4964,9 +5609,22 @@ toolListEl.addEventListener('click', e => {
     const tool = TOOLS.find(x => x.uid === delCut.getAttribute('data-uid'));
     const cutUid = delCut.getAttribute('data-cut');
     if (tool && Array.isArray(tool.cuts)) {
+      const kohta = tool.cuts.findIndex(c => c.uid === cutUid);
+      const pois = kohta === -1 ? null : tool.cuts[kohta];
       tool.cuts = tool.cuts.filter(c => c.uid !== cutUid);
+      tool.mod = new Date().toISOString();
       saveTools();
       renderTools();
+      if (pois && (pois.mat || CUT_KENTAT.some(k => has(pois[k])))) {
+        toastAction((pois.mat || 'Materiaalirivi') + ' poistettu', 'Kumoa', () => {
+          const y = toolByUid(tool.uid);
+          if (!y) return;
+          if (!Array.isArray(y.cuts)) y.cuts = [];
+          y.cuts.splice(Math.min(kohta, y.cuts.length), 0, pois);
+          y.mod = new Date().toISOString();
+          saveTools(); renderTools(); toast('Palautettu');
+        });
+      }
     }
     return;
   }
@@ -4991,6 +5649,8 @@ toolListEl.addEventListener('click', e => {
   const card = head.closest('.tool-card');
   const uid = card.dataset.uid;
   openTools[uid] = !openTools[uid];
+  if (openTools[uid]) muistaAvattu(uid);
+  if (!openTools[uid] && editTools[uid]) { lopetaMuokkaus(uid); renderTools(); return; }
   card.classList.toggle('open', !!openTools[uid]);
 });
 
@@ -5008,6 +5668,16 @@ function readToolField(target) {
     tool.mod = new Date().toISOString();
     saveTools();
     return { tool, field };
+  }
+
+  const palaUid = target.getAttribute('data-pala');
+  if (palaUid) {
+    const pala = (Array.isArray(tool.muutPalat) ? tool.muutPalat : []).find(p => p.uid === palaUid);
+    if (!pala || ['code', 'grade', 'use'].indexOf(field) === -1) return null;
+    pala[field] = target.value;
+    tool.mod = new Date().toISOString();
+    saveTools();
+    return { tool, field, pala };
   }
 
   const cutUid = target.getAttribute('data-cut');
@@ -5154,18 +5824,19 @@ toolSearchClear.addEventListener('click', () => {
   toolSearchEl.focus();
 });
 
-addToolBtn.addEventListener('click', () => {
-  const t = nextFreeT();
+function lisaaTyokalu(tNumero) {
+  const t = (tNumero !== undefined && tNumero !== '') ? tNumero : nextFreeT();
   const uid = newUid('t');
   TOOLS.push({
     uid: uid, t: t, name: '', typeId: '', pot: '', offset: '',
     dia: '', stickout: '', radius: '', bAngle: '', width: '', maxDepth: '',
     minBore: '', maxDia: '', teeth: '', multiEdge: '',
     threadStd: '', threadSize: '', threadDir: '',
-    brand: '', insert: '', grade: '', holder: '', spindle: '', status: '', notes: '', cuts: [],
+    brand: '', insert: '', grade: '', insertUse: '', muutPalat: [],
+    holder: '', spindle: '', status: '', notes: '', cuts: [],
     mod: new Date().toISOString()
   });
-  openTools[uid] = true;
+  aloitaMuokkaus(uid);
   toolSearchEl.value = '';
   typeFilter = '';
   updateSearchClear();
@@ -5177,7 +5848,134 @@ addToolBtn.addEventListener('click', () => {
     const nameInput = card.querySelector('[data-field="name"]');
     if (nameInput) nameInput.focus();
   }
+  return uid;
+}
+addToolBtn.addEventListener('click', () => lisaaTyokalu());
+
+/* -----------------------------------------------------------------
+   VIIMEKSI AVATUT JA T-NUMERON PIKAHAKU
+   Viimeksi avatut muistetaan laitekohtaisesti ja koneittain.
+   ----------------------------------------------------------------- */
+/* Funktiot voidaan kutsua jo käynnistyksessä ennen tätä kohtaa, joten
+   avain ja elementti haetaan aina funktion sisällä. */
+function kViimeksi() { return 'ntx_viimeksi'; }
+
+function viimeksiUidit() {
+  const d = store.getJSON(kViimeksi()) || {};
+  const lista = Array.isArray(d[activeMachineId]) ? d[activeMachineId] : [];
+  return lista.filter(uid => TOOLS.some(x => x.uid === uid));
+}
+function muistaAvattu(uid) {
+  const d = store.getJSON(kViimeksi()) || {};
+  const lista = (Array.isArray(d[activeMachineId]) ? d[activeMachineId] : []).filter(u => u !== uid);
+  lista.unshift(uid);
+  d[activeMachineId] = lista.slice(0, 8);
+  store.setJSON(kViimeksi(), d);
+  renderViimeksi();
+}
+function viimeksiNappi(uid, luokka) {
+  const x = toolByUid(uid);
+  if (!x) return '';
+  return '<button type="button" class="' + luokka + '" data-avaa="' + esc(uid) + '" title="' + esc(x.name || '') + '">T' +
+    esc(has(x.t) ? x.t : '?') + '</button>';
+}
+function renderViimeksi() {
+  const viimeksiRow = document.getElementById('viimeksiRow');
+  if (!viimeksiRow || typeof toolSearchEl === 'undefined') return;
+  const uidit = viimeksiUidit().slice(0, 6);
+  const nakyy = uidit.length && !toolSearchEl.value.trim();
+  viimeksiRow.innerHTML = nakyy
+    ? '<span class="viimeksi-otsikko">Viimeksi</span>' + uidit.map(u => viimeksiNappi(u, 'viimeksi-nappi')).join('')
+    : '';
+  viimeksiRow.style.display = nakyy ? '' : 'none';
+}
+document.getElementById('viimeksiRow').addEventListener('click', e => {
+  const b = e.target.closest('[data-avaa]');
+  if (b) avaaTyokalu(b.getAttribute('data-avaa'));
 });
+
+const pikahakuEl     = document.getElementById('pikahaku');
+const pikahakuNumero = document.getElementById('pikahakuNumero');
+const pikahakuTulos  = document.getElementById('pikahakuTulokset');
+const pikahakuViim   = document.getElementById('pikahakuViimeksi');
+let pikaSyote = '';
+
+function pikahakuOsumat() {
+  if (!pikaSyote) return { tasan: [], alkaa: [] };
+  const tasan = TOOLS.filter(x => has(x.t) && String(num(x.t)) === String(Number(pikaSyote)));
+  const alkaa = TOOLS.filter(x => has(x.t) && tasan.indexOf(x) === -1 &&
+                                  String(x.t).trim().indexOf(pikaSyote) === 0)
+                     .sort((a, b) => num(a.t) - num(b.t)).slice(0, 3);
+  return { tasan, alkaa };
+}
+function pikaRivi(x, paras) {
+  return '<button type="button" class="pika-tulos' + (paras ? ' paras' : '') + '" data-avaa="' + esc(x.uid) + '">' +
+    '<span class="pika-t">T' + esc(x.t) + '</span>' +
+    '<span class="pika-nimi"><b>' + esc(x.name || 'Nimetön työkalu') + '</b>' +
+      '<span>' + esc([typeName(x.typeId), has(x.pot) ? 'Pot ' + x.pot : ''].filter(Boolean).join(' \u00B7 ')) + '</span></span>' +
+    (paras ? '<span class="pika-avaa">Avaa \u203A</span>' : '') + '</button>';
+}
+function renderPikahaku() {
+  pikahakuNumero.textContent = pikaSyote;
+  const o = pikahakuOsumat();
+  let html = o.tasan.map(x => pikaRivi(x, true)).join('') + o.alkaa.map(x => pikaRivi(x, false)).join('');
+  if (pikaSyote && !o.tasan.length) {
+    html += '<div class="pika-ei">Numerolla T' + esc(pikaSyote) + ' ei ole työkalua. ' +
+            'Paina \u2713, niin uusi työkalu luodaan tälle numerolle.</div>';
+  }
+  if (!pikaSyote) html = '<div class="pika-ei">Näppäile T-numero.</div>';
+  pikahakuTulos.innerHTML = html;
+  const viim = viimeksiUidit().slice(0, 5);
+  pikahakuViim.innerHTML = viim.length
+    ? '<div class="pika-otsikko">Viimeksi käytetyt</div><div class="pika-viim-rivi">' +
+      viim.map(u => viimeksiNappi(u, 'viimeksi-nappi')).join('') + '</div>'
+    : '';
+}
+function avaaPikahaku() {
+  if (nykyinenNakyma() !== 'viewToolList') showView('viewToolList');
+  pikaSyote = '';
+  renderPikahaku();
+  pikahakuEl.classList.add('show');
+  document.body.classList.add('pikahaku-auki');
+}
+function suljePikahaku() {
+  pikahakuEl.classList.remove('show');
+  document.body.classList.remove('pikahaku-auki');
+}
+function pikaNappain(k) {
+  if (k === 'del') pikaSyote = pikaSyote.slice(0, -1);
+  else if (k === 'ok') {
+    if (!pikaSyote) return;
+    const o = pikahakuOsumat();
+    suljePikahaku();
+    if (o.tasan.length) avaaTyokalu(o.tasan[0].uid);
+    else { const uid = lisaaTyokalu(Number(pikaSyote)); muistaAvattu(uid); }
+    return;
+  } else if (/^\d$/.test(k) && pikaSyote.length < 4) {
+    pikaSyote = (pikaSyote === '0' ? '' : pikaSyote) + k;
+  }
+  renderPikahaku();
+}
+document.getElementById('pikahakuBtn').addEventListener('click', avaaPikahaku);
+document.getElementById('pikahakuSulje').addEventListener('click', suljePikahaku);
+document.getElementById('pikahakuNappaimet').addEventListener('click', e => {
+  const b = e.target.closest('[data-n]');
+  if (b) pikaNappain(b.getAttribute('data-n'));
+});
+pikahakuEl.addEventListener('click', e => {
+  if (e.target === pikahakuEl) { suljePikahaku(); return; }
+  const b = e.target.closest('[data-avaa]');
+  if (!b) return;
+  suljePikahaku();
+  avaaTyokalu(b.getAttribute('data-avaa'));
+});
+document.addEventListener('keydown', e => {
+  if (!pikahakuEl.classList.contains('show')) return;
+  if (e.key === 'Escape') { e.preventDefault(); e.stopImmediatePropagation(); suljePikahaku(); return; }
+  if (e.key === 'Enter') { e.preventDefault(); e.stopImmediatePropagation(); pikaNappain('ok'); return; }
+  if (e.key === 'Backspace') { e.preventDefault(); e.stopImmediatePropagation(); pikaNappain('del'); return; }
+  if (/^\d$/.test(e.key)) { e.preventDefault(); e.stopImmediatePropagation(); pikaNappain(e.key); }
+}, true);
 
 /* =================================================================
    4b. CSV — vienti ja tuonti
@@ -5189,6 +5987,7 @@ const CSV_COLS = [
   ['minBore', 'Pienin halkaisija'], ['maxDia', 'Suurin halkaisija'], ['teeth', 'Hammasluku z'], ['multiEdge', 'Monisarmainen'],
   ['threadStd', 'Kierrestandardi'], ['threadSize', 'Kierrekoko'],
   ['threadDir', 'Pyorintasuunta'], ['brand', 'Valmistaja'], ['insert', 'Terapala'], ['grade', 'Laatu'],
+  ['insertUse', 'Terapalan kaytto'], ['muutPalatTxt', 'Muut terapalat'],
   ['holder', 'Pidin'], ['spindle', 'Kara'], ['status', 'Tila'], ['notes', 'Muistiinpanot']
 ];
 const CSV_CUT_COLS = [
@@ -5199,7 +5998,8 @@ const CSV_CUT_COLS = [
 exportToolsBtn.addEventListener('click', () => {
   if (!TOOLS.length) return toast('Lista on tyhjä');
   const q = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
-  const val = (x, key) => key === 'typeName' ? typeName(x.typeId) : x[key];
+  const val = (x, key) => key === 'typeName' ? typeName(x.typeId)
+                       : (key === 'muutPalatTxt' ? palatTekstiksi(muutPalat(x)) : x[key]);
   const rows = [CSV_COLS.map(c => q(c[1])).concat(CSV_CUT_COLS.map(c => q(c[1]))).join(';')];
 
   sortedTools().forEach(x => {
@@ -5256,7 +6056,8 @@ function rakennaTuloste(lista, otsikko) {
       '<td>' + solu(x.name) + (x.typeId ? '<br><span class="cut">' + esc(typeName(x.typeId)) + '</span>' : '') + '</td>' +
       '<td class="mono">' + solu(x.offset) + '</td>' +
       '<td class="mono">' + esc(geo.join('  ')) + '</td>' +
-      '<td class="mono">' + solu(x.insert) + (has(x.grade) ? '<br><span class="cut">' + esc(x.grade) + '</span>' : '') + '</td>' +
+      '<td class="mono">' + solu(x.insert) + (has(x.grade) ? '<br><span class="cut">' + esc(x.grade) + '</span>' : '') +
+        (muutPalat(x).length ? '<br><span class="cut">+ ' + esc(muutPalat(x).map(p => p.code).filter(Boolean).join(', ')) + '</span>' : '') + '</td>' +
       '<td class="cut">' + arvot + '</td>' +
     '</tr>';
   }).join('');
@@ -5279,7 +6080,6 @@ if (printToolsBtn) {
     const otsikko = 'Työkalulista' +
       (typeFilter && typeFilter.indexOf('__') !== 0 ? ' \u2014 ' + typeName(typeFilter) : '') +
       (typeFilter.indexOf('__tila__:') === 0 ? ' \u2014 ' + typeFilter.slice(9) : '') +
-      (typeFilter === '__tilaa__' ? ' \u2014 tilattavat palat' : '') +
       (q ? ' \u2014 haku: ' + toolSearchEl.value.trim() : '');
     printArea.innerHTML = rakennaTuloste(lista, otsikko);
     window.print();
@@ -5356,6 +6156,7 @@ const TUONTI_KENTAT = [
   ['width', 'Leveys'], ['maxDepth', 'Syvyys'], ['minBore', 'Min Ø'], ['maxDia', 'Max Ø'],
   ['teeth', 'z'], ['multiEdge', 'Monisärmäinen'], ['threadStd', 'Kierrestd'], ['threadSize', 'Kierre'],
   ['threadDir', 'Pyörintä'], ['brand', 'Valmistaja'], ['insert', 'Teräpala'], ['grade', 'Laatu'],
+  ['insertUse', 'Palan käyttö'], ['muutPalatTxt', 'Muut palat'],
   ['holder', 'Pidin'], ['spindle', 'Kara'], ['status', 'Tila'], ['notes', 'Muistiinpanot']
 ];
 const CUT_KENTAT = ['vc', 'rpm', 'f', 'fz', 'ap', 'ae', 'life'];
@@ -5441,6 +6242,10 @@ function vertaaTyokalu(uusi) {
     if (k === 'typeId') {
       if (!uusi._tyyppi) return;
       a = typeName(kohde.typeId); b = uusi._tyyppi;
+    }
+    if (k === 'muutPalatTxt') {
+      a = palatTekstiksi(muutPalat(kohde));
+      b = palatTekstiksi(palatTekstista(b));
     }
     if (!has(b) || String(b).trim() === '') return;
     if (!has(a) || String(a).trim() === '') tayta.push({ k: k, nimi: nimi, uusi: b });
@@ -5619,6 +6424,10 @@ function viimeisteleTuotu(x) {
     x.typeId = t.id;
   }
   delete x._tyyppi;
+  if (Object.prototype.hasOwnProperty.call(x, 'muutPalatTxt')) {
+    x.muutPalat = palatTekstista(x.muutPalatTxt);
+    delete x.muutPalatTxt;
+  }
   if (has(x.brand) && !brandOptions('').some(o => o.toLowerCase() === x.brand.toLowerCase())) {
     CUSTOM_BRANDS.push(x.brand);
   }
@@ -5663,6 +6472,8 @@ function suoritaTuonti() {
           if (d.k === 'typeId') {
             const apu = viimeisteleTuotu({ _tyyppi: d.uusi, typeId: '', cuts: [] });
             x.typeId = apu.typeId;
+          } else if (d.k === 'muutPalatTxt') {
+            x.muutPalat = palatTekstista(d.uusi);
           } else x[d.k] = d.uusi;
         });
         if (!Array.isArray(x.cuts)) x.cuts = [];
@@ -5675,7 +6486,7 @@ function suoritaTuonti() {
     }
 
     saveTypes(); saveCustomMaterials(); saveCustomBrands(); saveTools();
-    openTools = {}; openMats = {}; openCuts = {};
+    openTools = {}; openMats = {}; openCuts = {}; editTools = {}; editSnap = {};
     typeFilter = '';
     TUONTI = null;
     renderTools(); renderTypes(); renderMaterials(); renderBrands();
@@ -5732,7 +6543,6 @@ document.getElementById('pasteToolsBtn2').addEventListener('click', avaaLiita);
    painallusta. "Puuttuva pot" on vain tieto: kaikki terät eivät ole koneessa.
    ----------------------------------------------------------------- */
 const qualityListEl = document.getElementById('qualityList');
-const stockListEl   = document.getElementById('stockList');
 const qualityBarEl  = document.getElementById('qualityBar');
 let laatuPaluu = 'viewToolList';
 const laatuAuki = {};
@@ -5787,10 +6597,6 @@ function laatuRyhmat() {
   });
   lisaa('mitta', 'Puuttuvat mitat', 'Tyypin tärkein mitta puuttuu. Halkaisija tarvitaan myös kierrosluvun laskentaan.', mitta);
 
-  lisaa('tilaa', 'Tilattavat teräpalat', 'Varasto on tilausrajalla tai sen alla.',
-    STOCK.filter(stockVahissa).map(r => ({ t: '', teksti: r.code, sub: r.stock + ' kpl, raja ' + r.min,
-      uids: [], koodi: r.code })));
-
   lisaa('pot', 'Ei makasiinipaikkaa', 'Tieto, ei virhe: terä voi olla varastossa. Merkitse tila "Varastossa", niin se poistuu tästä listasta.',
     tyokalut.filter(x => !has(x.pot) && STATUS_POIS.indexOf(x.status) === -1)
       .map(x => ({ t: x.t, teksti: tyokaluNimi(x), uids: [x.uid] })), true);
@@ -5807,6 +6613,7 @@ function paivitaLaatuPalkki() {
   const n = laatuVirheita();
   qualityBarEl.classList.toggle('show', n > 0);
   qualityBarEl.textContent = n ? '⚠ ' + n + ' korjattavaa kohtaa listalla — tarkista' : '';
+  document.querySelectorAll('.tab-badge').forEach(el => { el.textContent = n ? String(n) : ''; });
 }
 
 function renderQuality() {
@@ -5823,8 +6630,6 @@ function renderQuality() {
                   '<button class="q-btn" data-q="avaa" data-uids="' + esc(r.uids.join(',')) + '">Näytä</button>';
         } else if (r.toiminto === 'poista') {
           napit = '<button class="q-btn danger" data-q="poista" data-uids="' + esc(r.uids[0]) + '">Poista</button>';
-        } else if (r.koodi) {
-          napit = '<button class="q-btn" data-q="koodi" data-koodi="' + esc(r.koodi) + '">Näytä terät</button>';
         } else {
           napit = '<button class="q-btn" data-q="avaa" data-uids="' + esc(r.uids[0]) + '">Avaa</button>';
         }
@@ -5847,45 +6652,6 @@ function renderQuality() {
         '<div class="q-body"><div class="q-desc">' + esc(g.selite) + '</div>' + kaikki + rivit + '</div></details>';
     }).join('');
   }
-  renderStockList();
-}
-
-function renderStockList() {
-  /* tämän koneen terissä käytetyt koodit + kirjatut varastorivit */
-  const koodit = {};
-  STOCK.forEach(r => { koodit[koodiAvain(r.code)] = { code: r.code, r: r, t: [] }; });
-  TOOLS.forEach(x => {
-    if (!has(x.insert)) return;
-    const k = koodiAvain(x.insert);
-    if (!koodit[k]) koodit[k] = { code: x.insert, r: null, t: [] };
-    koodit[k].t.push('T' + (has(x.t) ? x.t : '?'));
-  });
-  const lista = Object.keys(koodit).map(k => koodit[k])
-    .sort((a, b) => (stockVahissa(b.r) - stockVahissa(a.r)) || a.code.localeCompare(b.code));
-  if (!lista.length) {
-    stockListEl.innerHTML = '<div class="q-desc">Teräpalakoodeja ei ole vielä annettu työkaluille.</div>';
-    return;
-  }
-  stockListEl.innerHTML = lista.map(o => {
-    const r = o.r;
-    const kulutus = stockKulutus(r, 30), k90 = stockKulutus(r, 90);
-    const maara = r && has(r.stock) ? r.stock + ' kpl' : '—';
-    const ala = [];
-    if (r && has(r.min)) ala.push('raja ' + r.min);
-    if (k90) ala.push('30 pv: ' + kulutus + ' · 90 pv: ' + k90);
-    if (k90 && r && has(r.stock)) {
-      const viikossa = k90 / 13;
-      if (viikossa > 0) ala.push('riittää ~' + Math.max(0, Math.round(num(r.stock) / viikossa)) + ' vk');
-    }
-    ala.push(o.t.length ? o.t.join(', ') : 'ei tämän koneen terissä');
-    return '<div class="q-row"' + (stockVahissa(r) ? ' style="border-left:3px solid var(--red);"' : '') + '>' +
-      '<span class="q-txt"><b>' + esc(o.code) + '</b> · ' + esc(maara) +
-      '<span class="q-sub">' + esc(ala.join(' · ')) + '</span></span>' +
-      '<button class="q-btn" data-q="stock-use" data-koodi="' + esc(o.code) + '">−1</button>' +
-      '<button class="q-btn" data-q="stock-add" data-koodi="' + esc(o.code) + '">+</button>' +
-      '<button class="q-btn" data-q="stock-edit" data-koodi="' + esc(o.code) + '">Muokkaa</button>' +
-    '</div>';
-  }).join('');
 }
 
 /* Tuplat yhdeksi: täydellisin rivi pohjaksi, muista täytetään tyhjät */
@@ -5913,60 +6679,17 @@ function yhdistaTyokalut(uids) {
   return pohja;
 }
 
-function avaaTyokalu(uid) {
+function avaaTyokalu(uid, muokkaa) {
   typeFilter = '';
   toolSearchEl.value = '';
   updateSearchClear();
   openTools[uid] = true;
+  if (muokkaa) aloitaMuokkaus(uid);
+  muistaAvattu(uid);
   showView('viewToolList');
   renderTools();
   const card = toolListEl.querySelector('[data-uid="' + uid + '"]');
   if (card) setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'center' }), 30);
-}
-
-function varastoToiminto(toiminto, koodi, tool) {
-  const valmis = () => {
-    renderTools();
-    if (nykyinenNakyma() === 'viewQuality') renderQuality();
-  };
-  if (toiminto === 'stock-use') {
-    const r = stockRiviLuo(koodi);
-    stockKirjaa(r, -1, tool);
-    valmis();
-    const loppu = stockVahissa(r) ? ' — TILAA, raja ' + r.min : '';
-    toast('−1 ' + r.code + (has(r.stock) ? ', jäljellä ' + r.stock : '') + loppu);
-    return;
-  }
-  if (toiminto === 'stock-add') {
-    kysyTeksti('Saapui varastoon (kpl)', '10', koodi).then(v => {
-      const n = num(v);
-      if (v == null || isNaN(n) || n <= 0) return;
-      const r = stockRiviLuo(koodi);
-      if (!has(r.stock)) r.stock = '0';
-      stockKirjaa(r, Math.round(n), tool);
-      valmis();
-      toast(r.code + ': ' + r.stock + ' kpl');
-    });
-    return;
-  }
-  if (toiminto === 'stock-edit') {
-    const r0 = stockRivi(koodi);
-    kysyTeksti('Varastossa nyt (kpl)', r0 ? r0.stock : '', koodi + '\nJätä tyhjäksi jos et tiedä.').then(v => {
-      if (v == null) return;
-      kysyTeksti('Tilausraja (kpl)', r0 ? r0.min : '',
-        'Kun varastossa on tämän verran tai vähemmän, pala näkyy tilattavana.').then(m => {
-        if (m == null) return;
-        const r = stockRiviLuo(koodi);
-        const puhdas = x => { const n = num(x); return String(x).trim() === '' || isNaN(n) ? '' : String(Math.max(0, Math.round(n))); };
-        r.stock = puhdas(v);
-        r.min = puhdas(m);
-        r.mod = new Date().toISOString();
-        saveStock();
-        valmis();
-        toast('Tallennettu');
-      });
-    });
-  }
 }
 
 qualityListEl.addEventListener('toggle', e => {
@@ -5979,7 +6702,6 @@ document.getElementById('viewQuality').addEventListener('click', e => {
   if (!b) return;
   const q = b.getAttribute('data-q');
   const uids = (b.getAttribute('data-uids') || '').split(',').filter(Boolean);
-  const koodi = b.getAttribute('data-koodi');
 
   if (q === 'avaa') {
     if (uids.length > 1) {
@@ -5991,15 +6713,7 @@ document.getElementById('viewQuality').addEventListener('click', e => {
       updateSearchClear();
       showView('viewToolList');
       renderTools();
-    } else avaaTyokalu(uids[0]);
-    return;
-  }
-  if (q === 'koodi') {
-    typeFilter = '';
-    toolSearchEl.value = koodi;
-    updateSearchClear();
-    showView('viewToolList');
-    renderTools();
+    } else avaaTyokalu(uids[0], true);
     return;
   }
   if (q === 'yhdista-kaikki') {
@@ -6032,7 +6746,6 @@ document.getElementById('viewQuality').addEventListener('click', e => {
     });
     return;
   }
-  if (q.indexOf('stock-') === 0 && koodi) varastoToiminto(q, koodi, null);
 });
 
 function avaaTarkistus() {
@@ -6118,12 +6831,18 @@ if (typeListEl) {
       return;
     }
     if (!isArmed(btn)) return;
+    const kohta = TYPES.findIndex(t => t.id === id);
+    const poistettu = TYPES[kohta];
     TYPES = TYPES.filter(t => t.id !== id);
     disarm();
     saveTypes();
     renderTypes();
     renderTools();
-    flashToast(typeToast, 'Tyyppi poistettu.', true);
+    toastAction('Tyyppi ' + (poistettu ? poistettu.name : '') + ' poistettu', 'Kumoa', () => {
+      if (!poistettu || TYPES.some(t => t.id === poistettu.id)) return;
+      TYPES.splice(Math.min(kohta, TYPES.length), 0, poistettu);
+      saveTypes(); renderTypes(); renderTools(); toast('Palautettu');
+    });
   });
 }
 
@@ -6217,12 +6936,17 @@ if (matListEl) {
       return flashToast(dataToast, '"' + nimi + '" on käytössä ' + kaytossa + ' työstöarvorivillä.', false);
     }
     if (!isArmed(btn)) return;
+    const kohta = CUSTOM_MATERIALS.indexOf(nimi);
     CUSTOM_MATERIALS = CUSTOM_MATERIALS.filter(m => m !== nimi);
     disarm();
     saveCustomMaterials();
     renderMaterials();
     renderTools();
-    flashToast(dataToast, 'Materiaali poistettu.', true);
+    toastAction(nimi + ' poistettu', 'Kumoa', () => {
+      if (CUSTOM_MATERIALS.indexOf(nimi) !== -1) return;
+      CUSTOM_MATERIALS.splice(Math.max(0, Math.min(kohta, CUSTOM_MATERIALS.length)), 0, nimi);
+      saveCustomMaterials(); renderMaterials(); renderTools(); toast('Palautettu');
+    });
   });
 }
 
@@ -6269,12 +6993,17 @@ if (brandListEl) {
       return flashToast(dataToast, '"' + nimi + '" on käytössä ' + kaytossa + ' työkalulla.', false);
     }
     if (!isArmed(btn)) return;
+    const kohta = CUSTOM_BRANDS.indexOf(nimi);
     CUSTOM_BRANDS = CUSTOM_BRANDS.filter(b => b !== nimi);
     disarm();
     saveCustomBrands();
     renderBrands();
     renderTools();
-    flashToast(dataToast, 'Valmistaja poistettu.', true);
+    toastAction(nimi + ' poistettu', 'Kumoa', () => {
+      if (CUSTOM_BRANDS.indexOf(nimi) !== -1) return;
+      CUSTOM_BRANDS.splice(Math.max(0, Math.min(kohta, CUSTOM_BRANDS.length)), 0, nimi);
+      saveCustomBrands(); renderBrands(); renderTools(); toast('Palautettu');
+    });
   });
 }
 
@@ -6304,11 +7033,42 @@ function openData(paluu) {
   renderBrands();
   paivitaBackupInfo();
   syncTila();
+  paivitaTallennusTila();
   showView('viewData');
 }
 if (openDataBtn) openDataBtn.addEventListener('click', () => openData('viewToolList'));
 if (goDataBtn)   goDataBtn.addEventListener('click', () => openData('viewJawSettings'));
 if (closeDataBtn) closeDataBtn.addEventListener('click', () => showView(dataPaluu));
+
+/* Asetuksista avatut alasivut palaavat takaisin asetuksiin */
+let asetuksistaAvattu = false;
+document.getElementById('asetPakatBtn').addEventListener('click', () => {
+  asetuksistaAvattu = true;
+  openJawSettings();
+});
+document.getElementById('asetSp2Btn').addEventListener('click', () => {
+  asetuksistaAvattu = true;
+  openSP2Settings();
+});
+function palaaAlasivulta(oletus) {
+  if (asetuksistaAvattu) { asetuksistaAvattu = false; openData(dataPaluu); }
+  else showView(oletus);
+}
+
+function paivitaTallennusTila() {
+  const el = document.getElementById('tallennusTila');
+  if (!el) return;
+  const haettu = store.get(K_SYNC_HAETTU);
+  const muokattu = store.get(K_MUOKATTU);
+  const odottaa = SYNC.url && SYNC.key && muokattu && (!haettu || muokattu > haettu);
+  const aika = haettu ? new Date(haettu) : null;
+  const kello = aika && !isNaN(aika.getTime())
+    ? String(aika.getHours()).padStart(2, '0') + '.' + String(aika.getMinutes()).padStart(2, '0') : '';
+  el.textContent = odottaa ? 'Lähettämättä' : ('Tallennettu' + (kello ? ' \u00B7 ' + kello : ''));
+  el.title = odottaa ? 'Tallennettu tähän laitteeseen, lähetys pilveen odottaa'
+                     : (kello ? 'Tallennettu ja synkronoitu klo ' + kello : 'Tallennettu tähän laitteeseen');
+  el.classList.toggle('odottaa', !!odottaa);
+}
 
 if (goTypesBtn) {
   goTypesBtn.addEventListener('click', () => {
@@ -6455,6 +7215,7 @@ function syncTila() {
   else osat.push('Ei vielä synkronoitu');
   if (muokattu && (!haettu || muokattu > haettu)) osat.push('Tässä laitteessa on lähettämättömiä muutoksia.');
   syncViesti(osat.join('  \u00B7  '));
+  if (typeof paivitaTallennusTila === 'function') paivitaTallennusTila();
 }
 
 function syncAsetuksetOk() {
@@ -7203,7 +7964,7 @@ function lataaKoneenTiedot() {
   TOOLS = loadTools();
   TOOLS.forEach(x => { if (!Array.isArray(x.cuts)) x.cuts = []; });
   typeFilter = '';
-  openTools = {}; openMats = {}; openCuts = {};
+  openTools = {}; openMats = {}; openCuts = {}; editTools = {}; editSnap = {};
   toolSearchEl.value = '';
   updateSearchClear();
   renderTools();
