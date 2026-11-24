@@ -1933,6 +1933,20 @@
   .ty-tulos-arvo span { font: 500 11px var(--mono); color: var(--text-dim); margin-left: 4px; }
   .ty-tulos.korostus .ty-tulos-nimi { color: var(--accent); font-weight: 600; }
   @media (max-width: 360px) { .tyr { grid-template-columns: 30px minmax(0, 1fr) 132px; } }
+
+  /* ═══ Yksikkö kentän sisällä ═══ */
+  .yks-wrap { position: relative; display: block; }
+  .yks-wrap > input, .yks-wrap > .laskettu-kentta { width: 100%; box-sizing: border-box; padding-right: 58px !important; text-align: right; }
+  .num-wrap.has-yks > input { padding-right: 76px !important; text-align: right; }
+  .yks { position: absolute; top: 0; bottom: 0; right: 10px; width: 44px; display: flex; align-items: center;
+    font: 500 11.5px var(--mono); color: var(--text-dim); pointer-events: none; white-space: nowrap; }
+  .num-wrap.has-yks .yks { right: 42px; width: 30px; }
+  .field .num-wrap.has-yks { width: 180px; max-width: 50vw; }
+  .field .num-wrap.has-yks input { width: 100%; }
+  .geo-grid .num-wrap.has-yks > input, .cut-grid .num-wrap.has-yks > input { padding-right: 76px !important; }
+  .geo-grid .num-wrap.has-yks .yks, .cut-grid .num-wrap.has-yks .yks { right: 32px; }
+  .cut-grid .yks-wrap > input, .cut-grid .yks-wrap > .laskettu-kentta { padding-left: 6px; padding-right: 46px !important; }
+  .cut-grid .yks { right: 5px; width: 38px; font-size: 10px; letter-spacing: -0.03em; }
 </style>
 </head>
 <body>
@@ -2098,7 +2112,7 @@
         <div class="result-card">
           <div class="section-label">Tulokset</div>
           <div class="result-row copyable" id="rowHaku">
-            <div class="result-label">SP2 hakusijainti — A-akseli (konekoord.)</div>
+            <div class="result-label">SP2 hakusijainti, A-akseli</div>
             <div class="result-value"><span id="out-haku">—</span><span class="unit">mm</span></div>
             <div class="copy-hint">Napauta kopioidaksesi</div>
           </div>
@@ -2113,11 +2127,11 @@
       <div class="section-card">
         <div class="section-label">Kappaletiedot</div>
         <div class="field">
-          <label>Kappaleen Z-koordinaatti, 1. puoli<span class="unit-note">Ohjelmoitu Z0, konekoordinaatti</span></label>
-          <div class="num-wrap"><input type="text" id="z0" inputmode="decimal" value="-703.7028"><button type="button" class="sign-btn" aria-label="Vaihda etumerkki">±</button></div>
+          <label>Z0, 1. puoli<span class="unit-note">ohjelmoitu Z0 konekoordinaatistossa</span></label>
+          <div class="num-wrap"><input type="text" id="z0" data-yks="mm" inputmode="decimal" value="-703.7028"><button type="button" class="sign-btn" aria-label="Vaihda etumerkki">±</button></div>
         </div>
         <div class="field">
-          <label>Valmiin kappaleen pituus<span class="unit-note">mm</span></label>
+          <label>Kappaleen pituus<span class="unit-note">mm</span></label>
           <div class="num-wrap"><input type="text" id="kappale" inputmode="decimal" value="28.5"><button type="button" class="sign-btn" aria-label="Vaihda etumerkki">±</button></div>
         </div>
       </div>
@@ -2125,11 +2139,11 @@
       <div class="section-card">
         <div class="section-label">Leukatiedot — SP2</div>
         <div class="field">
-          <label>SP2 leuan pituus<span class="unit-note">mm</span></label>
+          <label>Leuan pituus<span class="unit-note">mm</span></label>
           <div class="num-wrap"><input type="text" id="leuka" inputmode="decimal" value="80.75"><button type="button" class="sign-btn" aria-label="Vaihda etumerkki">±</button></div>
         </div>
         <div class="field">
-          <label>Puristussyvyys SP2 leuoissa<span class="unit-note">mm</span></label>
+          <label>Puristussyvyys<span class="unit-note">mm</span></label>
           <div class="num-wrap"><input type="text" id="puristus" inputmode="decimal" value="17"><button type="button" class="sign-btn" aria-label="Vaihda etumerkki">±</button></div>
         </div>
       </div>
@@ -2166,7 +2180,7 @@
         <div class="section-card">
           <div class="field">
             <label>SP2 otsapinta<span class="unit-note">2. karan pakan otsapinta, konekoordinaatti</span></label>
-            <div class="num-wrap"><input type="text" id="sp2" inputmode="decimal"><button type="button" class="sign-btn" aria-label="Vaihda etumerkki">±</button></div>
+            <div class="num-wrap"><input type="text" id="sp2" data-yks="mm" inputmode="decimal"><button type="button" class="sign-btn" aria-label="Vaihda etumerkki">±</button></div>
           </div>
         </div>
         <div class="note" style="margin-top:10px;">
@@ -9603,6 +9617,65 @@ function tyPiirraArvotSailyttaen() { tyPiirraArvot(); }
 
 
 /* =================================================================
+   YKSIKÖT KENTÄN SISÄÄN
+   Kentän nimen lopussa oleva yksikkö, esim. "Pakan halkaisija (mm)", tai nimen alla
+   oleva pelkkä yksikkö (<span class="unit-note">mm</span>) siirretään kentän sisään
+   oikeaan reunaan. Lisätieto sulkeissa, esim. "(mm, tyhjä = ei rajaa)", siirtyy
+   kentän vihjetekstiksi. Toimii myös myöhemmin piirtyvissä korteissa.
+   ================================================================= */
+const YKS_RE = /^(mm|m\/min|r\/min|mm\/r|mm\/min|mm\/särmä|mm\/terä|°|kpl|µm|%|cm³\/min)$/;
+function yksKohde(el) {
+  return el.querySelector('input:not([type=checkbox]):not([type=radio]):not([type=hidden]), .laskettu-kentta');
+}
+function yksLisaa(kohde, yks) {
+  if (!kohde || kohde.dataset.yksTehty) return;
+  kohde.dataset.yksTehty = '1';
+  const span = document.createElement('span');
+  span.className = 'yks';
+  span.textContent = yks;
+  const nw = kohde.parentElement && kohde.parentElement.classList.contains('num-wrap') ? kohde.parentElement : null;
+  if (nw) { nw.classList.add('has-yks'); nw.appendChild(span); return; }
+  const wrap = document.createElement('span');
+  wrap.className = 'yks-wrap';
+  kohde.parentNode.insertBefore(wrap, kohde);
+  wrap.appendChild(kohde);
+  wrap.appendChild(span);
+}
+function muotoileYksikot(juuri) {
+  (juuri || document).querySelectorAll('input[data-yks]:not([data-yks-tehty])').forEach(i => yksLisaa(i, i.getAttribute('data-yks')));
+  (juuri || document).querySelectorAll('label:not([data-yks-k])').forEach(l => {
+    l.dataset.yksK = '1';
+    if (l.closest('.tyr, #numpad, #pikahaku')) return;
+    /* 1) "Nimi (mm)" tai "Nimi (mm, lisätieto)" */
+    const tekstit = [...l.childNodes].filter(n => n.nodeType === 3 && n.textContent.trim());
+    const tn = tekstit[0] || (l.querySelector('.input-label') && [...l.querySelector('.input-label').childNodes].find(n => n.nodeType === 3 && n.textContent.trim()));
+    if (tn) {
+      const m = tn.textContent.match(/\s*\(([^()]*)\)\s*$/);
+      if (m) {
+        const osat = m[1].split(',');
+        const yks = osat[0].trim();
+        if (YKS_RE.test(yks)) {
+          const kohde = yksKohde(l.closest('.field') || l);
+          if (kohde) {
+            tn.textContent = tn.textContent.slice(0, m.index) + (/\n\s*$/.test(tn.textContent) ? '\n' : '');
+            const lisa = osat.slice(1).join(',').trim().replace(/^tyhjä\s*=\s*/i, '');
+            if (lisa && kohde.tagName === 'INPUT' && !kohde.placeholder) kohde.placeholder = lisa;
+            yksLisaa(kohde, yks);
+            return;
+          }
+        }
+      }
+    }
+    /* 2) nimen alla pelkkä yksikkö */
+    const note = l.querySelector('.unit-note');
+    if (note && YKS_RE.test(note.textContent.trim())) {
+      const kohde = yksKohde(l.closest('.field') || l);
+      if (kohde) { yksLisaa(kohde, note.textContent.trim()); note.remove(); }
+    }
+  });
+}
+
+/* =================================================================
    OMA NUMERONÄPPÄIMISTÖ
    Numerokentät (inputmode decimal/numeric, type=number) käyttävät sovelluksen
    omaa näppäimistöä kosketusnäytöllä. Tekstikentissä aukeaa puhelimen tavallinen
@@ -9648,7 +9721,7 @@ let npAjastettu = false;
 new MutationObserver(() => {
   if (npAjastettu) return;
   npAjastettu = true;
-  requestAnimationFrame(() => { npAjastettu = false; npValmisteleKaikki(); });
+  requestAnimationFrame(() => { npAjastettu = false; npValmisteleKaikki(); muotoileYksikot(); });
 }).observe(document.body, { childList: true, subtree: true });
 ['pointerdown', 'touchstart', 'mousedown'].forEach(t => document.addEventListener(t, e => {
   const el = e.target;
@@ -9793,6 +9866,7 @@ function kaytaNumpad() {
   if (!numpadPaalla && npKentta) npSulje();
 }
 npValmisteleKaikki();
+muotoileYksikot();
 document.addEventListener('click', e => {
   const btn = e.target.closest && e.target.closest('#numpadRow .seg-btn');
   if (!btn) return;
