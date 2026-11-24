@@ -1676,6 +1676,24 @@
   .kentta-vihje { display: block; font-size: 11.5px; font-weight: 400; color: var(--text-dim); margin: 2px 0 2px; }
   .icon-btn.teksti-btn { width: auto; padding: 0 12px; gap: 6px; font-size: 13px; font-weight: 600; white-space: nowrap; }
   .icon-btn.teksti-btn svg { width: 17px; height: 17px; }
+  .lajittelu {
+    flex-shrink: 0; display: inline-flex; align-items: center; gap: 4px; height: 38px; padding: 0 4px 0 12px;
+    border-radius: 19px; border: 1px solid var(--panel-border); background: var(--panel); color: var(--text-dim);
+    font-size: 14px;
+  }
+  .lajittelu select {
+    min-height: 0; height: 34px; border: none; background-color: transparent; box-shadow: none;
+    padding: 0 26px 0 2px; font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--text);
+    background-position: right 6px center;
+  }
+  .lajittelu select:focus { box-shadow: none; }
+  .asenna-rivi {
+    display: flex; align-items: center; gap: 12px; padding: 12px 14px;
+    border-radius: 14px; border: 1px solid var(--accent); background: var(--accent-dim);
+  }
+  .asenna-teksti { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .asenna-teksti b { font-size: 14.5px; }
+  .asenna-teksti span { font-size: 12.5px; color: var(--text-dim); line-height: 1.4; }
 </style>
 </head>
 <body>
@@ -1929,14 +1947,6 @@
           <div class="subtitle" id="toolCount">—</div>
         </div>
       </div>
-      <div style="display:flex; gap:8px;">
-      <button class="icon-btn" id="exportToolsBtn" aria-label="Vie lista">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-          <path d="M7 10l5 5 5-5"></path><path d="M12 15V3"></path>
-        </svg>
-      </button>
-      </div>
     </header>
 
     <nav class="tabbar" aria-label="Päävalikko">
@@ -2001,8 +2011,8 @@
         Kortti aukeaa lukutilaan; <strong>Muokkaa</strong> avaa kentät ja <strong>Kumoa muutokset</strong>
         palauttaa kortin siihen mitä se oli ennen muokkausta. Muutokset tallentuvat itsestään.
         <strong>T#</strong>-napista avaat työkalun suoraan numerolla. Samanlaisen terän saa nopeasti
-        napista <strong>Kopioi uudeksi</strong>. Yläkulman nuoli vie listan CSV:nä; koko sovelluksen
-        varmuuskopio löytyy kohdasta Asetukset.
+        napista <strong>Kopioi uudeksi</strong>. CSV-vienti ja koko sovelluksen varmuuskopio löytyvät
+        kohdasta Asetukset.
       </div>
     </main>
 
@@ -2028,6 +2038,11 @@
         <span class="scope kone machine-abbr">NTX</span><span>tämä kone</span>
         <span class="scope kaikki">KAIKKI</span><span>kaikki koneet</span>
         <span class="scope laite">LAITE</span><span>vain tämä laite</span>
+      </div>
+
+      <div class="asenna-rivi" id="asennaRivi" style="display:none;">
+        <div class="asenna-teksti"><b>Asenna puhelimeen</b><span id="asennaTeksti">Oma kuvake, aukeaa ilman selainta ja toimii ilman verkkoa.</span></div>
+        <button type="button" class="ensisijainen-btn pieni" id="asennaBtn">Asenna</button>
       </div>
 
       <section>
@@ -4317,7 +4332,6 @@ const toolMetaEl     = document.getElementById('toolListMeta');
 const typeFilterRow  = document.getElementById('typeFilterRow');
 const toolCountEl    = document.getElementById('toolCount');
 const addToolBtn     = document.getElementById('addToolBtn');
-const exportToolsBtn = document.getElementById('exportToolsBtn');
 const importToolsBtn = document.getElementById('importToolsBtn');
 const importToolsFile= document.getElementById('importToolsFile');
 
@@ -4870,14 +4884,11 @@ function renderTypeFilter() {
   if (typeFilter && !erikois && !kaytossa.some(t => t.id === typeFilter)) typeFilter = '';
   if (typeFilter.indexOf('__tila__:') === 0 && tilat.indexOf(typeFilter.slice(9)) === -1) typeFilter = '';
 
-  let html = '<button class="filter-chip sort' + (sortMode === 't' ? ' active' : '') +
-      '" data-sort="t">T-järjestys</button>' +
-    '<button class="filter-chip sort' + (sortMode === 'pot' ? ' active' : '') +
-      '" data-sort="pot">Pot-järjestys</button>' +
-    '<button class="filter-chip sort' + (sortMode === 'dia' ? ' active' : '') +
-      '" data-sort="dia">\u00D8-järjestys</button>' +
-    '<button class="filter-chip sort' + (sortMode === 'mod' ? ' active' : '') +
-      '" data-sort="mod">Muokatut</button>' +
+  const jarjestykset = [['t', 'T-numero'], ['pot', 'Pot'], ['dia', 'Halkaisija'], ['mod', 'Muokatut']];
+  let html = '<label class="lajittelu" title="Järjestys"><span aria-hidden="true">\u21C5</span>' +
+      '<select data-sort-select aria-label="Järjestys">' +
+      jarjestykset.map(([k, n]) => '<option value="' + k + '"' + (sortMode === k ? ' selected' : '') + '>' + n + '</option>').join('') +
+      '</select></label>' +
     '<span class="filter-sep"></span>' +
     '<button class="filter-chip' + (typeFilter === '' ? ' active' : '') +
     '" data-filter="">Kaikki (' + TOOLS.length + ')</button>';
@@ -4933,6 +4944,13 @@ if (typeFilterRow) {
   }, true);
 
   typeFilterRow.addEventListener('scroll', paivitaFilterHaivytys, { passive: true });
+
+  typeFilterRow.addEventListener('change', e => {
+    const valinta = e.target.closest && e.target.closest('[data-sort-select]');
+    if (!valinta) return;
+    sortMode = valinta.value;
+    renderTools();
+  });
 
   typeFilterRow.addEventListener('click', e => {
     const lajittelu = e.target.closest('[data-sort]');
@@ -5997,7 +6015,7 @@ const CSV_CUT_COLS = [
   ['ap', 'ap'], ['ae', 'ae'], ['life', 'Kesto']
 ];
 
-exportToolsBtn.addEventListener('click', () => {
+function vieTyokalulistaCsv() {
   if (!TOOLS.length) return toast('Lista on tyhjä');
   const q = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
   const val = (x, key) => key === 'typeName' ? typeName(x.typeId)
@@ -6021,7 +6039,7 @@ exportToolsBtn.addEventListener('click', () => {
   document.body.removeChild(a);
   setTimeout(() => URL.revokeObjectURL(url), 2000);
   toast('Lista viety CSV-tiedostoon');
-});
+}
 
 /* --- Tulostettava asetuslista --- */
 const printToolsBtn = document.getElementById('printToolsBtn');
@@ -6599,10 +6617,46 @@ function laatuRyhmat() {
   });
   lisaa('mitta', 'Puuttuvat mitat', 'Tyypin tärkein mitta puuttuu. Halkaisija tarvitaan myös kierrosluvun laskentaan.', mitta);
 
+  const palat = [];
+  tyokalut.forEach(x => {
+    const ehdotus = palakoodiKorjaus(x.insert, x.grade);
+    if (ehdotus) palat.push({ t: x.t, teksti: tyokaluNimi(x),
+      sub: x.insert + '  \u2192  ' + ehdotus.code + (ehdotus.grade ? ' + laatu ' + ehdotus.grade : ''),
+      uids: [x.uid], toiminto: 'palakoodi' });
+  });
+  lisaa('palakoodi', 'Teräpalakoodin muoto',
+    'Laatu on kirjoitettu koodin perään tai koodi on pienillä kirjaimilla. Korjattuna haku ja valmistajan linkit toimivat.',
+    palat);
+
   lisaa('pot', 'Ei makasiinipaikkaa', 'Tieto, ei virhe: terä voi olla varastossa. Merkitse tila "Varastossa", niin se poistuu tästä listasta.',
     tyokalut.filter(x => !has(x.pot) && STATUS_POIS.indexOf(x.status) === -1)
       .map(x => ({ t: x.t, teksti: tyokaluNimi(x), uids: [x.uid] })), true);
   return ryhmat;
+}
+
+/* Tunnistaa "BCMT120408R-G55 WSP45G" -tyyppiset kentät: viimeinen sana on laatu
+   (kirjaimia ja numeroita), alkuosassa on numeroita. "DNMG 150608" ei täsmää,
+   koska pelkkä numerosarja ei ole laatu. Palauttaa korjatut arvot tai null. */
+function palakoodiKorjaus(koodi, laatu) {
+  const k = String(koodi || '').trim();
+  if (!k) return null;
+  let code = k, grade = String(laatu || '').trim();
+  const m = k.match(/^(.*\d.*?)\s+([A-Za-z]{1,5}\d{1,4}[A-Za-z]{0,3})$/);
+  if (m && (!grade || grade.toUpperCase() === m[2].toUpperCase())) {
+    code = m[1].trim();
+    grade = m[2].toUpperCase();
+  }
+  if (/[a-z]/.test(code) && /^[A-Za-z]{2,5}[\s\d]/.test(code)) code = code.toUpperCase();
+  if (code === k && grade === String(laatu || '').trim()) return null;
+  return { code, grade };
+}
+function korjaaPalakoodi(x) {
+  const e = palakoodiKorjaus(x.insert, x.grade);
+  if (!e) return false;
+  x.insert = e.code;
+  x.grade = e.grade;
+  x.mod = new Date().toISOString();
+  return true;
 }
 
 function laatuVirheita() {
@@ -6630,6 +6684,9 @@ function renderQuality() {
         if (r.toiminto === 'yhdista') {
           napit = '<button class="q-btn" data-q="yhdista" data-uids="' + esc(r.uids.join(',')) + '">Yhdistä</button>' +
                   '<button class="q-btn" data-q="avaa" data-uids="' + esc(r.uids.join(',')) + '">Näytä</button>';
+        } else if (r.toiminto === 'palakoodi') {
+          napit = '<button class="q-btn" data-q="palakoodi" data-uids="' + esc(r.uids[0]) + '">Korjaa</button>' +
+                  '<button class="q-btn" data-q="avaa" data-uids="' + esc(r.uids[0]) + '">Avaa</button>';
         } else if (r.toiminto === 'poista') {
           napit = '<button class="q-btn danger" data-q="poista" data-uids="' + esc(r.uids[0]) + '">Poista</button>';
         } else {
@@ -6643,6 +6700,10 @@ function renderQuality() {
         ? '<button class="q-btn danger" data-q="poista" data-uids="' + esc(g.rivit.map(r => r.uids[0]).join(',')) +
           '">Poista kaikki ' + g.rivit.length + '</button>'
         : '';
+      if (g.id === 'palakoodi' && g.rivit.length > 1) {
+        kaikki = '<button class="q-btn" data-q="palakoodi" data-uids="' + esc(g.rivit.map(r => r.uids[0]).join(',')) +
+          '">Korjaa kaikki ' + g.rivit.length + '</button>';
+      }
       const samannimiset = g.id === 'tupla' ? g.rivit.filter(r => r.samat) : [];
       if (samannimiset.length > 1) {
         kaikki = '<button class="q-btn" data-q="yhdista-kaikki" data-ryhmat="' +
@@ -6704,6 +6765,26 @@ document.getElementById('viewQuality').addEventListener('click', e => {
   if (!b) return;
   const q = b.getAttribute('data-q');
   const uids = (b.getAttribute('data-uids') || '').split(',').filter(Boolean);
+
+  if (q === 'palakoodi') {
+    const ennen = uids.map(u => { const x = toolByUid(u); return x ? JSON.stringify(x) : null; });
+    let n = 0;
+    uids.forEach(u => { const x = toolByUid(u); if (x && korjaaPalakoodi(x)) n++; });
+    if (!n) return;
+    saveTools();
+    renderQuality();
+    renderTools();
+    toastAction(n === 1 ? 'Teräpalakoodi korjattu' : n + ' teräpalakoodia korjattu', 'Kumoa', () => {
+      uids.forEach((u, i) => {
+        const x = toolByUid(u);
+        if (!x || !ennen[i]) return;
+        Object.keys(x).forEach(k => { delete x[k]; });
+        Object.assign(x, JSON.parse(ennen[i]), { mod: new Date().toISOString() });
+      });
+      saveTools(); renderQuality(); renderTools(); toast('Palautettu');
+    });
+    return;
+  }
 
   if (q === 'avaa') {
     if (uids.length > 1) {
@@ -7083,7 +7164,7 @@ if (goTypesBtn) {
 if (closeTypesBtn) closeTypesBtn.addEventListener('click', () => showView('viewData'));
 
 /* Tiedot-näkymän CSV-napit käyttävät samoja toimintoja kuin työkalulistan omat */
-if (exportToolsBtn2) exportToolsBtn2.addEventListener('click', () => exportToolsBtn.click());
+if (exportToolsBtn2) exportToolsBtn2.addEventListener('click', vieTyokalulistaCsv);
 if (importToolsBtn2) importToolsBtn2.addEventListener('click', () => importToolsBtn.click());
 
 /* =================================================================
@@ -8187,6 +8268,59 @@ if (store.get(K_LAHETYS_PYYNTO)) {
 if (!STORAGE_OK) {
   document.querySelectorAll('.storage-warn').forEach(el => el.classList.add('show'));
 }
+
+/* -----------------------------------------------------------------
+   ASENNETTAVA SOVELLUS (vain verkkoversiossa, ei tiedostona avattuna)
+   Chrome asentaa sovelluksen puhelimeen omaksi sovelluksekseen, joka
+   päivittyy itsestään ja toimii myös ilman verkkoa.
+   ----------------------------------------------------------------- */
+(function asennettava() {
+  if (location.protocol !== 'https:' && location.hostname !== 'localhost') return;
+  const head = document.head;
+  const linkki = (rel, href, sizes) => {
+    const l = document.createElement('link');
+    l.rel = rel; l.href = href;
+    if (sizes) l.sizes = sizes;
+    head.appendChild(l);
+  };
+  linkki('manifest', 'manifest.webmanifest');
+  linkki('icon', 'icons/icon-192.png', '192x192');
+  linkki('apple-touch-icon', 'icons/apple-touch-icon.png', '180x180');
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    });
+  }
+
+  const rivi = document.getElementById('asennaRivi');
+  const nappi = document.getElementById('asennaBtn');
+  const teksti = document.getElementById('asennaTeksti');
+  const asennettu = window.matchMedia && window.matchMedia('(display-mode: standalone)').matches;
+  if (!rivi) return;
+  if (asennettu) {
+    rivi.style.display = '';
+    teksti.textContent = 'Sovellus on asennettu tähän laitteeseen. Se päivittyy itsestään.';
+    nappi.style.display = 'none';
+    return;
+  }
+  let kehote = null;
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    kehote = e;
+    rivi.style.display = '';
+  });
+  nappi.addEventListener('click', () => {
+    if (!kehote) return;
+    kehote.prompt();
+    kehote.userChoice.finally(() => { kehote = null; rivi.style.display = 'none'; });
+  });
+  window.addEventListener('appinstalled', () => {
+    rivi.style.display = '';
+    nappi.style.display = 'none';
+    teksti.textContent = 'Asennettu. Sovellus löytyy nyt puhelimen sovelluksista.';
+  });
+})();
 </script>
 
 </body>
