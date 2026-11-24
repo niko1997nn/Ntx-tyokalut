@@ -8168,7 +8168,16 @@ kaytaTeema();
   }
   renderTools();
 
-  showView(tila.view, true);
+  /* Asetussivut piirretään omilla avaajillaan, muuten ne aukeavat tyhjinä */
+  const avaajat = {
+    viewJawSettings: () => openJawSettings(),
+    viewSP2Settings: () => openSP2Settings(),
+    viewData:        () => openData('viewToolList'),
+    viewToolTypes:   () => { renderTypes(); showView('viewToolTypes', true); },
+    viewMachines:    () => avaaKoneet('viewData')
+  };
+  if (avaajat[tila.view]) avaajat[tila.view]();
+  else showView(tila.view, true);
   const y = Number(tila.scrollY) || 0;
   if (y > 0) {
     /* odotetaan että sisältö on piirretty, muuten vieritys ei osu */
