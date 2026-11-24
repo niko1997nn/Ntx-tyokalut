@@ -9009,7 +9009,7 @@ kaytaTeema();
    ================================================================= */
 const K_TYOSTO = 'ntx_tyosto';
 const TY_OLETUS = {
-  osio: 'laskin', tila: 'sorvaus', ohjaa: 'vc',
+  osio: 'laskin', tila: 'sorvaus', ohjaa: 'vc', ohjaaF: 'syotto',
   k: { sorvaus: {}, poraus: {}, jyrsinta: {} },
   tl: 'sorvaus', mat: '1.4462', D: '10', ksarja: 'karkea', kD: '', kP: ''
 };
@@ -9027,35 +9027,49 @@ function tallennaTy() { store.setJSON(K_TYOSTO, TY); }
 /* ---- laskin ---- */
 const TY_KENTAT = {
   sorvaus:  [['D', 'Työstöhalkaisija', 'mm'], ['vc', 'Lastuamisnopeus vc', 'm/min'], ['n', 'Kierrosluku n', 'r/min'],
-             ['f', 'Syöttö f', 'mm/r'], ['ap', 'Lastuamissyvyys ap', 'mm'], ['r', 'Nirkon säde r', 'mm'], ['L', 'Työstöpituus L', 'mm, valinnainen']],
+             ['f', 'Syöttö f', 'mm/r'], ['vf', 'Pöytäsyöttö Vf', 'mm/min'],
+             ['ap', 'Lastuamissyvyys ap', 'mm'], ['r', 'Nirkon säde r', 'mm'], ['L', 'Työstöpituus L', 'mm, valinnainen']],
   poraus:   [['D', 'Poran halkaisija', 'mm'], ['vc', 'Lastuamisnopeus vc', 'm/min'], ['n', 'Kierrosluku n', 'r/min'],
-             ['f', 'Syöttö f', 'mm/r'], ['L', 'Reiän syvyys L', 'mm, valinnainen']],
+             ['f', 'Syöttö f', 'mm/r'], ['vf', 'Pöytäsyöttö Vf', 'mm/min'], ['L', 'Reiän syvyys L', 'mm, valinnainen']],
   jyrsinta: [['D', 'Jyrsimen halkaisija', 'mm'], ['z', 'Terien määrä z', 'kpl'], ['vc', 'Lastuamisnopeus vc', 'm/min'], ['n', 'Kierrosluku n', 'r/min'],
-             ['fz', 'Syöttö per terä fz', 'mm'], ['ap', 'Aksiaalinen syvyys ap', 'mm'], ['ae', 'Radiaalinen leveys ae', 'mm'], ['L', 'Työstöpituus L', 'mm, valinnainen']]
+             ['fz', 'Syöttö per terä fz', 'mm'], ['vf', 'Pöytäsyöttö Vf', 'mm/min'],
+             ['ap', 'Aksiaalinen syvyys ap', 'mm'], ['ae', 'Radiaalinen leveys ae', 'mm'], ['L', 'Työstöpituus L', 'mm, valinnainen']]
 };
+/* Kaksi kytkettyä paria: vc ↔ n ja syöttö (f tai fz) ↔ Vf.
+   Parista viimeksi muokattu on annettu arvo, toinen lasketaan. */
+function tySyottoKentta() { return TY.tila === 'jyrsinta' ? 'fz' : 'f'; }
+function tyAnnettu(id) {
+  if (id === 'vc' || id === 'n') return TY.ohjaa === id;
+  if (id === 'vf') return TY.ohjaaF === 'vf';
+  if (id === 'f' || id === 'fz') return TY.ohjaaF !== 'vf';
+  return true;
+}
 
 function tyLaske() {
   const m = TY.tila, k = TY.k[m] || {};
-  const D = num(k.D), z = num(k.z), f = num(k.f), fz = num(k.fz), ap = num(k.ap), ae = num(k.ae), r = num(k.r), L = num(k.L);
+  const D = num(k.D), z = num(k.z), ap = num(k.ap), ae = num(k.ae), r = num(k.r), L = num(k.L);
   let vc = num(k.vc), n = num(k.n);
-  if (TY.ohjaa === 'n') { vc = (D > 0 && n > 0) ? Math.PI * D * n / 1000 : NaN; }
-  else { n = (D > 0 && vc > 0) ? vc * 1000 / (Math.PI * D) : NaN; }
-  const out = { vc, n };
-  if (m === 'jyrsinta') out.vf = (fz > 0 && z > 0 && n > 0) ? fz * z * n : NaN;
-  else out.vf = (f > 0 && n > 0) ? f * n : NaN;
+  if (TY.ohjaa === 'n') vc = (D > 0 && n > 0) ? Math.PI * D * n / 1000 : NaN;
+  else n = (D > 0 && vc > 0) ? vc * 1000 / (Math.PI * D) : NaN;
+  const kierrosSyotto = m === 'jyrsinta' ? (z > 0 ? z : NaN) : 1;   /* mm/r = fz × z jyrsinnässä */
+  let syotto = num(k[tySyottoKentta()]), vf = num(k.vf);
+  if (TY.ohjaaF === 'vf') syotto = (vf > 0 && n > 0 && kierrosSyotto > 0) ? vf / (n * kierrosSyotto) : NaN;
+  else vf = (syotto > 0 && n > 0 && kierrosSyotto > 0) ? syotto * kierrosSyotto * n : NaN;
+  const out = { vc, n, vf, syotto };
+  const f = m === 'jyrsinta' ? NaN : syotto, fz = m === 'jyrsinta' ? syotto : NaN;
   if (m === 'sorvaus') {
     out.q = (vc > 0 && ap > 0 && f > 0) ? vc * ap * f : NaN;
     out.ra = (f > 0 && r > 0) ? f * f / r * 50 : NaN;
   } else if (m === 'poraus') {
-    out.q = (D > 0 && out.vf > 0) ? Math.PI * D * D / 4 * out.vf / 1000 : NaN;
+    out.q = (D > 0 && vf > 0) ? Math.PI * D * D / 4 * vf / 1000 : NaN;
   } else {
-    out.q = (ap > 0 && ae > 0 && out.vf > 0) ? ap * ae * out.vf / 1000 : NaN;
+    out.q = (ap > 0 && ae > 0 && vf > 0) ? ap * ae * vf / 1000 : NaN;
     if (fz > 0 && D > 0 && ae > 0 && ae <= D) {
       const kulma = Math.asin(ae / D) * 180 / Math.PI;
       out.hm = 180 * ae * fz / (Math.PI * D * kulma);
     } else out.hm = NaN;
   }
-  out.aika = (L > 0 && out.vf > 0) ? L / out.vf : NaN;
+  out.aika = (L > 0 && vf > 0) ? L / vf : NaN;
   return out;
 }
 
@@ -9066,36 +9080,54 @@ function tyAikaTeksti(min) {
   return Math.floor(s / 60) + ' min ' + String(s % 60).padStart(2, '0') + ' s';
 }
 
+function tySyottoTeksti(v) {
+  if (!isFinite(v) || v <= 0) return '';
+  return String(v < 0.1 ? Math.round(v * 1000) / 1000 : Math.round(v * 100) / 100);
+}
+
 function tyPaivitaTulokset() {
   const o = tyLaske(), m = TY.tila;
   const solu = (nimi, arvo, yks, id) => '<div class="ty-tulos copyable"' + (id ? ' data-tykopio="' + id + '"' : '') + '>' +
     '<div class="result-label">' + nimi + (yks ? ' <span class="ty-yks">' + yks + '</span>' : '') + '</div>' +
     '<div class="result-value"><span>' + arvo + '</span></div></div>';
   let h = TY.ohjaa === 'n' ? solu('vc', fmt(o.vc, 0), 'm/min', 'vc') : solu('n', fmt(o.n, 0), 'r/min', 'n');
-  h += solu('Vf', fmt(o.vf, 0), 'mm/min', 'vf');
+  if (TY.ohjaaF === 'vf') h += solu(m === 'jyrsinta' ? 'fz' : 'f', (tySyottoTeksti(o.syotto) || '—').replace('.', ','), m === 'jyrsinta' ? 'mm' : 'mm/r', 'syotto');
+  else h += solu('Vf', fmt(o.vf, 0), 'mm/min', 'vf');
   h += solu('Q', fmt(o.q, 1), 'cm³/min');
   if (m === 'sorvaus') h += solu('Ra teor.', fmt(o.ra, 2), 'µm');
   else if (m === 'jyrsinta') h += solu('hm', fmt(o.hm, 3), 'mm');
   h += solu('Aika', tyAikaTeksti(o.aika), '');
   document.getElementById('tyTulokset').innerHTML = h;
-  /* ohjattu kenttä näyttää lasketun arvon */
-  const toinen = TY.ohjaa === 'n' ? 'vc' : 'n';
-  const el = document.querySelector('#tyKentat input[data-tyk="' + toinen + '"]');
-  if (el && document.activeElement !== el) {
-    const v = toinen === 'vc' ? o.vc : o.n;
-    el.value = isFinite(v) ? String(Math.round(v)) : '';
-  }
+  /* lasketut kentät näyttävät arvonsa heti */
+  const aseta = (id, teksti) => {
+    const el = document.querySelector('#tyKentat input[data-tyk="' + id + '"]');
+    if (el && document.activeElement !== el && el.value !== teksti) { el.value = teksti; el.dataset.ed = teksti; }
+  };
+  const kok = v => (isFinite(v) && v > 0) ? String(Math.round(v)) : '';
+  if (TY.ohjaa === 'n') aseta('vc', kok(o.vc)); else aseta('n', kok(o.n));
+  if (TY.ohjaaF === 'vf') aseta(tySyottoKentta(), tySyottoTeksti(o.syotto)); else aseta('vf', kok(o.vf));
   window.__tyTulos = o;
+}
+
+function tyMerkitseLasketut() {
+  document.querySelectorAll('#tyKentat .field').forEach(f => {
+    const i = f.querySelector('input'); const id = i && i.getAttribute('data-tyk');
+    if (!id) return;
+    const laskettu = !tyAnnettu(id);
+    f.classList.toggle('ty-laskettu', laskettu);
+    const yks = f.querySelector('.unit-note');
+    if (yks) yks.textContent = yks.textContent.replace(' · laskettu', '') + (laskettu ? ' · laskettu' : '');
+  });
 }
 
 function tyPiirraKentat() {
   const k = TY.k[TY.tila] || {};
-  document.getElementById('tyKentat').innerHTML = TY_KENTAT[TY.tila].map(([id, nimi, yks]) => {
-    const ohjattu = (id === 'vc' || id === 'n') && TY.ohjaa !== id;
-    return '<div class="field' + (ohjattu ? ' ty-laskettu' : '') + '">' +
-      '<label>' + esc(nimi) + '<span class="unit-note">' + esc(yks) + (ohjattu ? ' · laskettu' : '') + '</span></label>' +
-      '<div class="num-wrap"><input type="text" inputmode="decimal" data-tyk="' + id + '" value="' + esc(k[id] || '') + '"></div></div>';
-  }).join('');
+  document.getElementById('tyKentat').innerHTML = TY_KENTAT[TY.tila].map(([id, nimi, yks]) =>
+    '<div class="field">' +
+      '<label>' + esc(nimi) + '<span class="unit-note">' + esc(yks) + '</span></label>' +
+      '<div class="num-wrap"><input type="text" inputmode="decimal" autocomplete="off" data-tyk="' + id + '" value="' + esc(k[id] || '') + '" data-ed="' + esc(k[id] || '') + '"></div></div>'
+  ).join('');
+  tyMerkitseLasketut();
   const kaavat = {
     sorvaus: 'n = vc × 1000 / (π × D) · Vf = f × n · Q = vc × ap × f · Ra ≈ f² / r × 50 (µm, Sandvik)',
     poraus: 'n = vc × 1000 / (π × D) · Vf = f × n · Q = π × D² / 4 × Vf / 1000',
@@ -9103,6 +9135,22 @@ function tyPiirraKentat() {
   };
   document.getElementById('tyKaavat').innerHTML = '<strong>Kaavat:</strong><br>' + esc(kaavat[TY.tila]) + '<br>t = L / Vf';
   document.querySelectorAll('#tyTila .seg-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-tytila') === TY.tila));
+  tyPaivitaTulokset();
+}
+
+/* Kentän muutos: tallennetaan, vaihdetaan parin ohjaava arvo ja lasketaan heti uudelleen */
+function tyKenttaMuuttui(t) {
+  const kentta = t.getAttribute('data-tyk');
+  const k = TY.k[TY.tila] = TY.k[TY.tila] || {};
+  if (t.value === t.dataset.ed) return;   /* esim. nuolinäppäin: arvo ei muuttunut */
+  t.dataset.ed = t.value;
+  k[kentta] = t.value;
+  let vaihtui = false;
+  if ((kentta === 'vc' || kentta === 'n') && TY.ohjaa !== kentta) { TY.ohjaa = kentta; vaihtui = true; }
+  if (kentta === 'vf' && TY.ohjaaF !== 'vf') { TY.ohjaaF = 'vf'; vaihtui = true; }
+  if ((kentta === 'f' || kentta === 'fz') && TY.ohjaaF === 'vf') { TY.ohjaaF = 'syotto'; vaihtui = true; }
+  if (vaihtui) tyMerkitseLasketut();
+  tallennaTy();
   tyPaivitaTulokset();
 }
 
@@ -9303,7 +9351,7 @@ function tyValitseOsio(osio) { TY.osio = osio; tallennaTy(); renderTyosto(); win
     const kop = t.closest('[data-tykopio]');
     if (kop && window.__tyTulos) {
       const o = window.__tyTulos, k = kop.getAttribute('data-tykopio');
-      if (isFinite(o[k])) copyText(String(Math.round(o[k])));
+      if (isFinite(o[k])) copyText(k === 'syotto' ? tySyottoTeksti(o[k]) : String(Math.round(o[k])));
       return;
     }
     const tl = t.closest('[data-tyluokka]');
@@ -9316,7 +9364,7 @@ function tyValitseOsio(osio) { TY.osio = osio; tallennaTy(); renderTyosto(); win
       k.vc = lukuTeksti(s.vc); k.n = '';
       if (s.halk && num(TY.D) > 0) k.D = String(TY.D);
       if (isFinite(s.f)) { if (tila2 === 'jyrsinta') k.fz = pyoristaSyotto(s.f); else k.f = pyoristaSyotto(s.f); }
-      TY.tila = tila2; TY.ohjaa = 'vc';
+      k.vf = ''; TY.tila = tila2; TY.ohjaa = 'vc'; TY.ohjaaF = 'syotto';
       return tyValitseOsio('laskin');
     }
     const avaa = t.closest('[data-tyavaa]');
@@ -9335,29 +9383,13 @@ function tyValitseOsio(osio) { TY.osio = osio; tallennaTy(); renderTyosto(); win
     if (sarja) { TY.ksarja = sarja.getAttribute('data-tyksarja'); tallennaTy(); return tyPiirraKierteet(); }
     if (t.closest('#tyTyhjenna')) { TY.k[TY.tila] = {}; tallennaTy(); return tyPiirraKentat(); }
   });
+  ['keyup', 'change', 'compositionend', 'paste'].forEach(tapahtuma => v.addEventListener(tapahtuma, e => {
+    const t = e.target;
+    if (t.getAttribute && t.getAttribute('data-tyk')) setTimeout(() => tyKenttaMuuttui(t), 0);
+  }));
   v.addEventListener('input', e => {
     const t = e.target;
-    const kentta = t.getAttribute && t.getAttribute('data-tyk');
-    if (kentta) {
-      const k = TY.k[TY.tila] = TY.k[TY.tila] || {};
-      k[kentta] = t.value;
-      if (kentta === 'vc' || kentta === 'n') {
-        if (TY.ohjaa !== kentta) {
-          TY.ohjaa = kentta;
-          document.querySelectorAll('#tyKentat .field').forEach(f => {
-            const i = f.querySelector('input'); const id = i && i.getAttribute('data-tyk');
-            if (id === 'vc' || id === 'n') {
-              const laskettu = id !== kentta;
-              f.classList.toggle('ty-laskettu', laskettu);
-              const yks = f.querySelector('.unit-note');
-              if (yks) yks.textContent = yks.textContent.replace(' · laskettu', '') + (laskettu ? ' · laskettu' : '');
-            }
-          });
-        }
-      }
-      tallennaTy();
-      return tyPaivitaTulokset();
-    }
+    if (t.getAttribute && t.getAttribute('data-tyk')) return tyKenttaMuuttui(t);
     if (t.id === 'tyHalk') { TY.D = t.value; tallennaTy(); return tyPiirraArvotSailyttaen(); }
     if (t.id === 'tyKD' || t.id === 'tyKP') { TY[t.id === 'tyKD' ? 'kD' : 'kP'] = t.value; tallennaTy(); return tyOmaKierre(); }
   });
