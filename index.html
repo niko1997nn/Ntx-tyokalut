@@ -1816,26 +1816,13 @@
   #tyKSarja .seg-name, .ty-tila .seg-name { font-size: 13px; }
   .tulos-yla .ty-tulokset { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 10px; padding: 10px 12px; }
   .ty-tulos { min-width: 0; cursor: pointer; }
-  .ty-tulos .result-label { font-size: 11.5px; margin-bottom: 2px; }
-  .ty-tulos .result-value { font-size: 20px; flex-wrap: nowrap; white-space: nowrap; }
-  .ty-yks { font-size: 10.5px; color: var(--text-dim); }
-  .ty-tulos .result-label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .ty-keha { padding: 2px 0 12px; border-bottom: 1px solid var(--panel-border); }
   .ty-keha .seg-btn { flex: 1 1 0; text-align: center; padding: 9px 6px; }
   .ty-keha .seg-name { font-size: 12.5px; }
   .ty-keha-info:empty { display: none; }
   .ty-keha-viesti { margin-top: 8px; font-size: 12.5px; line-height: 1.45; color: var(--text-dim); }
   .ty-keha-viesti.virhe { color: var(--red); }
-  .ty-rivi { border-bottom: none; padding: 8px 0 0; }
-  .ty-rivi .ty-arvo { width: 140px; max-width: 45vw; box-sizing: border-box; text-align: right; padding: 10px 12px;
-    font: 600 17px var(--mono); border-radius: 12px; background: var(--panel-2, transparent); color: var(--text); }
-  .ty-rivi.uusi { cursor: pointer; }
-  .ty-rivi.uusi label { font-weight: 600; }
-  .ty-rivi.uusi label .unit-note { font-weight: 400; }
-  .ty-rivi.uusi .ty-arvo { background: var(--accent-dim); color: var(--accent); box-shadow: inset 0 0 0 1.5px var(--accent); }
-  .ty-laskettu input { color: var(--accent-text, var(--accent)); background: transparent; }
   .ty-valinnat .field select { width: 100%; max-width: 62vw; }
-  #viewTyosto .field { gap: 10px; }
   .ty-matkortti { display: flex; flex-direction: column; gap: 3px; margin: 14px 0 10px; }
   .ty-matkortti b { font-size: 16px; }
   .ty-matkortti span { font-size: 12.5px; color: var(--text-dim); }
@@ -1904,6 +1891,48 @@
   body.numpad-auki .tabbar { display: none; }
   #numpadRow .seg-btn { flex: 1 1 0; text-align: center; padding: 11px 6px; }
   #numpadRow .seg-name { font-size: 12.5px; }
+
+  /* ═══ Työstölaskin: rivit symboli | nimi | arvo + yksikkö ═══ */
+  #tyKentat { padding-top: 2px; padding-bottom: 6px; }
+  .tyg { padding: 2px 0 8px; }
+  .tyg + .tyg { border-top: 1px solid var(--panel-border); }
+  .tyg-otsikko { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; padding: 12px 0 6px;
+    font: 600 10.5px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim); }
+  .tyg-vihje { font: 400 11.5px var(--sans, inherit); letter-spacing: 0; text-transform: none; color: var(--text-dim); opacity: 0.85; }
+  .tyr { display: grid; grid-template-columns: 34px minmax(0, 1fr) 148px; align-items: center; column-gap: 10px; padding: 5px 0; }
+  .tyr-sym { font: 600 16px var(--mono); color: var(--text-dim); white-space: nowrap; }
+  .tyr-sym sub, .ty-tulos-nimi sub { font-size: 0.68em; vertical-align: -0.2em; line-height: 0; }
+  .tyr-nimi { font-size: 14px; line-height: 1.25; color: var(--text); min-width: 0; }
+  .tyr-lisa { display: block; font-size: 11.5px; font-weight: 400; color: var(--text-dim); margin-top: 1px; }
+  .tyr-kentta { position: relative; display: block; }
+  .tyr-kentta input, .tyr-arvo {
+    display: flex; align-items: center; justify-content: flex-end;
+    width: 100%; height: 44px; box-sizing: border-box; margin: 0;
+    padding: 0 58px 0 10px; text-align: right;
+    font: 500 17px var(--mono); color: var(--text);
+    background: var(--panel); border: 1px solid var(--input-border, var(--panel-border)); border-radius: 10px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
+    -webkit-appearance: none; appearance: none;
+  }
+  .tyr-kentta input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
+  .tyr-yks { position: absolute; right: 0; top: 0; bottom: 0; width: 52px; display: flex; align-items: center;
+    font: 500 11.5px var(--mono); color: var(--text-dim); pointer-events: none; }
+  .tyr.laskettu .tyr-sym { color: var(--accent); }
+  .tyr.laskettu input, .tyr.laskettu .tyr-arvo { background: var(--accent-dim); border-color: transparent; box-shadow: none; color: var(--accent); }
+  .tyr.korostus { cursor: pointer; }
+  .tyr.korostus .tyr-sym, .tyr.korostus .tyr-nimi { color: var(--accent); font-weight: 600; }
+  .tyr.korostus .tyr-arvo { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 700; }
+  .tyr.korostus .tyr-yks { color: var(--on-accent); opacity: 0.85; }
+  .ty-keha { padding: 6px 0 4px; border-bottom: none; }
+  .ty-keha-info { padding-top: 2px; }
+  /* tulosruutu */
+  .tulos-yla .ty-tulokset { gap: 10px 12px; padding: 12px 14px; }
+  .ty-tulos { min-width: 0; cursor: pointer; }
+  .ty-tulos-nimi { font-size: 11.5px; color: var(--text-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ty-tulos-arvo { font: 600 20px var(--mono); color: var(--accent); white-space: nowrap; margin-top: 2px; line-height: 1.2; }
+  .ty-tulos-arvo span { font: 500 11px var(--mono); color: var(--text-dim); margin-left: 4px; }
+  .ty-tulos.korostus .ty-tulos-nimi { color: var(--accent); font-weight: 600; }
+  @media (max-width: 360px) { .tyr { grid-template-columns: 30px minmax(0, 1fr) 132px; } }
 </style>
 </head>
 <body>
@@ -9130,17 +9159,33 @@ var TY = (function () {
 function tallennaTy() { store.setJSON(K_TYOSTO, TY); }
 
 /* ---- laskin ---- */
-const TY_KENTAT = {
-  sorvaus:  [['D', 'Työstöhalkaisija', 'mm'], ['vc', 'Lastuamisnopeus vc', 'm/min'], ['n', 'Kierrosluku n', 'r/min'],
-             ['f', 'Syöttö f', 'mm/r'], ['vf', 'Pöytäsyöttö Vf', 'mm/min'],
-             ['ap', 'Lastuamissyvyys ap', 'mm'], ['r', 'Nirkon säde r', 'mm'], ['L', 'Työstöpituus L', 'mm, valinnainen']],
-  poraus:   [['D', 'Poran halkaisija', 'mm'], ['vc', 'Lastuamisnopeus vc', 'm/min'], ['n', 'Kierrosluku n', 'r/min'],
-             ['f', 'Syöttö f', 'mm/r'], ['vf', 'Pöytäsyöttö Vf', 'mm/min'], ['L', 'Reiän syvyys L', 'mm, valinnainen']],
-  jyrsinta: [['D', 'Jyrsimen halkaisija', 'mm'], ['z', 'Terien määrä z', 'kpl'], ['vc', 'Lastuamisnopeus vc', 'm/min'], ['n', 'Kierrosluku n', 'r/min'],
-             ['fz', 'Syöttö per terä fz', 'mm'], ['vf', 'Pöytäsyöttö Vf', 'mm/min, työkalun reuna'],
-             ['Dw', 'Ympyräjyrsinnän halkaisija Dw', 'mm, reikä tai tappi, valinnainen'],
-             ['ap', 'Aksiaalinen syvyys ap', 'mm'], ['ae', 'Radiaalinen leveys ae', 'mm'], ['L', 'Työstöpituus L', 'mm, valinnainen']]
+/* Kentät ryhmittäin: [tunniste, symboli (HTML), nimi, yksikkö] */
+const TY_SYM = { D: 'D<sub>c</sub>', Dm: 'D<sub>m</sub>', z: 'z', vc: 'v<sub>c</sub>', n: 'n', f: 'f<sub>n</sub>', fz: 'f<sub>z</sub>',
+  vf: 'V<sub>f</sub>', ap: 'a<sub>p</sub>', ae: 'a<sub>e</sub>', r: 'r<sub>ε</sub>', L: 'L', Dw: 'D<sub>w</sub>' };
+const TY_RYHMAT = {
+  sorvaus: [
+    ['Kappale ja terä', '', [['D', 'Dm', 'Halkaisija', 'mm'], ['r', 'r', 'Nirkon säde', 'mm']]],
+    ['Nopeus', 'anna toinen, toinen lasketaan', [['vc', 'vc', 'Lastuamisnopeus', 'm/min'], ['n', 'n', 'Kierrosluku', 'r/min']]],
+    ['Syöttö', 'anna toinen, toinen lasketaan', [['f', 'f', 'Syöttö / kierros', 'mm/r'], ['vf', 'vf', 'Pöytäsyöttö', 'mm/min']]],
+    ['Lastuaminen', '', [['ap', 'ap', 'Lastuamissyvyys', 'mm'], ['L', 'L', 'Työstöpituus', 'mm']]]
+  ],
+  poraus: [
+    ['Työkalu', '', [['D', 'D', 'Halkaisija', 'mm']]],
+    ['Nopeus', 'anna toinen, toinen lasketaan', [['vc', 'vc', 'Lastuamisnopeus', 'm/min'], ['n', 'n', 'Kierrosluku', 'r/min']]],
+    ['Syöttö', 'anna toinen, toinen lasketaan', [['f', 'f', 'Syöttö / kierros', 'mm/r'], ['vf', 'vf', 'Pöytäsyöttö', 'mm/min']]],
+    ['Reikä', '', [['L', 'L', 'Reiän syvyys', 'mm']]]
+  ],
+  jyrsinta: [
+    ['Työkalu', '', [['D', 'D', 'Halkaisija', 'mm'], ['z', 'z', 'Terien määrä', 'kpl']]],
+    ['Nopeus', 'anna toinen, toinen lasketaan', [['vc', 'vc', 'Lastuamisnopeus', 'm/min'], ['n', 'n', 'Kierrosluku', 'r/min']]],
+    ['Syöttö', 'anna toinen, toinen lasketaan', [['fz', 'fz', 'Syöttö / terä', 'mm'], ['vf', 'vf', 'Pöytäsyöttö', 'mm/min']]],
+    ['Lastuaminen', '', [['ap', 'ap', 'Lastuamissyvyys', 'mm'], ['ae', 'ae', 'Lastuamisleveys', 'mm'], ['L', 'L', 'Työstöpituus', 'mm']]],
+    ['Ympyräinterpolointi', 'valinnainen', [['Dw', 'Dw', 'Halkaisija', 'mm']]]
+  ]
 };
+/* yhteensopivuus: kenttälista tilaa kohden */
+const TY_KENTAT = {};
+Object.keys(TY_RYHMAT).forEach(m => { TY_KENTAT[m] = []; TY_RYHMAT[m].forEach(r => r[2].forEach(k => TY_KENTAT[m].push([k[0], k[2], k[3]]))); });
 /* Kaksi kytkettyä paria: vc ↔ n ja syöttö (f tai fz) ↔ Vf.
    Parista viimeksi muokattu on annettu arvo, toinen lasketaan. */
 function tySyottoKentta() { return TY.tila === 'jyrsinta' ? 'fz' : 'f'; }
@@ -9204,19 +9249,19 @@ function tySyottoTeksti(v) {
 
 function tyPaivitaTulokset() {
   const o = tyLaske(), m = TY.tila;
-  const solu = (nimi, arvo, yks, id) => '<div class="ty-tulos copyable"' + (id ? ' data-tykopio="' + id + '"' : '') + '>' +
-    '<div class="result-label">' + nimi + (yks ? ' <span class="ty-yks">' + yks + '</span>' : '') + '</div>' +
-    '<div class="result-value"><span>' + arvo + '</span></div></div>';
-  let h = TY.ohjaa === 'n' ? solu('vc', fmt(o.vc, 0), 'm/min', 'vc') : solu('n', fmt(o.n, 0), 'r/min', 'n');
-  if (TY.ohjaaF === 'vf') h += solu(m === 'jyrsinta' ? 'fz' : 'f', (tySyottoTeksti(o.syotto) || '—').replace('.', ','), m === 'jyrsinta' ? 'mm' : 'mm/r', 'syotto');
-  else h += solu('Vf', fmt(o.vf, 0), 'mm/min', 'vf');
+  const solu = (nimi, arvo, yks, id, luokka) => '<div class="ty-tulos copyable' + (luokka ? ' ' + luokka : '') + '"' + (id ? ' data-tykopio="' + id + '"' : '') + '>' +
+    '<div class="ty-tulos-nimi">' + nimi + '</div>' +
+    '<div class="ty-tulos-arvo">' + arvo + (yks && arvo !== '—' ? '<span>' + yks + '</span>' : '') + '</div></div>';
+  let h = TY.ohjaa === 'n' ? solu('Lastuamisnopeus', fmt(o.vc, 0), 'm/min', 'vc') : solu('Kierrosluku', fmt(o.n, 0), 'r/min', 'n');
+  if (TY.ohjaaF === 'vf') h += solu(m === 'jyrsinta' ? 'Syöttö / terä' : 'Syöttö / kierros', (tySyottoTeksti(o.syotto) || '—').replace('.', ','), m === 'jyrsinta' ? 'mm' : 'mm/r', 'syotto');
+  else h += solu('Pöytäsyöttö', fmt(o.vf, 0), 'mm/min', 'vf');
   if (m === 'jyrsinta' && (isFinite(o.kehaKerroin) || o.kehaVirhe)) {
-    h += solu('Uusi Vf', o.kehaVirhe ? '—' : fmt(o.vfKeski, 0), 'mm/min', 'vfKeski');
+    h += solu('Syöttö ohjelmaan', o.kehaVirhe ? '—' : fmt(o.vfKeski, 0), 'mm/min', 'vfKeski', 'korostus');
   }
-  h += solu('Q', fmt(o.q, 1), 'cm³/min');
-  if (m === 'sorvaus') h += solu('Ra teor.', fmt(o.ra, 2), 'µm');
-  else if (m === 'jyrsinta') h += solu('hm', fmt(o.hm, 3), 'mm');
-  h += solu('Aika', tyAikaTeksti(o.aika), '');
+  h += solu('Ainepoisto', fmt(o.q, 1), 'cm³/min');
+  if (m === 'sorvaus') h += solu('Pinnankarheus', fmt(o.ra, 2), 'µm');
+  else if (m === 'jyrsinta') h += solu('Lastun paksuus', fmt(o.hm, 3), 'mm');
+  h += solu('Työstöaika', tyAikaTeksti(o.aika), '');
   document.getElementById('tyTulokset').innerHTML = h;
   const kv = document.getElementById('tyKehaInfo');
   if (kv) {
@@ -9226,11 +9271,9 @@ function tyPaivitaTulokset() {
     } else if (isFinite(o.kehaKerroin)) {
       const pros = Math.round(Math.abs(o.kehaKerroin - 1) * 100);
       kv.innerHTML =
-        '<div class="field ty-rivi"><label>Reunan syöttö<span class="unit-note">mm/min, terän reuna</span></label>' +
-          '<div class="ty-arvo">' + fmt(o.vf, 0) + '</div></div>' +
-        '<div class="field ty-rivi uusi copyable" data-tykopio="vfKeski"><label>Syöttö ohjelmaan<span class="unit-note">mm/min, keskipisteen rata, ' +
-          pros + ' % ' + (ulko ? 'suurempi' : 'pienempi') + '</span></label>' +
-          '<div class="ty-arvo">' + fmt(o.vfKeski, 0) + '</div></div>';
+        tyRiviHTML('', 'V<sub>f</sub>', 'Reunan syöttö', 'mm/min', '<span class="tyr-arvo">' + fmt(o.vf, 0) + '</span>', 'laskettu') +
+        tyRiviHTML('', 'V<sub>f</sub>', 'Syöttö ohjelmaan<span class="tyr-lisa">keskipisteen rata · ' + (ulko ? '+' : '−') + pros + ' %</span>', 'mm/min',
+          '<span class="tyr-arvo">' + fmt(o.vfKeski, 0) + '</span>', 'korostus copyable" data-tykopio="vfKeski');
     } else kv.innerHTML = '';
   }
   /* lasketut kentät näyttävät arvonsa heti */
@@ -9244,38 +9287,39 @@ function tyPaivitaTulokset() {
   window.__tyTulos = o;
 }
 
+function tyRiviHTML(id, sym, nimi, yks, kentta, luokka) {
+  return '<div class="tyr' + (luokka ? ' ' + luokka : '') + '"' + (id ? ' data-rivi="' + id + '"' : '') + '>' +
+    '<span class="tyr-sym">' + sym + '</span>' +
+    '<span class="tyr-nimi">' + nimi + '</span>' +
+    '<span class="tyr-kentta">' + kentta + '<span class="tyr-yks">' + esc(yks) + '</span></span></div>';
+}
+
 function tyMerkitseLasketut() {
-  document.querySelectorAll('#tyKentat .field').forEach(f => {
-    const i = f.querySelector('input'); const id = i && i.getAttribute('data-tyk');
-    if (!id) return;
-    const laskettu = !tyAnnettu(id);
-    f.classList.toggle('ty-laskettu', laskettu);
-    const yks = f.querySelector('.unit-note');
-    if (yks) yks.textContent = yks.textContent.replace(' · laskettu', '') + (laskettu ? ' · laskettu' : '');
+  document.querySelectorAll('#tyKentat .tyr[data-rivi]').forEach(r => {
+    r.classList.toggle('laskettu', !tyAnnettu(r.getAttribute('data-rivi')));
   });
 }
 
 function tyPiirraKentat() {
   const k = TY.k[TY.tila] || {};
-  document.getElementById('tyKentat').innerHTML = TY_KENTAT[TY.tila].map(([id, nimi, yks]) =>
-    '<div class="field">' +
-      '<label>' + esc(nimi) + '<span class="unit-note">' + esc(yks) + '</span></label>' +
-      '<div class="num-wrap"><input type="text" inputmode="decimal" autocomplete="off" data-tyk="' + id + '" value="' + esc(k[id] || '') + '" data-ed="' + esc(k[id] || '') + '"></div></div>'
-  ).join('');
-  const dwKentta = document.querySelector('#tyKentat input[data-tyk="Dw"]');
-  if (dwKentta) {
-    const ulko = k.keha === 'ulko';
-    dwKentta.closest('.field').insertAdjacentHTML('afterend',
-      '<div class="ty-keha"><div class="seg-row">' +
-        '<button type="button" class="seg-btn' + (ulko ? '' : ' active') + '" data-tykeha="sisa"><span class="seg-name">Reikä (sisä)</span></button>' +
-        '<button type="button" class="seg-btn' + (ulko ? ' active' : '') + '" data-tykeha="ulko"><span class="seg-name">Tappi (ulko)</span></button>' +
-      '</div><div class="ty-keha-info" id="tyKehaInfo"></div></div>');
-  }
+  document.getElementById('tyKentat').innerHTML = TY_RYHMAT[TY.tila].map(([otsikko, vihje, kentat]) => {
+    let h = '<div class="tyg"><div class="tyg-otsikko"><span>' + esc(otsikko) + '</span>' + (vihje ? '<span class="tyg-vihje">' + esc(vihje) + '</span>' : '') + '</div>';
+    h += kentat.map(([id, sym, nimi, yks]) => tyRiviHTML(id, TY_SYM[sym] || esc(sym), esc(nimi), yks,
+      '<input type="text" inputmode="decimal" autocomplete="off" data-tyk="' + id + '" value="' + esc(k[id] || '') + '" data-ed="' + esc(k[id] || '') + '" aria-label="' + esc(nimi) + '">')).join('');
+    if (kentat.some(x => x[0] === 'Dw')) {
+      const ulko = k.keha === 'ulko';
+      h += '<div class="ty-keha"><div class="seg-row">' +
+        '<button type="button" class="seg-btn' + (ulko ? '' : ' active') + '" data-tykeha="sisa"><span class="seg-name">Reikä (sisäpuoli)</span></button>' +
+        '<button type="button" class="seg-btn' + (ulko ? ' active' : '') + '" data-tykeha="ulko"><span class="seg-name">Tappi (ulkopuoli)</span></button>' +
+        '</div></div><div class="ty-keha-info" id="tyKehaInfo"></div>';
+    }
+    return h + '</div>';
+  }).join('');
   tyMerkitseLasketut();
   const kaavat = {
     sorvaus: 'n = vc × 1000 / (π × D) · Vf = f × n · Q = vc × ap × f · Ra ≈ f² / r × 50 (µm, Sandvik)',
     poraus: 'n = vc × 1000 / (π × D) · Vf = f × n · Q = π × D² / 4 × Vf / 1000',
-    jyrsinta: 'n = vc × 1000 / (π × D) · Vf = fz × z × n · Q = ap × ae × Vf / 1000 · hm = 180 × ae × fz / (π × D × arcsin(ae/D)°) · ympyräjyrsintä: Vf ohjelmaan = Vf × (Dw − D) / Dw reiässä, × (Dw + D) / Dw tapissa'
+    jyrsinta: 'n = vc × 1000 / (π × D) · Vf = fz × z × n · Q = ap × ae × Vf / 1000 · hm = 180 × ae × fz / (π × D × arcsin(ae/D)°) · ympyräinterpolointi: Vf ohjelmaan = Vf × (Dw − D) / Dw reiässä, × (Dw + D) / Dw tapissa'
   };
   document.getElementById('tyKaavat').innerHTML = '<strong>Kaavat:</strong><br>' + esc(kaavat[TY.tila]) + '<br>t = L / Vf';
   document.querySelectorAll('#tyTila .seg-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-tytila') === TY.tila));
