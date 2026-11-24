@@ -271,6 +271,9 @@
   .seg-btn.active { border-color: var(--accent); background: var(--accent-dim); color: var(--accent); }
   #themeRow .seg-btn { flex: 1 1 0; text-align: center; padding: 11px 6px; }
   #themeRow .seg-name { font-size: 12.5px; }
+  #kaavaRow .seg-btn { flex: 1 1 0; text-align: center; padding: 11px 6px; }
+  #kaavaRow .seg-name { font-size: 12.5px; }
+  body:not(.nayta-kaavat) .kaava { display: none !important; }
   .seg-name { font-size: 13.5px; font-weight: 700; display: block; }
   .seg-dia { font-family: var(--mono); font-size: 11.5px; display: block; margin-top: 3px; }
 
@@ -1433,9 +1436,8 @@
 
       <div class="note">
         Muutokset tallentuvat itsestään.<br>
-        <strong>Kaava:</strong> mitta = (pakan vastinarvo + kappaleen halkaisija − (pakan halkaisija − puristuskohdan säätö)) / 2.<br>
-        <strong>Puristuskohdan säätö</strong> vähennetään vain pakan halkaisijasta: pakka 315 ja säätö 5 → laskennassa 310.
-        Sillä valitaan, mihin kohtaan pakan liikerataa puristus pysähtyy. Arvo muistetaan pakkakohtaisesti.<br>
+        <span class="kaava"><strong>Kaava:</strong> mitta = (pakan vastinarvo + kappaleen halkaisija − (pakan halkaisija − puristuskohdan säätö)) / 2.<br></span>
+        <strong>Puristuskohdan säätö</strong> valitsee, mihin kohtaan pakan liikerataa puristus pysähtyy. Se vähennetään vain pakan halkaisijasta<span class="kaava"> (pakka 315 ja säätö 5 → laskennassa 310)</span>. Arvo muistetaan pakkakohtaisesti.<br>
         <strong>Pakan vastinarvo</strong> on se kappaleen halkaisija, jolla leuka on tasan pakan reunan tasalla (mitta = 0).
         Jokainen leuka kuuluu yhteen pakkaan, ja laskennassa käytetään aina sen pakan halkaisijaa.
       </div>
@@ -1517,7 +1519,7 @@
         </div>
       </div>
 
-      <div class="note">
+      <div class="note kaava">
         <strong>Kaavat:</strong><br>
         hakusijainti = −(SP2 otsapinta − leuan pituus + puristussyvyys − Z0)<br>
         G55 Z = SP2 otsapinta − leuan pituus + puristussyvyys − kappaleen pituus
@@ -1669,6 +1671,14 @@
           <button class="seg-btn" data-theme="auto"><span class="seg-name">Automaattinen</span></button>
           <button class="seg-btn" data-theme="light"><span class="seg-name">Vaalea</span></button>
           <button class="seg-btn" data-theme="dark"><span class="seg-name">Tumma</span></button>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-label">Laskukaavat</div>
+        <div class="seg-row" id="kaavaRow">
+          <button class="seg-btn" data-kaavat="0"><span class="seg-name">Piilossa</span></button>
+          <button class="seg-btn" data-kaavat="1"><span class="seg-name">Näytä laskukaavat</span></button>
         </div>
       </section>
 
@@ -2010,6 +2020,25 @@ if (window.matchMedia) {
   if (mq.addEventListener) mq.addEventListener('change', () => { if (teema === 'auto') kaytaTeema(); });
 }
 
+/* Laskukaavat: vakiona piilossa, asetus on laitekohtainen */
+const K_KAAVAT = 'ntx_kaavat';
+let kaavatNakyvissa = (function () { try { return localStorage.getItem(K_KAAVAT) === '1'; } catch (e) { return false; } })();
+function kaytaKaavat() {
+  document.body.classList.toggle('nayta-kaavat', kaavatNakyvissa);
+  document.querySelectorAll('#kaavaRow .seg-btn').forEach(b => {
+    b.classList.toggle('active', (b.getAttribute('data-kaavat') === '1') === kaavatNakyvissa);
+  });
+}
+document.addEventListener('click', e => {
+  const btn = e.target.closest && e.target.closest('#kaavaRow .seg-btn');
+  if (!btn) return;
+  kaavatNakyvissa = btn.getAttribute('data-kaavat') === '1';
+  try { localStorage.setItem(K_KAAVAT, kaavatNakyvissa ? '1' : '0'); } catch (err) {}
+  kaytaKaavat();
+  if (typeof calculateJaw === 'function') calculateJaw();
+});
+kaytaKaavat();
+
 /* Toimiiko selaimen tallennus lainkaan? */
 let STORAGE_OK = true;
 try {
@@ -2024,7 +2053,7 @@ const K_TILANNE     = 'ntx_tilannekuvat';     /* paikalliset palautuspisteet */
 const K_SYNC_VERSIO = 'ntx_sync_versio';      /* viimeksi tiedossa ollut palvelimen versio */
 const K_LAHETYS_PYYNTO = 'ntx_lahetys_pyynto';/* lähetä heti seuraavassa käynnistyksessä */
 let alustusKesken = true;   /* käynnistyksen migraatiot eivät ole käyttäjän muutoksia */
-const META_AVAIMET = ['ntx_muokattu', 'ntx_sync', 'ntx_teema', 'ntx_varmuuskopio_pvm',
+const META_AVAIMET = ['ntx_muokattu', 'ntx_sync', 'ntx_teema', 'ntx_kaavat', 'ntx_varmuuskopio_pvm',
                       'ntx_sync_haettu', 'ntx_nakyma',
                       K_POISTOT, K_TILANNE, K_SYNC_VERSIO, K_LAHETYS_PYYNTO];
 
@@ -2625,7 +2654,7 @@ function renderPakkaSeg() {
     b.dataset.uid = p.uid;
     b.innerHTML = '<span class="seg-name">' + esc(p.name) + '</span>' +
                   '<span class="seg-dia">\u00D8 ' + esc(p.halkaisija) + ' mm' +
-                    (pakanSaato(p) ? ' \u2192 ' + esc(lyhyt(pakanLaskentaHalk(p))) : '') + '</span>';
+                    (pakanSaato(p) ? '<span class="kaava"> \u2192 ' + esc(lyhyt(pakanLaskentaHalk(p))) + '</span>' : '') + '</span>';
     pakkaSeg.appendChild(b);
   });
   const sel = getPakka(selectedPakkaUid);
@@ -2720,7 +2749,7 @@ function calculateJaw() {
 
   const h = num(halkaisijaInput.value);
   const s = pakanSaato(pakka);
-  saatoHint.textContent = s
+  saatoHint.textContent = (s && kaavatNakyvissa)
     ? 'laskennassa \u00D8 ' + lyhyt(pakka.halkaisija) + ' \u2212 ' + lyhyt(s) + ' = ' + lyhyt(pakanLaskentaHalk(pakka)) + ' mm'
     : 'mihin kohtaan liikerataa puristus pysähtyy';
   const result = isNaN(h) ? null : ((jaw.pakkaRef + h) - pakanLaskentaHalk(pakka)) / 2;
