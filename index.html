@@ -1611,8 +1611,9 @@
     .tab-btn {
       flex: 1 1 0; min-width: 0; min-height: 54px; flex-direction: column; gap: 3px;
       padding: 6px 2px 4px; border: none; border-radius: 10px; background: transparent;
-      color: var(--text-dim); font-size: 11px; font-weight: 600;
+      color: var(--text-dim); font-size: 10.5px; font-weight: 600; letter-spacing: -0.01em; white-space: nowrap;
     }
+    .tab-btn span { overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
     .tab-btn.active { border: none; background: transparent; color: var(--accent-text); }
     .tab-btn svg { width: 22px; height: 22px; }
     .tab-badge { position: absolute; top: 3px; left: calc(50% + 5px); }
@@ -1947,6 +1948,55 @@
   .geo-grid .num-wrap.has-yks .yks, .cut-grid .num-wrap.has-yks .yks { right: 32px; }
   .cut-grid .yks-wrap > input, .cut-grid .yks-wrap > .laskettu-kentta { padding-left: 6px; padding-right: 46px !important; }
   .cut-grid .yks { right: 5px; width: 38px; font-size: 10px; letter-spacing: -0.03em; }
+
+  /* laskin ↔ työkalu */
+  .luku-arvot .peek-row { position: relative; }
+  .luku-arvot .peek-mat { padding-right: 92px; }
+  .laskimeen-btn { position: absolute; top: 8px; right: 10px; border: 1px solid var(--accent); border-radius: 8px;
+    background: var(--panel); padding: 4px 9px; font: 600 12px var(--sans); color: var(--accent); cursor: pointer; white-space: nowrap; }
+  .ty-linkki { display: flex; align-items: center; gap: 10px; margin: 12px 0 0; padding: 10px 12px;
+    border: 1px solid var(--accent); border-radius: 12px; background: var(--accent-dim); }
+  .ty-linkki-teksti { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: 8px; }
+  .ty-linkki-t { font: 700 15px var(--mono); color: var(--accent); }
+  .ty-linkki-nimi { font-size: 13px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ty-linkki-irrota { border: none; background: none; font-size: 20px; line-height: 1; color: var(--text-dim); padding: 2px 4px; cursor: pointer; }
+  .ty-tallenna { color: var(--accent); font-weight: 600; border-color: var(--accent); }
+
+  /* ═══ Kappaleet ═══ */
+  .kp-haku { margin-bottom: 12px; }
+  .kp-rivi { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; width: 100%; text-align: left;
+    padding: 12px 14px; margin-bottom: 8px; border: 1px solid var(--panel-border); border-radius: 14px;
+    background: var(--panel); color: var(--text); font: inherit; cursor: pointer; }
+  .kp-rivi:active { border-color: var(--accent); }
+  .kp-rivi-piir { font: 700 17px var(--mono); color: var(--accent); display: flex; align-items: baseline; gap: 8px; }
+  .kp-rev { font: 500 11.5px var(--mono); color: var(--text-dim); }
+  .kp-rivi-nimi { font-size: 14px; }
+  .kp-rivi i { color: var(--text-dim); font-style: normal; }
+  .kp-tagit { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 4px; }
+  .kp-tagit span { font: 500 11.5px var(--mono); padding: 2px 7px; border-radius: 6px; background: var(--panel-2, var(--bg)); color: var(--text-dim); }
+  .kp-tyhja { display: flex; flex-direction: column; gap: 8px; padding: 18px 16px; border: 1px dashed var(--panel-border); border-radius: 14px; }
+  .kp-tyhja span { font-size: 13px; color: var(--text-dim); line-height: 1.45; }
+  .kp-osa { margin-bottom: 18px; }
+  .kp-osa .field-grid { margin-top: 4px; }
+  .kp-tulos { display: flex; flex-wrap: wrap; gap: 8px; margin: 2px 0 8px; }
+  .kp-tulos-tyhja { font-size: 12.5px; color: var(--text-dim); }
+  .kp-arvo { flex: 1 1 140px; display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; border-radius: 12px;
+    background: var(--accent-dim); cursor: pointer; }
+  .kp-arvo span { font-size: 11.5px; color: var(--text-dim); }
+  .kp-arvo b { font: 700 22px var(--mono); color: var(--accent); }
+  .kp-arvo i { font: 500 11.5px var(--mono); font-style: normal; color: var(--text-dim); margin-left: 4px; }
+  .kp-varoitus { flex-basis: 100%; font-size: 12.5px; color: var(--red); }
+  .kp-napit { margin-top: 10px; }
+  .kp-napit .add-cut-btn { margin-top: 0; }
+  .kp-kayta { color: var(--accent); border-color: var(--accent); font-weight: 600; }
+  .kp-tyokalut { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .kp-tchip { border: 1px solid var(--panel-border); background: var(--panel); color: var(--text); border-radius: 8px;
+    padding: 5px 9px; font: 500 12.5px var(--sans); cursor: pointer; text-align: left; }
+  .kp-tchip b { font-family: var(--mono); color: var(--accent); }
+  .kp-tchip.pois { border-color: var(--orange); }
+  .kp-tchip.puuttuu { border-color: var(--red); color: var(--red); cursor: default; }
+  .kp-alaosa { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 8px 0 20px; }
+  .kp-pvm { font-size: 12px; color: var(--text-dim); }
 </style>
 </head>
 <body>
@@ -1972,8 +2022,9 @@
     <nav class="tabbar" aria-label="Päävalikko">
       <button class="tab-btn" data-tool="viewToolList"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg><span>Työkalut</span></button>
       <button class="tab-btn active" data-tool="viewJawCalc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg><span>Leuka</span></button>
-      <button class="tab-btn" data-tool="viewSP2Calc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="4"/></svg><span>SP2 &amp; G55</span></button>
+      <button class="tab-btn" data-tool="viewSP2Calc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="4"/></svg><span>SP2</span></button>
       <button class="tab-btn" data-tool="viewTyosto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.3 19a9 9 0 1 1 17.4 0"/><path d="M12 14l4.5-4.5"/><circle cx="12" cy="14" r="1.5"/></svg><span>Työstö</span></button>
+      <button class="tab-btn" data-tool="viewKappaleet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg><span>Kappaleet</span></button>
       <button class="tab-btn" data-nav="tarkistus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg><span>Tarkistus</span><span class="tab-badge"></span></button>
       <button class="tab-btn" data-nav="asetukset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Asetukset</span></button>
     </nav>
@@ -2095,8 +2146,9 @@
     <nav class="tabbar" aria-label="Päävalikko">
       <button class="tab-btn" data-tool="viewToolList"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg><span>Työkalut</span></button>
       <button class="tab-btn" data-tool="viewJawCalc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg><span>Leuka</span></button>
-      <button class="tab-btn active" data-tool="viewSP2Calc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="4"/></svg><span>SP2 &amp; G55</span></button>
+      <button class="tab-btn active" data-tool="viewSP2Calc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="4"/></svg><span>SP2</span></button>
       <button class="tab-btn" data-tool="viewTyosto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.3 19a9 9 0 1 1 17.4 0"/><path d="M12 14l4.5-4.5"/><circle cx="12" cy="14" r="1.5"/></svg><span>Työstö</span></button>
+      <button class="tab-btn" data-tool="viewKappaleet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg><span>Kappaleet</span></button>
       <button class="tab-btn" data-nav="tarkistus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg><span>Tarkistus</span><span class="tab-badge"></span></button>
       <button class="tab-btn" data-nav="asetukset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Asetukset</span></button>
     </nav>
@@ -2211,8 +2263,9 @@
     <nav class="tabbar" aria-label="Päävalikko">
       <button class="tab-btn active" data-tool="viewToolList"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg><span>Työkalut</span></button>
       <button class="tab-btn" data-tool="viewJawCalc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg><span>Leuka</span></button>
-      <button class="tab-btn" data-tool="viewSP2Calc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="4"/></svg><span>SP2 &amp; G55</span></button>
+      <button class="tab-btn" data-tool="viewSP2Calc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="4"/></svg><span>SP2</span></button>
       <button class="tab-btn" data-tool="viewTyosto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.3 19a9 9 0 1 1 17.4 0"/><path d="M12 14l4.5-4.5"/><circle cx="12" cy="14" r="1.5"/></svg><span>Työstö</span></button>
+      <button class="tab-btn" data-tool="viewKappaleet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg><span>Kappaleet</span></button>
       <button class="tab-btn" data-nav="tarkistus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg><span>Tarkistus</span><span class="tab-badge"></span></button>
       <button class="tab-btn" data-nav="asetukset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Asetukset</span></button>
     </nav>
@@ -2299,8 +2352,9 @@
     <nav class="tabbar" aria-label="Päävalikko">
       <button class="tab-btn" data-tool="viewToolList"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg><span>Työkalut</span></button>
       <button class="tab-btn" data-tool="viewJawCalc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg><span>Leuka</span></button>
-      <button class="tab-btn" data-tool="viewSP2Calc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="4"/></svg><span>SP2 &amp; G55</span></button>
+      <button class="tab-btn" data-tool="viewSP2Calc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="4"/></svg><span>SP2</span></button>
       <button class="tab-btn active" data-tool="viewTyosto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.3 19a9 9 0 1 1 17.4 0"/><path d="M12 14l4.5-4.5"/><circle cx="12" cy="14" r="1.5"/></svg><span>Työstö</span></button>
+      <button class="tab-btn" data-tool="viewKappaleet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg><span>Kappaleet</span></button>
       <button class="tab-btn" data-nav="tarkistus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg><span>Tarkistus</span><span class="tab-badge"></span></button>
       <button class="tab-btn" data-nav="asetukset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Asetukset</span></button>
     </nav>
@@ -2320,12 +2374,14 @@
         <div class="tulos-yla">
           <div class="result-card ty-tulokset" id="tyTulokset"></div>
         </div>
+        <div id="tyLinkki"></div>
         <div class="seg-row ty-tila" id="tyTila">
           <button type="button" class="seg-btn" data-tytila="sorvaus"><span class="seg-name">Sorvaus</span></button>
           <button type="button" class="seg-btn" data-tytila="poraus"><span class="seg-name">Poraus</span></button>
           <button type="button" class="seg-btn" data-tytila="jyrsinta"><span class="seg-name">Jyrsintä</span></button>
         </div>
         <div class="section-card" id="tyKentat"></div>
+        <button class="add-btn ty-tallenna" id="tyTallennaTyokalulle">Tallenna työkalulle…</button>
         <button class="add-btn" id="tyTyhjenna">Tyhjennä laskin</button>
         <div class="note kaava" id="tyKaavat"></div>
       </div>
@@ -2381,6 +2437,62 @@
     </main>
 
     <footer><span class="machine-name">NTX3000</span> · TYÖSTÖ · v3.0</footer>
+  </div>
+
+  <!-- ===================== KAPPALEET: TYÖKORTIT PIIRUSTUSNUMEROITTAIN ===================== -->
+  <div class="view" id="viewKappaleet">
+    <header>
+      <div class="header-left">
+        <div class="logo-mark machine-abbr">NTX</div>
+        <div>
+          <div class="title">Kappaleet</div>
+          <div class="subtitle" id="kpAli">Työkortit piirustusnumeroittain</div>
+        </div>
+      </div>
+      <button class="icon-btn teksti-btn" id="kpUusi" aria-label="Uusi kappalekortti">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        <span>Uusi</span>
+      </button>
+    </header>
+
+    <nav class="tabbar" aria-label="Päävalikko">
+      <button class="tab-btn" data-tool="viewToolList"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg><span>Työkalut</span></button>
+      <button class="tab-btn" data-tool="viewJawCalc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg><span>Leuka</span></button>
+      <button class="tab-btn" data-tool="viewSP2Calc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="4"/></svg><span>SP2</span></button>
+      <button class="tab-btn" data-tool="viewTyosto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.3 19a9 9 0 1 1 17.4 0"/><path d="M12 14l4.5-4.5"/><circle cx="12" cy="14" r="1.5"/></svg><span>Työstö</span></button>
+      <button class="tab-btn active" data-tool="viewKappaleet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg><span>Kappaleet</span></button>
+      <button class="tab-btn" data-nav="tarkistus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg><span>Tarkistus</span><span class="tab-badge"></span></button>
+      <button class="tab-btn" data-nav="asetukset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Asetukset</span></button>
+    </nav>
+
+    <div class="machine-bar"></div>
+
+    <main>
+      <div class="search-row kp-haku">
+        <input type="text" id="kpHaku" placeholder="Hae piirustusnumerolla, nimellä, ohjelmalla…" autocomplete="off" aria-label="Hae kappaletta">
+      </div>
+      <div id="kpLista"></div>
+    </main>
+
+    <footer><span class="machine-name">NTX3000</span> · KAPPALEET · v3.0</footer>
+  </div>
+
+  <div class="view" id="viewKappale">
+    <header>
+      <div class="header-left">
+        <button class="back-btn" id="kpTakaisin" aria-label="Takaisin">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7"></path>
+          </svg>
+        </button>
+        <div>
+          <div class="title" id="kpOtsikko">Kappale</div>
+          <div class="subtitle" id="kpAlaotsikko">tallentuu automaattisesti</div>
+        </div>
+      </div>
+    </header>
+    <main id="kpKortti"></main>
+    <footer><span class="machine-name">NTX3000</span> · KAPPALEKORTTI · v3.0</footer>
   </div>
 
   <div class="view" id="viewData">
@@ -2871,7 +2983,7 @@ const K_SYNC_VERSIO = 'ntx_sync_versio';      /* viimeksi tiedossa ollut palveli
 const K_LAHETYS_PYYNTO = 'ntx_lahetys_pyynto';/* lähetä heti seuraavassa käynnistyksessä */
 let alustusKesken = true;   /* käynnistyksen migraatiot eivät ole käyttäjän muutoksia */
 const META_AVAIMET = ['ntx_muokattu', 'ntx_sync', 'ntx_teema', 'ntx_kaavat', 'ntx_viimeksi', 'ntx_varmuuskopio_pvm',
-                      'ntx_sync_haettu', 'ntx_nakyma', 'ntx_tyosto',
+                      'ntx_sync_haettu', 'ntx_nakyma', 'ntx_tyosto', 'ntx_kappale_auki',
                       K_POISTOT, K_TILANNE, K_SYNC_VERSIO, K_LAHETYS_PYYNTO];
 
 /* -----------------------------------------------------------------
@@ -3067,7 +3179,8 @@ const TAB_DEFS = [
   ['tools', 'viewToolList', 'Työkalut'],
   ['jaw',   'viewJawCalc',  'Leuka'],
   ['sp2',   'viewSP2Calc',  'SP2 & G55'],
-  ['tyosto', 'viewTyosto',  'Työstö']
+  ['tyosto', 'viewTyosto',  'Työstö'],
+  ['kappaleet', 'viewKappaleet', 'Kappaleet']
 ];
 function tabNakyy(kone, avain) {
   if (!kone || !kone.tabs) return true;
@@ -3300,7 +3413,7 @@ document.addEventListener('input', e => {
    ================================================================= */
 const VIEWS = ['viewToolList', 'viewJawCalc', 'viewJawSettings', 'viewSP2Calc',
                'viewSP2Settings', 'viewToolTypes', 'viewData', 'viewMachines',
-               'viewImport', 'viewQuality', 'viewTietopankki', 'viewTyosto'];
+               'viewImport', 'viewQuality', 'viewTietopankki', 'viewTyosto', 'viewKappaleet', 'viewKappale'];
 
 /* Näkymä, vieritys ja avatut kortit säilyvät sivun päivityksen yli */
 const K_NAKYMA = 'ntx_nakyma';
@@ -3380,6 +3493,7 @@ function showView(id, sailytaVieritys) {
   VIEWS.forEach(v => document.getElementById(v).classList.toggle('active', v === id));
   if (!sailytaVieritys) window.scrollTo({ top: 0, behavior: 'instant' });
   if (id === 'viewTyosto' && typeof TY !== 'undefined') renderTyosto();
+  if (id === 'viewKappaleet' && typeof renderKappaleet === 'function' && typeof KAPPALEET !== 'undefined') renderKappaleet();
   if (typeof paivitaTabbarKorkeus === 'function') paivitaTabbarKorkeus();
   tallennaNakyma();
   if (vaihtuu) historiaLisaa(id);
@@ -4005,7 +4119,8 @@ function backupPayload() {
     materials: CUSTOM_MATERIALS,
     brands: CUSTOM_BRANDS,
     stock: STOCK,
-    saadot: SAADOT
+    saadot: SAADOT,
+    kappaleet: (typeof KAPPALEET !== 'undefined' ? KAPPALEET : [])
   };
 }
 
@@ -4088,6 +4203,10 @@ function tuoVarmuuskopio(data) {
     if (Array.isArray(data.saadot)) {
       SAADOT = data.saadot.filter(r => r && r.uid);
       saveSaadot();
+    }
+    if (Array.isArray(data.kappaleet)) {
+      KAPPALEET = data.kappaleet.filter(r => r && r.uid);
+      kpTallenna();
     }
     if (Array.isArray(data.tools)) {
       TOOLS = data.tools.filter(x => x && x.uid);
@@ -5550,6 +5669,8 @@ function cutsHTML(x) {
       '<div class="btn-row" style="margin-top:10px;">' +
         '<button class="add-cut-btn" style="margin-top:0;" data-action="copy-cut" data-uid="' + esc(x.uid) +
           '" data-cut="' + esc(c.uid) + '">Kopioi arvot</button>' +
+        (c.mat ? '<button class="add-cut-btn" style="margin-top:0;" data-action="avaa-laskimessa" data-uid="' + esc(x.uid) +
+          '" data-cut="' + esc(c.uid) + '">Laskimeen</button>' : '') +
         (c.mat ? '<button class="add-cut-btn" style="margin-top:0;" data-action="close-cut" data-uid="' + esc(x.uid) +
                  '" data-cut="' + esc(c.uid) + '">Valmis</button>' : '') +
       '</div>' +
@@ -5900,7 +6021,8 @@ function lukutilaHTML(x) {
     (cuts.length ? '<div class="luku-arvot">' + cuts.map(c =>
         '<div class="peek-row"><div class="peek-mat">' + esc(c.mat) +
           (materialAlias(c.mat) ? ' <span class="peek-alias">' + esc(materialAlias(c.mat)) + '</span>' : '') +
-          cutTagHTML(c) + '</div>' +
+          cutTagHTML(c) +
+          '<button type="button" class="laskimeen-btn" data-action="avaa-laskimessa" data-uid="' + uid + '" data-cut="' + esc(c.uid) + '">Laskimeen ›</button></div>' +
         cutSummaryHTML(c, p.teeth || x.multiEdge === '1', x) + '</div>').join('') + '</div>'
       : '<div class="luku-tyhja">Ei työstöarvoja vielä.</div>') +
     (has(x.notes) ? '<div class="luku-otsikko"><span>Muistiinpanot</span></div><div class="luku-muistio">' + esc(x.notes) + '</div>' : '') +
@@ -6378,6 +6500,13 @@ toolListEl.addEventListener('click', e => {
       const card = toolListEl.querySelector('[data-uid="' + copy.uid + '"]');
       if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
+    return;
+  }
+
+  const laskimeen = e.target.closest('[data-action="avaa-laskimessa"]');
+  if (laskimeen) {
+    e.stopPropagation();
+    tyAvaaTyokalusta(laskimeen.getAttribute('data-uid'), laskimeen.getAttribute('data-cut'));
     return;
   }
 
@@ -8117,7 +8246,7 @@ document.addEventListener('keydown', e => {
   if (modalBack.classList.contains('show')) return;
 
   /* välilehdet: Alt + numero */
-  if (e.altKey && !e.ctrlKey && !e.metaKey && ['1', '2', '3', '4'].indexOf(e.key) !== -1) {
+  if (e.altKey && !e.ctrlKey && !e.metaKey && ['1', '2', '3', '4', '5'].indexOf(e.key) !== -1) {
     const maaritys = TAB_DEFS[Number(e.key) - 1];
     if (maaritys && tabNakyy(activeMachine(), maaritys[0])) {
       e.preventDefault();
@@ -8249,7 +8378,8 @@ function syncOsoite() {
 }
 
 /* Koko sovelluksen tila yhdeksi paketiksi */
-const KONE_AVAIMET = [K_PAKAT, K_JAWS, K_FIELDS, K_SP, K_SP_FIELDS, K_TOOLS];
+const K_KAPPALEET = 'ntx_kappaleet_v1';
+const KONE_AVAIMET = [K_PAKAT, K_JAWS, K_FIELDS, K_SP, K_SP_FIELDS, K_TOOLS, K_KAPPALEET];
 
 function syncPaketti() {
   const koneet = {};
@@ -8985,6 +9115,7 @@ function lataaKoneenTiedot() {
   renderBrands();
   renderTypes();
   syncSignButtons();
+  if (typeof kpLataa === 'function') kpLataa();
 }
 
 function vaihdaKone(id) {
@@ -9157,7 +9288,7 @@ kaytaTeema();
    ================================================================= */
 const K_TYOSTO = 'ntx_tyosto';
 const TY_OLETUS = {
-  osio: 'laskin', tila: 'sorvaus', ohjaa: 'vc', ohjaaF: 'syotto',
+  osio: 'laskin', tila: 'sorvaus', ohjaa: 'vc', ohjaaF: 'syotto', linkki: null,
   k: { sorvaus: {}, poraus: {}, jyrsinta: {} },
   tl: 'sorvaus', mat: '1.4462', D: '10', ksarja: 'karkea', kD: '', kP: ''
 };
@@ -9338,6 +9469,7 @@ function tyPiirraKentat() {
   document.getElementById('tyKaavat').innerHTML = '<strong>Kaavat:</strong><br>' + esc(kaavat[TY.tila]) + '<br>t = L / Vf';
   document.querySelectorAll('#tyTila .seg-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-tytila') === TY.tila));
   tyPaivitaTulokset();
+  tyPiirraLinkki();
 }
 
 /* Kentän muutos: tallennetaan, vaihdetaan parin ohjaava arvo ja lasketaan heti uudelleen */
@@ -9615,6 +9747,450 @@ function tyValitseOsio(osio) {
 /* halkaisijaa kirjoittaessa vain arvolaatikko päivittyy, jotta kenttä ei menetä fokusta */
 function tyPiirraArvotSailyttaen() { tyPiirraArvot(); }
 
+
+/* =================================================================
+   KAPPALEET — työkortit piirustusnumeroittain (konekohtainen, synkronoidaan)
+   KAPPALEET = [{ uid, piirustus, rev, nimi, asiakas, mat, aihio, ohjelma,
+                  kiinnitys: { pakkaUid, jawUid, h },
+                  sp2: { z0, kappale, leuka, puristus },
+                  tyokalut: '1, 24, 33', muistio, luotu, mod }]
+   ================================================================= */
+var KAPPALEET = [];
+var kpAuki = null;
+const K_KP_AUKI = 'ntx_kappale_auki';
+function kpLataa() {
+  const d = store.getJSON(mk(K_KAPPALEET));
+  KAPPALEET = Array.isArray(d) ? d.filter(r => r && r.uid) : [];
+  if (document.getElementById('viewKappaleet') && document.getElementById('viewKappaleet').classList.contains('active')) renderKappaleet();
+  if (document.getElementById('viewKappale') && document.getElementById('viewKappale').classList.contains('active')) {
+    if (kpHae(kpAuki)) renderKappale(); else showView('viewKappaleet');
+  }
+}
+function kpTallenna() { store.setJSON(mk(K_KAPPALEET), KAPPALEET); }
+function kpHae(uid) { return KAPPALEET.find(k => k.uid === uid) || null; }
+kpLataa();
+try { kpAuki = localStorage.getItem(K_KP_AUKI); } catch (e) {}
+
+/* laskenta samoilla kaavoilla kuin laskureissa */
+function kpLeukaMitta(k) {
+  const ki = k.kiinnitys || {};
+  const jaw = getJaw(ki.jawUid), pakka = getPakka(ki.pakkaUid), h = num(ki.h);
+  if (!jaw || !pakka || isNaN(h)) return null;
+  return ((jaw.pakkaRef + h) - pakanLaskentaHalk(pakka)) / 2;
+}
+function kpSp2Tulos(k) {
+  const s = k.sp2 || {};
+  if (![s.z0, s.kappale, s.leuka, s.puristus].some(has)) return null;
+  const kiinnitys = SP.sp2 - (num(s.leuka) || 0) + (num(s.puristus) || 0);
+  return { haku: -(kiinnitys - (num(s.z0) || 0)), g55: kiinnitys - (num(s.kappale) || 0) };
+}
+function kpTyokaluNumerot(k) {
+  return String(k.tyokalut || '').split(/[\s,;]+/).map(t => t.replace(/^t/i, '').trim()).filter(Boolean);
+}
+
+/* nykyiset laskurien arvot kortille */
+function kpLaskureista(k, mita) {
+  if (!mita || mita === 'leuka') {
+    k.kiinnitys = { pakkaUid: selectedPakkaUid || '', jawUid: selectedJawUid || '', h: halkaisijaInput.value || '' };
+  }
+  if (!mita || mita === 'sp2') {
+    k.sp2 = { z0: z0Input.value || '', kappale: kappaleInput.value || '', leuka: leukaInput.value || '', puristus: puristusInput.value || '' };
+  }
+}
+/* kortin arvot laskureihin */
+function kpLaskureihin(k, mita) {
+  if (mita === 'leuka') {
+    const ki = k.kiinnitys || {};
+    if (!getPakka(ki.pakkaUid)) { toast('Pakkaa ei löydy tältä koneelta'); return; }
+    selectPakka(ki.pakkaUid);
+    if (getJaw(ki.jawUid)) { selectedJawUid = ki.jawUid; jawSelect.value = ki.jawUid; }
+    halkaisijaInput.value = ki.h || '';
+    calculateJaw();
+    showView('viewJawCalc');
+    toast('Leukalaskurissa: ' + (k.piirustus || k.nimi || 'kappale'));
+  } else {
+    const s = k.sp2 || {};
+    z0Input.value = s.z0 || ''; kappaleInput.value = s.kappale || '';
+    leukaInput.value = s.leuka || ''; puristusInput.value = s.puristus || '';
+    syncSignButtons();
+    calcSP2();
+    showView('viewSP2Calc');
+    toast('SP2-laskurissa: ' + (k.piirustus || k.nimi || 'kappale'));
+  }
+}
+
+/* ---------- lista ---------- */
+function renderKappaleet() {
+  const ali = document.getElementById('kpAli');
+  if (ali) ali.textContent = KAPPALEET.length ? KAPPALEET.length + ' kappalekorttia' : 'Työkortit piirustusnumeroittain';
+  const q = (document.getElementById('kpHaku').value || '').trim().toLowerCase();
+  const lista = KAPPALEET.filter(k => !q || [k.piirustus, k.rev, k.nimi, k.asiakas, k.ohjelma, k.mat, k.aihio, k.muistio]
+      .some(v => String(v || '').toLowerCase().indexOf(q) !== -1))
+    .sort((a, b) => String(b.mod || '').localeCompare(String(a.mod || '')));
+  const el = document.getElementById('kpLista');
+  if (!KAPPALEET.length) {
+    el.innerHTML = '<div class="kp-tyhja"><b>Ei vielä kappalekortteja.</b>' +
+      '<span>Tee kortti piirustusnumerolle. Uuteen korttiin tulevat valmiiksi leuka- ja SP2-laskurin nykyiset arvot.</span>' +
+      '<button type="button" class="add-btn" data-kpuusi="1">+ Uusi kappalekortti</button></div>';
+    return;
+  }
+  if (!lista.length) { el.innerHTML = '<div class="note">Ei osumia haulla “' + esc(q) + '”.</div>'; return; }
+  el.innerHTML = lista.map(k => {
+    const mitta = kpLeukaMitta(k);
+    const tagit = [];
+    if (k.mat) tagit.push(esc(k.mat));
+    if (k.ohjelma) tagit.push(esc(k.ohjelma));
+    if (mitta != null) tagit.push('leuka ' + lyhyt(mitta));
+    const t = kpTyokaluNumerot(k).length;
+    if (t) tagit.push(t + ' työkalua');
+    return '<button type="button" class="kp-rivi" data-kpavaa="' + esc(k.uid) + '">' +
+      '<span class="kp-rivi-piir">' + (esc(k.piirustus) || '<i>ei numeroa</i>') + (k.rev ? '<span class="kp-rev">rev ' + esc(k.rev) + '</span>' : '') + '</span>' +
+      '<span class="kp-rivi-nimi">' + (esc(k.nimi) || '<i>nimetön</i>') + (k.asiakas ? ' · ' + esc(k.asiakas) : '') + '</span>' +
+      (tagit.length ? '<span class="kp-tagit">' + tagit.map(x => '<span>' + x + '</span>').join('') + '</span>' : '') +
+      '</button>';
+  }).join('');
+}
+
+/* ---------- kortti ---------- */
+function kpKentta(polku, nimi, arvo, tyyppi, lisa) {
+  const numero = tyyppi === 'num';
+  return '<label' + (lisa && lisa.full ? ' class="full"' : '') + '>' + nimi +
+    '<input type="text"' + (numero ? ' inputmode="decimal"' : '') + ' data-kp="' + polku + '" value="' + esc(arvo == null ? '' : arvo) + '"' +
+    (lisa && lisa.ph ? ' placeholder="' + esc(lisa.ph) + '"' : '') + ' autocomplete="off"></label>';
+}
+function renderKappale() {
+  const k = kpHae(kpAuki);
+  const el = document.getElementById('kpKortti');
+  if (!k) { el.innerHTML = '<div class="note">Kappalekorttia ei löydy.</div>'; return; }
+  document.getElementById('kpOtsikko').textContent = k.piirustus || 'Uusi kappale';
+  document.getElementById('kpAlaotsikko').textContent = (k.nimi ? k.nimi + ' · ' : '') + 'tallentuu automaattisesti';
+  const ki = k.kiinnitys || {}, s = k.sp2 || {};
+  const pakkaOpt = '<option value="">Valitse pakka —</option>' + PAKAT.map(p =>
+    '<option value="' + esc(p.uid) + '"' + (p.uid === ki.pakkaUid ? ' selected' : '') + '>' + esc(p.name) + ' (Ø' + lyhyt(p.halkaisija) + ')</option>').join('');
+  const leuat = JAWS.filter(j => j.pakkaUid === ki.pakkaUid);
+  const leukaOpt = '<option value="">Valitse leuka —</option>' + leuat.map(j =>
+    '<option value="' + esc(j.uid) + '"' + (j.uid === ki.jawUid ? ' selected' : '') + '>' + esc((j.id ? j.id + ' ' : '') + (j.name || '')) + '</option>').join('');
+  el.innerHTML =
+    '<section class="kp-osa"><div class="section-label">Perustiedot</div><div class="field-grid">' +
+      kpKentta('piirustus', 'Piirustusnumero', k.piirustus, 'txt', { ph: 'esim. 12345-01' }) +
+      kpKentta('rev', 'Revisio', k.rev, 'txt', { ph: 'A' }) +
+      kpKentta('nimi', 'Nimi', k.nimi, 'txt', { full: true, ph: 'esim. Laippa DN100' }) +
+      kpKentta('asiakas', 'Asiakas / projekti', k.asiakas, 'txt', { full: true }) +
+      '<label>Materiaali<select data-kp="mat">' + materialSelectOptions(k.mat || '') + '</select></label>' +
+      kpKentta('aihio', 'Aihio', k.aihio, 'txt', { ph: 'esim. Ø120 × 85' }) +
+      kpKentta('ohjelma', 'Ohjelma', k.ohjelma, 'txt', { full: true, ph: 'esim. O1234' }) +
+    '</div></section>' +
+
+    '<section class="kp-osa"><div class="section-label">1. kiinnitys · leuka</div>' +
+      '<div class="kp-tulos" id="kpLeukaTulos"></div>' +
+      '<div class="field-grid">' +
+        '<label>Pakka<select data-kp="kiinnitys.pakkaUid">' + pakkaOpt + '</select></label>' +
+        '<label>Leuka<select data-kp="kiinnitys.jawUid">' + leukaOpt + '</select></label>' +
+        kpKentta('kiinnitys.h', 'Kiinnityshalkaisija (mm)', ki.h, 'num', { full: true }) +
+      '</div>' +
+      '<div class="btn-row kp-napit">' +
+        '<button type="button" class="add-cut-btn" data-kphae="leuka">Hae laskurista</button>' +
+        '<button type="button" class="add-cut-btn kp-kayta" data-kpkayta="leuka">Avaa leukalaskurissa</button>' +
+      '</div></section>' +
+
+    '<section class="kp-osa"><div class="section-label">2. puoli · SP2</div>' +
+      '<div class="kp-tulos" id="kpSp2Tulos"></div>' +
+      '<div class="field-grid">' +
+        kpKentta('sp2.z0', 'Z0, 1. puoli (mm)', s.z0, 'num') +
+        kpKentta('sp2.kappale', 'Kappaleen pituus (mm)', s.kappale, 'num') +
+        kpKentta('sp2.leuka', 'Leuan pituus (mm)', s.leuka, 'num') +
+        kpKentta('sp2.puristus', 'Puristussyvyys (mm)', s.puristus, 'num') +
+      '</div>' +
+      '<div class="btn-row kp-napit">' +
+        '<button type="button" class="add-cut-btn" data-kphae="sp2">Hae laskurista</button>' +
+        '<button type="button" class="add-cut-btn kp-kayta" data-kpkayta="sp2">Avaa SP2-laskurissa</button>' +
+      '</div></section>' +
+
+    '<section class="kp-osa"><div class="section-label">Työkalut</div><div class="field-grid">' +
+      kpKentta('tyokalut', 'T-numerot', k.tyokalut, 'txt', { full: true, ph: 'esim. 1, 3, 24, 33' }) +
+      '</div><div class="kp-tyokalut" id="kpTyokalut"></div></section>' +
+
+    '<section class="kp-osa"><div class="section-label">Muistiinpanot</div>' +
+      '<textarea class="muistio-kentta" data-kp="muistio" rows="5" placeholder="Kiinnitysohjeet, mittaushuomiot, erityistä…">' + esc(k.muistio || '') + '</textarea></section>' +
+
+    '<div class="kp-alaosa">' +
+      '<span class="kp-pvm">' + (k.luotu ? 'Luotu ' + pvm(k.luotu) : '') + (k.mod ? ' · muokattu ' + pvm(k.mod) : '') + '</span>' +
+      '<button type="button" class="delete-btn" data-kppoista="1">Poista kortti</button>' +
+    '</div>';
+  kpPaivitaLasketut(k);
+}
+function kpPaivitaLasketut(k) {
+  const lt = document.getElementById('kpLeukaTulos');
+  if (lt) {
+    const m = kpLeukaMitta(k);
+    const jaw = getJaw((k.kiinnitys || {}).jawUid), h = num((k.kiinnitys || {}).h);
+    const rajat = jaw && !isNaN(h) && ((jaw.max != null && h > jaw.max) || (jaw.min != null && h < jaw.min));
+    lt.innerHTML = m == null ? '<span class="kp-tulos-tyhja">Valitse pakka ja leuka ja anna halkaisija.</span>'
+      : '<div class="kp-arvo copyable" data-kpkopio="' + plain(m, 2) + '"><span>Mitta leuan perästä</span><b>' + fmt(m, 2) + '<i>mm</i></b></div>' +
+        (rajat ? '<div class="kp-varoitus">Halkaisija on leuan rajojen ulkopuolella (' + (jaw.min != null ? jaw.min : '—') + '–' + (jaw.max != null ? jaw.max : '—') + ' mm)</div>' : '');
+  }
+  const st = document.getElementById('kpSp2Tulos');
+  if (st) {
+    const r = kpSp2Tulos(k);
+    st.innerHTML = !r ? '<span class="kp-tulos-tyhja">Anna 2. puolen arvot tai hae ne SP2-laskurista.</span>'
+      : '<div class="kp-arvo copyable" data-kpkopio="' + plain(r.haku, 4) + '"><span>SP2 hakusijainti</span><b>' + fmt(r.haku, 4) + '<i>mm</i></b></div>' +
+        '<div class="kp-arvo copyable" data-kpkopio="' + plain(r.g55, 4) + '"><span>G55 Z-offset</span><b>' + fmt(r.g55, 4) + '<i>mm</i></b></div>';
+  }
+  const tt = document.getElementById('kpTyokalut');
+  if (tt) {
+    const nrot = kpTyokaluNumerot(k);
+    tt.innerHTML = nrot.map(n => {
+      const x = TOOLS.find(t => String(t.t).trim() === n);
+      if (!x) return '<span class="kp-tchip puuttuu">T' + esc(n) + ' · ei tällä koneella</span>';
+      const pois = STATUS_POIS.indexOf(x.status) !== -1;
+      return '<button type="button" class="kp-tchip' + (pois ? ' pois' : '') + '" data-kptyokalu="' + esc(x.uid) + '"><b>T' + esc(x.t) + '</b> ' +
+        esc(x.name || 'nimetön') + (pois ? ' · ' + esc(x.status) : '') + '</button>';
+    }).join('');
+  }
+}
+
+async function kpUusi() {
+  const k = { uid: newUid('kp'), piirustus: '', rev: '', nimi: '', asiakas: '', mat: '', aihio: '', ohjelma: '',
+    tyokalut: '', muistio: '', luotu: new Date().toISOString(), mod: new Date().toISOString() };
+  kpLaskureista(k);
+  KAPPALEET.push(k);
+  kpTallenna();
+  kpAvaa(k.uid);
+  setTimeout(() => {
+    const i = document.querySelector('#kpKortti input[data-kp="piirustus"]');
+    if (i) i.focus();
+  }, 80);
+  toast('Uusi kortti: laskurien nykyiset arvot tallennettu');
+}
+function kpAvaa(uid) {
+  if (!kpHae(uid)) return;
+  kpAuki = uid;
+  try { localStorage.setItem(K_KP_AUKI, uid); } catch (e) {}
+  renderKappale();
+  showView('viewKappale');
+}
+
+/* tapahtumat */
+document.getElementById('kpUusi').addEventListener('click', kpUusi);
+document.getElementById('kpHaku').addEventListener('input', renderKappaleet);
+document.getElementById('viewKappaleet').addEventListener('click', e => {
+  const r = e.target.closest('[data-kpavaa]');
+  if (r) return kpAvaa(r.getAttribute('data-kpavaa'));
+  if (e.target.closest('[data-kpuusi]')) kpUusi();
+});
+document.getElementById('kpTakaisin').addEventListener('click', () => { renderKappaleet(); showView('viewKappaleet'); });
+const kpKorttiEl = document.getElementById('kpKortti');
+function kpAseta(k, polku, arvo) {
+  const osat = polku.split('.');
+  if (osat.length === 2) { k[osat[0]] = Object.assign({}, k[osat[0]] || {}); k[osat[0]][osat[1]] = arvo; }
+  else k[polku] = arvo;
+  k.mod = new Date().toISOString();
+  kpTallenna();
+}
+kpKorttiEl.addEventListener('input', e => {
+  const polku = e.target.getAttribute && e.target.getAttribute('data-kp');
+  const k = kpHae(kpAuki);
+  if (!polku || !k || e.target.tagName === 'SELECT') return;
+  kpAseta(k, polku, e.target.value);
+  if (polku === 'piirustus') document.getElementById('kpOtsikko').textContent = k.piirustus || 'Uusi kappale';
+  kpPaivitaLasketut(k);
+});
+kpKorttiEl.addEventListener('change', e => {
+  const polku = e.target.getAttribute && e.target.getAttribute('data-kp');
+  const k = kpHae(kpAuki);
+  if (!polku || !k) return;
+  if (e.target.tagName === 'SELECT') {
+    kpAseta(k, polku, e.target.value);
+    if (polku === 'kiinnitys.pakkaUid') {
+      const eka = JAWS.find(j => j.pakkaUid === e.target.value);
+      k.kiinnitys.jawUid = eka ? eka.uid : '';
+      kpTallenna();
+      renderKappale();
+      return;
+    }
+    kpPaivitaLasketut(k);
+  } else if (e.target.dataset.npMuokattu !== undefined) {
+    kpAseta(k, polku, e.target.value);
+    kpPaivitaLasketut(k);
+  }
+});
+kpKorttiEl.addEventListener('click', async e => {
+  const k = kpHae(kpAuki);
+  if (!k) return;
+  const kopio = e.target.closest('[data-kpkopio]');
+  if (kopio) return copyText(kopio.getAttribute('data-kpkopio'));
+  const hae = e.target.closest('[data-kphae]');
+  if (hae) {
+    const mita = hae.getAttribute('data-kphae');
+    kpLaskureista(k, mita);
+    k.mod = new Date().toISOString();
+    kpTallenna();
+    renderKappale();
+    toast(mita === 'leuka' ? 'Leukalaskurin arvot haettu' : 'SP2-laskurin arvot haettu');
+    return;
+  }
+  const kayta = e.target.closest('[data-kpkayta]');
+  if (kayta) return kpLaskureihin(k, kayta.getAttribute('data-kpkayta'));
+  const t = e.target.closest('[data-kptyokalu]');
+  if (t) {
+    const uid = t.getAttribute('data-kptyokalu');
+    openTools[uid] = true;
+    showView('viewToolList');
+    renderTools();
+    const kortti = document.querySelector('.tool-card[data-uid="' + uid + '"]');
+    if (kortti) kortti.scrollIntoView({ block: 'start' });
+    return;
+  }
+  if (e.target.closest('[data-kppoista]')) {
+    const ok = await kysyVahvistus('Poistetaanko kappalekortti?', (k.piirustus || 'Nimetön') + (k.nimi ? ' · ' + k.nimi : ''), 'Poista', 'Peruuta');
+    if (!ok) return;
+    const varmuus = JSON.parse(JSON.stringify(k));
+    KAPPALEET = KAPPALEET.filter(r => r.uid !== k.uid);
+    kpTallenna();
+    renderKappaleet();
+    showView('viewKappaleet');
+    toastAction('Kortti poistettu', 'Kumoa', () => {
+      varmuus.mod = new Date().toISOString();
+      KAPPALEET.push(varmuus); kpTallenna(); renderKappaleet();
+    });
+  }
+});
+
+/* =================================================================
+   LASKIN ↔ TYÖKALUKORTTI
+   "Laskimeen" työkalukortin materiaaliriviltä täyttää laskimen ja linkittää sen riviin.
+   "Tallenna työkalulle" kirjoittaa laskimen arvot linkitetylle riville tai valitulle työkalulle.
+   ================================================================= */
+function tyLaskintilaTyokalulle(x) {
+  const tl = tyokaluLuokka(x);
+  if (tl && TY_LASKINTILA[tl]) return TY_LASKINTILA[tl];
+  const p = typeProps(x.typeId);
+  if (p.teeth || x.multiEdge === '1') return 'jyrsinta';
+  if (p.geo === 'dia') return 'poraus';
+  return 'sorvaus';
+}
+function tyLinkitettyKohde() {
+  const l = TY.linkki;
+  if (!l) return null;
+  const x = TOOLS.find(t => t.uid === l.uid);
+  if (!x) return null;
+  const c = (x.cuts || []).find(k => k.uid === l.cut) || null;
+  return { x, c };
+}
+function tyAvaaTyokalusta(uid, cutUid) {
+  const x = TOOLS.find(t => t.uid === uid);
+  if (!x) return;
+  const c = (x.cuts || []).find(k => k.uid === cutUid) || {};
+  const tila = tyLaskintilaTyokalulle(x);
+  const k = TY.k[tila] = Object.assign({}, TY.k[tila] || {});
+  const D = toolCutDia(x);
+  if (tila !== 'sorvaus' && D > 0) k.D = String(D);
+  if (tila === 'jyrsinta') { if (has(x.teeth)) k.z = String(x.teeth); }
+  if (tila === 'sorvaus' && has(x.radius)) k.r = String(x.radius);
+  /* nopeus: vc ensisijaisesti, muuten kierrosluku */
+  if (has(c.vc)) { k.vc = String(c.vc); k.n = ''; TY.ohjaa = 'vc'; }
+  else if (has(c.rpm)) { k.n = String(c.rpm); k.vc = ''; TY.ohjaa = 'n'; }
+  /* syöttö */
+  if (tila === 'jyrsinta') {
+    const z = num(x.teeth);
+    if (has(c.fz)) k.fz = String(c.fz);
+    else if (has(c.f) && z > 0) k.fz = tySyottoTeksti(num(c.f) / z);
+  } else if (has(c.f)) k.f = String(c.f);
+  k.vf = ''; TY.ohjaaF = 'syotto';
+  if (has(c.ap)) k.ap = String(c.ap);
+  if (has(c.ae) && tila === 'jyrsinta') k.ae = String(c.ae);
+  TY.tila = tila;
+  TY.osio = 'laskin';
+  TY.linkki = { uid: x.uid, cut: c.uid || '', mat: c.mat || '' };
+  tallennaTy();
+  showView('viewTyosto');
+  toast('Laskimessa: T' + x.t + (c.mat ? ' · ' + c.mat : ''));
+}
+
+function tyPiirraLinkki() {
+  const el = document.getElementById('tyLinkki');
+  const nappi = document.getElementById('tyTallennaTyokalulle');
+  if (!el || !nappi) return;
+  const kohde = tyLinkitettyKohde();
+  if (!kohde) {
+    if (TY.linkki) { TY.linkki = null; tallennaTy(); }
+    el.innerHTML = '';
+    nappi.textContent = 'Tallenna työkalulle…';
+    return;
+  }
+  const mat = (kohde.c && kohde.c.mat) || TY.linkki.mat || '';
+  el.innerHTML = '<div class="ty-linkki">' +
+    '<div class="ty-linkki-teksti"><span class="ty-linkki-t">T' + esc(kohde.x.t) + '</span>' +
+      '<span class="ty-linkki-nimi">' + esc(kohde.x.name || 'Nimetön työkalu') + (mat ? ' · ' + esc(mat) : '') + '</span></div>' +
+    '<button type="button" class="ty-linkki-irrota" data-tyirrota="1" aria-label="Irrota työkalusta">×</button></div>';
+  nappi.textContent = 'Tallenna: T' + kohde.x.t + (mat ? ' · ' + mat : '');
+}
+
+/* laskimen arvot työkalun materiaaliriville */
+function tyArvotRiville() {
+  const m = TY.tila, k = TY.k[m] || {}, o = tyLaske();
+  const kok = v => (isFinite(v) && v > 0) ? String(Math.round(v)) : '';
+  const uusi = {};
+  if (TY.ohjaa === 'n') { uusi.rpm = has(k.n) ? String(k.n) : ''; uusi.vc = ''; }
+  else { uusi.vc = has(k.vc) ? String(k.vc) : ''; uusi.rpm = ''; }
+  const syotto = TY.ohjaaF === 'vf' ? tySyottoTeksti(o.syotto) : String(k[tySyottoKentta()] || '');
+  if (m === 'jyrsinta') { uusi.fz = syotto; uusi.f = ''; }
+  else { uusi.f = syotto; uusi.fz = ''; }
+  if (has(k.ap)) uusi.ap = String(k.ap);
+  if (m === 'jyrsinta' && has(k.ae)) uusi.ae = String(k.ae);
+  return uusi;
+}
+async function tyTallennaTyokalulle() {
+  let kohde = tyLinkitettyKohde();
+  let x, c;
+  if (kohde && kohde.c) { x = kohde.x; c = kohde.c; }
+  else {
+    const tNro = await kysyTeksti('Tallenna työkalulle', kohde ? kohde.x.t : '', 'Anna työkalun T-numero (' + (activeMachine().name || 'tämä kone') + ').');
+    if (tNro === null) return;
+    x = TOOLS.find(t => String(t.t).trim() === String(tNro).trim().replace(/^t/i, ''));
+    if (!x) { toast('Työkalua T' + tNro + ' ei löydy tältä koneelta'); return; }
+    const omat = (x.cuts || []).filter(r => r.mat).map(r => r.mat);
+    const kaikki = BASE_MATERIAL_DATA.map(mm => mm.name).concat(CUSTOM_MATERIALS);
+    const vaihtoehdot = omat.map(mm => ({ value: mm, label: mm + ' (korvaa arvot)' }))
+      .concat(kaikki.filter(mm => omat.indexOf(mm) === -1).map(mm => ({ value: mm, label: mm + ' (uusi rivi)' })));
+    const mat = await avaaModal({ title: 'T' + x.t + ': materiaali', text: 'Mille materiaalille arvot tallennetaan?', options: vaihtoehdot, ok: 'Valitse' });
+    if (!mat) return;
+    c = (x.cuts || []).find(r => r.mat === mat);
+    if (!c) {
+      if (!Array.isArray(x.cuts)) x.cuts = [];
+      c = { uid: newUid('c'), mat, vc: '', rpm: '', f: '', fz: '', ap: '', ae: '', life: '' };
+      x.cuts.push(c);
+    }
+  }
+  const uusi = tyArvotRiville();
+  if (!has(uusi.vc) && !has(uusi.rpm) && !has(uusi.f) && !has(uusi.fz)) { toast('Laskimessa ei ole tallennettavia arvoja'); return; }
+  const nimet = { vc: 'vc', rpm: 'n', f: 'f', fz: 'fz', ap: 'ap', ae: 'ae' };
+  const muutokset = Object.keys(uusi).filter(kk => has(c[kk]) && String(c[kk]) !== String(uusi[kk]))
+    .map(kk => nimet[kk] + ' ' + c[kk] + ' → ' + (has(uusi[kk]) ? uusi[kk] : 'tyhjä'));
+  if (muutokset.length) {
+    const ok = await kysyVahvistus('Korvataanko arvot?', 'T' + x.t + ' · ' + c.mat + ':\n' + muutokset.join('\n'), 'Korvaa', 'Peruuta');
+    if (!ok) return;
+  }
+  Object.keys(uusi).forEach(kk => { c[kk] = uusi[kk]; });
+  delete c.src; delete c.srcLuot; delete c.srcT;
+  x.mod = new Date().toISOString();
+  saveTools();
+  renderTools();
+  TY.linkki = { uid: x.uid, cut: c.uid, mat: c.mat };
+  tallennaTy();
+  tyPiirraLinkki();
+  toastAction('Tallennettu: T' + x.t + ' · ' + c.mat, 'Näytä', () => {
+    openTools[x.uid] = true;
+    showView('viewToolList');
+    renderTools();
+    const kortti = document.querySelector('.tool-card[data-uid="' + x.uid + '"]');
+    if (kortti) kortti.scrollIntoView({ block: 'start' });
+  });
+}
+document.getElementById('viewTyosto').addEventListener('click', e => {
+  if (e.target.closest('#tyTallennaTyokalulle')) { tyTallennaTyokalulle(); return; }
+  if (e.target.closest('[data-tyirrota]')) { TY.linkki = null; tallennaTy(); tyPiirraLinkki(); }
+});
 
 /* =================================================================
    YKSIKÖT KENTÄN SISÄÄN
@@ -9906,7 +10482,8 @@ kaytaNumpad();
     viewData:        () => openData('viewToolList'),
     viewToolTypes:   () => { renderTypes(); showView('viewToolTypes', true); },
     viewMachines:    () => avaaKoneet('viewData'),
-    viewTietopankki: () => avaaTietopankki('viewData')
+    viewTietopankki: () => avaaTietopankki('viewData'),
+    viewKappale:     () => { if (kpHae(kpAuki)) kpAvaa(kpAuki); else showView('viewKappaleet', true); }
   };
   if (avaajat[tila.view]) avaajat[tila.view]();
   else showView(tila.view, true);
@@ -9927,7 +10504,8 @@ const HIST_AVAAJAT = {
   viewMachines:    () => avaaKoneet('viewData'),
   viewTietopankki: () => avaaTietopankki(typeof tpPaluu !== 'undefined' && tpPaluu ? tpPaluu : 'viewData'),
   viewQuality:     () => avaaTarkistus(),
-  viewImport:      () => showView('viewToolList')
+  viewImport:      () => showView('viewToolList'),
+  viewKappale:     () => { if (kpHae(kpAuki)) { renderKappale(); showView('viewKappale'); } else showView('viewKappaleet'); }
 };
 function avoinKerros() {
   return !!(npKentta || pikahakuEl.classList.contains('show') || modalBack.classList.contains('show'));
