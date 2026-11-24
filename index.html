@@ -1618,6 +1618,8 @@
     .tab-badge { position: absolute; top: 3px; left: calc(50% + 5px); }
     .tabbar ~ footer { padding-bottom: calc(86px + env(safe-area-inset-bottom)); }
     .machine-bar { top: 0 !important; }
+    body.nappis-auki .tabbar { display: none; }
+    body.nappis-auki .tabbar ~ footer { padding-bottom: 16px; }
     .toast { bottom: calc(88px + env(safe-area-inset-bottom)); }
   }
 
@@ -1790,6 +1792,8 @@
   .tulos-yla .result-value { font-size: 20px; flex-wrap: nowrap; white-space: nowrap; gap: 5px; }
   .tulos-yla .result-value .unit { font-size: 12px; }
   .tulos-yla .result-row .copy-hint { font-size: 10.5px; }
+  .halk-osio { margin-top: 0; }
+  .tulos-yla + .halk-osio { padding-top: 4px; }
   @media (min-width: 700px) {
     .tulos-yla { top: var(--tabbar-h, 52px); margin: 0 -22px; padding: 10px 22px; }
   }
@@ -1844,22 +1848,7 @@
         </div>
       </section>
 
-      <section>
-        <div class="section-label">1 — Valitse pakka</div>
-        <div class="seg-row" id="pakkaSeg"></div>
-      </section>
-
-      <section>
-        <div class="section-label">2 — Valitse leuka</div>
-        <select id="jawSelect"></select>
-        <div class="range-note" id="noJawsNote" style="display:none;">
-          Tälle pakalle ei ole vielä leukoja.
-          <br><button class="link-btn" id="goAddJawBtn">Lisää leuka tälle pakalle</button>
-        </div>
-      </section>
-
-      <section>
-        <div class="section-label">3 — Kappaleen kiinnityshalkaisija</div>
+      <section class="halk-osio">
         <div class="input-row">
           <label class="input-block">
             <span class="input-label">
@@ -1871,6 +1860,21 @@
         </div>
         <div class="range-note" id="rangeNote" style="display:none;"></div>
       </section>
+
+      <section>
+        <div class="section-label">Pakka</div>
+        <div class="seg-row" id="pakkaSeg"></div>
+      </section>
+
+      <section>
+        <div class="section-label">Leuka</div>
+        <select id="jawSelect"></select>
+        <div class="range-note" id="noJawsNote" style="display:none;">
+          Tälle pakalle ei ole vielä leukoja.
+          <br><button class="link-btn" id="goAddJawBtn">Lisää leuka tälle pakalle</button>
+        </div>
+      </section>
+
 
     </main>
 
@@ -3316,6 +3320,34 @@ function calculateJaw() {
 jawSelect.addEventListener('change', e => selectJaw(e.target.value));
 halkaisijaInput.addEventListener('input', calculateJaw);
 readout.addEventListener('click', () => copyText(plain(lastJawResult, 2)));
+
+/* Puhelimella alapalkki piiloon kirjoittaessa, ettei se vie tilaa näppäimistön päältä */
+(function () {
+  const puhelin = () => !window.matchMedia('(min-width: 900px) and (pointer: fine)').matches;
+  const kirjoitus = el => el && (el.tagName === 'TEXTAREA' ||
+    (el.tagName === 'INPUT' && !/^(checkbox|radio|button|submit|file|range|color)$/i.test(el.type)));
+  document.addEventListener('focusin', e => { if (puhelin() && kirjoitus(e.target)) document.body.classList.add('nappis-auki'); });
+  document.addEventListener('focusout', () => setTimeout(() => {
+    if (!kirjoitus(document.activeElement)) document.body.classList.remove('nappis-auki');
+  }, 0));
+})();
+
+/* Puhelimella: kun halkaisijakenttä saa fokuksen, vieritetään tulos näytön yläreunaan,
+   jotta tulos ja kenttä näkyvät yhtä aikaa myös näppäimistön ollessa auki. */
+(function () {
+  const kentta = document.getElementById('halkaisijaInput');
+  const tulos = document.querySelector('#viewJawCalc .tulos-yla');
+  if (!kentta || !tulos) return;
+  const nosta = () => {
+    if (window.matchMedia('(min-width: 900px) and (pointer: fine)').matches) return;
+    const y = tulos.parentElement.getBoundingClientRect().top + window.scrollY;
+    if (Math.abs(window.scrollY - y) > 4) window.scrollTo({ top: y, behavior: 'auto' });
+  };
+  kentta.addEventListener('focus', () => { setTimeout(nosta, 60); setTimeout(nosta, 350); });
+  if (window.visualViewport) window.visualViewport.addEventListener('resize', () => {
+    if (document.activeElement === kentta) nosta();
+  });
+})();
 
 /* ---------- Leukakorjaimen asetukset ---------- */
 const openJawSettingsBtn  = document.getElementById('openJawSettings');
