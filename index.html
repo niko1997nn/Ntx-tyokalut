@@ -10369,7 +10369,7 @@ function kuSyotteet() {
   /* ---- työvarat: piirustuksen mitat → kutsun arvot (Työvarat ja kiilaura – O8990, 25.11.2026) ---- */
   const korj = [];
   const r3 = x => Math.round(x * 1000) / 1000, m = x => kuMm(x, 3);
-  const Xm = kuLuku(KU.v.X), tvD = kuLuku(KU.v.tv) > 0 ? kuLuku(KU.v.tv) : 0, Rv = kuLuku(KU.v.Rv);
+  const Xm = NaN, tvD = kuLuku(KU.v.tv) > 0 ? kuLuku(KU.v.tv) : 0, Rv = kuLuku(KU.v.Rv);
   let Xv = kuLuku(KU.v.Xv);
   const X = Xm > 0 ? Xm : (Xv > 0 ? Math.round((Xv - tvD) * 10000) / 10000 : NaN);
   if (!(Xv > 0)) Xv = X;
@@ -10381,7 +10381,7 @@ function kuSyotteet() {
     else if (Xv > X) {
       const tv = (Xv - X) / 2;
       const Ud = kuLuku(v.U);
-      korj.unshift(['X', 'X ' + (Xm > 0 ? 'mitattu' : m(Xv) + ' − ' + m(tvD) + ' =') + ' <b>X' + m(X) + '</b>']);
+      korj.unshift(['X', 'X ' + m(Xv) + ' − ' + m(tvD) + ' = <b>X' + m(X) + '</b>']);
       if (isFinite(Ud)) { v.U = String(r3(Ud - tv)); korj.push(['U', 'U ' + m(Ud) + ' − ' + m(tv) + ' (säteen työvara) = <b>U' + m(Ud - tv) + '</b>']); }
       const Cv = kuLuku(v.C);
       if (KU.tyyppi !== 'vino' && Cv > 0) {
@@ -10455,7 +10455,7 @@ function renderKiilaura() {
   h += '<div class="section-card" id="kuKentat">';
   h += '<div class="tyg"><div class="tyg-otsikko"><span>Ura</span><span class="tyg-vihje">napauta kenttää → kuva</span></div>' +
     kuSeg('tyyppi', KU.tyyppi, [['suora', 'Suora'], ['vino', 'Vinoura'], ['kartio', 'Kartio']]) +
-    kuRivi('Xv', 'Ø', KU.tyyppi === 'kartio' ? 'Reiän Ø alkupäässä (piir.)' : 'Reiän Ø (piirustus)', 'mm', '') +
+    kuRivi('Xv', 'Ø', KU.tyyppi === 'kartio' ? 'Valmis reiän Ø alkupäässä' : 'Valmis reiän Ø (kuvasta)', 'mm', '') +
     kuRivi('U', 'U', 'Vastaseinästä pohjaan (piir.)', 'mm', '');
   if (KU.tyyppi === 'vino') {
     h += kuSeg('vinoTapa', KU.vinoTapa, [['E', 'Kulma E'], ['W', 'Pintakohta W']]) +
@@ -10468,12 +10468,11 @@ function renderKiilaura() {
   } else {
     h += kuRivi('Z', 'Z', 'Uran loppu', 'mm', '');
   }
-  h += kuRivi('A', 'A', 'Uran leveys', 'mm', '= T') +
+  h += kuRivi('A', 'A', 'Uran leveys', 'mm', '') +
     (KU.tyyppi === 'vino' ? '' : kuRivi('C', 'C', 'Viiste (valmiina)', 'mm', '0')) + '</div>';
-  h += '<div class="tyg"><div class="tyg-otsikko"><span>Työvarat</span><span class="tyg-vihje">0 = valmis mitta</span></div>' +
-    kuRivi('tv', 'Δ', 'Reiän työvara (Ø)', 'mm', '0') +
-    kuRivi('X', 'X', 'Reiän Ø nyt (mitattu)', 'mm', '= Ø − työvara') +
-    kuRivi('Rv', 'Δ', 'Otsan työvara', 'mm', '0') +
+  h += '<div class="tyg"><div class="tyg-otsikko"><span>Työvarat</span><span class="tyg-vihje">tyhjä = ei työvaraa</span></div>' +
+    kuRivi('tv', 'Ø', 'Reiän työvara halkaisijassa', 'mm', '0') +
+    kuRivi('Rv', 'Z', 'Otsan työvara', 'mm', '0') +
     '<div class="nv-alaotsikko">Z0 on</div>' + kuSeg('z0', KU.z0 || 'valmis', [['valmis', 'Valmiissa otsassa'], ['nyky', 'Nykyisessä otsassa']]) +
     '<div id="kuKorjaus"></div></div>';
   h += '<div class="tyg"><div class="tyg-otsikko"><span>Lastu ja terä</span></div>' +
@@ -10519,7 +10518,7 @@ function kuPaivita() {
   }
   const kEl = document.getElementById('kuKorjaus');
   if (kEl) kEl.innerHTML = (KU.korjaus && KU.korjaus.length) ? '<div class="ku-korjaus">' + KU.korjaus.map(x => '<div' + (x[0] === 'huom' ? ' class="huom"' : '') + '>' + x[1] + '</div>').join('') + '</div>'
-    : '<p class="ku-pieni">Ilman työvaraa kutsu tehdään piirustuksen mitoilla. Mitattu X kannattaa antaa, jos reikä poikkeaa: se menee aina laskennan edelle.</p>';
+    : '<p class="ku-pieni">Ilman työvaraa kutsu tehdään kuvan mitoilla. Esim. reiän työvara 1 = halkaisijassa 1 mm, otsan työvara 0,5 = 0,5 mm Z-suunnassa.</p>';
   const xInp = document.querySelector('#viewKiilaura input[data-ku="X"]');
   if (xInp) xInp.placeholder = isFinite(KU.xLaskettu) ? '= ' + kuMm(KU.xLaskettu, 3).replace(',', '.') : '= Ø − työvara';
   yla.innerHTML = '<div class="ku-kutsu-rivi"><code class="ku-kutsu copyable" id="kuKutsu">' + esc(kutsu) + '</code><button type="button" class="nv-linkki" id="kuKopioi">Kopioi</button></div>' + tila;
@@ -10623,12 +10622,12 @@ const KU_OHJE_HTML = '<p class="ku-ohje-intro">O8990 v2.5 · NTX3000 kara 1 C-ak
 /* ---------- kenttäkohtainen havainnekuva ---------- */
 /* ---------- kenttäkohtainen havainnekuva ---------- */
 const KU_KUVA_TEKSTI = {
-  X: ['poikki', 'X – reiän Ø nyt. Tyhjä = piirustus − työvara. Mitattu arvo on tarkin, ja se menee laskennan edelle.'],
-  Xv: ['poikki', 'Reiän Ø piirustuksesta (valmis mitta). Kutsun X = tämä − työvara, ellei mitattua X:ää anneta.', 'X'],
-  tv: ['poikki', 'Reiän työvara halkaisijassa. Esim. Ø50 ja työvara 1 → X49, ja U:sta vähennetään 0,5 (säteen työvara).', 'X'],
-  Rv: ['sivu', 'Otsan työvara. Jos Z0 on nykyisessä otsassa, R ja Z-arvot siirtyvät työvaran verran syvemmälle.', 'R'],
+  X: ['poikki', 'X – reiän halkaisija kutsussa = valmis Ø − reiän työvara.'],
+  Xv: ['poikki', 'Valmis reiän halkaisija kuvasta. Kutsun X = tämä − reiän työvara.', 'X'],
+  tv: ['poikki', 'Reiän työvara halkaisijassa. Esim. Ø50 ja työvara 1 → X49, ja U:sta vähennetään 0,5.', 'X'],
+  Rv: ['sivu', 'Otsan työvara Z-suunnassa (0,5 = 0,5 mm). Jos Z0 on nykyisessä otsassa, R ja Z-arvot siirtyvät sen verran syvemmälle.', 'R'],
   U: ['poikki', 'U – reiän vastaseinästä uran pohjaan (piirustuksessa d + t2).'],
-  A: ['poikki', 'A – uran leveys. Tyhjä = terän leveys T. Leveämpi ura tehdään Y-levityksellä.'],
+  A: ['poikki', 'A – uran leveys. Jos tyhjä, ura on terän levyinen. Leveämpi ura tehdään Y-levityksellä.'],
   C: ['poikki', 'C – viiste uran kyljen ja reiän pinnan nurkkaan, molemmille puolille.'],
   M: ['poikki', 'M – urien määrä tasajaolla.'],
   H: ['poikki', 'H – ensimmäisen uran kulma C-akselilla.'],
@@ -10662,7 +10661,7 @@ const KU_KUVA_POIKKI = '<svg class="ku-ohjekuva" viewBox="0 0 320 180" role="img
   '<g data-k="M H" class="vain"><path d="M144 46.2 L144 22 L176 22 L176 46.2" class="kk-ura" transform="rotate(120 160 104)"/><path d="M144 46.2 L144 22 L176 22 L176 46.2" class="kk-ura" transform="rotate(240 160 104)"/></g>' +
   '<path d="M176 46.2 L176 22 L144 22 L144 46.2 A60 60 0 1 0 176 46.2 Z" class="kk-reika"/>' +
   '<line x1="160" y1="14" x2="160" y2="172" class="kk-keski"/>' +
-  '<rect x="149" y="24" width="22" height="9" class="kk-tera"/>' +
+  '<g data-k="B" class="vain"><rect x="149" y="24" width="22" height="9" class="kk-tera"/></g>' +
   '<g data-k="C v28"><line x1="144" y1="41" x2="139" y2="47" class="kk-viiste"/><line x1="176" y1="41" x2="181" y2="47" class="kk-viiste"/></g>' +
   '<g data-k="C" class="vain"><text x="190" y="44" class="kk-teksti">C</text><text x="122" y="44" class="kk-teksti">C</text></g>' +
   '<g data-k="v28" class="vain"><path d="M176 33 A9 9 0 0 1 182.5 40" class="kk-mitta"/><text x="188" y="36" class="kk-teksti">#28</text></g>' +
