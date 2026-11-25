@@ -2304,7 +2304,7 @@
 
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · LEUKALASKURI · v3.55</footer>
+    <footer><span class="machine-name">NTX3000</span> · LEUKALASKURI · v3.56</footer>
   </div>
 
   <!-- ===================== ASETUKSET: LEUKAKORJAIN ===================== -->
@@ -2441,7 +2441,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · SP2 &amp; G55 · v3.55</footer>
+    <footer><span class="machine-name">NTX3000</span> · SP2 &amp; G55 · v3.56</footer>
   </div>
 
   <!-- ===================== ASETUKSET: SP2 ===================== -->
@@ -2561,7 +2561,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · TYÖKALULISTA · v3.55</footer>
+    <footer><span class="machine-name">NTX3000</span> · TYÖKALULISTA · v3.56</footer>
   </div>
 
   <!-- ===================== ASETUKSET ===================== -->
@@ -2598,7 +2598,7 @@
       </div>
       <div id="kuSisalto"></div>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · KIILAURA · v3.55</footer>
+    <footer><span class="machine-name">NTX3000</span> · KIILAURA · v3.56</footer>
   </div>
 
   <div class="view" id="viewTyosto">
@@ -2718,7 +2718,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · TYÖSTÖ · v3.55</footer>
+    <footer><span class="machine-name">NTX3000</span> · TYÖSTÖ · v3.56</footer>
   </div>
 
   <!-- ===================== KAPPALEET: TYÖKORTIT PIIRUSTUSNUMEROITTAIN ===================== -->
@@ -2757,7 +2757,7 @@
       <div id="kpLista"></div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · KAPPALEET · v3.55</footer>
+    <footer><span class="machine-name">NTX3000</span> · KAPPALEET · v3.56</footer>
   </div>
 
   <div class="view" id="viewKappale">
@@ -2775,7 +2775,7 @@
       </div>
     </header>
     <main id="kpKortti"></main>
-    <footer><span class="machine-name">NTX3000</span> · KAPPALEKORTTI · v3.55</footer>
+    <footer><span class="machine-name">NTX3000</span> · KAPPALEKORTTI · v3.56</footer>
   </div>
 
   <div class="view" id="viewData">
@@ -2915,7 +2915,7 @@
       </section>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · ASETUKSET · v3.55</footer>
+    <footer><span class="machine-name">NTX3000</span> · ASETUKSET · v3.56</footer>
   </div>
 
   <!-- ===================== KONEET ===================== -->
@@ -2949,7 +2949,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · KONEET · v3.55</footer>
+    <footer><span class="machine-name">NTX3000</span> · KONEET · v3.56</footer>
   </div>
 
   <!-- ===================== TYÖKALUTYYPPIEN HALLINTA ===================== -->
@@ -2981,7 +2981,7 @@
       </section>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · TYÖKALUTYYPIT · v3.55</footer>
+    <footer><span class="machine-name">NTX3000</span> · TYÖKALUTYYPIT · v3.56</footer>
   </div>
 
   <!-- ===================== TUONTI: ESIKATSELU ===================== -->
@@ -3049,7 +3049,7 @@
         </div>
       </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TUONTI · v3.55</footer>
+    <footer><span class="machine-name">NTX3000</span> · TUONTI · v3.56</footer>
   </div>
 
   <!-- ===================== TYÖSTÖTIETOPANKKI JA OMAT SÄÄDÖT ===================== -->
@@ -3088,7 +3088,7 @@
         <div class="tp-rivit" id="tpRivit"></div>
       </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TIETOPANKKI · v3.55</footer>
+    <footer><span class="machine-name">NTX3000</span> · TIETOPANKKI · v3.56</footer>
   </div>
 
 <!-- ===================== TARKISTUS ===================== -->
@@ -3108,7 +3108,7 @@
         <div class="edit-list" id="qualityList"></div>
       </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TARKISTUS · v3.55</footer>
+    <footer><span class="machine-name">NTX3000</span> · TARKISTUS · v3.56</footer>
   </div>
 
 </div>
@@ -3257,12 +3257,13 @@ try {
 const K_MUOKATTU    = 'ntx_muokattu';
 const K_POISTOT     = 'ntx_poistot';          /* mitä on poistettu ja milloin */
 const K_TILANNE     = 'ntx_tilannekuvat';     /* paikalliset palautuspisteet */
+const K_PAIVA       = 'ntx_paivakopiot';      /* päivittäiset kopiot, 7 pv */
 const K_SYNC_VERSIO = 'ntx_sync_versio';      /* viimeksi tiedossa ollut palvelimen versio */
 const K_LAHETYS_PYYNTO = 'ntx_lahetys_pyynto';/* lähetä heti seuraavassa käynnistyksessä */
 let alustusKesken = true;   /* käynnistyksen migraatiot eivät ole käyttäjän muutoksia */
 const META_AVAIMET = ['ntx_kiilaura', 'ntx_muokattu', 'ntx_sync', 'ntx_teema', 'ntx_kaavat', 'ntx_viimeksi', 'ntx_varmuuskopio_pvm',
                       'ntx_sync_haettu', 'ntx_nakyma', 'ntx_tyosto', 'ntx_kappale_auki',
-                      K_POISTOT, K_TILANNE, K_SYNC_VERSIO, K_LAHETYS_PYYNTO];
+                      K_POISTOT, K_TILANNE, K_PAIVA, K_SYNC_VERSIO, K_LAHETYS_PYYNTO];
 
 /* -----------------------------------------------------------------
    POISTOMERKINNÄT
@@ -3366,6 +3367,11 @@ function vapautaTilaa() {
     const kuvat = JSON.parse(localStorage.getItem(K_TILANNE) || 'null');
     if (Array.isArray(kuvat) && kuvat.length) {
       localStorage.setItem(K_TILANNE, JSON.stringify(kuvat.slice(0, kuvat.length - 1)));
+      return true;
+    }
+    const pv = JSON.parse(localStorage.getItem(K_PAIVA) || 'null');
+    if (Array.isArray(pv) && pv.length > 1) {
+      localStorage.setItem(K_PAIVA, JSON.stringify(pv.slice(0, pv.length - 1)));
       return true;
     }
   } catch (e) {}
@@ -8908,8 +8914,40 @@ function tallennaTilannekuva(syy) {
   } catch (e) { return false; }
 }
 
+/* Päivittäinen kopio: päivän ensimmäisellä avauksella, viimeiset 7 päivää.
+   Erillään palautuspisteistä, jotta tiheät synkronoinnit eivät syrjäytä niitä. */
+const PAIVA_MAX = 7;
+function paivakopiot() {
+  try {
+    const d = JSON.parse(localStorage.getItem(K_PAIVA) || 'null');
+    return Array.isArray(d) ? d : [];
+  } catch (e) { return []; }
+}
+function paivaAvain(aika) { return new Date(aika).toLocaleDateString('sv-SE'); }
+function paivakopioTarvittaessa() {
+  try {
+    const lista = paivakopiot();
+    if (lista[0] && paivaAvain(lista[0].aika) === paivaAvain(Date.now())) return false;
+    const paketti = syncPaketti();
+    const n = tyokaluMaara(paketti);
+    if (!n) return false;
+    lista.unshift({ aika: new Date().toISOString(), syy: 'päivittäinen', tyokaluja: n, data: paketti });
+    let l = lista.slice(0, PAIVA_MAX);
+    while (l.length) {
+      try { localStorage.setItem(K_PAIVA, JSON.stringify(l)); return true; }
+      catch (e) { l = l.slice(0, l.length - 1); }
+    }
+  } catch (e) {}
+  return false;
+}
+/* palautuspisteet ja päivittäiset kopiot yhdessä, uusin ensin */
+function kaikkiPalautuspisteet() {
+  return tilannekuvat().concat(paivakopiot())
+    .sort((a, b) => String(b.aika).localeCompare(String(a.aika)));
+}
+
 function palautaTilannekuva(i) {
-  const kuvat = tilannekuvat();
+  const kuvat = kaikkiPalautuspisteet();
   const kuva = kuvat[i];
   if (!kuva || !kuva.data) return;
   tallennaTilannekuva('ennen palautusta');
@@ -9139,6 +9177,7 @@ document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'hidden') {
     lahetaHeti(true);
   } else {
+    paivakopioTarvittaessa();                 /* auki yön yli */
     if (lahetysOdottaa) lahetaHeti(false);   /* aiemmin epäonnistunut lähetys */
     if (SYNC.auto) syncHae(true);
   }
@@ -9248,7 +9287,7 @@ if (syncSnapSaveBtn) {
 
 if (syncSnapBtn) {
   syncSnapBtn.addEventListener('click', () => {
-    const kuvat = tilannekuvat();
+    const kuvat = kaikkiPalautuspisteet();
     if (!kuvat.length) return syncViesti('Palautuspisteitä ei ole vielä.', 'err');
     avaaModal({
       title: 'Palautuspisteet',
@@ -9263,7 +9302,7 @@ if (syncSnapBtn) {
       if (v === null || v === true) return;
       const i = parseInt(v, 10);
       if (isNaN(i)) return;
-      const kuva = tilannekuvat()[i];
+      const kuva = kaikkiPalautuspisteet()[i];
       if (!kuva) return;
       kysyVahvistus('Palauta tilanne',
         new Date(kuva.aika).toLocaleString('fi-FI') + ' \u00B7 ' + (kuva.tyokaluja || 0) + ' työkalua.\n\n' +
@@ -12574,6 +12613,7 @@ try { history.replaceState(Object.assign({ i: 0 }, histPino[0]), ''); } catch (e
 histValmis = true;
 
 alustusKesken = false;   /* tästä eteenpäin muutokset merkitään synkronointia varten */
+paivakopioTarvittaessa();
 
 /* Palautuksen jälkeen tulos lähetetään palvelimelle heti käynnistyksessä */
 if (store.get(K_LAHETYS_PYYNTO)) {
