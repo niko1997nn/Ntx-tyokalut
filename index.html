@@ -10615,15 +10615,15 @@ const KU_KUVA_SIVU = '<svg class="ku-ohjekuva" viewBox="0 0 320 180" role="img" 
   '<g data-k="R Z K F V" class="perus"><path d="M240 64 H96 V104 H240 Z" class="kk-ilma"/><path d="M240 64 H96 V104" class="kk-viiva"/></g>' +
   '<g data-k="E W" class="vain"><path d="M240 64 L130 104 H240 Z" class="kk-ilma"/><path d="M240 64 L130 104" class="kk-korostus"/></g>' +
   '<g data-k="E" class="vain">' + kkA(240, 64, 186, 64) + '<path d="M204 64 A36 36 0 0 0 206 77" class="kk-mitta"/><text x="182" y="88" class="kk-teksti">E</text></g>' +
-  '<g data-k="W" class="vain">' + kkA(130, 104, 130, 20) + '<text x="122" y="16" class="kk-teksti">W</text></g>' +
-  '<g data-k="J" class="vain"><path d="M96 64 A44 44 0 0 0 56 104 H96 Z" class="kk-ilma"/><path d="M96 64 A44 44 0 0 0 56 104" class="kk-korostus"/>' + kkA(56, 104, 56, 20) + '<text x="50" y="16" class="kk-teksti">J</text><text x="100" y="58" class="kk-pieni">Z</text></g>' +
+  '<g data-k="W" class="vain">' + kkA(130, 104, 130, 156) + '<circle cx="130" cy="104" r="3" class="kk-nuolenpaa"/><text x="130" y="170" class="kk-teksti" text-anchor="middle">W</text></g>' +
+  '<g data-k="J" class="vain"><path d="M96 64 A44 44 0 0 0 56 104 H96 Z" class="kk-ilma"/><path d="M96 64 A44 44 0 0 0 56 104" class="kk-korostus"/>' + kkA(56, 104, 56, 156) + '<circle cx="56" cy="104" r="3" class="kk-nuolenpaa"/><text x="56" y="170" class="kk-teksti" text-anchor="middle">J</text><text x="100" y="58" class="kk-pieni">Z</text></g>' +
   '<g data-k="D ks" class="vain"><path d="M0 0 H240 V104 L0 118 Z" class="kk-mat-sivu"/><path d="M0 118 L240 104 V180 H0 Z" class="kk-ilma"/><path d="M240 64 L96 72 V112 L240 104 Z" class="kk-ilma"/><path d="M240 64 L96 72 V112" class="kk-viiva"/><path d="M0 118 L240 104" class="kk-korostus"/>' + kkA(240, 104, 164, 104) + '<text x="176" y="128" class="kk-teksti">D</text></g>' +
-  '<g data-k="R" class="vain"><line x1="240" y1="10" x2="240" y2="172" class="kk-korostus"/><text x="246" y="18" class="kk-teksti">R</text></g>' +
-  '<g data-k="Z" class="vain"><line x1="96" y1="64" x2="96" y2="104" class="kk-korostus"/>' + kkA(96, 62, 96, 26) + kkA(240, 26, 240, 30) + kkM(96, 32, 240, 32, 'Z', 160, 26, 'middle') + '</g>' +
+  '<g data-k="R" class="vain"><line x1="240" y1="0" x2="240" y2="104" class="kk-korostus"/>' + kkA(240, 104, 240, 156) + '<text x="240" y="170" class="kk-teksti" text-anchor="middle">R</text></g>' +
+  '<g data-k="Z" class="vain"><line x1="96" y1="64" x2="96" y2="104" class="kk-korostus"/>' + kkA(96, 104, 96, 156) + kkA(240, 104, 240, 156) + kkM(96, 150, 240, 150, 'Z', 168, 143, 'middle') + '</g>' +
   '<g data-k="K" class="vain"><line x1="288" y1="10" x2="288" y2="172" class="kk-apu"/>' + kkM(240, 150, 288, 150, 'K', 264, 143, 'middle') + '<text x="272" y="10" class="kk-pieni">R+K</text></g>' +
   '<g data-k="F" class="vain"><line x1="300" y1="76" x2="100" y2="76" class="kk-mitta" marker-end="url(#kkN)"/><text x="196" y="70" class="kk-teksti">F</text></g>' +
   '<g data-k="V" class="vain"><line x1="96" y1="66" x2="240" y2="66" class="kk-korostus"/><line x1="96" y1="70" x2="240" y2="70" class="kk-korostus"/><text x="168" y="56" class="kk-teksti" text-anchor="middle">V vetoa pohjassa</text></g>' +
-  '<text x="10" y="140" class="kk-pieni">reikä</text><text x="10" y="40" class="kk-pieni">kappale</text><text x="250" y="174" class="kk-pieni">otsan edessä</text>' +
+  '<text x="10" y="124" class="kk-pieni">reikä</text><text x="10" y="40" class="kk-pieni">kappale</text><text x="248" y="40" class="kk-pieni">otsan edessä</text>' +
   '</svg>';
 function kuNaytaKuva(k) {
   const el = document.getElementById('kuOhjeKuva');
