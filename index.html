@@ -650,7 +650,7 @@
 
   /* Etumerkkinappi: puhelimen numeronäppäimistössä ei ole miinusta */
   .num-wrap { position: relative; display: block; }
-  .num-wrap input { padding-right: 40px; }
+  .num-wrap input { padding-right: 12px; }
   .sign-btn {
     position: absolute;
     top: 3px;
@@ -676,7 +676,7 @@
   .geo-grid .num-wrap input, .cut-grid .num-wrap input {
     text-align: left;
     padding-left: 8px;
-    padding-right: 30px;
+    padding-right: 8px;
   }
   .geo-grid .sign-btn, .cut-grid .sign-btn { width: 25px; font-size: 13px; }
 
@@ -2107,14 +2107,14 @@
   /* ═══ Yksikkö kentän sisällä ═══ */
   .yks-wrap { position: relative; display: block; }
   .yks-wrap > input, .yks-wrap > .laskettu-kentta { width: 100%; box-sizing: border-box; padding-right: 58px !important; text-align: right; }
-  .num-wrap.has-yks > input { padding-right: 76px !important; text-align: right; }
+  .num-wrap.has-yks > input { padding-right: 58px !important; text-align: right; }
   .yks { position: absolute; top: 0; bottom: 0; right: 10px; width: 44px; display: flex; align-items: center;
     font: 500 11.5px var(--mono); color: var(--text-dim); pointer-events: none; white-space: nowrap; }
-  .num-wrap.has-yks .yks { right: 42px; width: 30px; }
+  .num-wrap.has-yks .yks { right: 10px; width: 44px; }
   .field .num-wrap.has-yks { width: 180px; max-width: 50vw; }
   .field .num-wrap.has-yks input { width: 100%; }
-  .geo-grid .num-wrap.has-yks > input, .cut-grid .num-wrap.has-yks > input { padding-right: 76px !important; }
-  .geo-grid .num-wrap.has-yks .yks, .cut-grid .num-wrap.has-yks .yks { right: 32px; }
+  .geo-grid .num-wrap.has-yks > input, .cut-grid .num-wrap.has-yks > input { padding-right: 46px !important; }
+  .geo-grid .num-wrap.has-yks .yks, .cut-grid .num-wrap.has-yks .yks { right: 5px; width: 38px; }
   .cut-grid .yks-wrap > input, .cut-grid .yks-wrap > .laskettu-kentta { padding-left: 6px; padding-right: 46px !important; }
   .cut-grid .yks { right: 5px; width: 38px; font-size: 10px; letter-spacing: -0.03em; }
 
@@ -2405,11 +2405,11 @@
         <div class="section-label">Kappaletiedot</div>
         <div class="field">
           <label>Z0, 1. puoli<span class="unit-note">ohjelmoitu Z0 konekoordinaatistossa</span></label>
-          <div class="num-wrap"><input type="text" id="z0" data-yks="mm" inputmode="decimal" value="-703.7028"><button type="button" class="sign-btn" aria-label="Vaihda etumerkki">±</button></div>
+          <div class="num-wrap"><input type="text" id="z0" data-yks="mm" inputmode="decimal" value="-703.7028"></div>
         </div>
         <div class="field">
           <label>Kappaleen pituus<span class="unit-note">mm</span></label>
-          <div class="num-wrap"><input type="text" id="kappale" inputmode="decimal" value="28.5"><button type="button" class="sign-btn" aria-label="Vaihda etumerkki">±</button></div>
+          <div class="num-wrap"><input type="text" id="kappale" inputmode="decimal" value="28.5"></div>
         </div>
       </div>
 
@@ -2417,11 +2417,11 @@
         <div class="section-label">Leukatiedot — SP2</div>
         <div class="field">
           <label>Leuan pituus<span class="unit-note">mm</span></label>
-          <div class="num-wrap"><input type="text" id="leuka" inputmode="decimal" value="80.75"><button type="button" class="sign-btn" aria-label="Vaihda etumerkki">±</button></div>
+          <div class="num-wrap"><input type="text" id="leuka" inputmode="decimal" value="80.75"></div>
         </div>
         <div class="field">
           <label>Puristussyvyys<span class="unit-note">mm</span></label>
-          <div class="num-wrap"><input type="text" id="puristus" inputmode="decimal" value="17"><button type="button" class="sign-btn" aria-label="Vaihda etumerkki">±</button></div>
+          <div class="num-wrap"><input type="text" id="puristus" inputmode="decimal" value="17"></div>
         </div>
       </div>
 
@@ -2457,7 +2457,7 @@
         <div class="section-card">
           <div class="field">
             <label>SP2 otsapinta<span class="unit-note">2. karan pakan otsapinta, konekoordinaatti</span></label>
-            <div class="num-wrap"><input type="text" id="sp2" data-yks="mm" inputmode="decimal"><button type="button" class="sign-btn" aria-label="Vaihda etumerkki">±</button></div>
+            <div class="num-wrap"><input type="text" id="sp2" data-yks="mm" inputmode="decimal"></div>
           </div>
         </div>
         <div class="note" style="margin-top:10px;">
@@ -5557,7 +5557,7 @@ function inputHTML(uid, field, value, type) {
 }
 function signBtn(value) {
   const neg = String(value == null ? '' : value).trim().charAt(0) === '-';
-  return '<button type="button" class="sign-btn' + (neg ? ' neg' : '') + '" aria-label="Vaihda etumerkki">\u00B1</button>';
+  return ''; /* ±-napit poistettu: miinus tulee näppäimistöstä */
 }
 function selectHTML(uid, field, value, options) {
   return '<select data-uid="' + esc(uid) + '" data-field="' + field + '">' +
