@@ -1915,6 +1915,10 @@
   /* kiilauran kenttäkohtainen havainnekuva */
   .ku-ohjekuva-paneeli { margin-top: 8px; background: var(--panel); border: 1px solid var(--panel-border); border-radius: 12px; overflow: hidden; }
   .ku-ohjekuva-paneeli[hidden] { display: none; }
+  #kuSisalto { position: relative; }
+  .ku-ohjekuva-paneeli.kelluva { position: absolute; width: 260px; margin: 0; z-index: 40; box-shadow: 0 10px 30px rgba(0,0,0,.18); }
+  .ku-ohjekuva-paneeli.kelluva .ku-ohjekuva { max-height: none; }
+  .ku-ohjekuva-paneeli.kelluva .ku-ohjekuva-teksti { font-size: 12.5px; }
   .ku-ohjekuva { display: block; width: 100%; max-height: 130px; height: auto; background: var(--bg); }
   .ku-ohjekuva-teksti { display: flex; gap: 8px; align-items: flex-start; padding: 8px 10px 9px 12px; font-size: 13px; line-height: 1.4; border-top: 1px solid var(--panel-border); }
   .ku-ohjekuva-teksti span { flex: 1; }
@@ -10714,6 +10718,7 @@ function kuNaytaKuva(k) {
   const oliAuki = !el.hidden;
   el.hidden = false;
   el.dataset.k = k;
+  if (kuKelluvaKuva()) { kuSijoitaKuva(); return; }
   /* kuva kasvattaa yläpalkkia: pidetään aktiivinen kenttä palkin ja numeronäppäimistön välissä */
   if (!oliAuki) requestAnimationFrame(() => {
     const inp = document.activeElement && document.activeElement.matches && document.activeElement.matches('input[data-ku]') ? document.activeElement : document.querySelector('#viewKiilaura input[data-ku="' + k + '"]');
@@ -10726,6 +10731,29 @@ function kuNaytaKuva(k) {
     else if (r.bottom > alaRaja - 8) window.scrollBy(0, r.bottom - alaRaja + 8);
   });
 }
+
+/* tietokoneella kuva kelluu kentän vieressä eikä siirrä sivun sisältöä */
+function kuKelluvaKuva() { return window.matchMedia && window.matchMedia('(min-width: 900px) and (pointer: fine)').matches; }
+function kuSijoitaKuva() {
+  const el = document.getElementById('kuOhjeKuva'), juuri = document.getElementById('kuSisalto');
+  if (!el || !juuri || el.hidden) return;
+  if (el.parentElement !== juuri) juuri.appendChild(el);
+  el.classList.add('kelluva');
+  const inp = document.querySelector('#viewKiilaura input[data-ku="' + el.dataset.k + '"]');
+  const rivi = inp && (inp.closest('.tyr') || inp);
+  if (!rivi) return;
+  const jr = juuri.getBoundingClientRect(), r = rivi.getBoundingClientRect();
+  const lev = 260, vali = 16;
+  let vasen;
+  if (window.innerWidth - jr.right >= lev + vali * 2) vasen = jr.width + vali;
+  else if (r.left + r.width / 2 < jr.left + jr.width / 2) vasen = jr.width / 2 + vali;
+  else vasen = vali;
+  let ylaReuna = r.top - jr.top + r.height / 2 - el.offsetHeight / 2;
+  ylaReuna = Math.max(ylaReuna, 0);
+  el.style.left = vasen + 'px';
+  el.style.top = ylaReuna + 'px';
+}
+window.addEventListener('resize', () => { if (typeof KU !== 'undefined' && document.getElementById('kuOhjeKuva') && kuKelluvaKuva()) kuSijoitaKuva(); });
 
 /* ---------- tapahtumat ---------- */
 (function kuKuuntelijat() {
