@@ -10231,7 +10231,7 @@ function renderNeuvoja() {
     nvRivi('ap', 'a<sub>p</sub>', v.op === 'jyrsinta' ? 'Syvyys' : 'Lastuamissyvyys', 'mm', v.ap, 'ehdotus') +
     (v.op === 'jyrsinta' ? nvRivi('ae', 'a<sub>e</sub>', 'Leveys', 'mm', v.ae, 'ehdotus') : '') +
     (v.op === 'sorvaus' && v.st === 'viimeistely' ? nvRivi('ra', 'R<sub>a</sub>', 'Tavoitekarheus', 'µm', v.ra) : '') +
-    (v.op === 'jyrsinta' ? nvRivi('Dw', 'D<sub>w</sub>', 'Interpolointi Ø', 'mm', v.Dw, '–') : '') +
+    (v.op === 'jyrsinta' ? nvRivi('Dw', 'D<sub>w</sub>', 'Interpolointi Ø', 'mm', v.Dw, 'ei') : '') +
     (v.op !== 'poraus' ? '<div class="nv-suositus" id="nvSuositus"></div>' : '') +
     (v.op === 'jyrsinta' ? '<div class="nv-alaotsikko">Lastunohennuksen kompensointi</div>' +
       nvSeg('lo', v.lo, [['on', 'Päällä'], ['off', 'Pois']]) : '') +
@@ -10260,6 +10260,7 @@ function nvPaivitaTulos() {
   if (!o.ok) {
     el.innerHTML = '<div class="nv-tyhja">' + esc(o.virhe || 'Täytä tiedot.') + '</div>';
     const yla = document.getElementById('nvYla'); if (yla) yla.innerHTML = '<div class="nv-tyhja">' + esc(o.virhe || 'Täytä tiedot.') + '</div>';
+    document.querySelectorAll('#nvSyotteet [data-nv="ap"], #nvSyotteet [data-nv="ae"]').forEach(i => { i.placeholder = 'ehdotus'; });
     return;
   }
   const solu = (nimi, arvo, yks, ehd) => '<div class="ty-tulos"><div class="ty-tulos-nimi">' + nimi + (ehd ? ' <span class="nv-ehd">ehdotus</span>' : '') + '</div><div class="ty-tulos-arvo">' + arvo + (yks ? '<span>' + yks + '</span>' : '') + '</div></div>';
@@ -10289,6 +10290,11 @@ function nvPaivitaTulos() {
   h += '<details class="ty-vinkit nv-perusteet"><summary>Miten tämä laskettiin</summary><ul>' + o.perusteet.map(p => '<li>' + esc(p) + '</li>').join('') +
     '<li>Arvot ovat aloitusarvoja julkisista lähteistä ja omasta tietopankistasi. Tarkista työkaluvalmistajan suositus ja kuuntele lastua.</li></ul></details>';
   el.innerHTML = h;
+  // Tyhjiin ap/ae-kenttiin näkyviin neuvojan käyttämä arvo harmaana
+  [['ap', o.ap, o.apEhdotus], ['ae', o.ae, o.aeEhdotus]].forEach(([k, arvo, ehd]) => {
+    const inp = document.querySelector('#nvSyotteet [data-nv="' + k + '"]');
+    if (inp) inp.placeholder = (ehd && arvo > 0) ? lyhyt(arvo) : 'ehdotus';
+  });
   const su = document.getElementById('nvSuositus');
   if (su) {
     const al = o.alue;
