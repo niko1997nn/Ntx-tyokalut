@@ -1887,7 +1887,8 @@
   .ku-laskenta > summary { cursor: pointer; font-size: 13.5px; color: var(--text-dim); padding: 6px 2px 8px; }
   .kk-kaula-r { fill: color-mix(in srgb, var(--accent) 18%, transparent); stroke: var(--accent); stroke-width: 1; }
   .kk-sarma { stroke: var(--accent); stroke-width: 1; stroke-dasharray: 2 3; }
-  .kk-tasku { fill: var(--bg); stroke: var(--accent); stroke-width: 1; }
+  .kk-runko-kok { fill: color-mix(in srgb, var(--accent) 16%, var(--bg)); stroke: var(--accent); stroke-width: 1.4; }
+  .kk-sauma { fill: none; stroke: var(--accent); stroke-width: .8; opacity: .45; }
   .kk-pala { fill: color-mix(in srgb, var(--text) 22%, var(--bg)); stroke: var(--text); stroke-width: 1.2; }
   .kk-ruuvi { fill: none; stroke: var(--text-dim); stroke-width: 1; }
   .kk-mitta-ohut { stroke: var(--orange); stroke-width: 1.2; }
@@ -10596,12 +10597,10 @@ const KU_KUVA_POIKKI = '<svg class="ku-ohjekuva" viewBox="0 0 320 180" role="img
   '</svg>';
 const KU_KUVA_TERA = '<svg class="ku-ohjekuva" viewBox="0 0 320 180" role="img" aria-label="Pistoterä päädystä">' + KK_DEFS +
   '<rect x="0" y="0" width="320" height="180" class="kk-ilma"/>' +
-  /* pyöreä runko, jossa V-tasku palalle */
-  '<circle cx="160" cy="100" r="62" class="kk-runko"/>' +
-  '<path d="M128 46.9 L156 94 A5 5 0 0 0 164 94 L192 46.9 Z" class="kk-tasku"/>' +
-  /* pala: leikkaava pää ulottuu rungon kehän yli, kolmio taskussa, ruuvi keskellä */
-  '<path d="M136 24 H184 V34 H180 V50 L163 82 A4 4 0 0 1 157 82 L140 50 V34 H136 Z" class="kk-pala"/>' +
-  '<circle cx="160" cy="56" r="7" class="kk-ruuvi"/><circle cx="160" cy="56" r="3" class="kk-ruuvi"/>' +
+  /* yksi kappale: pyöreä runko, josta palan leikkaava pää ulottuu kehän yli */
+  '<path d="M140 41.31 V34 H136 V24 H184 V34 H180 V41.31 A62 62 0 1 1 140 41.31 Z" class="kk-runko-kok"/>' +
+  '<path d="M140 41.31 L157 80 A4 4 0 0 0 163 80 L180 41.31" class="kk-sauma"/>' +
+  '<circle cx="160" cy="56" r="6" class="kk-sauma"/>' +
   '<line x1="126" y1="24" x2="194" y2="24" class="kk-sarma"/><text x="198" y="30" class="kk-pieni">särmä X+</text>' +
   '<text x="10" y="174" class="kk-pieni">pistoterä päädystä katsottuna</text>' +
   '<g data-k="T" class="vain">' + kkA(136, 22, 136, 6) + kkA(184, 22, 184, 6) + kkM(136, 11, 184, 11, 'T', 192, 16) + '</g>' +
