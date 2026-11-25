@@ -2197,7 +2197,17 @@
   .kp-pvm { font-size: 12px; color: var(--text-dim); }
 
   /* ═══ Neuvoja ═══ */
-  .tulos-yla .nv-yla { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 12px; padding: 12px 14px; }
+  .tulos-yla .nv-yla { display: block; padding: 12px 14px; }
+  .nv-yla-arvot { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 12px; }
+  .nv-saato { margin-top: 10px; padding-top: 10px; border-top: 1px solid color-mix(in srgb, var(--text) 10%, transparent); }
+  .nv-saato-rivi { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; color: var(--text-dim); flex-wrap: wrap; }
+  .nv-saato-rivi b { color: var(--text); font-family: var(--mono); font-size: 15px; }
+  .nv-saato-rivi em { font-style: normal; font-size: 12px; margin-left: 2px; }
+  .nv-saato-rivi em.pidempi { color: var(--green); }
+  .nv-saato-rivi em.lyhyempi { color: var(--orange); }
+  .nv-saato input[type=range] { width: 100%; margin: 8px 0 2px; accent-color: var(--accent); height: 28px; }
+  .nv-saato-asteikko { display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--text-dim); min-height: 20px; }
+  .nv-saato-asteikko .nv-linkki[hidden] { visibility: hidden; display: inline; }
   .nv-yla-tila { grid-column: 1 / -1; font-size: 12px; font-weight: 600; }
   .nv-yla-tila.varoitus { color: var(--orange); }
   .nv-yla-tila.virhe { color: var(--red); }
@@ -2327,7 +2337,7 @@
 
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · LEUKALASKURI · v3.66</footer>
+    <footer><span class="machine-name">NTX3000</span> · LEUKALASKURI · v3.67</footer>
   </div>
 
   <!-- ===================== ASETUKSET: LEUKAKORJAIN ===================== -->
@@ -2464,7 +2474,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · SP2 &amp; G55 · v3.66</footer>
+    <footer><span class="machine-name">NTX3000</span> · SP2 &amp; G55 · v3.67</footer>
   </div>
 
   <!-- ===================== ASETUKSET: SP2 ===================== -->
@@ -2587,7 +2597,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · TYÖKALULISTA · v3.66</footer>
+    <footer><span class="machine-name">NTX3000</span> · TYÖKALULISTA · v3.67</footer>
   </div>
 
   <!-- ===================== ASETUKSET ===================== -->
@@ -2624,7 +2634,7 @@
       </div>
       <div id="kuSisalto"></div>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · KIILAURA · v3.66</footer>
+    <footer><span class="machine-name">NTX3000</span> · KIILAURA · v3.67</footer>
   </div>
 
   <div class="view" id="viewTyosto">
@@ -2750,7 +2760,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · TYÖSTÖ · v3.66</footer>
+    <footer><span class="machine-name">NTX3000</span> · TYÖSTÖ · v3.67</footer>
   </div>
 
   <!-- ===================== KAPPALEET: TYÖKORTIT PIIRUSTUSNUMEROITTAIN ===================== -->
@@ -2789,7 +2799,7 @@
       <div id="kpLista"></div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · KAPPALEET · v3.66</footer>
+    <footer><span class="machine-name">NTX3000</span> · KAPPALEET · v3.67</footer>
   </div>
 
   <div class="view" id="viewKappale">
@@ -2807,7 +2817,7 @@
       </div>
     </header>
     <main id="kpKortti"></main>
-    <footer><span class="machine-name">NTX3000</span> · KAPPALEKORTTI · v3.66</footer>
+    <footer><span class="machine-name">NTX3000</span> · KAPPALEKORTTI · v3.67</footer>
   </div>
 
   <div class="view" id="viewData">
@@ -2947,7 +2957,7 @@
       </section>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · ASETUKSET · v3.66</footer>
+    <footer><span class="machine-name">NTX3000</span> · ASETUKSET · v3.67</footer>
   </div>
 
   <!-- ===================== KONEET ===================== -->
@@ -2981,7 +2991,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · KONEET · v3.66</footer>
+    <footer><span class="machine-name">NTX3000</span> · KONEET · v3.67</footer>
   </div>
 
   <!-- ===================== TYÖKALUTYYPPIEN HALLINTA ===================== -->
@@ -3013,7 +3023,7 @@
       </section>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · TYÖKALUTYYPIT · v3.66</footer>
+    <footer><span class="machine-name">NTX3000</span> · TYÖKALUTYYPIT · v3.67</footer>
   </div>
 
   <!-- ===================== TUONTI: ESIKATSELU ===================== -->
@@ -3081,7 +3091,7 @@
         </div>
       </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TUONTI · v3.66</footer>
+    <footer><span class="machine-name">NTX3000</span> · TUONTI · v3.67</footer>
   </div>
 
   <!-- ===================== TYÖSTÖTIETOPANKKI JA OMAT SÄÄDÖT ===================== -->
@@ -3124,7 +3134,7 @@
         <div class="tp-rivit" id="tpRivit"></div>
       </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TIETOPANKKI · v3.66</footer>
+    <footer><span class="machine-name">NTX3000</span> · TIETOPANKKI · v3.67</footer>
   </div>
 
 <!-- ===================== TARKISTUS ===================== -->
@@ -3144,7 +3154,7 @@
         <div class="edit-list" id="qualityList"></div>
       </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TARKISTUS · v3.66</footer>
+    <footer><span class="machine-name">NTX3000</span> · TARKISTUS · v3.67</footer>
   </div>
 
 </div>
@@ -10542,7 +10552,13 @@ function tiRender() {
   });
   el.innerHTML = out;
 }
-document.addEventListener('input', e => { if (e.target && e.target.id === 'tiHaku') tiRender(); });
+document.addEventListener('input', e => {
+  if (e.target && e.target.id === 'tiHaku') tiRender();
+  if (e.target && e.target.id === 'nvVcSaato') { nvTila().vcSaato = e.target.value; tallennaTy(); nvPaivitaTulos(); }
+});
+document.addEventListener('click', e => {
+  if (e.target && e.target.id === 'nvSaatoNollaa') { nvTila().vcSaato = '0'; tallennaTy(); nvPaivitaTulos(); }
+});
 
 /* =================================================================
    KIILAURA – O8990 v2.5 (NTX3000 kara 1, seisova pistoterä)
@@ -11665,6 +11681,16 @@ function nvLaske(apPakko, aPakko) {
   if (rivi.vc[2]) vc = Math.min(vc, rivi.vc[2] * mkk.k * Math.max(1, kr.vcK));
   if (rivi.vc[0]) vc = Math.max(vc, rivi.vc[0] * mkk.k * Math.min(1, kr.vcK) * Math.min(1, kk) * 0.9);
   if (vcSyy) out.perusteet.push('Nopeus: ' + vcSyy + ' (rajattu tietopankin haarukkaan).');
+  /* käyttäjän liukusäädin: kaikki muu lasketaan säädetystä nopeudesta */
+  out.vcSuos = vc;
+  const saato = Math.max(-50, Math.min(50, num(v.vcSaato) || 0));
+  out.vcSaato = saato;
+  if (saato) {
+    vc *= 1 + saato / 100;
+    out.perusteet.push('Lastuamisnopeutta säädetty liukusäätimellä ' + (saato > 0 ? '+' : '') + saato + ' % (suositus ' + Math.round(out.vcSuos) + ' m/min).');
+    if (rivi.vc[2] && vc > rivi.vc[2] * mkk.k * Math.max(1, kr.vcK) * 1.001)
+      out.varoitukset.push({ taso: 'info', teksti: 'vc ' + Math.round(vc) + ' m/min on yli tietopankin ylärajan ' + Math.round(rivi.vc[2] * mkk.k) + ' m/min. Seuraa kulumista.' });
+  }
 
   /* kierrosluku ja karan raja (pallopäällä tehollisella halkaisijalla) */
   let Dn = D;
@@ -11906,6 +11932,9 @@ function nvLaske(apPakko, aPakko) {
     out.varoitukset.push({ taso: 'varoitus', teksti: 'Lastu on ohut (suurin paksuus ' + lyhyt(Math.round(ohut * 1000) / 1000) + ' mm). Ruostumattomassa ja duplexissa liian ohut lastu muokkauslujittaa pintaa; pidä lastu vähintään 0,03–0,05 mm.' });
   if (!(pmax > 0)) out.perusteet.push('Karan rajoja ei ole annettu: tehoa, vääntöä ja kierroslukua ei verrata koneeseen.');
   if (!(nmax > 0) && n > 12000) out.varoitukset.push({ taso: 'varoitus', teksti: 'Kierrosluku ' + fmt(n, 0) + ' r/min on suuri. Anna karan maksimikierrokset (Kone ja olosuhteet), niin avustaja rajaa kierrokset ja laskee nopeuden uudelleen.' });
+  /* särmän kesto: Taylor T = T0 · (vc0 / vc)^(1/n). Suositusarvot vastaavat noin 15 min lastuamisaikaa. */
+  out.keston = v.tmat === 'hss' ? 0.125 : 0.25;
+  out.kesto = 15 * Math.pow(out.vcSuos / out.vc, 1 / out.keston);
   out.ok = true;
   /* ehdotettu ap sovitetaan taipuman, tehon ja väännön rajoihin (käyttäjän antamaa ei muuteta) */
   if (sp && !aPakko && out.aEhdotus) {
@@ -12121,7 +12150,25 @@ function nvPaivitaTulos() {
       : solu('Syöttö / kierros', String(Math.round(o.f * 1000) / 1000).replace('.', ','), 'mm/r');
     y += isFinite(o.vfOhjelma) ? solu('Syöttö ohjelmaan', fmt(o.vfOhjelma, 0), 'mm/min') : solu('Pöytäsyöttö', fmt(o.vf, 0), 'mm/min');
     const pahin = o.varoitukset.some(w => w.taso === 'virhe') ? 'virhe' : o.varoitukset.some(w => w.taso === 'varoitus') ? 'varoitus' : '';
-    yla.innerHTML = y + (pahin ? '<div class="nv-yla-tila ' + pahin + '">' + o.varoitukset.length + ' huomautusta alla</div>' : '');
+    if (!document.getElementById('nvVcSaato')) {
+      yla.innerHTML = '<div class="nv-yla-arvot"></div><div class="nv-saato">' +
+        '<div class="nv-saato-rivi"><span>v<sub>c</sub> <b id="nvSaatoVc"></b> m/min <em id="nvSaatoPros"></em></span>' +
+        '<span>Särmän kesto <b id="nvSaatoKesto"></b> <em id="nvSaatoMuutos"></em></span></div>' +
+        '<input type="range" id="nvVcSaato" min="-50" max="50" step="5" aria-label="Lastuamisnopeuden säätö">' +
+        '<div class="nv-saato-asteikko"><span>−50 %</span><button type="button" class="nv-linkki" id="nvSaatoNollaa">Suositus</button><span>+50 %</span></div></div>';
+    }
+    yla.querySelector('.nv-yla-arvot').innerHTML = y + (pahin ? '<div class="nv-yla-tila ' + pahin + '">' + o.varoitukset.length + ' huomautusta alla</div>' : '');
+    const liuku = document.getElementById('nvVcSaato');
+    if (document.activeElement !== liuku) liuku.value = String(o.vcSaato || 0);
+    document.getElementById('nvSaatoVc').textContent = fmt(o.vc, 0);
+    document.getElementById('nvSaatoPros').textContent = o.vcSaato ? (o.vcSaato > 0 ? '+' : '−') + Math.abs(o.vcSaato) + ' %' : 'suositus';
+    const kt = o.kesto, ktTxt = !isFinite(kt) ? '–' : kt < 1 ? '< 1 min' : kt > 120 ? 'yli 2 h' : '~' + (kt < 10 ? String(Math.round(kt * 10) / 10).replace('.', ',') : Math.round(kt)) + ' min';
+    document.getElementById('nvSaatoKesto').textContent = ktTxt;
+    const muutos = isFinite(kt) ? Math.round((kt / 15 - 1) * 100) : 0;
+    const mEl = document.getElementById('nvSaatoMuutos');
+    mEl.textContent = Math.abs(muutos) >= 1 ? (muutos > 0 ? '+' : '−') + Math.abs(muutos) + ' %' : '';
+    mEl.className = muutos > 0 ? 'pidempi' : muutos < 0 ? 'lyhyempi' : '';
+    document.getElementById('nvSaatoNollaa').hidden = !o.vcSaato;
   }
 }
 
