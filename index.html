@@ -10365,20 +10365,27 @@ function kuSyotteet() {
   /* ---- työvarat: piirustuksen mitat → kutsun arvot (Työvarat ja kiilaura – O8990, 25.11.2026) ---- */
   const korj = [];
   const r3 = x => Math.round(x * 1000) / 1000, m = x => kuMm(x, 3);
-  const X = kuLuku(v.X), Xv = kuLuku(KU.v.Xv), Rv = kuLuku(KU.v.Rv);
+  const Xm = kuLuku(KU.v.X), tvD = kuLuku(KU.v.tv) > 0 ? kuLuku(KU.v.tv) : 0, Rv = kuLuku(KU.v.Rv);
+  let Xv = kuLuku(KU.v.Xv);
+  const X = Xm > 0 ? Xm : (Xv > 0 ? Math.round((Xv - tvD) * 10000) / 10000 : NaN);
+  if (!(Xv > 0)) Xv = X;
+  v.X = isFinite(X) ? String(X) : '';
+  KU.xLaskettu = !(Xm > 0) && X > 0 ? X : NaN;
+  if (Xm > 0 && tvD > 0 && Xv > 0 && Math.abs(Xv - tvD - Xm) > 0.005) korj.push(['huom', 'Käytössä mitattu X' + m(Xm) + ' (työvarasta laskettuna olisi ' + m(Xv - tvD) + ').']);
   if (Xv > 0 && X > 0) {
     if (Xv < X) korj.push(['huom', 'Valmis Ø on pienempi kuin nykyinen reikä – tarkista.']);
     else if (Xv > X) {
       const tv = (Xv - X) / 2;
       const Ud = kuLuku(v.U);
-      if (isFinite(Ud)) { v.U = String(r3(Ud - tv)); korj.push(['U', 'U ' + m(Ud) + ' − (' + m(Xv) + ' − ' + m(X) + ') / 2 = <b>' + m(Ud - tv) + '</b>']); }
+      korj.unshift(['X', 'X ' + (Xm > 0 ? 'mitattu' : m(Xv) + ' − ' + m(tvD) + ' =') + ' <b>X' + m(X) + '</b>']);
+      if (isFinite(Ud)) { v.U = String(r3(Ud - tv)); korj.push(['U', 'U ' + m(Ud) + ' − ' + m(tv) + ' (säteen työvara) = <b>U' + m(Ud - tv) + '</b>']); }
       const Cv = kuLuku(v.C);
       if (KU.tyyppi !== 'vino' && Cv > 0) {
         const Aa = kuLuku(v.A) > 0 ? kuLuku(v.A) : kuLuku(v.T);
         if (Aa > 0 && Aa / 2 < X / 2) {
           const a = Aa / 2, lisa = Math.sqrt(Xv * Xv / 4 - a * a) - Math.sqrt(X * X / 4 - a * a);
           v.C = String(r3(Cv + lisa));
-          korj.push(['C', 'C ' + m(Cv) + ' valmiina + ' + m(lisa) + ' = <b>' + m(Cv + lisa) + '</b> (nurkka siirtyy viimeistelyssä)']);
+          korj.push(['C', 'C ' + m(Cv) + ' + ' + m(lisa) + ' = <b>' + m(Cv + lisa) + '</b> (jää ' + m(Cv) + ' valmiina)']);
         } else korj.push(['huom', 'Viisteen korjaukseen tarvitaan uran leveys A tai terän leveys T.']);
       }
       if (KU.tyyppi === 'vino' && KU.vinoTapa === 'W' && isFinite(kuLuku(v.W)) && isFinite(Ud)) {
@@ -10407,10 +10414,10 @@ function kuSyotteet() {
   return v;
 }
 const KU_ESIMERKIT = [
-  ['Suora ura viisteellä', 'suora', { X: '50', U: '53.3', Z: '-20', Q: '0.1', F: '6000', A: '10', C: '0.2', T: '8', Dr: '20', Lr: '28' }],
-  ['Kaaripoistuminen J', 'suora', { X: '32.02', U: '35.3', Z: '-25', Q: '0.05', F: '6000', J: '-31', T: '8' }],
-  ['Vinoura E10', 'vino', { X: '32.02', U: '35.3', Q: '0.05', F: '6000', E: '10', T: '8' }],
-  ['Kartio 1:10', 'kartio', { X: '32.02', U: '35.3', Z: '-40', Q: '0.05', F: '6000', D: '2.862', C: '0.5', T: '8' }]
+  ['Suora ura viisteellä', 'suora', { Xv: '50', U: '53.3', Z: '-20', Q: '0.1', F: '6000', A: '10', C: '0.2', T: '8', Dr: '20', Lr: '28' }],
+  ['Kaaripoistuminen J', 'suora', { Xv: '32.02', U: '35.3', Z: '-25', Q: '0.05', F: '6000', J: '-31', T: '8' }],
+  ['Vinoura E10', 'vino', { Xv: '32.02', U: '35.3', Q: '0.05', F: '6000', E: '10', T: '8' }],
+  ['Kartio 1:10', 'kartio', { Xv: '32.02', U: '35.3', Z: '-40', Q: '0.05', F: '6000', D: '2.862', C: '0.5', T: '8' }]
 ];
 
 /* ---------- apufunktiot ---------- */
@@ -10443,7 +10450,7 @@ function renderKiilaura() {
   h += '<div class="section-card" id="kuKentat">';
   h += '<div class="tyg"><div class="tyg-otsikko"><span>Ura</span><span class="tyg-vihje">napauta kenttää → kuva</span></div>' +
     kuSeg('tyyppi', KU.tyyppi, [['suora', 'Suora'], ['vino', 'Vinoura'], ['kartio', 'Kartio']]) +
-    kuRivi('X', 'X', 'Reiän Ø (mitattu)', 'mm', '') +
+    kuRivi('Xv', 'Ø', KU.tyyppi === 'kartio' ? 'Reiän Ø alkupäässä (piir.)' : 'Reiän Ø (piirustus)', 'mm', '') +
     kuRivi('U', 'U', 'Vastaseinästä pohjaan (piir.)', 'mm', '');
   if (KU.tyyppi === 'vino') {
     h += kuSeg('vinoTapa', KU.vinoTapa, [['E', 'Kulma E'], ['W', 'Pintakohta W']]) +
@@ -10458,12 +10465,12 @@ function renderKiilaura() {
   }
   h += kuRivi('A', 'A', 'Uran leveys', 'mm', '= T') +
     (KU.tyyppi === 'vino' ? '' : kuRivi('C', 'C', 'Viiste (valmiina)', 'mm', '0')) + '</div>';
-  const tvAuki = ['Xv', 'Rv'].some(k => String(KU.v[k] || '').trim());
-  h += '<details class="tyg ku-lisa" id="kuTyovarat"' + (tvAuki ? ' open' : '') + '><summary class="tyg-otsikko"><span>Työvarat</span><span class="tyg-vihje">ura ennen viimeistelyä</span></summary>' +
-    kuRivi('Xv', 'Ø', 'Valmis reiän Ø (piir.)', 'mm', 'ei työvaraa') +
+  h += '<div class="tyg"><div class="tyg-otsikko"><span>Työvarat</span><span class="tyg-vihje">0 = valmis mitta</span></div>' +
+    kuRivi('tv', 'Δ', 'Reiän työvara (Ø)', 'mm', '0') +
+    kuRivi('X', 'X', 'Reiän Ø nyt (mitattu)', 'mm', '= Ø − työvara') +
     kuRivi('Rv', 'Δ', 'Otsan työvara', 'mm', '0') +
     '<div class="nv-alaotsikko">Z0 on</div>' + kuSeg('z0', KU.z0 || 'valmis', [['valmis', 'Valmiissa otsassa'], ['nyky', 'Nykyisessä otsassa']]) +
-    '<div id="kuKorjaus"></div></details>';
+    '<div id="kuKorjaus"></div></div>';
   h += '<div class="tyg"><div class="tyg-otsikko"><span>Lastu ja terä</span></div>' +
     kuRivi('Q', 'Q', 'Lastu säteellä', 'mm', '') +
     kuRivi('F', 'F', 'Syöttö', 'mm/min', '') +
@@ -10500,14 +10507,16 @@ function kuPaivita() {
   const kutsu = kuKutsu(v, KU.tKutsu === 'kylla');
   let tila;
   if (o.ok) tila = '<div class="ku-tila ok">✓ Makro ei hälytä' + (o.runkoPuuttuu ? ' <small>(runkoa ei tarkistettu)</small>' : ' · runko mahtuu') + '</div>';
-  else if (o.halytys === 1 || o.halytys === 2) tila = '<div class="ku-tila odottaa">Täytä X, U, ' + (KU.tyyppi === 'vino' ? '' : 'Z, ') + 'Q, F ja T</div>';
+  else if (o.halytys === 1 || o.halytys === 2) tila = '<div class="ku-tila odottaa">Täytä reiän Ø, U, ' + (KU.tyyppi === 'vino' ? '' : 'Z, ') + 'Q, F ja T</div>';
   else {
     const hh = KU_HALYTYKSET[o.halytys] || ['?', '', ''];
     tila = '<div class="ku-tila virhe"><b>' + (3000 + o.halytys) + ' ' + esc(hh[0]) + '</b><span>' + esc(hh[2]) + '</span></div>';
   }
   const kEl = document.getElementById('kuKorjaus');
   if (kEl) kEl.innerHTML = (KU.korjaus && KU.korjaus.length) ? '<div class="ku-korjaus">' + KU.korjaus.map(x => '<div' + (x[0] === 'huom' ? ' class="huom"' : '') + '>' + x[1] + '</div>').join('') + '</div>'
-    : '<p class="ku-pieni">Anna valmis Ø, niin U ja viiste lasketaan nykyiselle reiälle. X on aina reiän mitattu Ø nyt.</p>';
+    : '<p class="ku-pieni">Ilman työvaraa kutsu tehdään piirustuksen mitoilla. Mitattu X kannattaa antaa, jos reikä poikkeaa: se menee aina laskennan edelle.</p>';
+  const xInp = document.querySelector('#viewKiilaura input[data-ku="X"]');
+  if (xInp) xInp.placeholder = isFinite(KU.xLaskettu) ? '= ' + kuMm(KU.xLaskettu, 3).replace(',', '.') : '= Ø − työvara';
   yla.innerHTML = '<div class="ku-kutsu-rivi"><code class="ku-kutsu copyable" id="kuKutsu">' + esc(kutsu) + '</code><button type="button" class="nv-linkki" id="kuKopioi">Kopioi</button></div>' + tila;
   const tEl = document.getElementById('kuTulos');
   if (!tEl) return;
@@ -10609,8 +10618,9 @@ const KU_OHJE_HTML = '<p class="ku-ohje-intro">O8990 v2.5 · NTX3000 kara 1 C-ak
 /* ---------- kenttäkohtainen havainnekuva ---------- */
 /* ---------- kenttäkohtainen havainnekuva ---------- */
 const KU_KUVA_TEKSTI = {
-  X: ['poikki', 'X – reiän halkaisija nyt, mitattuna (ei loppumitta).'],
-  Xv: ['poikki', 'Valmis Ø – reiän loppumitta piirustuksesta. U:sta vähennetään puolet työvarasta: halkaisijassa 1 mm = säteessä 0,5 mm.', 'X'],
+  X: ['poikki', 'X – reiän Ø nyt. Tyhjä = piirustus − työvara. Mitattu arvo on tarkin, ja se menee laskennan edelle.'],
+  Xv: ['poikki', 'Reiän Ø piirustuksesta (valmis mitta). Kutsun X = tämä − työvara, ellei mitattua X:ää anneta.', 'X'],
+  tv: ['poikki', 'Reiän työvara halkaisijassa. Esim. Ø50 ja työvara 1 → X49, ja U:sta vähennetään 0,5 (säteen työvara).', 'X'],
   Rv: ['sivu', 'Otsan työvara. Jos Z0 on nykyisessä otsassa, R ja Z-arvot siirtyvät työvaran verran syvemmälle.', 'R'],
   U: ['poikki', 'U – reiän vastaseinästä uran pohjaan (piirustuksessa d + t2).'],
   A: ['poikki', 'A – uran leveys. Tyhjä = terän leveys T. Leveämpi ura tehdään Y-levityksellä.'],
