@@ -2327,7 +2327,7 @@
 
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · LEUKALASKURI · v3.61</footer>
+    <footer><span class="machine-name">NTX3000</span> · LEUKALASKURI · v3.62</footer>
   </div>
 
   <!-- ===================== ASETUKSET: LEUKAKORJAIN ===================== -->
@@ -2464,7 +2464,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · SP2 &amp; G55 · v3.61</footer>
+    <footer><span class="machine-name">NTX3000</span> · SP2 &amp; G55 · v3.62</footer>
   </div>
 
   <!-- ===================== ASETUKSET: SP2 ===================== -->
@@ -2587,7 +2587,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · TYÖKALULISTA · v3.61</footer>
+    <footer><span class="machine-name">NTX3000</span> · TYÖKALULISTA · v3.62</footer>
   </div>
 
   <!-- ===================== ASETUKSET ===================== -->
@@ -2624,7 +2624,7 @@
       </div>
       <div id="kuSisalto"></div>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · KIILAURA · v3.61</footer>
+    <footer><span class="machine-name">NTX3000</span> · KIILAURA · v3.62</footer>
   </div>
 
   <div class="view" id="viewTyosto">
@@ -2750,7 +2750,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · TYÖSTÖ · v3.61</footer>
+    <footer><span class="machine-name">NTX3000</span> · TYÖSTÖ · v3.62</footer>
   </div>
 
   <!-- ===================== KAPPALEET: TYÖKORTIT PIIRUSTUSNUMEROITTAIN ===================== -->
@@ -2789,7 +2789,7 @@
       <div id="kpLista"></div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · KAPPALEET · v3.61</footer>
+    <footer><span class="machine-name">NTX3000</span> · KAPPALEET · v3.62</footer>
   </div>
 
   <div class="view" id="viewKappale">
@@ -2807,7 +2807,7 @@
       </div>
     </header>
     <main id="kpKortti"></main>
-    <footer><span class="machine-name">NTX3000</span> · KAPPALEKORTTI · v3.61</footer>
+    <footer><span class="machine-name">NTX3000</span> · KAPPALEKORTTI · v3.62</footer>
   </div>
 
   <div class="view" id="viewData">
@@ -2947,7 +2947,7 @@
       </section>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · ASETUKSET · v3.61</footer>
+    <footer><span class="machine-name">NTX3000</span> · ASETUKSET · v3.62</footer>
   </div>
 
   <!-- ===================== KONEET ===================== -->
@@ -2981,7 +2981,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · KONEET · v3.61</footer>
+    <footer><span class="machine-name">NTX3000</span> · KONEET · v3.62</footer>
   </div>
 
   <!-- ===================== TYÖKALUTYYPPIEN HALLINTA ===================== -->
@@ -3013,7 +3013,7 @@
       </section>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · TYÖKALUTYYPIT · v3.61</footer>
+    <footer><span class="machine-name">NTX3000</span> · TYÖKALUTYYPIT · v3.62</footer>
   </div>
 
   <!-- ===================== TUONTI: ESIKATSELU ===================== -->
@@ -3081,7 +3081,7 @@
         </div>
       </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TUONTI · v3.61</footer>
+    <footer><span class="machine-name">NTX3000</span> · TUONTI · v3.62</footer>
   </div>
 
   <!-- ===================== TYÖSTÖTIETOPANKKI JA OMAT SÄÄDÖT ===================== -->
@@ -3120,7 +3120,7 @@
         <div class="tp-rivit" id="tpRivit"></div>
       </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TIETOPANKKI · v3.61</footer>
+    <footer><span class="machine-name">NTX3000</span> · TIETOPANKKI · v3.62</footer>
   </div>
 
 <!-- ===================== TARKISTUS ===================== -->
@@ -3140,7 +3140,7 @@
         <div class="edit-list" id="qualityList"></div>
       </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TARKISTUS · v3.61</footer>
+    <footer><span class="machine-name">NTX3000</span> · TARKISTUS · v3.62</footer>
   </div>
 
 </div>
@@ -10265,6 +10265,15 @@ const TI_AIHEET = [
     tiL(['Lastuamissyvyys vähintään noin ⅔ × kärjen säde, muuten lastu ei murru.',
       'Rouhinnan syöttö enintään noin ½ × kärjen säde.',
       'Ruostumaton ja superduplex: sitkeä lastu, käytä niille tehtyä murtajaa ja korkeapainejäähdytystä.']) + tiLahde('general-turning/troubleshooting-turning')],
+  ['Sorvaus', 'Jäähdytys: ylä vai ala', tiL([
+    '<b>Yläjäähdytys</b> (palan rintaan): lastunhallinta. <b>Alajäähdytys</b> (kylkeen): kesto.',
+    '7–10 bar: tarkka suihku parantaa jo lastunhallintaa.',
+    '70–80 bar: suihku katkaisee lastun.',
+    '150–200 bar: duplex, superduplex ja kuumalujat.',
+    'Ohut PVD-pinnoite (S-ryhmä): molemmat päällä, ettei pala muovaudu.',
+    'Paksu CVD (P ja K) rouhinnassa: pelkkä alajäähdytys antaa usein pisimmän keston.',
+    'M-ryhmän CVD: molemmat. Jos tulee kraatteria, kokeile pelkkää alajäähdytystä.',
+    'Tavallinen säädettävä suutin ei ole tehty suurelle paineelle. Emulsio sorvauksessa 5–10 %.']) + tiLahde('general-turning/how-to-apply-coolant-and-cutting-fluid-in-turning')],
   ['Sorvaus', 'Kulumismuodot ja korjaus', tiT(['Kuluma', 'Syy → korjaus'], [
     ['Viistekuluma', 'Toivottu kulumismuoto. Jos nopea: pienennä vc, kulutuskestävämpi laatu.'],
     ['Kraatteri', 'Kuumuus: pienennä vc tai f, kulutuskestävämpi laatu, avoimempi geometria.'],
@@ -10333,6 +10342,14 @@ const TI_AIHEET = [
     'Sisänurkassa ae kasvaa hetkellisesti: nurkkasäde ≥ 1,2 × työkalun säde tai syötön lasku.',
     'Taskuun: ramppi tai spiraali. Pystysuora sukellus vain keskeltä leikkaavalla jyrsimellä.',
     'Trokoidi: ae 5–15 % D, täysi ap, suuri syöttö. Hyvä ruostumattomassa ja kapeissa urissa.'])],
+  ['Jyrsintä', 'Ramppaus ja spiraali', tiL([
+    '<b>Spiraali on parempi kuin suora ramppi</b>: pienempi ae, puhdas myötäjyrsintä, parempi lastunpoisto. Vastapäivään (G03) = myötä.',
+    'Suora ramppi: syöttö 75 % normaalista. Jatka rampin jälkeen alennetulla syötöllä jyrsimen halkaisijan verran.',
+    'Suora ramppi vain kapeisiin, alle 30 mm leveisiin uriin, jos spiraalille ei ole tilaa.',
+    'Jyrsin, joka ei leikkaa keskeltä: reikä enintään 2 × D yhdellä spiraalilla. Keskelle jää tappi, jonka saa pois syöttämällä keskelle.',
+    'Liian pieni jyrsin jättää ytimen, liian iso tapin, joka osuu runkoon.',
+    'Nousu kierrosta kohden enintään jyrsimen suurin ap.',
+    'Sisäpuolella ohjelmoitu keskiön syöttö on pienempi kuin kehän syöttö, ulkopuolella suurempi.']) + tiLahde('milling/milling-holes-cavities-pockets/ramping')],
   ['Jyrsintä', 'Tasojyrsintä', tiL([
     'Jyrsimen halkaisija <b>20–50 % suurempi</b> kuin työstettävä leveys.',
     'Jyrsin sivuun keskiöstä, niin lastu on ohuin ulostulossa. Myötäjyrsintä.',
@@ -10363,6 +10380,26 @@ const TI_AIHEET = [
     'Aloituslastu on aina pitkä, se ei haittaa.',
     'Ruostumaton ja duplex: terävä särmä. Jos lastu ei murru, nosta syöttöä.',
     'Niukkahiilinen teräs: jos lastu ei murru, nosta vc ja pienennä syöttöä.']) + tiLahde('drilling/drilling-tips')],
+  ['Poraus', 'Teräpalapora sorvissa', tiL([
+    'Reiän pohjaan jää pieni tappi: sen pitää olla <b>0,05–0,15 mm</b>. Isompi tai pienempi aiheuttaa lohkeilua, värinää ja ylimittaa.',
+    'Pora akselin suuntaiseksi: tarkista kelloanturilla ja koetangolla.',
+    'Linjauksen tarkistus: poraa reikä poran jokaisessa neljässä asennossa (0°, 90°, 180°, 270°) ja mittaa reiät.',
+    'Revolverin taipuma: poraa reikä pienellä ja suurella syötöllä. Jos koot eroavat paljon, revolveri taipuu.',
+    'Taipuu: kiinnitä pora mahdollisimman lähelle revolverin keskustaa. Pienennä syöttöä ja nosta vc, jolloin syöttövoima pienenee mutta tahti säilyy.',
+    'X-siirrolla saa reiän nimellismittaa suuremmaksi, ei pienemmäksi (runko hankaa). Esisäädöllä päästään ±0,05 mm.',
+    'Seisovalla poralla voi tehdä myös viisteen ja kartion.',
+    'Avarrus poralla: lastuamissyvyys enintään 75 % palan leveydestä.']) +
+    tiLahde('drilling/non-rotating-drilling') + tiLahde('drilling/radial-adjusted-drilling')],
+  ['Poraus', 'Teräpalaporan vianetsintä', tiT(['Ongelma', 'Korjaus'], [
+    ['Ylimittainen reikä', 'Lisää jäähdytystä ja puhdista suodatin ja reiät. Sorvissa tarkista linjaus tai käännä pora 180°. Sitkeämpi kehäpala.'],
+    ['Alimittainen reikä', 'Jäähdytys, linjaus. Sitkeämpi keskipala ja kevyesti leikkaava kehäpala.'],
+    ['Tappi reiän pohjassa', 'Jäähdytys, linjaus, lyhyempi ulkonema, eri kehägeometria.'],
+    ['Reikä levenee pohjassa', 'Lastujumi keskipalalla: lisää jäähdytystä, lyhyempi pora.'],
+    ['Värinä', 'Lyhyempi ulkonema, jäykempi kiinnitys, pienennä vc.'],
+    ['Huono pinta', 'Pienennä syöttöä. Jos Vf pitää säilyä, nosta samalla vc.'],
+    ['Lastujumi uriin', 'Pienennä syöttöä ja nosta vc suositusten sisällä, lisää jäähdytystä.'],
+    ['Ruuvit katkeavat', 'Momenttiavain ja Molykote-rasva ruuviin.'],
+    ['Aloituslastussa neulamaisia piikkejä', 'Heitto, vino sisääntulo tai liian suuri syöttö: kulumisriski.']]) + tiLahde('drilling/drilling-wear-and-troubleshooting')],
   ['Poraus', 'Kalvaus', tiT(['Ø mm', 'Teräs P', 'Ruostumaton M', 'Alumiini N'], [
     ['1–5', '0,1–0,2', '0,1–0,2', '0,1–0,2'],
     ['5–10', '0,2', '0,2', '0,2–0,3'],
@@ -10412,7 +10449,10 @@ const TI_AIHEET = [
     'Vc noin 20–30 % alempi kuin 316L:lle samalla terällä.',
     'Tyypillinen kuluma on lovi ap:n kohdalla: vaihtele ap ja käytä pyöreää palaa tai pientä asetuskulmaa.',
     'Korkeapainejäähdytys murtaa lastun ja pidentää kestoa.',
-    'PREN = %Cr + 3,3 × %Mo + 16 × %N. Superduplex (1.4410) yli 40.'])],
+    'Vaihda pala ajoissa: kulunut särmä lujittaa pintaa entistä enemmän.',
+    'Jäykkä kiinnitys ja lyhyt ulkonema. Sisätöissä jäähdytys työkalun läpi.',
+    'Sisäsorvauksen värinään pieni kärjen säde, mutta se lisää plastisen muodonmuutoksen riskiä.',
+    'PREN = %Cr + 3,3 × %Mo + 16 × %N. Superduplex (1.4410) yli 40.']) + tiLahdeX('Alleima', 'https://www.alleima.com/en/products/tube-pipe/tubular-products/mechanical-tubing/machining-stainless-steels/')],
   ['Materiaalit', 'Titaani', tiL([
     'Alhainen vc, kovametallilla noin 40–70 m/min.',
     'Lämpö jää terään, joten jäähdytys on tärkeää.',
