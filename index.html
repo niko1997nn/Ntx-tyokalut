@@ -1893,6 +1893,10 @@
   .kk-ruuvi { fill: none; stroke: var(--text-dim); stroke-width: 1; }
   .kk-mitta-ohut { stroke: var(--orange); stroke-width: 1.2; }
   .kk-teksti, .kk-pieni { paint-order: stroke; stroke: var(--bg); stroke-width: 3px; stroke-linejoin: round; }
+  .ku-korjaus { margin: 8px 0 4px; display: grid; gap: 4px; font-family: var(--mono); font-size: 12.5px; line-height: 1.45;
+    background: color-mix(in srgb, var(--accent) 8%, transparent); border-radius: 10px; padding: 8px 10px; }
+  .ku-korjaus b { color: var(--accent); }
+  .ku-korjaus .huom { color: var(--orange); font-family: inherit; }
   .ku-hal-lista { display: grid; gap: 8px; margin-bottom: 14px; }
   .ku-hal { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 12px; padding: 10px 14px; }
   .ku-hal-otsikko { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; }
@@ -10358,7 +10362,48 @@ function kuSyotteet() {
   if (KU.tyyppi !== 'vino') { v.E = ''; v.W = ''; }
   if (KU.tyyppi !== 'kartio') v.D = '';
   if (KU.tyyppi === 'vino') { if (KU.vinoTapa === 'E') v.W = ''; else v.E = ''; v.J = ''; }
-  if (KU.tKutsu !== 'kylla') { /* T luetaan UA1:stä: laskentaan työkalun tiedoista, kutsuun ei */ }
+  /* ---- työvarat: piirustuksen mitat → kutsun arvot (Työvarat ja kiilaura – O8990, 25.11.2026) ---- */
+  const korj = [];
+  const r3 = x => Math.round(x * 1000) / 1000, m = x => kuMm(x, 3);
+  const X = kuLuku(v.X), Xv = kuLuku(KU.v.Xv), Rv = kuLuku(KU.v.Rv);
+  if (Xv > 0 && X > 0) {
+    if (Xv < X) korj.push(['huom', 'Valmis Ø on pienempi kuin nykyinen reikä – tarkista.']);
+    else if (Xv > X) {
+      const tv = (Xv - X) / 2;
+      const Ud = kuLuku(v.U);
+      if (isFinite(Ud)) { v.U = String(r3(Ud - tv)); korj.push(['U', 'U ' + m(Ud) + ' − (' + m(Xv) + ' − ' + m(X) + ') / 2 = <b>' + m(Ud - tv) + '</b>']); }
+      const Cv = kuLuku(v.C);
+      if (KU.tyyppi !== 'vino' && Cv > 0) {
+        const Aa = kuLuku(v.A) > 0 ? kuLuku(v.A) : kuLuku(v.T);
+        if (Aa > 0 && Aa / 2 < X / 2) {
+          const a = Aa / 2, lisa = Math.sqrt(Xv * Xv / 4 - a * a) - Math.sqrt(X * X / 4 - a * a);
+          v.C = String(r3(Cv + lisa));
+          korj.push(['C', 'C ' + m(Cv) + ' valmiina + ' + m(lisa) + ' = <b>' + m(Cv + lisa) + '</b> (nurkka siirtyy viimeistelyssä)']);
+        } else korj.push(['huom', 'Viisteen korjaukseen tarvitaan uran leveys A tai terän leveys T.']);
+      }
+      if (KU.tyyppi === 'vino' && KU.vinoTapa === 'W' && isFinite(kuLuku(v.W)) && isFinite(Ud)) {
+        const Rd = isFinite(kuLuku(KU.v.R)) ? kuLuku(KU.v.R) : 0;
+        const kk = (Ud - Xv) / (Rd - kuLuku(v.W));
+        if (kk > 0) {
+          const E = Math.atan(kk) / KU_RAD;
+          v.E = String(Math.round(E * 1000) / 1000); v.W = '';
+          korj.push(['E', 'W muuttuu reiän koon mukana → kutsuun kulma <b>E' + kuMm(E, 3) + '</b> (valmiin reiän mitoista)']);
+        }
+      }
+    }
+  }
+  if (Rv > 0) {
+    if (KU.z0 === 'nyky') {
+      const Rd = isFinite(kuLuku(v.R)) ? kuLuku(v.R) : 0;
+      v.R = String(r3(Rd - Rv));
+      korj.push(['R', 'Z0 nykyisessä otsassa → R' + m(Rd) + ' − ' + m(Rv) + ' = <b>R' + m(Rd - Rv) + '</b>']);
+      ['Z', 'J', 'W'].forEach(kir => {
+        const x = kuLuku(v[kir]);
+        if (isFinite(x)) { v[kir] = String(r3(x - Rv)); korj.push([kir, kir + ' ' + m(x) + ' − ' + m(Rv) + ' = <b>' + kir + m(x - Rv) + '</b>']); }
+      });
+    } else korj.push(['R', 'Z0 valmiissa otsassa → R0 ja Z-arvot piirustuksesta sellaisenaan. Lähtötaso R + K on nykyisen otsan yläpuolella.']);
+  }
+  KU.korjaus = korj;
   return v;
 }
 const KU_ESIMERKIT = [
@@ -10399,7 +10444,7 @@ function renderKiilaura() {
   h += '<div class="tyg"><div class="tyg-otsikko"><span>Ura</span><span class="tyg-vihje">napauta kenttää → kuva</span></div>' +
     kuSeg('tyyppi', KU.tyyppi, [['suora', 'Suora'], ['vino', 'Vinoura'], ['kartio', 'Kartio']]) +
     kuRivi('X', 'X', 'Reiän Ø (mitattu)', 'mm', '') +
-    kuRivi('U', 'U', 'Vastaseinästä pohjaan', 'mm', '');
+    kuRivi('U', 'U', 'Vastaseinästä pohjaan (piir.)', 'mm', '');
   if (KU.tyyppi === 'vino') {
     h += kuSeg('vinoTapa', KU.vinoTapa, [['E', 'Kulma E'], ['W', 'Pintakohta W']]) +
       (KU.vinoTapa === 'E' ? kuRivi('E', 'E', 'Pohjan kulma', '°', '3…60') : kuRivi('W', 'W', 'Pohja pinnassa Z', 'mm', '')) +
@@ -10412,7 +10457,13 @@ function renderKiilaura() {
     h += kuRivi('Z', 'Z', 'Uran loppu', 'mm', '');
   }
   h += kuRivi('A', 'A', 'Uran leveys', 'mm', '= T') +
-    (KU.tyyppi === 'vino' ? '' : kuRivi('C', 'C', 'Viiste', 'mm', '0')) + '</div>';
+    (KU.tyyppi === 'vino' ? '' : kuRivi('C', 'C', 'Viiste (valmiina)', 'mm', '0')) + '</div>';
+  const tvAuki = ['Xv', 'Rv'].some(k => String(KU.v[k] || '').trim());
+  h += '<details class="tyg ku-lisa" id="kuTyovarat"' + (tvAuki ? ' open' : '') + '><summary class="tyg-otsikko"><span>Työvarat</span><span class="tyg-vihje">ura ennen viimeistelyä</span></summary>' +
+    kuRivi('Xv', 'Ø', 'Valmis reiän Ø (piir.)', 'mm', 'ei työvaraa') +
+    kuRivi('Rv', 'Δ', 'Otsan työvara', 'mm', '0') +
+    '<div class="nv-alaotsikko">Z0 on</div>' + kuSeg('z0', KU.z0 || 'valmis', [['valmis', 'Valmiissa otsassa'], ['nyky', 'Nykyisessä otsassa']]) +
+    '<div id="kuKorjaus"></div></details>';
   h += '<div class="tyg"><div class="tyg-otsikko"><span>Lastu ja terä</span></div>' +
     kuRivi('Q', 'Q', 'Lastu säteellä', 'mm', '') +
     kuRivi('F', 'F', 'Syöttö', 'mm/min', '') +
@@ -10454,6 +10505,9 @@ function kuPaivita() {
     const hh = KU_HALYTYKSET[o.halytys] || ['?', '', ''];
     tila = '<div class="ku-tila virhe"><b>' + (3000 + o.halytys) + ' ' + esc(hh[0]) + '</b><span>' + esc(hh[2]) + '</span></div>';
   }
+  const kEl = document.getElementById('kuKorjaus');
+  if (kEl) kEl.innerHTML = (KU.korjaus && KU.korjaus.length) ? '<div class="ku-korjaus">' + KU.korjaus.map(x => '<div' + (x[0] === 'huom' ? ' class="huom"' : '') + '>' + x[1] + '</div>').join('') + '</div>'
+    : '<p class="ku-pieni">Anna valmis Ø, niin U ja viiste lasketaan nykyiselle reiälle. X on aina reiän mitattu Ø nyt.</p>';
   yla.innerHTML = '<div class="ku-kutsu-rivi"><code class="ku-kutsu copyable" id="kuKutsu">' + esc(kutsu) + '</code><button type="button" class="nv-linkki" id="kuKopioi">Kopioi</button></div>' + tila;
   const tEl = document.getElementById('kuTulos');
   if (!tEl) return;
@@ -10536,6 +10590,14 @@ const KU_OHJE_HTML = '<p class="ku-ohje-intro">O8990 v2.5 · NTX3000 kara 1 C-ak
   '<li>Lastujako: matka rb − b1 jaetaan tasan niin, että lasku on enintään Q. Lisäksi V viimeistelyvetoa lopullisella syvyydellä.</li>' +
   '<li>Urat tehdään valmiiksi viisteineen yksi kerrallaan; kara lukitaan jarrulla (M68) jokaisen uran ajaksi.</li>' +
   '<li>Lopetus: Z lähtötasolle · M09 · M69 · C ensimmäiseen kulmaan · M46 · syöttötapa takaisin · M99.</li></ul></details>' +
+  '<details class="ty-ryhma"><summary><b>Työvarat</b><span class="ty-pieni">ura ennen viimeistelyä</span></summary><ul class="ku-lista-ohje">' +
+  '<li><b>X = reiän Ø nyt, mitattuna</b> – ei loppumittaa. Jos reikä on 69 ja kutsussa X70, makro aloittaa 35 mm:n säteeltä: 0,5 mm kerros jää urasta pois ja lähestyminen voi osua materiaaliin.</li>' +
+  '<li><b>U = U(piirustus) − (valmis Ø − X) / 2.</b> Halkaisijassa 1 mm on säteessä 0,5 mm. Esim. reikä 70 → nyt 69, U73.7 → <b>X69. U73.2</b>.</li>' +
+  '<li><b>Viiste:</b> nurkka nousee viimeistelyssä, joten C kasvatetaan etukäteen. Nyrkkisääntö C ≈ viiste + säteen työvara + 0,03; Työvarat-kohta laskee tarkan arvon (A10: C0.705 jättää 0,2). C0.75–0.8 jättää varaa karkaisun liikkeelle. Vinourassa ei viistettä.</li>' +
+  '<li><b>Otsa R:</b> R on valmiin otsan paikka. Z0 valmiissa otsassa → R0. Z0 nykyisessä otsassa (valmis Z-0.5) → R-0.5. Suorassa urassa R vaikuttaa vain vetojen alkuun, vinourassa pohjaan: 0,5 mm virhe = 0,5 · tan E (E10: 0,09 mm, E30: 0,29 mm).</li>' +
+  '<li><b>Vinoura:</b> käytä työvaran kanssa E:tä – W muuttuu reiän koon mukana. Työvarat-kohta muuntaa W:n E:ksi valmiin reiän mitoista.</li>' +
+  '<li><b>Kartio:</b> X ja U alkupäästä (otsalta R), sama U-korjaus. D ei muutu.</li>' +
+  '<li><b>Edellytykset:</b> viimeistely samaan keskiöön (0,1 mm sivusiirtymä alkaa näkyä), karkaisu voi tehdä reiästä soikean, ja ensimmäinen kappale tarkistetaan työvarareiästä: pohja vastaseinästä = laskettu U.</li></ul></details>' +
   '<details class="ty-ryhma"><summary><b>Keskeytys ja rajoitukset</b></summary><ul class="ku-lista-ohje">' +
   '<li><b>RESET kesken makron:</b> kara voi jäädä C-tilaan ja jarru kiinni. Aja M69 ja M46 ennen seuraavaa ohjelmaa.</li>' +
   '<li>Pituussuunnan törmäyksiä (istukka, olakkeet, kappaleen pohja, terän ulottuma) ei tarkisteta – Z:n ja J:n tilan pitää riittää.</li>' +
@@ -10547,7 +10609,9 @@ const KU_OHJE_HTML = '<p class="ku-ohje-intro">O8990 v2.5 · NTX3000 kara 1 C-ak
 /* ---------- kenttäkohtainen havainnekuva ---------- */
 /* ---------- kenttäkohtainen havainnekuva ---------- */
 const KU_KUVA_TEKSTI = {
-  X: ['poikki', 'X – reiän mitattu halkaisija.'],
+  X: ['poikki', 'X – reiän halkaisija nyt, mitattuna (ei loppumitta).'],
+  Xv: ['poikki', 'Valmis Ø – reiän loppumitta piirustuksesta. U:sta vähennetään puolet työvarasta: halkaisijassa 1 mm = säteessä 0,5 mm.', 'X'],
+  Rv: ['sivu', 'Otsan työvara. Jos Z0 on nykyisessä otsassa, R ja Z-arvot siirtyvät työvaran verran syvemmälle.', 'R'],
   U: ['poikki', 'U – reiän vastaseinästä uran pohjaan (piirustuksessa d + t2).'],
   A: ['poikki', 'A – uran leveys. Tyhjä = terän leveys T. Leveämpi ura tehdään Y-levityksellä.'],
   C: ['poikki', 'C – viiste uran kyljen ja reiän pinnan nurkkaan, molemmille puolille.'],
@@ -10632,9 +10696,10 @@ function kuNaytaKuva(k) {
   if (!m) { el.hidden = true; return; }
   el.innerHTML = (m[0] === 'poikki' ? KU_KUVA_POIKKI : m[0] === 'tera' ? KU_KUVA_TERA : KU_KUVA_SIVU) +
     '<div class="ku-ohjekuva-teksti"><span>' + esc(m[1]) + '</span><button type="button" class="ku-ohjekuva-sulje" aria-label="Sulje kuva">×</button></div>';
-  el.querySelectorAll('[data-k]').forEach(g => g.classList.toggle('kor', g.getAttribute('data-k').split(' ').indexOf(k) !== -1));
+  const kk = m[2] || k;
+  el.querySelectorAll('[data-k]').forEach(g => g.classList.toggle('kor', g.getAttribute('data-k').split(' ').indexOf(kk) !== -1));
   const svg = el.querySelector('svg');
-  if (svg) svg.classList.toggle('muoto', ['E', 'W', 'D', 'ks'].indexOf(k) !== -1);
+  if (svg) svg.classList.toggle('muoto', ['E', 'W', 'D', 'ks'].indexOf(kk) !== -1);
   const oliAuki = !el.hidden;
   el.hidden = false;
   el.dataset.k = k;
