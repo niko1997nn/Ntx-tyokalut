@@ -1841,6 +1841,8 @@
   .ku-kutsu-rivi .section-label { margin: 0; }
   .ku-kutsu { display: block; flex: 1; font-family: var(--mono); font-size: 15px; font-weight: 600; line-height: 1.45; color: var(--accent);
     word-break: break-word; cursor: pointer; background: transparent; padding: 0; }
+  .ku-akt { color: var(--orange); background: color-mix(in srgb, var(--orange) 14%, transparent); border-radius: 4px; padding: 0 3px; }
+  .ku-akt.tyhja { opacity: .85; outline: 1px dashed var(--orange); outline-offset: -1px; }
   .ku-tila { margin-top: 8px; font-size: 13px; line-height: 1.4; border-radius: 8px; padding: 7px 10px; }
   .ku-tila.ok { color: var(--green); background: color-mix(in srgb, var(--green) 10%, transparent); }
   .ku-tila.virhe { color: var(--red); background: color-mix(in srgb, var(--red) 10%, transparent); display: flex; flex-direction: column; gap: 2px; }
@@ -10345,6 +10347,19 @@ function kuNc(x) {
   if (r === Math.trunc(r)) return String(r) + '.';
   return String(r);
 }
+/* kenttä → kutsun kirjain (aktiivinen kirjain korostetaan ylhäällä) */
+const KU_KENTTA_KIRJAIN = { Xv: 'X', tv: 'X', U: 'U', Z: 'Z', Rv: 'R', A: 'A', C: 'C', Q: 'Q', F: 'F', T: 'T', V: 'V', M: 'M', H: 'H',
+  J: 'J', R: 'R', K: 'K', S: 'S', B: 'B', E: 'E', W: 'W', D: 'D', ks: 'D' };
+function kuKutsuHTML(v, tKutsuun, aktiivi) {
+  const osat = ['G65', 'P8990'];
+  KU_KIRJAIMET.forEach(kir => {
+    const x = kuLuku(v[kir]);
+    const nakyy = !(kir === 'T' && !tKutsuun) && isFinite(x);
+    if (kir === aktiivi) osat.push('<span class="ku-akt' + (nakyy ? '' : ' tyhja') + '">' + kir + (nakyy ? kuNc(x) : '…') + '</span>');
+    else if (nakyy) osat.push(kir + kuNc(x));
+  });
+  return osat.join(' ');
+}
 function kuKutsu(v, tKutsuun) {
   const osat = ['G65', 'P8990'];
   KU_KIRJAIMET.forEach(kir => {
@@ -10363,6 +10378,7 @@ var KU = (function () {
   try { const d = JSON.parse(localStorage.getItem(K_KIILAURA) || 'null'); if (d && typeof d === 'object') return Object.assign(oletus, d, { v: Object.assign({}, d.v || {}) }); } catch (e) {}
   return oletus;
 })();
+KU.aktiivi = '';
 function kuTallenna() { try { localStorage.setItem(K_KIILAURA, JSON.stringify(KU)); } catch (e) {} }
 
 /* uratyypin mukaan vain asiaan kuuluvat kirjaimet laskentaan ja kutsuun */
@@ -10514,6 +10530,8 @@ function kuPaivita() {
   const o = kuLaske(v);
   window.__ku = o;
   const kutsu = kuKutsu(v, KU.tKutsu === 'kylla');
+  window.__kuKutsu = kutsu;
+  const akt = KU_KENTTA_KIRJAIN[KU.aktiivi] || '';
   let tila;
   if (o.ok) tila = '<div class="ku-tila ok">✓ Makro ei hälytä' + (o.runkoPuuttuu ? ' <small>(runkoa ei tarkistettu)</small>' : ' · runko mahtuu') + '</div>';
   else if (o.halytys === 1 || o.halytys === 2) tila = '<div class="ku-tila odottaa">Täytä reiän Ø, U, ' + (KU.tyyppi === 'vino' ? '' : 'Z, ') + 'Q, F ja T</div>';
@@ -10526,7 +10544,7 @@ function kuPaivita() {
     : '<p class="ku-pieni">Ilman työvaraa kutsu tehdään kuvan mitoilla. Esim. reiän työvara 1 = halkaisijassa 1 mm, otsan työvara 0,5 = 0,5 mm Z-suunnassa.</p>';
   const xInp = document.querySelector('#viewKiilaura input[data-ku="X"]');
   if (xInp) xInp.placeholder = isFinite(KU.xLaskettu) ? '= ' + kuMm(KU.xLaskettu, 3).replace(',', '.') : '= Ø − työvara';
-  yla.innerHTML = '<div class="ku-kutsu-rivi"><code class="ku-kutsu copyable" id="kuKutsu">' + esc(kutsu) + '</code><button type="button" class="nv-linkki" id="kuKopioi">Kopioi</button></div>' + tila;
+  yla.innerHTML = '<div class="ku-kutsu-rivi"><code class="ku-kutsu copyable" id="kuKutsu">' + kuKutsuHTML(v, KU.tKutsu === 'kylla', akt) + '</code><button type="button" class="nv-linkki" id="kuKopioi">Kopioi</button></div>' + tila;
   const tEl = document.getElementById('kuTulos');
   if (!tEl) return;
   if (!o.ok) { tEl.innerHTML = ''; return; }
@@ -10788,13 +10806,19 @@ window.addEventListener('scroll', () => { const el = document.getElementById('ku
   if (!nak) return;
   nak.addEventListener('focusin', e => {
     const inp = e.target.closest('input[data-ku]');
-    if (inp) kuNaytaKuva(inp.getAttribute('data-ku'));
+    if (inp) { KU.aktiivi = inp.getAttribute('data-ku'); kuPaivita(); kuNaytaKuva(KU.aktiivi); }
+  });
+  nak.addEventListener('focusout', () => {
+    setTimeout(() => {
+      const a = document.activeElement;
+      if (!(a && a.matches && a.matches('#viewKiilaura input[data-ku]')) && KU.aktiivi) { KU.aktiivi = ''; kuPaivita(); }
+    }, 60);
   });
   nak.addEventListener('click', e => {
     const t = e.target;
     const kInp = t.closest('input[data-ku]');
     const kuva = document.getElementById('kuOhjeKuva');
-    if (kInp) kuNaytaKuva(kInp.getAttribute('data-ku'));
+    if (kInp) { if (KU.aktiivi !== kInp.getAttribute('data-ku')) { KU.aktiivi = kInp.getAttribute('data-ku'); kuPaivita(); } kuNaytaKuva(KU.aktiivi); }
     else if (kuva && t.closest('.ku-ohjekuva-sulje')) { kuva.hidden = true; kuva.dataset.k = ''; }
     const os = t.closest('[data-kuosio]');
     if (os) { KU.osio = os.getAttribute('data-kuosio'); kuTallenna(); renderKiilaura(); window.scrollTo({ top: 0, behavior: 'instant' }); return; }
@@ -10803,7 +10827,7 @@ window.addEventListener('scroll', () => { const el = document.getElementById('ku
     const esim = t.closest('[data-kuesim]');
     if (esim) { const x = KU_ESIMERKIT[Number(esim.getAttribute('data-kuesim'))]; KU.tyyppi = x[1]; KU.vinoTapa = x[2].W ? 'W' : 'E'; KU.v = Object.assign({}, x[2]); KU.osio = 'kutsu'; kuTallenna(); renderKiilaura(); window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
     if (t.closest('#kuTyhjenna')) { KU.v = {}; kuTallenna(); renderKiilaura(); return; }
-    if (t.closest('#kuKopioi') || t.closest('#kuKutsu')) { const el = document.getElementById('kuKutsu'); if (el) copyText(el.textContent); return; }
+    if (t.closest('#kuKopioi') || t.closest('#kuKutsu')) { if (window.__kuKutsu) copyText(window.__kuKutsu); return; }
   });
   const syote = e => {
     const inp = e.target.closest('input[data-ku]');
