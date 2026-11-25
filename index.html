@@ -1919,6 +1919,11 @@
   .ku-ohjekuva-paneeli.kelluva { position: absolute; width: 260px; margin: 0; z-index: 40; box-shadow: 0 10px 30px rgba(0,0,0,.18); }
   .ku-ohjekuva-paneeli.kelluva .ku-ohjekuva { max-height: none; }
   .ku-ohjekuva-paneeli.kelluva .ku-ohjekuva-teksti { font-size: 12.5px; }
+  @media not all and (min-width: 900px) and (pointer: fine) {
+    .ku-ohjekuva-paneeli.kelluva { box-shadow: 0 6px 22px rgba(0,0,0,.28); border-radius: 10px; }
+    .ku-ohjekuva-paneeli.kelluva .ku-ohjekuva-teksti { font-size: 12px; padding: 6px 6px 7px 9px; line-height: 1.35; }
+    .ku-ohjekuva-paneeli.kelluva .ku-ohjekuva-sulje { font-size: 18px; }
+  }
   .ku-ohjekuva { display: block; width: 100%; max-height: 130px; height: auto; background: var(--bg); }
   .ku-ohjekuva-teksti { display: flex; gap: 8px; align-items: flex-start; padding: 8px 10px 9px 12px; font-size: 13px; line-height: 1.4; border-top: 1px solid var(--panel-border); }
   .ku-ohjekuva-teksti span { flex: 1; }
@@ -10717,7 +10722,12 @@ function kuNaytaKuva(k) {
   const oliAuki = !el.hidden;
   el.hidden = false;
   el.dataset.k = k;
-  if (kuKelluvaKuva()) { kuSijoitaKuva(); return; }
+  if (kuKelluvaKuva()) {
+    kuSijoitaKuva();
+    /* numeronäppäimistö aukeaa ja sivu vierittää hetken päästä: sijoitetaan uudelleen */
+    setTimeout(kuSijoitaKuva, 120); setTimeout(kuSijoitaKuva, 350);
+    return;
+  }
   /* kuva kasvattaa yläpalkkia: pidetään aktiivinen kenttä palkin ja numeronäppäimistön välissä */
   if (!oliAuki) requestAnimationFrame(() => {
     const inp = document.activeElement && document.activeElement.matches && document.activeElement.matches('input[data-ku]') ? document.activeElement : document.querySelector('#viewKiilaura input[data-ku="' + k + '"]');
@@ -10732,7 +10742,8 @@ function kuNaytaKuva(k) {
 }
 
 /* tietokoneella kuva kelluu kentän vieressä eikä siirrä sivun sisältöä */
-function kuKelluvaKuva() { return window.matchMedia && window.matchMedia('(min-width: 900px) and (pointer: fine)').matches; }
+function kuTietokone() { return window.matchMedia && window.matchMedia('(min-width: 900px) and (pointer: fine)').matches; }
+function kuKelluvaKuva() { return true; }
 function kuSijoitaKuva() {
   const el = document.getElementById('kuOhjeKuva'), juuri = document.getElementById('kuSisalto');
   if (!el || !juuri || el.hidden) return;
@@ -10742,6 +10753,22 @@ function kuSijoitaKuva() {
   const rivi = inp && (inp.closest('.tyr') || inp);
   if (!rivi) return;
   const jr = juuri.getBoundingClientRect(), r = rivi.getBoundingClientRect();
+  if (!kuTietokone()) {
+    /* puhelin: pieni ikkuna rivin nimen päälle, syöttöruutu jää näkyviin; pysyy yläpalkin ja numeronäppäimistön välissä */
+    const ir = inp.getBoundingClientRect();
+    const lev = Math.max(160, Math.min(250, ir.left - jr.left - 10));
+    el.style.width = lev + 'px';
+    el.style.left = '0px';
+    const yla = document.querySelector('#viewKiilaura .tulos-yla');
+    const np = document.querySelector('.numpad.auki');
+    const minY = (yla ? yla.getBoundingClientRect().bottom : 0) + 4;
+    const maxY = (np ? np.getBoundingClientRect().top : window.innerHeight) - 4;
+    let y = ir.top + ir.height / 2 - el.offsetHeight / 2;
+    y = Math.min(Math.max(y, minY), maxY - el.offsetHeight);
+    el.style.top = (y - jr.top) + 'px';
+    return;
+  }
+  el.style.width = '';
   const lev = 260, vali = 16;
   let vasen;
   if (window.innerWidth - jr.right >= lev + vali * 2) vasen = jr.width + vali;
@@ -10752,7 +10779,8 @@ function kuSijoitaKuva() {
   el.style.left = vasen + 'px';
   el.style.top = ylaReuna + 'px';
 }
-window.addEventListener('resize', () => { if (typeof KU !== 'undefined' && document.getElementById('kuOhjeKuva') && kuKelluvaKuva()) kuSijoitaKuva(); });
+window.addEventListener('resize', () => { if (typeof KU !== 'undefined' && document.getElementById('kuOhjeKuva')) kuSijoitaKuva(); });
+window.addEventListener('scroll', () => { const el = document.getElementById('kuOhjeKuva'); if (el && !el.hidden && !kuTietokone()) kuSijoitaKuva(); }, { passive: true });
 
 /* ---------- tapahtumat ---------- */
 (function kuKuuntelijat() {
