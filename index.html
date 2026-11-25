@@ -6287,6 +6287,8 @@ function lukutilaHTML(x) {
     '<div class="luku-otsikko ensimmainen"><span>Koneessa</span></div>' +
     '<div class="spec-grid">' + kone.join('') + '</div>' +
     (ruudut.length ? '<div class="luku-otsikko"><span>Mitat</span></div><div class="spec-grid">' + ruudut.join('') + '</div>' : '') +
+    ((has(x.ua1) || has(x.ua2) || has(x.ua3)) ? '<div class="luku-otsikko"><span>User Area</span></div><div class="spec-grid">' +
+      arvoRuutu('UA1 leveys', x.ua1) + arvoRuutu('UA2 runko Ø', x.ua2) + arvoRuutu('UA3 runko–särmä', x.ua3) + '</div>' : '') +
     '<div class="luku-otsikko"><span>Teräpalat' + (palat.length ? ' <b>' + palat.length + '</b>' : '') + '</span>' +
       '<button type="button" class="pieni-btn" data-action="add-pala" data-uid="' + uid + '">+ Lisää</button></div>' +
     (palat.length ? '<div class="pala-lista">' + palaRivit + '</div>'
@@ -6483,6 +6485,13 @@ function renderTools() {
           '<label>X-korjain' + inputHTML(x.uid, 'dia', x.dia, 'signed') + '</label>' +
           '<label>Z-korjain' + inputHTML(x.uid, 'stickout', x.stickout, 'signed') + '</label>' +
           '<label class="full">Tila' + selectHTML(x.uid, 'status', x.status, TOOL_STATUSES) + '</label>' +
+        '</div>' +
+
+        '<div class="group-label">User Area</div>' +
+        '<div class="field-grid ua-grid">' +
+          '<label>UA1 · terän leveys' + inputHTML(x.uid, 'ua1', x.ua1, 'number') + '</label>' +
+          '<label>UA2 · rungon Ø' + inputHTML(x.uid, 'ua2', x.ua2, 'number') + '</label>' +
+          '<label>UA3 · runko – särmä' + inputHTML(x.uid, 'ua3', x.ua3, 'number') + '</label>' +
         '</div>' +
 
         '<div class="group-label">Mitat</div>' +
@@ -7215,7 +7224,8 @@ const CSV_COLS = [
   ['threadDir', 'Pyorintasuunta'], ['brand', 'Valmistaja'], ['insert', 'Terapala'], ['grade', 'Laatu'],
   ['insertUse', 'Terapalan kaytto'], ['muutPalatTxt', 'Muut terapalat'],
   ['holder', 'Pidin'], ['holderNimi', 'Pidin oma nimi'], ['istukka', 'Istukka'], ['istukkaNimi', 'Istukka oma nimi'],
-  ['ulkonema', 'Ulkonema'], ['spindle', 'Kara'], ['status', 'Tila'], ['notes', 'Muistiinpanot']
+  ['ulkonema', 'Ulkonema'], ['spindle', 'Kara'], ['status', 'Tila'], ['notes', 'Muistiinpanot'],
+  ['ua1', 'UA1'], ['ua2', 'UA2'], ['ua3', 'UA3']
 ];
 const CSV_CUT_COLS = [
   ['mat', 'Materiaali'], ['vc', 'Vc'], ['rpm', 'n'], ['f', 'f'], ['fz', 'fz'],
@@ -7385,7 +7395,8 @@ const TUONTI_KENTAT = [
   ['threadDir', 'Pyörintä'], ['brand', 'Valmistaja'], ['insert', 'Teräpala'], ['grade', 'Laatu'],
   ['insertUse', 'Palan käyttö'], ['muutPalatTxt', 'Muut palat'],
   ['holder', 'Pidin'], ['holderNimi', 'Pidin, nimi'], ['istukka', 'Istukka'], ['istukkaNimi', 'Istukka, nimi'],
-  ['ulkonema', 'Ulkonema'], ['spindle', 'Kara'], ['status', 'Tila'], ['notes', 'Muistiinpanot']
+  ['ulkonema', 'Ulkonema'], ['spindle', 'Kara'], ['status', 'Tila'], ['notes', 'Muistiinpanot'],
+  ['ua1', 'UA1'], ['ua2', 'UA2'], ['ua3', 'UA3']
 ];
 const CUT_KENTAT = ['vc', 'rpm', 'f', 'fz', 'ap', 'ae', 'life'];
 
@@ -10498,10 +10509,18 @@ function renderKiilaura() {
     kuRivi('Rv', 'Z', 'Otsa', 'mm', '0') +
     '<div class="nv-alaotsikko">Z0</div>' + kuSeg('z0', KU.z0 || 'valmis', [['valmis', 'Valmis otsa'], ['nyky', 'Nykyinen otsa']]) +
     '<div id="kuKorjaus"></div></div>';
+  const uaTerat = TOOLS.filter(x => has(x.ua1) || has(x.ua2) || has(x.ua3))
+    .sort((a, b) => (Number(a.t) || 9999) - (Number(b.t) || 9999));
   h += '<div class="tyg"><div class="tyg-otsikko"><span>Lastu ja terä</span></div>' +
+    '<label class="nv-valinta"><select data-kutera="1">' +
+      '<option value="">' + (uaTerat.length ? 'Pistoterä listasta…' : 'Ei teriä, joilla User Area') + '</option>' +
+      uaTerat.map(x => '<option value="' + esc(x.uid) + '"' + (x.uid === KU.teraUid ? ' selected' : '') + '>T' + esc(x.t || '?') + ' ' + esc(x.name || '') + '</option>').join('') +
+    '</select></label>' +
     kuRivi('Q', 'Q', 'Lastu säteellä', 'mm', '') +
     kuRivi('F', 'F', 'Syöttö', 'mm/min', '') +
-    kuRivi('T', 'T', 'Terän leveys', 'mm', '') + '</div>';
+    kuRivi('T', 'T', 'Terän leveys', 'mm', '') +
+    kuRivi('Dr', 'D', 'Rungon Ø', 'mm', '') +
+    kuRivi('Lr', 'L', 'Runko – särmä', 'mm', '') + '</div>';
   h += '<details class="tyg ku-lisa"' + (lisaAuki ? ' open' : '') + '><summary class="tyg-otsikko"><span>Lisää</span></summary>' +
     kuRivi('V', 'V', 'Viimeistelyvedot', 'kpl', '2') +
     kuRivi('M', 'M', 'Urien määrä', 'kpl', '1') +
@@ -10511,8 +10530,6 @@ function renderKiilaura() {
     kuRivi('K', 'K', 'Lähtötaso', 'mm', '10') +
     kuRivi('S', 'S', 'Turvaväli', 'mm', '0.2') +
     kuRivi('B', 'B', 'Y-askel', 'mm', '') +
-    kuRivi('Dr', 'D', 'Rungon Ø', 'mm', '') +
-    kuRivi('Lr', 'L', 'Runko – särmä', 'mm', '') +
     kuRivi('v28', '#28', 'Viisteen kulma', '°', '0') +
     '<div class="nv-alaotsikko">T kutsuun</div>' + kuSeg('tKutsu', KU.tKutsu, [['ei', 'Ei'], ['kylla', 'Kyllä']]) +
     '</details>';
@@ -10818,10 +10835,18 @@ window.addEventListener('scroll', () => { const el = document.getElementById('ku
       const dI = nak.querySelector('input[data-ku="D"]'); if (dI && x > 0) dI.value = KU.v.D;
     }
     if (k === 'D') KU.v.ks = '';
+    if ((k === 'T' || k === 'Dr' || k === 'Lr') && KU.teraUid) { KU.teraUid = ''; const s2 = nak.querySelector('select[data-kutera]'); if (s2) s2.value = ''; }
     kuTallenna(); kuPaivita();
   };
   nak.addEventListener('input', syote);
-  nak.addEventListener('change', syote);
+  nak.addEventListener('change', e => {
+    const sel = e.target.closest('select[data-kutera]');
+    if (!sel) return syote(e);
+    const x = TOOLS.find(t => t.uid === sel.value);
+    KU.teraUid = x ? x.uid : '';
+    if (x) { KU.v.T = has(x.ua1) ? String(x.ua1) : ''; KU.v.Dr = has(x.ua2) ? String(x.ua2) : ''; KU.v.Lr = has(x.ua3) ? String(x.ua3) : ''; }
+    kuTallenna(); renderKiilaura();
+  });
 })();
 
 (function tyKuuntelijat() {
