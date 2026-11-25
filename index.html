@@ -1374,6 +1374,23 @@
     --bar: #131921;
   }
   body { -webkit-font-smoothing: antialiased; }
+  /* viivakoodiskanneri */
+  .skanneri { position: fixed; inset: 0; z-index: 300; background: var(--bg); display: none; flex-direction: column; padding: calc(12px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom)); overflow-y: auto; }
+  .skanneri.auki { display: flex; }
+  .sk-ylä { display: flex; align-items: center; justify-content: space-between; font-size: 17px; margin-bottom: 12px; }
+  .sk-sulje { border: none; background: var(--panel-2); color: var(--text); width: 44px; height: 44px; border-radius: 12px; font-size: 24px; cursor: pointer; }
+  .sk-kuva { position: relative; border-radius: 14px; overflow: hidden; background: #000; aspect-ratio: 3 / 4; max-height: 62vh; width: 100%; max-width: 520px; align-self: center; }
+  .sk-kuva[hidden] { display: none; }
+  .sk-kuva video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .sk-kehys { position: absolute; inset: 22% 10%; border: 3px solid var(--accent); border-radius: 12px; box-shadow: 0 0 0 999px rgba(0,0,0,.35); }
+  .sk-tila { text-align: center; color: var(--text-dim); font-size: 14px; margin: 12px 0; }
+  .sk-tila:empty { display: none; }
+  .sk-tulos { width: 100%; max-width: 520px; align-self: center; display: grid; gap: 12px; }
+  .sk-tulos[hidden] { display: none; }
+  .sk-label { display: grid; gap: 6px; font-size: 13px; color: var(--text-dim); }
+  .sk-osumat { display: flex; flex-wrap: wrap; gap: 6px; }
+  .sk-osumat:empty { display: none; }
+  .sk-osuma-otsikko { width: 100%; font-size: 13px; color: var(--text-dim); }
   /* tumma: vähemmän viivoja – kortit ja kentät erottuvat sävyllä, ei reunoilla */
   body.dark select, body.dark input[type=text], body.dark input[type=number], body.dark input[type=search], body.dark textarea {
     background-color: var(--panel-2); border-color: transparent; }
@@ -2310,7 +2327,7 @@
 
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · LEUKALASKURI · v3.60</footer>
+    <footer><span class="machine-name">NTX3000</span> · LEUKALASKURI · v3.61</footer>
   </div>
 
   <!-- ===================== ASETUKSET: LEUKAKORJAIN ===================== -->
@@ -2447,7 +2464,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · SP2 &amp; G55 · v3.60</footer>
+    <footer><span class="machine-name">NTX3000</span> · SP2 &amp; G55 · v3.61</footer>
   </div>
 
   <!-- ===================== ASETUKSET: SP2 ===================== -->
@@ -2525,6 +2542,9 @@
           <button type="button" class="pika-btn" id="pikahakuBtn" aria-label="Avaa työkalu T-numerolla">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 5h2M11 5h2M17 5h2M5 11h2M11 11h2M17 11h2M5 17h2M11 17h2M17 17h2"></path></svg>T#
           </button>
+          <button type="button" class="pika-btn" id="skannaaBtn" aria-label="Skannaa pakkauksen koodi" title="Skannaa pakkauksen koodi">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2M7 8v8M10 8v8M13 8v8M17 8v8"></path></svg>
+          </button>
         </div>
         <div class="viimeksi" id="viimeksiRow"></div>
         <div class="filter-wrap"><div class="filter-row" id="typeFilterRow"></div></div>
@@ -2567,7 +2587,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · TYÖKALULISTA · v3.60</footer>
+    <footer><span class="machine-name">NTX3000</span> · TYÖKALULISTA · v3.61</footer>
   </div>
 
   <!-- ===================== ASETUKSET ===================== -->
@@ -2604,7 +2624,7 @@
       </div>
       <div id="kuSisalto"></div>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · KIILAURA · v3.60</footer>
+    <footer><span class="machine-name">NTX3000</span> · KIILAURA · v3.61</footer>
   </div>
 
   <div class="view" id="viewTyosto">
@@ -2730,7 +2750,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · TYÖSTÖ · v3.60</footer>
+    <footer><span class="machine-name">NTX3000</span> · TYÖSTÖ · v3.61</footer>
   </div>
 
   <!-- ===================== KAPPALEET: TYÖKORTIT PIIRUSTUSNUMEROITTAIN ===================== -->
@@ -2769,7 +2789,7 @@
       <div id="kpLista"></div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · KAPPALEET · v3.60</footer>
+    <footer><span class="machine-name">NTX3000</span> · KAPPALEET · v3.61</footer>
   </div>
 
   <div class="view" id="viewKappale">
@@ -2787,7 +2807,7 @@
       </div>
     </header>
     <main id="kpKortti"></main>
-    <footer><span class="machine-name">NTX3000</span> · KAPPALEKORTTI · v3.60</footer>
+    <footer><span class="machine-name">NTX3000</span> · KAPPALEKORTTI · v3.61</footer>
   </div>
 
   <div class="view" id="viewData">
@@ -2927,7 +2947,7 @@
       </section>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · ASETUKSET · v3.60</footer>
+    <footer><span class="machine-name">NTX3000</span> · ASETUKSET · v3.61</footer>
   </div>
 
   <!-- ===================== KONEET ===================== -->
@@ -2961,7 +2981,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · KONEET · v3.60</footer>
+    <footer><span class="machine-name">NTX3000</span> · KONEET · v3.61</footer>
   </div>
 
   <!-- ===================== TYÖKALUTYYPPIEN HALLINTA ===================== -->
@@ -2993,7 +3013,7 @@
       </section>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · TYÖKALUTYYPIT · v3.60</footer>
+    <footer><span class="machine-name">NTX3000</span> · TYÖKALUTYYPIT · v3.61</footer>
   </div>
 
   <!-- ===================== TUONTI: ESIKATSELU ===================== -->
@@ -3061,7 +3081,7 @@
         </div>
       </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TUONTI · v3.60</footer>
+    <footer><span class="machine-name">NTX3000</span> · TUONTI · v3.61</footer>
   </div>
 
   <!-- ===================== TYÖSTÖTIETOPANKKI JA OMAT SÄÄDÖT ===================== -->
@@ -3100,7 +3120,7 @@
         <div class="tp-rivit" id="tpRivit"></div>
       </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TIETOPANKKI · v3.60</footer>
+    <footer><span class="machine-name">NTX3000</span> · TIETOPANKKI · v3.61</footer>
   </div>
 
 <!-- ===================== TARKISTUS ===================== -->
@@ -3120,7 +3140,7 @@
         <div class="edit-list" id="qualityList"></div>
       </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TARKISTUS · v3.60</footer>
+    <footer><span class="machine-name">NTX3000</span> · TARKISTUS · v3.61</footer>
   </div>
 
 </div>
@@ -12894,10 +12914,200 @@ const HIST_AVAAJAT = {
   viewImport:      () => showView('viewToolList'),
   viewKappale:     () => { if (kpHae(kpAuki)) { renderKappale(); showView('viewKappale'); } else showView('viewKappaleet'); }
 };
+
+/* =================================================================
+   VIIVAKOODISKANNERI – teräpalapaketin koodi → valmistajan sivu
+   BarcodeDetector (Chrome/Android) tai ZXing verkosta (iPhone ym.)
+   ================================================================= */
+const SK = { stream: null, ajossa: false, zxing: null, viimeBrand: '' };
+try { SK.viimeBrand = localStorage.getItem('ntx_skan_brand') || ''; } catch (e) {}
+const SK_TUNNISTEET = [
+  [/sandvik|coromant/i, 'Sandvik Coromant'], [/iscar/i, 'Iscar'], [/walter/i, 'Walter'], [/seco/i, 'Seco'],
+  [/kennametal|widia/i, 'Kennametal'], [/mitsubishi|mmc/i, 'Mitsubishi'], [/sumitomo|sumitool/i, 'Sumitomo'],
+  [/tungaloy/i, 'Tungaloy'], [/korloy/i, 'Korloy'], [/ceratizit/i, 'Ceratizit'], [/pramet|dormer/i, 'Dormer Pramet'],
+  [/horn/i, 'Paul Horn']];
+function skPuhdista(t) {
+  return String(t || '').replace(/[\u0000-\u001F\u001D]+/g, ' ').replace(/\s{2,}/g, ' ').trim();
+}
+function skValmistaja(t) {
+  if (/^https?:\/\//i.test(t)) {
+    try {
+      const host = new URL(t).hostname.replace(/^www\./, '');
+      for (const b in BRAND_SITES) if (host.indexOf(BRAND_SITES[b].split('.')[0]) !== -1) return b;
+    } catch (e) {}
+  }
+  for (const [re, b] of SK_TUNNISTEET) if (re.test(t)) return b;
+  return '';
+}
+function skAvaa() {
+  let el = document.getElementById('skanneri');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'skanneri';
+    el.className = 'skanneri';
+    el.innerHTML = '<div class="sk-ylä"><b>Skannaa pakkauksen koodi</b><button type="button" class="sk-sulje" aria-label="Sulje">×</button></div>' +
+      '<div class="sk-kuva"><video playsinline muted></video><div class="sk-kehys"></div></div>' +
+      '<div class="sk-tila" id="skTila">Käynnistetään kamera…</div>' +
+      '<div class="sk-tulos" id="skTulos" hidden></div>';
+    document.body.appendChild(el);
+    el.querySelector('.sk-sulje').addEventListener('click', skSulje);
+  }
+  el.classList.add('auki');
+  document.getElementById('skTulos').hidden = true;
+  el.querySelector('.sk-kuva').hidden = false;
+  if (typeof historiaKerros === 'function') historiaKerros();
+  skKaynnista();
+}
+function skTila(t) { const e = document.getElementById('skTila'); if (e) e.textContent = t; }
+function skLopetaKamera() {
+  SK.ajossa = false;
+  if (SK.stream) { SK.stream.getTracks().forEach(t => t.stop()); SK.stream = null; }
+}
+function skSulje() {
+  skLopetaKamera();
+  const el = document.getElementById('skanneri');
+  if (el) el.classList.remove('auki');
+}
+function skLataaZxing() {
+  if (window.ZXing) return Promise.resolve(window.ZXing);
+  return new Promise((ok, virhe) => {
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/@zxing/library@0.21.3/umd/index.min.js';
+    s.onload = () => window.ZXing ? ok(window.ZXing) : virhe(new Error('zxing'));
+    s.onerror = () => virhe(new Error('zxing'));
+    document.head.appendChild(s);
+  });
+}
+async function skKaynnista() {
+  const video = document.querySelector('#skanneri video');
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    skTila('Kamera ei ole käytettävissä tässä selaimessa. Avaa sovellus verkko-osoitteesta (https).');
+    return;
+  }
+  try {
+    SK.stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment', width: { ideal: 1920 }, height: { ideal: 1080 } }, audio: false });
+  } catch (e) {
+    skTila('Kameran käyttö estettiin. Salli kamera selaimen asetuksista ja yritä uudelleen.');
+    return;
+  }
+  video.srcObject = SK.stream;
+  try { await video.play(); } catch (e) {}
+  SK.ajossa = true;
+  skTila('Kohdista koodi kehykseen. QR, Data Matrix ja viivakoodit käyvät.');
+  const muodot = ['qr_code', 'data_matrix', 'code_128', 'code_39', 'ean_13', 'ean_8', 'upc_a', 'itf'];
+  if ('BarcodeDetector' in window) {
+    let tuetut = muodot;
+    try { const t = await BarcodeDetector.getSupportedFormats(); tuetut = muodot.filter(m => t.indexOf(m) !== -1); } catch (e) {}
+    const det = new BarcodeDetector({ formats: tuetut });
+    const kierros = async () => {
+      if (!SK.ajossa) return;
+      try {
+        const r = await det.detect(video);
+        if (r && r.length) return skLoytyi(r[0].rawValue);
+      } catch (e) {}
+      setTimeout(kierros, 180);
+    };
+    kierros();
+    return;
+  }
+  try {
+    const Z = await skLataaZxing();
+    if (!SK.ajossa) return;
+    const vihjeet = new Map();
+    vihjeet.set(Z.DecodeHintType.POSSIBLE_FORMATS, [Z.BarcodeFormat.QR_CODE, Z.BarcodeFormat.DATA_MATRIX, Z.BarcodeFormat.CODE_128,
+      Z.BarcodeFormat.CODE_39, Z.BarcodeFormat.EAN_13, Z.BarcodeFormat.EAN_8, Z.BarcodeFormat.ITF]);
+    vihjeet.set(Z.DecodeHintType.TRY_HARDER, true);
+    SK.zxing = new Z.BrowserMultiFormatReader(vihjeet);
+    const c = document.createElement('canvas'), ctx = c.getContext('2d', { willReadFrequently: true });
+    const kierros = () => {
+      if (!SK.ajossa) return;
+      if (video.videoWidth) {
+        c.width = video.videoWidth; c.height = video.videoHeight;
+        ctx.drawImage(video, 0, 0);
+        try {
+          const bmp = new Z.BinaryBitmap(new Z.HybridBinarizer(new Z.HTMLCanvasElementLuminanceSource(c)));
+          const r = SK.zxing.decodeBitmap(bmp);
+          if (r) return skLoytyi(r.getText());
+        } catch (e) { /* ei koodia tässä kuvassa */ }
+      }
+      setTimeout(kierros, 200);
+    };
+    kierros();
+  } catch (e) {
+    skTila('Koodinlukija tarvitsee verkkoyhteyden ensimmäisellä kerralla.');
+  }
+}
+function skLoytyi(raaka) {
+  if (!SK.ajossa) return;
+  if (navigator.vibrate) { try { navigator.vibrate(60); } catch (e) {} }
+  skLopetaKamera();
+  const teksti = skPuhdista(raaka);
+  const brand = skValmistaja(teksti) || SK.viimeBrand;
+  const el = document.getElementById('skanneri');
+  el.querySelector('.sk-kuva').hidden = true;
+  skTila('');
+  const t = document.getElementById('skTulos');
+  const onUrl = /^https?:\/\//i.test(teksti);
+  const merkit = [''].concat(BASE_BRANDS, CUSTOM_BRANDS, BASE_BRANDS.indexOf('Paul Horn') === -1 ? ['Paul Horn'] : []);
+  t.innerHTML =
+    '<label class="sk-label">Koodi<input type="text" id="skKoodi" value="' + esc(teksti) + '" autocomplete="off"></label>' +
+    (onUrl ? '' : '<label class="sk-label">Valmistaja<select id="skBrand">' +
+      merkit.map(b => '<option value="' + esc(b) + '"' + (b === brand ? ' selected' : '') + '>' + esc(b || 'Kaikki valmistajat') + '</option>').join('') +
+      '</select></label>') +
+    '<div class="sk-osumat" id="skOsumat"></div>' +
+    '<button type="button" class="save-btn" id="skAvaaSivu">' + (onUrl ? 'Avaa sivu' : 'Hae valmistajan sivulta') + ' ↗</button>' +
+    '<div class="btn-row"><button type="button" class="add-btn" id="skUudelleen">Skannaa uudelleen</button>' +
+    '<button type="button" class="add-btn" id="skKopioi">Kopioi</button></div>';
+  t.hidden = false;
+  skNaytaOsumat(teksti);
+  document.getElementById('skKoodi').addEventListener('input', e => skNaytaOsumat(e.target.value));
+  document.getElementById('skAvaaSivu').addEventListener('click', () => {
+    const k = document.getElementById('skKoodi').value.trim();
+    if (!k) return;
+    if (/^https?:\/\//i.test(k)) { window.open(k, '_blank', 'noopener'); return; }
+    const b = (document.getElementById('skBrand') || {}).value || '';
+    SK.viimeBrand = b;
+    try { localStorage.setItem('ntx_skan_brand', b); } catch (e) {}
+    window.open(tuoteHaku(skHakukoodi(k), b), '_blank', 'noopener');
+  });
+  document.getElementById('skUudelleen').addEventListener('click', skAvaa);
+  document.getElementById('skKopioi').addEventListener('click', () => copyText(document.getElementById('skKoodi').value));
+}
+/* Pakkauskoodissa voi olla eränumero tai määrä perässä: haetaan teräpalakoodin
+   näköinen osa (esim. CNMG 120408-MM 2220), muuten koko teksti. */
+function skHakukoodi(k) {
+  const m = k.match(/[A-Z]{3,5}\s?-?\d{2}\s?\d{2}\s?\d{2}[A-Z0-9-]*(\s+[A-Z]{0,3}\d{3,4})?/i);
+  return m ? m[0].trim() : k;
+}
+/* Onko sama pala jo listalla? */
+function skNaytaOsumat(k) {
+  const el = document.getElementById('skOsumat');
+  if (!el) return;
+  const h = skHakukoodi(String(k || '')).replace(/[\s-]+/g, '').toLowerCase();
+  if (h.length < 4) { el.innerHTML = ''; return; }
+  const norm = v => String(v || '').replace(/[\s-]+/g, '').toLowerCase();
+  const osumat = TOOLS.filter(x => [x.insert].concat((x.muutPalat || []).map(p => p.code)).some(c => norm(c) && (norm(c).indexOf(h) !== -1 || h.indexOf(norm(c)) !== -1))).slice(0, 5);
+  el.innerHTML = osumat.length ? '<div class="sk-osuma-otsikko">Listalla:</div>' + osumat.map(x =>
+    '<button type="button" class="filter-chip" data-skuid="' + esc(x.uid) + '">T' + esc(x.t || '?') + ' · ' + esc(x.name || '') + '</button>').join('') : '';
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest && e.target.closest('[data-skuid]');
+  if (b) {
+    const uid = b.getAttribute('data-skuid');
+    skSulje();
+    if (typeof avaaTyokalu === 'function') avaaTyokalu(uid);
+    else { openTools[uid] = true; showView('viewToolList'); renderTools(); const k = document.querySelector('[data-uid="' + uid + '"]'); if (k) k.scrollIntoView({ block: 'start' }); }
+    return;
+  }
+  if (e.target.closest && e.target.closest('#skannaaBtn')) skAvaa();
+});
+
+function skAuki() { const e = document.getElementById('skanneri'); return !!(e && e.classList.contains('auki')); }
 function avoinKerros() {
-  return !!(npKentta || pikahakuEl.classList.contains('show') || modalBack.classList.contains('show'));
+  return !!(npKentta || pikahakuEl.classList.contains('show') || modalBack.classList.contains('show') || skAuki());
 }
 function suljeKerrokset() {
+  if (skAuki()) skSulje();
   if (modalBack.classList.contains('show')) suljeModal(null);
   if (pikahakuEl.classList.contains('show')) suljePikahaku();
   if (npKentta) { const el = npKentta; el.blur(); npSulje(); }
