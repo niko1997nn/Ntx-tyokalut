@@ -10392,9 +10392,10 @@ function kuSyotteet() {
         const Rd = isFinite(kuLuku(KU.v.R)) ? kuLuku(KU.v.R) : 0;
         const kk = (Ud - Xv) / (Rd - kuLuku(v.W));
         if (kk > 0) {
-          const E = Math.atan(kk) / KU_RAD;
-          v.E = String(Math.round(E * 1000) / 1000); v.W = '';
-          korj.push(['E', 'W muuttuu reiän koon mukana → kutsuun kulma <b>E' + kuMm(E, 3) + '</b> (valmiin reiän mitoista)']);
+          /* pohjaviiva pysyy paikallaan; pienemmässä reiässä se nousee pintaan syvemmällä */
+          const Wd = kuLuku(v.W), Wn = Wd - tv / kk;
+          v.W = String(r3(Wn));
+          korj.push(['W', 'W ' + m(Wd) + ' − ' + m(tv) + ' / tan ' + kuMm(Math.atan(kk) / KU_RAD, 2) + '° = <b>W' + m(Wn) + '</b> (pohja nousee nykyiseen reikään syvemmällä)']);
         }
       }
     }
@@ -10604,7 +10605,7 @@ const KU_OHJE_HTML = '<p class="ku-ohje-intro">O8990 v2.5 · NTX3000 kara 1 C-ak
   '<li><b>U = U(piirustus) − (valmis Ø − X) / 2.</b> Halkaisijassa 1 mm on säteessä 0,5 mm. Esim. reikä 70 → nyt 69, U73.7 → <b>X69. U73.2</b>.</li>' +
   '<li><b>Viiste:</b> nurkka nousee viimeistelyssä, joten C kasvatetaan etukäteen. Nyrkkisääntö C ≈ viiste + säteen työvara + 0,03; Työvarat-kohta laskee tarkan arvon (A10: C0.705 jättää 0,2). C0.75–0.8 jättää varaa karkaisun liikkeelle. Vinourassa ei viistettä.</li>' +
   '<li><b>Otsa R:</b> R on valmiin otsan paikka. Z0 valmiissa otsassa → R0. Z0 nykyisessä otsassa (valmis Z-0.5) → R-0.5. Suorassa urassa R vaikuttaa vain vetojen alkuun, vinourassa pohjaan: 0,5 mm virhe = 0,5 · tan E (E10: 0,09 mm, E30: 0,29 mm).</li>' +
-  '<li><b>Vinoura:</b> käytä työvaran kanssa E:tä – W muuttuu reiän koon mukana. Työvarat-kohta muuntaa W:n E:ksi valmiin reiän mitoista.</li>' +
+  '<li><b>Vinoura:</b> E ei muutu työvarasta. W lasketaan uudelleen nykyiselle reiälle: W(nyt) = W − säteen työvara / tan E. Työvarat-kohta tekee tämän automaattisesti, joten W:n voi antaa piirustuksesta.</li>' +
   '<li><b>Kartio:</b> X ja U alkupäästä (otsalta R), sama U-korjaus. D ei muutu.</li>' +
   '<li><b>Edellytykset:</b> viimeistely samaan keskiöön (0,1 mm sivusiirtymä alkaa näkyä), karkaisu voi tehdä reiästä soikean, ja ensimmäinen kappale tarkistetaan työvarareiästä: pohja vastaseinästä = laskettu U.</li></ul></details>' +
   '<details class="ty-ryhma"><summary><b>Keskeytys ja rajoitukset</b></summary><ul class="ku-lista-ohje">' +
