@@ -1887,6 +1887,9 @@
   .ku-laskenta > summary { cursor: pointer; font-size: 13.5px; color: var(--text-dim); padding: 6px 2px 8px; }
   .kk-kaula-r { fill: color-mix(in srgb, var(--accent) 18%, transparent); stroke: var(--accent); stroke-width: 1; }
   .kk-sarma { stroke: var(--accent); stroke-width: 1; stroke-dasharray: 2 3; }
+  .kk-tasku { fill: var(--bg); stroke: var(--accent); stroke-width: 1; }
+  .kk-pala { fill: color-mix(in srgb, var(--text) 22%, var(--bg)); stroke: var(--text); stroke-width: 1.2; }
+  .kk-ruuvi { fill: none; stroke: var(--text-dim); stroke-width: 1; }
   .kk-mitta-ohut { stroke: var(--orange); stroke-width: 1.2; }
   .kk-teksti, .kk-pieni { paint-order: stroke; stroke: var(--bg); stroke-width: 3px; stroke-linejoin: round; }
   .ku-hal-lista { display: grid; gap: 8px; margin-bottom: 14px; }
@@ -10555,7 +10558,7 @@ const KU_KUVA_TEKSTI = {
   v28: ['poikki', '#28 – viisteen kulma uran kyljestä (makron asetus). 0 = symmetrinen.'],
   T: ['tera', 'T – terän leveys (User Area 1).'],
   Dr: ['tera', 'D – rungon halkaisija (User Area 2).'],
-  Lr: ['tera', 'L – rungon takapinnasta terän särmään (User Area 3). H = L − D/2.'],
+  Lr: ['tera', 'L – rungon takapinnasta (vastakkainen kehä) terän särmään (User Area 3). H = L − D/2.'],
   R: ['sivu', 'R – otsapinta eli uran alku Z (oletus 0).'],
   Z: ['sivu', 'Z – uran loppu. Veto ajetaan R:stä Z:aan.'],
   K: ['sivu', 'K – lähtötaso R + K kappaleen edessä (oletus 10).'],
@@ -10591,17 +10594,20 @@ const KU_KUVA_POIKKI = '<svg class="ku-ohjekuva" viewBox="0 0 320 180" role="img
   '<g data-k="U" class="vain">' + kkA(160, 164, 56, 164) + kkA(143, 22, 56, 22) + kkM(62, 22, 62, 164, 'U', 46, 98) + '</g>' +
   '<g data-k="A" class="vain">' + kkA(144, 21, 144, 4) + kkA(176, 21, 176, 4) + kkM(144, 9, 176, 9, 'A', 184, 13) + '</g>' +
   '</svg>';
-const KU_KUVA_TERA = '<svg class="ku-ohjekuva" viewBox="0 0 320 180" role="img" aria-label="Pistoterä ja runko">' + KK_DEFS +
+const KU_KUVA_TERA = '<svg class="ku-ohjekuva" viewBox="0 0 320 180" role="img" aria-label="Pistoterä päädystä">' + KK_DEFS +
   '<rect x="0" y="0" width="320" height="180" class="kk-ilma"/>' +
-  '<text x="10" y="174" class="kk-pieni">terä Z-suunnasta katsottuna</text>' +
-  '<rect x="130" y="26" width="60" height="16" class="kk-tera"/>' +
-  '<rect x="150" y="42" width="20" height="30" class="kk-kaula-r"/>' +
-  '<circle cx="160" cy="112" r="44" class="kk-runko"/>' +
-  '<line x1="120" y1="26" x2="200" y2="26" class="kk-sarma"/><text x="200" y="20" class="kk-pieni">särmä X+</text>' +
-  '<g data-k="T" class="vain">' + kkA(130, 24, 130, 8) + kkA(190, 24, 190, 8) + kkM(130, 13, 190, 13, 'T', 160, 9, 'middle') + '</g>' +
-  '<g data-k="Dr" class="vain">' + kkM(116, 112, 204, 112, 'Ø D', 160, 106, 'middle') + '</g>' +
-  '<g data-k="Lr" class="vain">' + kkA(192, 26, 254, 26) + kkA(160, 156, 254, 156) + kkM(248, 26, 248, 156, 'L', 256, 95) +
-  kkA(160, 112, 84, 112) + kkA(128, 26, 84, 26) + '<line x1="90" y1="26" x2="90" y2="112" class="kk-mitta-ohut" marker-start="url(#kkN)" marker-end="url(#kkN)"/><text x="54" y="74" class="kk-pieni">H=L−D/2</text></g>' +
+  /* pyöreä runko, jossa V-tasku palalle */
+  '<circle cx="160" cy="100" r="62" class="kk-runko"/>' +
+  '<path d="M128 46.9 L156 94 A5 5 0 0 0 164 94 L192 46.9 Z" class="kk-tasku"/>' +
+  /* pala: leikkaava pää ulottuu rungon kehän yli, kolmio taskussa, ruuvi keskellä */
+  '<path d="M136 24 H184 V34 H180 V50 L163 82 A4 4 0 0 1 157 82 L140 50 V34 H136 Z" class="kk-pala"/>' +
+  '<circle cx="160" cy="56" r="7" class="kk-ruuvi"/><circle cx="160" cy="56" r="3" class="kk-ruuvi"/>' +
+  '<line x1="126" y1="24" x2="194" y2="24" class="kk-sarma"/><text x="198" y="30" class="kk-pieni">särmä X+</text>' +
+  '<text x="10" y="174" class="kk-pieni">pistoterä päädystä katsottuna</text>' +
+  '<g data-k="T" class="vain">' + kkA(136, 22, 136, 6) + kkA(184, 22, 184, 6) + kkM(136, 11, 184, 11, 'T', 192, 16) + '</g>' +
+  '<g data-k="Dr" class="vain">' + kkM(98, 100, 222, 100, 'Ø D', 160, 128, 'middle') + '</g>' +
+  '<g data-k="Lr" class="vain">' + kkA(186, 24, 262, 24) + kkA(160, 162, 262, 162) + kkM(256, 24, 256, 162, 'L', 264, 97) +
+  kkA(134, 24, 70, 24) + kkA(98, 100, 70, 100) + '<line x1="76" y1="24" x2="76" y2="100" class="kk-mitta-ohut" marker-start="url(#kkN)" marker-end="url(#kkN)"/><text x="12" y="66" class="kk-pieni">H = L − D/2</text></g>' +
   '</svg>';
 const KU_KUVA_SIVU = '<svg class="ku-ohjekuva" viewBox="0 0 320 180" role="img" aria-label="Sivukuva">' + KK_DEFS +
   '<rect x="0" y="0" width="320" height="180" class="kk-ilma"/>' +
