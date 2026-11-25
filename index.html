@@ -1997,6 +1997,49 @@
   .kp-tchip.puuttuu { border-color: var(--red); color: var(--red); cursor: default; }
   .kp-alaosa { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 8px 0 20px; }
   .kp-pvm { font-size: 12px; color: var(--text-dim); }
+
+  /* ═══ Neuvoja ═══ */
+  .tulos-yla .nv-yla { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 12px; padding: 12px 14px; }
+  .nv-yla-tila { grid-column: 1 / -1; font-size: 12px; font-weight: 600; }
+  .nv-yla-tila.varoitus { color: var(--orange); }
+  .nv-yla-tila.virhe { color: var(--red); }
+  .nv-tyhja { grid-column: 1 / -1; font-size: 13px; color: var(--text-dim); padding: 4px 0; }
+  .nv-seg { margin: 4px 0 8px; }
+  .nv-seg .seg-btn { flex: 1 1 0; text-align: center; padding: 9px 4px; }
+  .nv-seg .seg-name { font-size: 12.5px; }
+  .nv-valinta { display: block; margin: 2px 0 8px; }
+  .nv-valinta select { width: 100%; }
+  .nv-rajat { display: flex; align-items: center; justify-content: space-between; gap: 10px; font: 500 12.5px var(--mono); color: var(--text-dim); margin: -2px 0 8px; }
+  .nv-linkki { border: none; background: none; color: var(--accent); font: 600 13px var(--sans); cursor: pointer; padding: 4px 0; }
+  .nv-alaotsikko { font-size: 12px; color: var(--text-dim); margin: 8px 0 2px; }
+  .nv-tulos-osio { margin-top: 14px; }
+  .nv-paa { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 14px; border-radius: 14px;
+    background: var(--panel); border: 1px solid var(--panel-border); }
+  .nv-ehd { font: 600 9.5px var(--mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--orange); margin-left: 3px; }
+  .nv-mittarit { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 10px; }
+  .nv-mittari { padding: 10px 12px; border-radius: 12px; background: var(--panel); border: 1px solid var(--panel-border); min-width: 0; }
+  .nv-mittari-yla { display: flex; flex-direction: column; gap: 2px; }
+  .nv-mittari-yla span { font-size: 11.5px; color: var(--text-dim); }
+  .nv-mittari-yla b { font: 600 18px var(--mono); color: var(--text); white-space: nowrap; }
+  .nv-mittari-yla b i { font: 500 11px var(--mono); font-style: normal; color: var(--text-dim); margin-left: 4px; }
+  .nv-mittari-yla em { font: 500 10.5px var(--mono); font-style: normal; color: var(--text-dim); }
+  .nv-palkki { height: 5px; border-radius: 3px; background: var(--panel-border); margin-top: 7px; overflow: hidden; }
+  .nv-palkki span { display: block; height: 100%; background: var(--accent); border-radius: 3px; }
+  .nv-mittari.lahes .nv-palkki span { background: var(--orange); }
+  .nv-mittari.yli { border-color: var(--red); }
+  .nv-mittari.yli .nv-palkki span { background: var(--red); }
+  .nv-mittari.yli b { color: var(--red); }
+  .nv-varoitukset { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+  .nv-varoitukset li { padding: 9px 12px 9px 34px; border-radius: 10px; font-size: 13px; line-height: 1.4; position: relative; background: var(--panel); border: 1px solid var(--panel-border); }
+  .nv-varoitukset li::before { position: absolute; left: 12px; top: 9px; font-weight: 700; }
+  .nv-varoitukset li.virhe { border-color: var(--red); } .nv-varoitukset li.virhe::before { content: '!'; color: var(--red); }
+  .nv-varoitukset li.varoitus { border-color: var(--orange); } .nv-varoitukset li.varoitus::before { content: '!'; color: var(--orange); }
+  .nv-varoitukset li.info::before { content: 'i'; color: var(--accent); }
+  .nv-kunnossa { margin-top: 12px; font-size: 13px; color: var(--accent); }
+  .nv-napit { margin-top: 12px; }
+  .nv-napit .add-cut-btn { margin-top: 0; }
+  .nv-perusteet li { margin-bottom: 4px; }
+  .ty-osiot .filter-chip { padding-left: 6px; padding-right: 6px; }
 </style>
 </head>
 <body>
@@ -2363,10 +2406,23 @@
 
     <main>
       <div class="filter-row ty-osiot" id="tyOsiot">
+        <button type="button" class="filter-chip" data-tyosio="neuvoja">Neuvoja</button>
         <button type="button" class="filter-chip" data-tyosio="laskin">Laskin</button>
         <button type="button" class="filter-chip" data-tyosio="arvot">Arvot</button>
         <button type="button" class="filter-chip" data-tyosio="materiaalit">Materiaalit</button>
         <button type="button" class="filter-chip" data-tyosio="kierteet">Kierteet</button>
+      </div>
+
+      <!-- NEUVOJA -->
+      <div class="ty-osio" data-osio="neuvoja">
+        <div class="tulos-yla">
+          <div class="result-card nv-yla" id="nvYla"></div>
+        </div>
+        <div class="section-card" id="nvSyotteet"></div>
+        <div class="nv-tulos-osio">
+          <div class="section-label">Suositus</div>
+          <div id="nvTulos"></div>
+        </div>
       </div>
 
       <!-- LASKIN -->
@@ -8379,7 +8435,8 @@ function syncOsoite() {
 
 /* Koko sovelluksen tila yhdeksi paketiksi */
 const K_KAPPALEET = 'ntx_kappaleet_v1';
-const KONE_AVAIMET = [K_PAKAT, K_JAWS, K_FIELDS, K_SP, K_SP_FIELDS, K_TOOLS, K_KAPPALEET];
+const K_KARAT = 'ntx_karat_v1';
+const KONE_AVAIMET = [K_PAKAT, K_JAWS, K_FIELDS, K_SP, K_SP_FIELDS, K_TOOLS, K_KAPPALEET, K_KARAT];
 
 function syncPaketti() {
   const koneet = {};
@@ -9361,8 +9418,9 @@ function tyLaske() {
   } else {
     out.q = (ap > 0 && ae > 0 && vf > 0) ? ap * ae * vf / 1000 : NaN;
     if (fz > 0 && D > 0 && ae > 0 && ae <= D) {
-      const kulma = Math.asin(ae / D) * 180 / Math.PI;
-      out.hm = 180 * ae * fz / (Math.PI * D * kulma);
+      /* sivujyrsintä (kosketus toiselta puolelta): kosketuskulma φ = arccos(1 − 2·ae/D) */
+      const kulma = Math.acos(1 - 2 * ae / D) * 180 / Math.PI;
+      out.hm = 360 * ae * fz / (Math.PI * D * kulma);
     } else out.hm = NaN;
   }
   /* Ympyräjyrsintä: ohjaus syöttää keskipisteen rataa, terän reuna kulkee eri säteellä.
@@ -9464,7 +9522,7 @@ function tyPiirraKentat() {
   const kaavat = {
     sorvaus: 'n = vc × 1000 / (π × D) · Vf = f × n · Q = vc × ap × f · Ra ≈ f² / r × 50 (µm, Sandvik)',
     poraus: 'n = vc × 1000 / (π × D) · Vf = f × n · Q = π × D² / 4 × Vf / 1000',
-    jyrsinta: 'n = vc × 1000 / (π × D) · Vf = fz × z × n · Q = ap × ae × Vf / 1000 · hm = 180 × ae × fz / (π × D × arcsin(ae/D)°) · ympyräinterpolointi: Vf ohjelmaan = Vf × (Dw − D) / Dw reiässä, × (Dw + D) / Dw tapissa'
+    jyrsinta: 'n = vc × 1000 / (π × D) · Vf = fz × z × n · Q = ap × ae × Vf / 1000 · hm = 360 × ae × fz / (π × D × arccos(1 − 2·ae/D)°) · ympyräinterpolointi: Vf ohjelmaan = Vf × (Dw − D) / Dw reiässä, × (Dw + D) / Dw tapissa'
   };
   document.getElementById('tyKaavat').innerHTML = '<strong>Kaavat:</strong><br>' + esc(kaavat[TY.tila]) + '<br>t = L / Vf';
   document.querySelectorAll('#tyTila .seg-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-tytila') === TY.tila));
@@ -9666,7 +9724,8 @@ function tyOmaKierre() {
 function renderTyosto() {
   document.querySelectorAll('#tyOsiot .filter-chip').forEach(b => b.classList.toggle('active', b.getAttribute('data-tyosio') === TY.osio));
   document.querySelectorAll('#viewTyosto .ty-osio').forEach(o => o.classList.toggle('auki', o.getAttribute('data-osio') === TY.osio));
-  if (TY.osio === 'laskin') tyPiirraKentat();
+  if (TY.osio === 'neuvoja') renderNeuvoja();
+  else if (TY.osio === 'laskin') tyPiirraKentat();
   else if (TY.osio === 'arvot') { tyMateriaaliValinta(); document.getElementById('tyHalk').value = TY.D; tyPiirraArvot(); }
   else if (TY.osio === 'materiaalit') tyPiirraMateriaalit();
   else { document.getElementById('tyKD').value = TY.kD; document.getElementById('tyKP').value = TY.kP; tyPiirraKierteet(); }
@@ -9747,6 +9806,462 @@ function tyValitseOsio(osio) {
 /* halkaisijaa kirjoittaessa vain arvolaatikko päivittyy, jotta kenttä ei menetä fokusta */
 function tyPiirraArvotSailyttaen() { tyPiirraArvot(); }
 
+
+/* =================================================================
+   NEUVOJA — työstöarvojen neuvoja (HSMAdvisor / FSWizard -tyyppinen)
+   Perusarvot: sovelluksen tietopankki + omat hienosäädöt (tpKerroin).
+   Voimat ja teho: kc = kc1 · hm^-mc (ISCAR materiaaliryhmät), Sandvikin / MMC:n julkiset kaavat.
+   Lastunohennus: fz = hex · D / (2 · √(ae·(D − ae))), kun ae < D/2.
+   Taipuma: δ = F·L³ / (3·E·I), I = π·(0,8·D)⁴/64 (urituksen ydin), raja ~25 µm rouhinta / 5 µm viimeistely.
+   ================================================================= */
+/* kc1 (N/mm²) ja mc materiaaliluokittain. Lähde: ISCAR Materials group -taulukko.
+   D ja SD (duplex, superduplex) ovat arvioita: ISCAR antaa austeniittiselle ja duplexille yhdessä 2150. */
+const NV_KC = {
+  P:  { kc1: 1700, mc: 0.24, lahde: 'ISCAR ryhmät 6–9 (niukkaseosteinen teräs)' },
+  M:  { kc1: 2150, mc: 0.20, lahde: 'ISCAR ryhmä 14 (austeniittinen ruostumaton)' },
+  D:  { kc1: 2300, mc: 0.20, lahde: 'arvio: ISCAR 14 + duplexin suurempi lujuus' },
+  SD: { kc1: 2450, mc: 0.20, lahde: 'arvio: ISCAR 14 + superduplexin suurempi lujuus' },
+  K:  { kc1: 1250, mc: 0.25, lahde: 'ISCAR ryhmät 15–18 (suomugrafiitti- ja pallografiittivalurauta)' },
+  N:  { kc1: 750,  mc: 0.25, lahde: 'ISCAR ryhmät 21–28 (alumiini, kupariseokset)' },
+  Ti: { kc1: 2110, mc: 0.22, lahde: 'ISCAR ryhmä 37 (alfa+beta-titaani)' },
+  Ni: { kc1: 3300, mc: 0.24, lahde: 'ISCAR ryhmät 33–35 (Ni/Co-pohjaiset)' },
+  H:  { kc1: 4600, mc: 0.25, lahde: 'ISCAR ryhmä 38 (karkaistu 55 HRC), mc arvio' }
+};
+const NV_E = { vhm: 600000, hss: 210000, pala: 210000 };   /* N/mm² */
+const NV_OLETUS = {
+  op: 'jyrsinta', jt: 'sivu', st: 'rouhinta', tmat: 'vhm', toolUid: '',
+  D: '10', z: '4', L: '', r: '0.8', kr: '', mat: '1.4462', kara: '',
+  jaykkyys: 'normaali', tavoite: 'normaali', ap: '', ae: '', ra: '1.6', Dw: ''
+};
+function nvTila() {
+  if (!TY.nv || typeof TY.nv !== 'object') TY.nv = {};
+  Object.keys(NV_OLETUS).forEach(k => { if (TY.nv[k] == null) TY.nv[k] = NV_OLETUS[k]; });
+  return TY.nv;
+}
+
+/* ---------- karat (konekohtaiset, synkronoidaan) ---------- */
+const NV_KARAT_OLETUS = [
+  { uid: 'kara-sp1', nimi: 'Pääkara (SP1)', rooli: 'sorvaus', nmax: '', kw: '', nm: '' },
+  { uid: 'kara-sp2', nimi: 'Vastakara (SP2)', rooli: 'sorvaus', nmax: '', kw: '', nm: '' },
+  { uid: 'kara-b', nimi: 'Työkalukara (B-akseli)', rooli: 'pyoriva', nmax: '', kw: '', nm: '' }
+];
+function nvKarat() {
+  const d = store.getJSON(mk(K_KARAT));
+  return Array.isArray(d) && d.length ? d : JSON.parse(JSON.stringify(NV_KARAT_OLETUS));
+}
+function nvTallennaKarat(lista) { store.setJSON(mk(K_KARAT), lista); }
+function nvValittuKara(v) {
+  const karat = nvKarat();
+  let k = karat.find(x => x.uid === v.kara);
+  if (!k) k = karat.find(x => x.rooli === (v.op === 'sorvaus' ? 'sorvaus' : 'pyoriva')) || karat[0];
+  return k;
+}
+
+/* ---------- laskenta ---------- */
+function nvTyokaluluokka(v) {
+  if (v.op === 'sorvaus') return 'sorvaus';
+  if (v.op === 'poraus') return v.tmat === 'hss' ? 'pora_hss' : (v.tmat === 'pala' ? 'upora' : 'pora');
+  return v.tmat === 'hss' ? 'jyrsin_hss' : (v.tmat === 'pala' ? 'otsajyrsin' : 'jyrsin');
+}
+function nvEhdotus(v, luokka, D) {
+  /* yleiset aloitusohjeet (valmistajien ja HSMAdvisorin tyypilliset lähtöarvot) */
+  const vaikea = ['M', 'D', 'SD', 'Ti', 'Ni', 'H'].indexOf(luokka) !== -1;
+  if (v.op === 'jyrsinta') {
+    if (v.tmat === 'pala' || v.jt === 'taso') return { ap: 2, ae: 0.7 * D };
+    if (v.jt === 'ura') return { ap: (vaikea ? 0.25 : 0.5) * D, ae: D };
+    if (v.jt === 'trokoidi') return { ap: 2 * D, ae: (vaikea ? 0.05 : 0.08) * D };
+    return { ap: 1 * D, ae: (vaikea ? 0.1 : 0.25) * D };
+  }
+  if (v.op === 'sorvaus') return { ap: v.st === 'viimeistely' ? 0.5 : (vaikea ? 1.5 : 2.5) };
+  return {};
+}
+const NV_TAVOITE = { varovainen: { vc: 0.9, f: 0.85 }, normaali: { vc: 1, f: 1 }, tuottava: { vc: 1.1, f: 1.15 } };
+const NV_JAYKKYYS = { jaykka: 1.0, normaali: 0.85, heikko: 0.65 };
+
+function nvLaske(apPakko) {
+  const v = nvTila();
+  const out = { varoitukset: [], perusteet: [], ok: false };
+  const luokka = MAT_LUOKKA[v.mat];
+  const tl = nvTyokaluluokka(v);
+  out.tl = tl; out.luokka = luokka;
+  const rivi = TIETOPANKKI.rivit[tl] && TIETOPANKKI.rivit[tl][luokka];
+  const kc = NV_KC[luokka];
+  const kara = nvValittuKara(v); out.kara = kara;
+  const nmax = num(kara.nmax), pmax = num(kara.kw), mmax = num(kara.nm);
+  const D = num(v.D), z = Math.max(1, Math.round(num(v.z)) || 1), L = num(v.L);
+  const jayk = NV_JAYKKYYS[v.jaykkyys] || 0.85, tav = NV_TAVOITE[v.tavoite] || NV_TAVOITE.normaali;
+  if (!luokka) { out.virhe = 'Valitse materiaali.'; return out; }
+  if (!rivi || !rivi.vc || !rivi.vc[1]) { out.virhe = 'Tietopankissa ei ole arvoa yhdistelmälle ' + (SUOS_LUOKKA_NIMI[tl] || tl) + ' / ' + (MAT_LUOKKA_NIMI[luokka] || luokka) + (rivi && rivi.peruste ? ': ' + rivi.peruste : '.'); return out; }
+  if (v.op !== 'sorvaus' && !(D > 0)) { out.virhe = 'Anna työkalun halkaisija.'; return out; }
+  if (v.op === 'sorvaus' && !(D > 0)) { out.virhe = 'Anna työstöhalkaisija.'; return out; }
+  const brand = (() => { const x = TOOLS.find(t => t.uid === v.toolUid); return x ? x.brand : ''; })();
+  const kr = tpKerroin(tl, luokka, brand);
+  const laji = TIETOPANKKI.laji[tl] || '';
+  const fPerus = rivi.f && rivi.f[0] ? rivi.f[0] * ((laji === 'fpD' || laji === 'fzD') ? D : 1) : NaN;
+  out.perusteet.push('Tietopankki: ' + (SUOS_LUOKKA_NIMI[tl] || tl) + ' / ' + (MAT_LUOKKA_NIMI[luokka] || luokka) +
+    ', vc ' + rivi.vc[1] + ' m/min (' + (rivi.vc[0] || '–') + '–' + (rivi.vc[2] || '–') + '), luotettavuus ' + (rivi.luot || '?') +
+    (rivi.lahde ? ', lähde ' + rivi.lahde : '') + '.');
+  if (Math.abs(kr.vcK - 1) > 0.005 || Math.abs(kr.fK - 1) > 0.005) out.perusteet.push('Omat hienosäädöt käytössä: vc ×' + kr.vcK.toFixed(2) + ', syöttö ×' + kr.fK.toFixed(2) + '.');
+
+  /* ap / ae */
+  const eh = nvEhdotus(v, luokka, D);
+  let ap = num(v.ap), ae = num(v.ae);
+  out.apEhdotus = !(ap > 0); out.aeEhdotus = v.op === 'jyrsinta' && !(ae > 0);
+  if (!(ap > 0) && eh.ap) ap = Math.round(eh.ap * jayk * 100) / 100;
+  if (apPakko > 0) ap = apPakko;
+  if (v.op === 'jyrsinta' && !(ae > 0)) ae = Math.round(Math.min(D, eh.ae * (eh.ae >= D ? 1 : jayk)) * 100) / 100;
+  if (v.op === 'jyrsinta' && ae > D) ae = D;
+  out.ap = ap; out.ae = ae;
+
+  /* lastuamisnopeus */
+  let vc = rivi.vc[1] * kr.vcK * tav.vc;
+  let vcSyy = '';
+  if (v.op === 'jyrsinta') {
+    const s = ae / D;
+    const k = s <= 0.05 ? 1.25 : s <= 0.1 ? 1.2 : s <= 0.25 ? 1.1 : s >= 0.99 ? 0.85 : 1;
+    if (k !== 1) { vc *= k; vcSyy = k > 1 ? 'kapea ae (lyhyt kosketusaika): vc ×' + k : 'täysura: vc ×' + k; }
+  }
+  if (rivi.vc[2]) vc = Math.min(vc, rivi.vc[2] * Math.max(1, kr.vcK));
+  if (rivi.vc[0]) vc = Math.max(vc, rivi.vc[0] * Math.min(1, kr.vcK) * 0.9);
+  if (vcSyy) out.perusteet.push('Nopeus: ' + vcSyy + ' (rajattu tietopankin haarukkaan).');
+
+  /* kierrosluku ja karan raja */
+  let n = vc * 1000 / (Math.PI * D);
+  if (nmax > 0 && n > nmax) {
+    n = nmax; vc = Math.PI * D * n / 1000;
+    out.varoitukset.push({ taso: 'info', teksti: 'Kierrosluku rajattu karan maksimiin ' + fmt(nmax, 0) + ' r/min. vc laskee arvoon ' + fmt(vc, 0) + ' m/min, syöttö per terä pidetään.' });
+  }
+  out.vc = vc; out.n = n;
+
+  /* syöttö, lastunohennus, lastun paksuus */
+  const krad = (num(v.kr) > 0 ? num(v.kr) : (v.op === 'poraus' ? 70 : (v.op === 'sorvaus' ? 95 : (v.tmat === 'pala' && v.jt === 'taso' ? 45 : 90)))) * Math.PI / 180;
+  out.kr = Math.round(krad * 180 / Math.PI);
+  let hm, Pc, F;
+  if (v.op === 'jyrsinta') {
+    let hex = fPerus * kr.fK * tav.f;
+    if (v.jt === 'ura' || ae >= 0.99 * D) { hex *= 0.8; out.perusteet.push('Täysura: syöttö ×0,8.'); }
+    let rctf = 1;
+    if (ae < D / 2 && ae > 0) {
+      rctf = Math.min(3, D / (2 * Math.sqrt(ae * (D - ae))));
+      out.perusteet.push('Lastunohennus: ae ' + lyhyt(ae) + ' mm = ' + Math.round(ae / D * 100) + ' % D → syöttöä nostetaan ×' + rctf.toFixed(2) + ' (max ×3), jotta lastu pysyy tavoitepaksuudessa ' + lyhyt(Math.round(hex * 1000) / 1000) + ' mm.');
+    }
+    if (Math.sin(krad) < 0.98) { hex = hex / Math.sin(krad); out.perusteet.push('Asetuskulma ' + out.kr + '°: syöttö ÷ sin κr.'); }
+    const fz = hex * rctf;
+    out.fz = fz;
+    out.vf = fz * z * n;
+    /* keskimääräinen lastunpaksuus: tasojyrsintä keskitettynä (Sandvik) tai sivujyrsintä toiselta puolelta */
+    const s_ = Math.min(1, ae / D);
+    if (v.jt === 'taso') hm = 180 * ae * fz * Math.sin(krad) / (Math.PI * D * (Math.asin(s_) * 180 / Math.PI));
+    else hm = 360 * ae * fz * Math.sin(krad) / (Math.PI * D * (Math.acos(1 - 2 * s_) * 180 / Math.PI));
+    out.hm = hm;
+    /* suurin lastunpaksuus */
+    out.hex = v.jt === 'taso' ? fz * Math.sin(krad) * Math.min(1, ae / D)
+      : fz * Math.sin(krad) * (ae >= D / 2 ? 1 : Math.sin(Math.acos(1 - 2 * s_)));
+    out.q = ap * ae * out.vf / 1000;
+    if (kc) {
+      const kcArvo = kc.kc1 * Math.pow(hm, -kc.mc);
+      out.kc = kcArvo;
+      Pc = ap * ae * out.vf * kcArvo / 60e6;
+      F = Pc * 60000 / vc;
+    }
+    /* ympyräinterpolointi */
+    const Dw = num(v.Dw);
+    if (Dw > D) { out.vfOhjelma = out.vf * (Dw - D) / Dw; out.perusteet.push('Ympyräinterpolointi Ø' + lyhyt(Dw) + ': keskipisteen syöttö = Vf × (Dw − D) / Dw.'); }
+    else if (Dw > 0) out.varoitukset.push({ taso: 'virhe', teksti: 'Jyrsin on yhtä suuri tai suurempi kuin reikä.' });
+  } else if (v.op === 'poraus') {
+    const f = fPerus * kr.fK * tav.f;
+    out.f = f; out.vf = f * n;
+    hm = f / 2 * Math.sin(krad); out.hm = hm;
+    out.q = Math.PI * D * D / 4 * out.vf / 1000;
+    if (kc) {
+      const kcArvo = kc.kc1 * Math.pow(hm, -kc.mc);
+      out.kc = kcArvo;
+      Pc = f * vc * D * kcArvo / 240000;
+      out.Ff = 0.5 * kcArvo * D / 2 * f * Math.sin(krad);
+    }
+  } else {
+    let f = fPerus * kr.fK * tav.f;
+    const r = num(v.r);
+    if (v.st === 'viimeistely' && r > 0 && num(v.ra) > 0) {
+      const fRa = Math.sqrt(num(v.ra) * r / 50);
+      out.perusteet.push('Viimeistely: syöttö tavoite-Ra:sta f = √(Ra · r / 50) = ' + lyhyt(Math.round(fRa * 1000) / 1000) + ' mm/r.');
+      f = Math.min(f, fRa);
+    }
+    out.f = f; out.vf = f * n;
+    hm = f * Math.sin(krad); out.hm = hm;
+    out.q = vc * ap * f;
+    out.ra = r > 0 ? f * f / r * 50 : NaN;
+    if (kc) {
+      const kcArvo = kc.kc1 * Math.pow(hm, -kc.mc);
+      out.kc = kcArvo;
+      Pc = vc * ap * f * kcArvo / 60000;
+    }
+    if (r > 0 && f > 0.5 * r && v.st === 'rouhinta') out.varoitukset.push({ taso: 'varoitus', teksti: 'Syöttö ' + lyhyt(Math.round(f * 100) / 100) + ' on yli puolet nirkon säteestä (r ' + lyhyt(r) + '). Suositus: f ≤ 0,5 × r tai suurempi nirkko.' });
+    if (r > 0 && ap > 0 && ap < 0.67 * r) out.varoitukset.push({ taso: 'varoitus', teksti: 'Lastuamissyvyys on pienempi kuin 2/3 nirkon säteestä. Lastu ei välttämättä katkea; käytä pienempää nirkkoa tai suurempaa ap:tä.' });
+    if (nmax > 0) out.perusteet.push('Vakiopintanopeus G96: rajoita kierrokset G50 S' + Math.round(nmax) + ' (karan maksimi).');
+  }
+
+  /* teho, vääntö, taipuma */
+  if (kc && isFinite(Pc)) {
+    out.pc = Pc;
+    out.pKara = Pc / 0.8;   /* hyötysuhde η ≈ 0,8 */
+    out.m = 9549 * Pc / n;
+    out.perusteet.push('Lastuamisvoima: kc = kc1 · hm^−mc = ' + kc.kc1 + ' · ' + lyhyt(Math.round(hm * 1000) / 1000) + '^−' + kc.mc + ' = ' + Math.round(out.kc) + ' N/mm² (' + kc.lahde + '). Karan teho = Pc / 0,8.');
+    if (pmax > 0) {
+      out.pPros = out.pKara / pmax * 100;
+      if (out.pPros > 100) out.varoitukset.push({ taso: 'virhe', teksti: 'Teho ylittää karan ' + lyhyt(pmax) + ' kW. Pienennä ap noin arvoon ' + lyhyt(Math.floor(ap * 0.8 * pmax / out.pKara * 10) / 10) + ' mm.' });
+      else if (out.pPros > 80) out.varoitukset.push({ taso: 'varoitus', teksti: 'Teho on ' + Math.round(out.pPros) + ' % karan tehosta. Jätä varaa, esim. ap ' + lyhyt(Math.floor(ap * 0.8 * pmax / out.pKara * 10) / 10) + ' mm.' });
+    }
+    if (mmax > 0) {
+      out.mPros = out.m / mmax * 100;
+      if (out.mPros > 100) out.varoitukset.push({ taso: 'virhe', teksti: 'Vääntö ' + Math.round(out.m) + ' Nm ylittää karan ' + lyhyt(mmax) + ' Nm. Pienennä ap:tä tai syöttöä, tai nosta kierroksia.' });
+      else if (out.mPros > 80) out.varoitukset.push({ taso: 'varoitus', teksti: 'Vääntö on ' + Math.round(out.mPros) + ' % karan väännöstä.' });
+    }
+    if (v.op === 'jyrsinta' && L > 0 && F > 0) {
+      const De = 0.8 * D, I = Math.PI * Math.pow(De, 4) / 64;
+      const E = NV_E[v.tmat] || 600000;
+      out.taipuma = F * Math.pow(L, 3) / (3 * E * I) * 1000;   /* µm */
+      out.taipumaRaja = (v.st === 'viimeistely' || (ae > 0 && ae < 0.05 * D)) ? 5 : 25;
+      out.perusteet.push('Taipuma: F ≈ ' + Math.round(F) + ' N (Pc / vc), ulkonema ' + lyhyt(L) + ' mm, E ' + (E / 1000) + ' GPa, ydin 0,8 × D.');
+      if (out.taipuma > out.taipumaRaja) {
+        const kerroin = out.taipumaRaja / out.taipuma;
+        out.varoitukset.push({ taso: out.taipuma > 3 * out.taipumaRaja ? 'virhe' : 'varoitus',
+          teksti: 'Taipuma ' + Math.round(out.taipuma) + ' µm (raja ' + out.taipumaRaja + ' µm). Pienennä ap noin arvoon ' + lyhyt(Math.floor(ap * kerroin * 10) / 10) + ' mm tai lyhennä ulkonemaa (taipuma ∝ L³).' });
+      }
+      if (L > 4 * D) out.varoitukset.push({ taso: 'varoitus', teksti: 'Ulkonema on ' + (L / D).toFixed(1) + ' × D. Yli 4×D:llä värinäriski kasvaa selvästi; harkitse lyhyempää pidintä tai pienempää ae:tä.' });
+    } else if (v.op === 'jyrsinta' && !(L > 0)) {
+      out.perusteet.push('Anna ulkonema, niin neuvoja laskee työkalun taipuman.');
+    }
+  }
+  if (v.op === 'jyrsinta' && v.jt === 'trokoidi' && ap > 0 && ap > 3 * D) out.varoitukset.push({ taso: 'varoitus', teksti: 'ap on yli 3 × D. Tarkista terän pituus.' });
+  const ohut = v.op === 'jyrsinta' ? out.hex : hm;
+  if (['SD', 'D', 'M'].indexOf(luokka) !== -1 && ohut > 0 && ohut < 0.03 && v.op !== 'sorvaus')
+    out.varoitukset.push({ taso: 'varoitus', teksti: 'Lastu on ohut (suurin paksuus ' + lyhyt(Math.round(ohut * 1000) / 1000) + ' mm). Ruostumattomassa ja duplexissa liian ohut lastu muokkauslujittaa pintaa; pidä lastu vähintään 0,03–0,05 mm.' });
+  if (!(pmax > 0)) out.perusteet.push('Karan rajoja ei ole annettu: tehoa, vääntöä ja kierroslukua ei verrata koneeseen.');
+  out.ok = true;
+  /* ehdotettu ap sovitetaan taipuman, tehon ja väännön rajoihin (käyttäjän antamaa ei muuteta) */
+  if (!apPakko && out.apEhdotus && ap > 0) {
+    let k = 1;
+    if (isFinite(out.taipuma) && out.taipuma > out.taipumaRaja) k = Math.min(k, out.taipumaRaja / out.taipuma);
+    if (isFinite(out.pPros) && out.pPros > 80) k = Math.min(k, 80 / out.pPros);
+    if (isFinite(out.mPros) && out.mPros > 80) k = Math.min(k, 80 / out.mPros);
+    if (k < 0.999) {
+      const uusiAp = Math.max(0.1, Math.floor(ap * k * 10) / 10);
+      const o2 = nvLaske(uusiAp);
+      o2.apEhdotus = true;
+      o2.perusteet.unshift('Ehdotettu ap ' + lyhyt(ap) + ' mm pienennettiin arvoon ' + lyhyt(uusiAp) + ' mm, jotta ' +
+        [isFinite(out.taipuma) && out.taipuma > out.taipumaRaja ? 'taipuma' : '', isFinite(out.pPros) && out.pPros > 80 ? 'teho' : '',
+         isFinite(out.mPros) && out.mPros > 80 ? 'vääntö' : ''].filter(Boolean).join(', ') + ' pysyy rajoissa.');
+      return o2;
+    }
+  }
+  return out;
+}
+
+/* ---------- näkymä ---------- */
+function nvTyokaluvaihtoehdot(v) {
+  const sopii = x => {
+    const tl = tyokaluLuokka(x);
+    if (v.op === 'jyrsinta') return ['jyrsin', 'jyrsin_hss', 'otsajyrsin', 'kierrejyrsin'].indexOf(tl) !== -1;
+    if (v.op === 'poraus') return ['pora', 'pora_hss', 'upora', 'kalvin'].indexOf(tl) !== -1;
+    return ['sorvaus', 'ura'].indexOf(tl) !== -1;
+  };
+  return '<option value="">Käsin annettu työkalu</option>' + TOOLS.filter(sopii)
+    .sort((a, b) => num(a.t) - num(b.t))
+    .map(x => '<option value="' + esc(x.uid) + '"' + (x.uid === v.toolUid ? ' selected' : '') + '>T' + esc(x.t) + ' · ' + esc(x.name || 'nimetön') + '</option>').join('');
+}
+function nvSeg(kentta, arvo, vaihtoehdot) {
+  return '<div class="seg-row nv-seg">' + vaihtoehdot.map(([a, nimi]) =>
+    '<button type="button" class="seg-btn' + (a === arvo ? ' active' : '') + '" data-nvseg="' + kentta + '" data-arvo="' + a + '"><span class="seg-name">' + nimi + '</span></button>').join('') + '</div>';
+}
+function nvRivi(id, sym, nimi, yks, arvo, ph) {
+  return tyRiviHTML('', sym, esc(nimi), yks, '<input type="text" inputmode="decimal" autocomplete="off" data-nv="' + id + '" value="' + esc(arvo || '') + '"' + (ph ? ' placeholder="' + esc(ph) + '"' : '') + ' aria-label="' + esc(nimi) + '">');
+}
+function renderNeuvoja() {
+  const v = nvTila();
+  const el = document.getElementById('nvSyotteet');
+  const ryhmat = {};
+  Object.keys(MAT_LUOKKA).forEach(m => { (ryhmat[MAT_LUOKKA[m]] = ryhmat[MAT_LUOKKA[m]] || []).push(m); });
+  const matOpt = ['P', 'M', 'D', 'SD', 'K', 'N', 'Ti', 'Ni', 'H'].filter(l => ryhmat[l]).map(l =>
+    '<optgroup label="' + esc(l + ' · ' + (MAT_LUOKKA_NIMI[l] || l)) + '">' + ryhmat[l].map(m =>
+      '<option value="' + esc(m) + '"' + (m === v.mat ? ' selected' : '') + '>' + esc((TIETOPANKKI.materiaalit[m] && TIETOPANKKI.materiaalit[m].nimi) || m) + '</option>').join('') + '</optgroup>').join('');
+  const karat = nvKarat(), kara = nvValittuKara(v);
+  const karaOpt = karat.map(k => '<option value="' + esc(k.uid) + '"' + (k.uid === kara.uid ? ' selected' : '') + '>' + esc(k.nimi) + '</option>').join('');
+  const rajat = [kara.nmax ? fmt(num(kara.nmax), 0) + ' r/min' : '', kara.kw ? lyhyt(num(kara.kw)) + ' kW' : '', kara.nm ? lyhyt(num(kara.nm)) + ' Nm' : ''].filter(Boolean).join(' · ');
+  let h = '';
+  h += '<div class="tyg"><div class="tyg-otsikko"><span>Operaatio</span></div>' +
+    nvSeg('op', v.op, [['jyrsinta', 'Jyrsintä'], ['poraus', 'Poraus'], ['sorvaus', 'Sorvaus']]);
+  if (v.op === 'jyrsinta') h += nvSeg('jt', v.jt, [['sivu', 'Sivu'], ['ura', 'Ura'], ['trokoidi', 'Trokoidi'], ['taso', 'Taso']]);
+  if (v.op === 'sorvaus') h += nvSeg('st', v.st, [['rouhinta', 'Rouhinta'], ['viimeistely', 'Viimeistely']]);
+  if (v.op === 'jyrsinta') h += nvSeg('st', v.st, [['rouhinta', 'Rouhinta'], ['viimeistely', 'Viimeistely']]);
+  h += '</div>';
+  h += '<div class="tyg"><div class="tyg-otsikko"><span>Työkalu</span><span class="tyg-vihje">valitse listasta tai anna käsin</span></div>' +
+    '<label class="nv-valinta"><select data-nv="toolUid">' + nvTyokaluvaihtoehdot(v) + '</select></label>' +
+    (v.op !== 'sorvaus' ? nvSeg('tmat', v.tmat, [['vhm', 'VHM'], ['hss', 'HSS'], ['pala', v.op === 'poraus' ? 'U-pora' : 'Teräpala']]) : '');
+  if (v.op === 'sorvaus') {
+    h += nvRivi('D', 'D<sub>m</sub>', 'Työstöhalkaisija', 'mm', v.D) + nvRivi('r', 'r<sub>ε</sub>', 'Nirkon säde', 'mm', v.r) +
+      nvRivi('kr', 'κ<sub>r</sub>', 'Asetuskulma', '°', v.kr, '95');
+  } else {
+    h += nvRivi('D', 'D<sub>c</sub>', 'Halkaisija', 'mm', v.D);
+    if (v.op === 'jyrsinta') h += nvRivi('z', 'z', 'Terien määrä', 'kpl', v.z);
+    h += nvRivi('L', 'L', 'Ulkonema', 'mm', v.L, v.op === 'jyrsinta' ? 'anna' : '');
+    if (v.op === 'jyrsinta' && v.tmat === 'pala') h += nvRivi('kr', 'κ<sub>r</sub>', 'Asetuskulma', '°', v.kr, v.jt === 'taso' ? '45' : '90');
+  }
+  h += '</div>';
+  h += '<div class="tyg"><div class="tyg-otsikko"><span>Materiaali</span></div>' +
+    '<label class="nv-valinta"><select data-nv="mat">' + matOpt + '</select></label></div>';
+  h += '<div class="tyg"><div class="tyg-otsikko"><span>Lastuaminen</span><span class="tyg-vihje">tyhjä = neuvojan ehdotus</span></div>' +
+    nvRivi('ap', 'a<sub>p</sub>', v.op === 'jyrsinta' ? 'Syvyys' : 'Lastuamissyvyys', 'mm', v.ap, 'ehdotus') +
+    (v.op === 'jyrsinta' ? nvRivi('ae', 'a<sub>e</sub>', 'Leveys', 'mm', v.ae, 'ehdotus') : '') +
+    (v.op === 'sorvaus' && v.st === 'viimeistely' ? nvRivi('ra', 'R<sub>a</sub>', 'Tavoitekarheus', 'µm', v.ra) : '') +
+    (v.op === 'jyrsinta' ? nvRivi('Dw', 'D<sub>w</sub>', 'Interpolointi Ø', 'mm', v.Dw, '–') : '') +
+    '</div>';
+  h += '<div class="tyg"><div class="tyg-otsikko"><span>Kone ja olosuhteet</span></div>' +
+    '<label class="nv-valinta"><select data-nv="kara">' + karaOpt + '</select></label>' +
+    '<div class="nv-rajat"><span>' + (rajat || 'Rajoja ei ole annettu') + '</span><button type="button" class="nv-linkki" data-nvkarat="1">' + (rajat ? 'Muokkaa' : 'Anna rajat') + '</button></div>' +
+    '<div class="nv-alaotsikko">Kiinnityksen jäykkyys</div>' + nvSeg('jaykkyys', v.jaykkyys, [['jaykka', 'Jäykkä'], ['normaali', 'Normaali'], ['heikko', 'Heikko']]) +
+    '<div class="nv-alaotsikko">Tavoite</div>' + nvSeg('tavoite', v.tavoite, [['varovainen', 'Varovainen'], ['normaali', 'Tasapaino'], ['tuottava', 'Tuottava']]) +
+    '</div>';
+  el.innerHTML = h;
+  nvPaivitaTulos();
+}
+
+function nvMittari(nimi, arvo, yks, pros, raja) {
+  const p = isFinite(pros) ? Math.max(0, Math.min(100, pros)) : null;
+  const luokka = !isFinite(pros) ? '' : pros > 100 ? ' yli' : pros > 80 ? ' lahes' : '';
+  return '<div class="nv-mittari' + luokka + '"><div class="nv-mittari-yla"><span>' + nimi + '</span><b>' + arvo + '<i>' + yks + '</i></b>' +
+    (raja ? '<em>' + raja + '</em>' : '') + '</div>' +
+    (p != null ? '<div class="nv-palkki"><span style="width:' + p + '%"></span></div>' : '') + '</div>';
+}
+function nvPaivitaTulos() {
+  const o = nvLaske(), v = nvTila();
+  const el = document.getElementById('nvTulos');
+  window.__nv = o;
+  if (!o.ok) {
+    el.innerHTML = '<div class="nv-tyhja">' + esc(o.virhe || 'Täytä tiedot.') + '</div>';
+    const yla = document.getElementById('nvYla'); if (yla) yla.innerHTML = '<div class="nv-tyhja">' + esc(o.virhe || 'Täytä tiedot.') + '</div>';
+    return;
+  }
+  const solu = (nimi, arvo, yks, ehd) => '<div class="ty-tulos"><div class="ty-tulos-nimi">' + nimi + (ehd ? ' <span class="nv-ehd">ehdotus</span>' : '') + '</div><div class="ty-tulos-arvo">' + arvo + (yks ? '<span>' + yks + '</span>' : '') + '</div></div>';
+  let h = '<div class="nv-paa">';
+  h += solu('Lastuamisnopeus', fmt(o.vc, 0), 'm/min') + solu('Kierrosluku', fmt(o.n, 0), 'r/min');
+  if (v.op === 'jyrsinta') h += solu('Syöttö / terä', String(Math.round(o.fz * 1000) / 1000).replace('.', ','), 'mm');
+  else h += solu('Syöttö / kierros', String(Math.round(o.f * 1000) / 1000).replace('.', ','), 'mm/r');
+  h += solu('Pöytäsyöttö', fmt(o.vf, 0), 'mm/min');
+  if (o.ap > 0) h += solu('a<sub>p</sub>', lyhyt(o.ap), 'mm', o.apEhdotus);
+  if (v.op === 'jyrsinta') h += solu('a<sub>e</sub>', lyhyt(o.ae), 'mm', o.aeEhdotus);
+  if (isFinite(o.vfOhjelma)) h += '<div class="ty-tulos korostus"><div class="ty-tulos-nimi">Syöttö ohjelmaan</div><div class="ty-tulos-arvo">' + fmt(o.vfOhjelma, 0) + '<span>mm/min</span></div></div>';
+  h += '</div>';
+  h += '<div class="nv-mittarit">';
+  if (isFinite(o.pKara)) h += nvMittari('Karan teho', lyhyt(Math.round(o.pKara * 10) / 10), 'kW', o.pPros, num(o.kara.kw) > 0 ? 'raja ' + lyhyt(num(o.kara.kw)) + ' kW' : '');
+  if (isFinite(o.m)) h += nvMittari('Vääntö', fmt(o.m, 0), 'Nm', o.mPros, num(o.kara.nm) > 0 ? 'raja ' + lyhyt(num(o.kara.nm)) + ' Nm' : '');
+  if (isFinite(o.taipuma)) h += nvMittari('Taipuma', fmt(o.taipuma, 0), 'µm', o.taipuma / o.taipumaRaja * 100, 'raja ' + o.taipumaRaja + ' µm');
+  if (isFinite(o.Ff)) h += nvMittari('Syöttövoima', fmt(o.Ff, 0), 'N', NaN, '');
+  h += nvMittari('Lastun paksuus h<sub>m</sub>', String(Math.round(o.hm * 1000) / 1000).replace('.', ','), 'mm', NaN, '');
+  h += nvMittari('Ainepoisto', lyhyt(Math.round(o.q * 10) / 10), 'cm³/min', NaN, '');
+  if (isFinite(o.ra)) h += nvMittari('Pinnankarheus R<sub>a</sub>', String(Math.round(o.ra * 100) / 100).replace('.', ','), 'µm', NaN, 'teoreettinen');
+  h += '</div>';
+  if (o.varoitukset.length) h += '<ul class="nv-varoitukset">' + o.varoitukset.map(w => '<li class="' + w.taso + '">' + esc(w.teksti) + '</li>').join('') + '</ul>';
+  else h += '<div class="nv-kunnossa">Ei huomautettavaa annetuilla tiedoilla.</div>';
+  h += '<div class="btn-row nv-napit"><button type="button" class="add-cut-btn kp-kayta" data-nvvie="1">Vie laskimeen</button>' +
+    (v.toolUid ? '<button type="button" class="add-cut-btn" data-nvtallenna="1">Tallenna työkalulle</button>' : '') + '</div>';
+  h += '<details class="ty-vinkit nv-perusteet"><summary>Miten tämä laskettiin</summary><ul>' + o.perusteet.map(p => '<li>' + esc(p) + '</li>').join('') +
+    '<li>Arvot ovat aloitusarvoja julkisista lähteistä ja omasta tietopankistasi. Tarkista työkaluvalmistajan suositus ja kuuntele lastua.</li></ul></details>';
+  el.innerHTML = h;
+  const yla = document.getElementById('nvYla');
+  if (yla) {
+    let y = solu('Kierrosluku', fmt(o.n, 0), 'r/min');
+    y += v.op === 'jyrsinta' ? solu('Syöttö / terä', String(Math.round(o.fz * 1000) / 1000).replace('.', ','), 'mm')
+      : solu('Syöttö / kierros', String(Math.round(o.f * 1000) / 1000).replace('.', ','), 'mm/r');
+    y += solu('Pöytäsyöttö', fmt(o.vf, 0), 'mm/min');
+    const pahin = o.varoitukset.some(w => w.taso === 'virhe') ? 'virhe' : o.varoitukset.some(w => w.taso === 'varoitus') ? 'varoitus' : '';
+    yla.innerHTML = y + (pahin ? '<div class="nv-yla-tila ' + pahin + '">' + o.varoitukset.length + ' huomautusta alla</div>' : '');
+  }
+}
+
+function nvTyokalustaTiedot(uid) {
+  const v = nvTila();
+  const x = TOOLS.find(t => t.uid === uid);
+  v.toolUid = uid || '';
+  if (!x) return;
+  const tl = tyokaluLuokka(x);
+  if (['jyrsin_hss', 'pora_hss'].indexOf(tl) !== -1) v.tmat = 'hss';
+  else if (['otsajyrsin', 'upora'].indexOf(tl) !== -1) v.tmat = 'pala';
+  else v.tmat = 'vhm';
+  const D = toolCutDia(x);
+  if (v.op !== 'sorvaus' && D > 0) v.D = String(D);
+  if (has(x.teeth)) v.z = String(x.teeth);
+  if (has(x.ulkonema)) v.L = String(num(x.ulkonema) || '');
+  if (v.op === 'sorvaus' && has(x.radius)) v.r = String(x.radius);
+}
+
+async function nvMuokkaaKaraa() {
+  const v = nvTila();
+  const karat = nvKarat();
+  const k = karat.find(x => x.uid === nvValittuKara(v).uid);
+  const nmax = await kysyTeksti(k.nimi + ': maksimikierrokset', k.nmax || '', 'r/min, esim. 12000. Löytyy koneen teknisistä tiedoista.');
+  if (nmax === null) return;
+  const kw = await kysyTeksti(k.nimi + ': teho', k.kw || '', 'kW (jatkuva tai 30 min teho).');
+  if (kw === null) return;
+  const nm = await kysyTeksti(k.nimi + ': vääntö', k.nm || '', 'Nm (maksimi). Tyhjä = ei tarkisteta.');
+  if (nm === null) return;
+  k.nmax = String(nmax).replace(',', '.').trim(); k.kw = String(kw).replace(',', '.').trim(); k.nm = String(nm).replace(',', '.').trim();
+  k.mod = new Date().toISOString();
+  nvTallennaKarat(karat);
+  renderNeuvoja();
+  toast('Karan rajat tallennettu: ' + k.nimi);
+}
+
+function nvVieLaskimeen(jaTallenna) {
+  const o = window.__nv, v = nvTila();
+  if (!o || !o.ok) return;
+  const tila = v.op;
+  const k = TY.k[tila] = Object.assign({}, TY.k[tila] || {});
+  k.D = String(v.D); k.vc = String(Math.round(o.vc)); k.n = ''; k.vf = '';
+  if (tila === 'jyrsinta') { k.z = String(v.z); k.fz = tySyottoTeksti(o.fz); k.ae = String(o.ae); k.Dw = v.Dw || ''; }
+  else k.f = tySyottoTeksti(o.f);
+  if (o.ap > 0) k.ap = String(o.ap);
+  if (tila === 'sorvaus') k.r = String(v.r);
+  TY.tila = tila; TY.ohjaa = 'vc'; TY.ohjaaF = 'syotto';
+  if (v.toolUid) {
+    const x = TOOLS.find(t => t.uid === v.toolUid);
+    const c = x && (x.cuts || []).find(r => r.mat === v.mat);
+    TY.linkki = x ? { uid: x.uid, cut: c ? c.uid : '', mat: v.mat } : TY.linkki;
+  }
+  tallennaTy();
+  tyValitseOsio('laskin');
+  if (jaTallenna) tyTallennaTyokalulle();
+}
+
+(function nvKuuntelijat() {
+  const juuri = document.getElementById('viewTyosto');
+  juuri.addEventListener('click', e => {
+    const seg = e.target.closest('[data-nvseg]');
+    if (seg) {
+      const v = nvTila(), kentta = seg.getAttribute('data-nvseg'), arvo = seg.getAttribute('data-arvo');
+      v[kentta] = arvo;
+      if (kentta === 'op') { v.toolUid = ''; v.ap = ''; v.ae = ''; v.kr = ''; v.kara = ''; if (arvo === 'sorvaus') v.D = ''; }
+      if (kentta === 'jt' || kentta === 'tmat') { v.ap = ''; v.ae = ''; }
+      tallennaTy(); renderNeuvoja(); return;
+    }
+    if (e.target.closest('[data-nvkarat]')) { nvMuokkaaKaraa(); return; }
+    if (e.target.closest('[data-nvvie]')) { nvVieLaskimeen(false); return; }
+    if (e.target.closest('[data-nvtallenna]')) { nvVieLaskimeen(true); return; }
+  });
+  juuri.addEventListener('input', e => {
+    const k = e.target.getAttribute && e.target.getAttribute('data-nv');
+    if (!k || e.target.tagName === 'SELECT') return;
+    nvTila()[k] = e.target.value; tallennaTy(); nvPaivitaTulos();
+  });
+  juuri.addEventListener('change', e => {
+    const k = e.target.getAttribute && e.target.getAttribute('data-nv');
+    if (!k || e.target.tagName !== 'SELECT') return;
+    const v = nvTila();
+    if (k === 'toolUid') { nvTyokalustaTiedot(e.target.value); v.ap = ''; v.ae = ''; tallennaTy(); renderNeuvoja(); return; }
+    v[k] = e.target.value; tallennaTy();
+    if (k === 'kara') renderNeuvoja(); else nvPaivitaTulos();
+  });
+})();
 
 /* =================================================================
    KAPPALEET — työkortit piirustusnumeroittain (konekohtainen, synkronoidaan)
