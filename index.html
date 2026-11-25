@@ -1855,6 +1855,9 @@
   .ku-tila.virhe span { color: var(--text); font-size: 12.5px; }
   .ku-tila.huom { color: var(--orange); background: color-mix(in srgb, var(--orange) 10%, transparent); }
   .ku-lisa > summary { list-style: none; cursor: pointer; }
+  .ku-kaari { font-size: 12.5px; color: var(--text-dim); margin: -2px 0 6px; }
+  .ku-kaari:empty { display: none; }
+  .ku-kaari b { color: var(--text); font-family: var(--mono); }
   .ku-lisa > summary::-webkit-details-marker { display: none; }
   .ku-lisa > summary span:first-child::after { content: ' ›'; color: var(--text-dim); }
   .ku-lisa[open] > summary span:first-child::after { content: ' ⌄'; }
@@ -10530,15 +10533,17 @@ function renderKiilaura() {
     kuRivi('T', 'T', 'Terän leveys', 'mm', '') +
     kuRivi('Dr', 'D', 'Rungon Ø', 'mm', '') +
     kuRivi('Lr', 'L', 'Runko–särmä', 'mm', '') + '</div>';
-  h += '<details class="tyg ku-lisa"' + (lisaAuki ? ' open' : '') + '><summary class="tyg-otsikko"><span>Lisää</span></summary>' +
+  h += '<details class="tyg ku-lisa"' + (lisaAuki ? ' open' : '') + '><summary class="tyg-otsikko"><span>Lisäasetukset</span></summary>' +
+    (KU.tyyppi !== 'vino' ? '<div class="nv-alaotsikko">Kaaripoistuminen</div>' + kuRivi('J', 'J', 'Kaaren loppu Z', 'mm', 'ei kaarta') + '<div class="ku-kaari" id="kuKaari"></div>' : '') +
+    '<div class="nv-alaotsikko">Ura</div>' +
     kuRivi('V', 'V', 'Viimeistelyvedot', 'kpl', '2') +
     kuRivi('M', 'M', 'Urien määrä', 'kpl', '1') +
     kuRivi('H', 'H', '1. uran kulma', '°', '0') +
-    (KU.tyyppi !== 'vino' ? kuRivi('J', 'J', 'Kaaripoistuminen', 'mm', '') : '') +
     kuRivi('R', 'R', 'Otsa Z', 'mm', '0') +
     kuRivi('K', 'K', 'Lähtötaso', 'mm', '10') +
     kuRivi('S', 'S', 'Turvaväli', 'mm', '0.2') +
     kuRivi('B', 'B', 'Y-askel', 'mm', '') +
+    '<div class="nv-alaotsikko">Makro</div>' +
     kuRivi('v28', '#28', 'Viisteen kulma', '°', '0') +
     '<div class="nv-alaotsikko">T kutsuun</div>' + kuSeg('tKutsu', KU.tKutsu, [['ei', 'Ei'], ['kylla', 'Kyllä']]) +
     '</details>';
@@ -10574,6 +10579,8 @@ function kuPaivita() {
   const xInp = document.querySelector('#viewKiilaura input[data-ku="X"]');
   if (xInp) xInp.placeholder = isFinite(KU.xLaskettu) ? '= ' + kuMm(KU.xLaskettu, 3).replace(',', '.') : '= Ø − työvara';
   yla.innerHTML = '<div class="ku-kutsu-rivi"><code class="ku-kutsu copyable" id="kuKutsu">' + kuKutsuHTML(v, KU.tKutsu === 'kylla', akt) + '</code><button type="button" class="ku-kopioi" id="kuKopioi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>Kopioi</button></div>' + tila;
+  const kaEl = document.getElementById('kuKaari');
+  if (kaEl) kaEl.innerHTML = (o.ok && o.arvot.Rk > 0) ? 'Kaaren säde <b>R' + kuMm(o.arvot.Rk) + '</b>' : '';
   const tEl = document.getElementById('kuTulos');
   if (!tEl) return;
   if (!o.ok) { tEl.innerHTML = ''; return; }
