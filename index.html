@@ -2327,7 +2327,7 @@
 
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · LEUKALASKURI · v3.65</footer>
+    <footer><span class="machine-name">NTX3000</span> · LEUKALASKURI · v3.66</footer>
   </div>
 
   <!-- ===================== ASETUKSET: LEUKAKORJAIN ===================== -->
@@ -2464,7 +2464,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · SP2 &amp; G55 · v3.65</footer>
+    <footer><span class="machine-name">NTX3000</span> · SP2 &amp; G55 · v3.66</footer>
   </div>
 
   <!-- ===================== ASETUKSET: SP2 ===================== -->
@@ -2587,7 +2587,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · TYÖKALULISTA · v3.65</footer>
+    <footer><span class="machine-name">NTX3000</span> · TYÖKALULISTA · v3.66</footer>
   </div>
 
   <!-- ===================== ASETUKSET ===================== -->
@@ -2624,7 +2624,7 @@
       </div>
       <div id="kuSisalto"></div>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · KIILAURA · v3.65</footer>
+    <footer><span class="machine-name">NTX3000</span> · KIILAURA · v3.66</footer>
   </div>
 
   <div class="view" id="viewTyosto">
@@ -2750,7 +2750,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · TYÖSTÖ · v3.65</footer>
+    <footer><span class="machine-name">NTX3000</span> · TYÖSTÖ · v3.66</footer>
   </div>
 
   <!-- ===================== KAPPALEET: TYÖKORTIT PIIRUSTUSNUMEROITTAIN ===================== -->
@@ -2789,7 +2789,7 @@
       <div id="kpLista"></div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · KAPPALEET · v3.65</footer>
+    <footer><span class="machine-name">NTX3000</span> · KAPPALEET · v3.66</footer>
   </div>
 
   <div class="view" id="viewKappale">
@@ -2807,7 +2807,7 @@
       </div>
     </header>
     <main id="kpKortti"></main>
-    <footer><span class="machine-name">NTX3000</span> · KAPPALEKORTTI · v3.65</footer>
+    <footer><span class="machine-name">NTX3000</span> · KAPPALEKORTTI · v3.66</footer>
   </div>
 
   <div class="view" id="viewData">
@@ -2947,7 +2947,7 @@
       </section>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · ASETUKSET · v3.65</footer>
+    <footer><span class="machine-name">NTX3000</span> · ASETUKSET · v3.66</footer>
   </div>
 
   <!-- ===================== KONEET ===================== -->
@@ -2981,7 +2981,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · KONEET · v3.65</footer>
+    <footer><span class="machine-name">NTX3000</span> · KONEET · v3.66</footer>
   </div>
 
   <!-- ===================== TYÖKALUTYYPPIEN HALLINTA ===================== -->
@@ -3013,7 +3013,7 @@
       </section>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · TYÖKALUTYYPIT · v3.65</footer>
+    <footer><span class="machine-name">NTX3000</span> · TYÖKALUTYYPIT · v3.66</footer>
   </div>
 
   <!-- ===================== TUONTI: ESIKATSELU ===================== -->
@@ -3081,7 +3081,7 @@
         </div>
       </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TUONTI · v3.65</footer>
+    <footer><span class="machine-name">NTX3000</span> · TUONTI · v3.66</footer>
   </div>
 
   <!-- ===================== TYÖSTÖTIETOPANKKI JA OMAT SÄÄDÖT ===================== -->
@@ -3113,14 +3113,18 @@
         </div>
       </section>
       <section>
-        <div class="section-label">Työkaluluokka</div>
-        <div class="filter-row tp-luokat" id="tpLuokat"></div>
+        <div class="section-card">
+          <div class="field">
+            <label for="tpLuokat">Työkalu</label>
+            <select id="tpLuokat"></select>
+          </div>
+        </div>
       </section>
       <section>
         <div class="tp-rivit" id="tpRivit"></div>
       </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TIETOPANKKI · v3.65</footer>
+    <footer><span class="machine-name">NTX3000</span> · TIETOPANKKI · v3.66</footer>
   </div>
 
 <!-- ===================== TARKISTUS ===================== -->
@@ -3140,7 +3144,7 @@
         <div class="edit-list" id="qualityList"></div>
       </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TARKISTUS · v3.65</footer>
+    <footer><span class="machine-name">NTX3000</span> · TARKISTUS · v3.66</footer>
   </div>
 
 </div>
@@ -5376,6 +5380,17 @@ const SUOS_LUOKKA_NIMI = {
   pora_hss: 'HSS-pora', upora: 'U-pora', kalvin: 'kalvin', jyrsin: 'kovametallijyrsin', jyrsin_hss: 'HSS-jyrsin',
   otsajyrsin: 'palajyrsin', kierretappi: 'kierretappi', kierrejyrsin: 'kierrejyrsin'
 };
+/* Työkaluluokan valikko ryhmittäin (Arvot ja Tietopankki) */
+function luokkaOptiot(valittu, lisa) {
+  const RYHMAT = [['Sorvaus', ['sorvaus', 'ura', 'kierresorvaus']], ['Poraus', ['pora', 'pora_hss', 'upora', 'kalvin']],
+    ['Jyrsintä', ['jyrsin', 'jyrsin_hss', 'otsajyrsin']], ['Kierteet', ['kierretappi', 'kierrejyrsin']]];
+  const iso = t => t.charAt(0).toUpperCase() + t.slice(1);
+  return RYHMAT.map(([r, lista]) => {
+    const l = lista.filter(tl => TIETOPANKKI.rivit[tl] && SUOS_LUOKKA_NIMI[tl]);
+    return l.length ? '<optgroup label="' + r + '">' + l.map(tl => '<option value="' + tl + '"' + (tl === valittu ? ' selected' : '') + '>' +
+      esc(iso(SUOS_LUOKKA_NIMI[tl])) + (lisa ? lisa(tl) : '') + '</option>').join('') + '</optgroup>' : '';
+  }).join('');
+}
 function onHss(x) { return /\bhss|hsco|hss-e\b/i.test([x.name, x.grade, x.notes].join(' ')); }
 function tyokaluLuokka(x) {
   const t = getType(x.typeId);
@@ -8476,11 +8491,10 @@ function renderTietopankki() {
   document.querySelectorAll('#tpAutoRow .seg-btn').forEach(b =>
     b.classList.toggle('active', (b.getAttribute('data-tpauto') === '1') === auto));
   const h = omatHavainnot();
-  document.getElementById('tpLuokat').innerHTML = Object.keys(SUOS_LUOKKA_NIMI).filter(tl => TIETOPANKKI.rivit[tl]).map(tl => {
+  document.getElementById('tpLuokat').innerHTML = luokkaOptiot(tpValittu, tl => {
     const n = Object.keys(h).filter(k => k.indexOf(tl + '|') === 0 && /\|$/.test(k)).reduce((m, k) => m + h[k].n, 0);
-    return '<button type="button" class="filter-chip' + (tl === tpValittu ? ' active' : '') + '" data-tpluokka="' + tl + '">' +
-      esc(SUOS_LUOKKA_NIMI[tl]) + (n ? ' (' + n + ')' : '') + '</button>';
-  }).join('');
+    return n ? ' (' + n + ')' : '';
+  });
   const tl = tpValittu;
   const laji = TIETOPANKKI.laji[tl] || '';
   const halk = laji === 'fpD' || laji === 'fzD';
@@ -8544,10 +8558,8 @@ document.getElementById('tpAutoRow').addEventListener('click', e => {
   renderTietopankki();
   renderTools();
 });
-document.getElementById('tpLuokat').addEventListener('click', e => {
-  const b = e.target.closest('[data-tpluokka]');
-  if (!b) return;
-  tpValittu = b.getAttribute('data-tpluokka');
+document.getElementById('tpLuokat').addEventListener('change', e => {
+  tpValittu = e.target.value;
   renderTietopankki();
 });
 document.getElementById('tpRivit').addEventListener('click', e => {
@@ -10083,13 +10095,7 @@ function tyOmatArvot(tl, luokka, mat) {
 }
 
 function tyPiirraArvot() {
-  const RYHMAT = [['Sorvaus', ['sorvaus', 'ura', 'kierresorvaus']], ['Poraus', ['pora', 'pora_hss', 'upora', 'kalvin']],
-    ['Jyrsintä', ['jyrsin', 'jyrsin_hss', 'otsajyrsin']], ['Kierteet', ['kierretappi', 'kierrejyrsin']]];
-  const iso = t => t.charAt(0).toUpperCase() + t.slice(1);
-  document.getElementById('tyLuokka').innerHTML = RYHMAT.map(([r, lista]) => {
-    const l = lista.filter(tl => TIETOPANKKI.rivit[tl] && SUOS_LUOKKA_NIMI[tl]);
-    return l.length ? '<optgroup label="' + r + '">' + l.map(tl => '<option value="' + tl + '"' + (tl === TY.tl ? ' selected' : '') + '>' + esc(iso(SUOS_LUOKKA_NIMI[tl])) + '</option>').join('') + '</optgroup>' : '';
-  }).join('');
+  document.getElementById('tyLuokka').innerHTML = luokkaOptiot(TY.tl);
   const luokka = MAT_LUOKKA[TY.mat];
   const laji = TIETOPANKKI.laji[TY.tl] || '';
   const halk = laji === 'fpD' || laji === 'fzD';
