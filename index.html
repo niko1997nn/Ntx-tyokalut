@@ -2327,7 +2327,7 @@
 
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · LEUKALASKURI · v3.64</footer>
+    <footer><span class="machine-name">NTX3000</span> · LEUKALASKURI · v3.65</footer>
   </div>
 
   <!-- ===================== ASETUKSET: LEUKAKORJAIN ===================== -->
@@ -2464,7 +2464,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · SP2 &amp; G55 · v3.64</footer>
+    <footer><span class="machine-name">NTX3000</span> · SP2 &amp; G55 · v3.65</footer>
   </div>
 
   <!-- ===================== ASETUKSET: SP2 ===================== -->
@@ -2587,7 +2587,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · TYÖKALULISTA · v3.64</footer>
+    <footer><span class="machine-name">NTX3000</span> · TYÖKALULISTA · v3.65</footer>
   </div>
 
   <!-- ===================== ASETUKSET ===================== -->
@@ -2624,7 +2624,7 @@
       </div>
       <div id="kuSisalto"></div>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · KIILAURA · v3.64</footer>
+    <footer><span class="machine-name">NTX3000</span> · KIILAURA · v3.65</footer>
   </div>
 
   <div class="view" id="viewTyosto">
@@ -2697,11 +2697,11 @@
 
       <!-- TYÖSTÖARVOT -->
       <div class="ty-osio" data-osio="arvot">
-        <section>
-          <div class="section-label">Työkalu</div>
-          <div class="filter-row ty-luokat" id="tyLuokat"></div>
-        </section>
         <div class="section-card ty-valinnat">
+          <div class="field">
+            <label for="tyLuokka">Työkalu</label>
+            <select id="tyLuokka"></select>
+          </div>
           <div class="field">
             <label for="tyMat">Materiaali</label>
             <select id="tyMat"></select>
@@ -2750,7 +2750,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · TYÖSTÖ · v3.64</footer>
+    <footer><span class="machine-name">NTX3000</span> · TYÖSTÖ · v3.65</footer>
   </div>
 
   <!-- ===================== KAPPALEET: TYÖKORTIT PIIRUSTUSNUMEROITTAIN ===================== -->
@@ -2789,7 +2789,7 @@
       <div id="kpLista"></div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · KAPPALEET · v3.64</footer>
+    <footer><span class="machine-name">NTX3000</span> · KAPPALEET · v3.65</footer>
   </div>
 
   <div class="view" id="viewKappale">
@@ -2807,7 +2807,7 @@
       </div>
     </header>
     <main id="kpKortti"></main>
-    <footer><span class="machine-name">NTX3000</span> · KAPPALEKORTTI · v3.64</footer>
+    <footer><span class="machine-name">NTX3000</span> · KAPPALEKORTTI · v3.65</footer>
   </div>
 
   <div class="view" id="viewData">
@@ -2947,7 +2947,7 @@
       </section>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · ASETUKSET · v3.64</footer>
+    <footer><span class="machine-name">NTX3000</span> · ASETUKSET · v3.65</footer>
   </div>
 
   <!-- ===================== KONEET ===================== -->
@@ -2981,7 +2981,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · KONEET · v3.64</footer>
+    <footer><span class="machine-name">NTX3000</span> · KONEET · v3.65</footer>
   </div>
 
   <!-- ===================== TYÖKALUTYYPPIEN HALLINTA ===================== -->
@@ -3013,7 +3013,7 @@
       </section>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · TYÖKALUTYYPIT · v3.64</footer>
+    <footer><span class="machine-name">NTX3000</span> · TYÖKALUTYYPIT · v3.65</footer>
   </div>
 
   <!-- ===================== TUONTI: ESIKATSELU ===================== -->
@@ -3081,7 +3081,7 @@
         </div>
       </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TUONTI · v3.64</footer>
+    <footer><span class="machine-name">NTX3000</span> · TUONTI · v3.65</footer>
   </div>
 
   <!-- ===================== TYÖSTÖTIETOPANKKI JA OMAT SÄÄDÖT ===================== -->
@@ -3120,7 +3120,7 @@
         <div class="tp-rivit" id="tpRivit"></div>
       </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TIETOPANKKI · v3.64</footer>
+    <footer><span class="machine-name">NTX3000</span> · TIETOPANKKI · v3.65</footer>
   </div>
 
 <!-- ===================== TARKISTUS ===================== -->
@@ -3140,7 +3140,7 @@
         <div class="edit-list" id="qualityList"></div>
       </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TARKISTUS · v3.64</footer>
+    <footer><span class="machine-name">NTX3000</span> · TARKISTUS · v3.65</footer>
   </div>
 
 </div>
@@ -10083,12 +10083,18 @@ function tyOmatArvot(tl, luokka, mat) {
 }
 
 function tyPiirraArvot() {
-  document.getElementById('tyLuokat').innerHTML = Object.keys(SUOS_LUOKKA_NIMI).filter(tl => TIETOPANKKI.rivit[tl]).map(tl =>
-    '<button type="button" class="filter-chip' + (tl === TY.tl ? ' active' : '') + '" data-tyluokka="' + tl + '">' + esc(SUOS_LUOKKA_NIMI[tl]) + '</button>').join('');
+  const RYHMAT = [['Sorvaus', ['sorvaus', 'ura', 'kierresorvaus']], ['Poraus', ['pora', 'pora_hss', 'upora', 'kalvin']],
+    ['Jyrsintä', ['jyrsin', 'jyrsin_hss', 'otsajyrsin']], ['Kierteet', ['kierretappi', 'kierrejyrsin']]];
+  const iso = t => t.charAt(0).toUpperCase() + t.slice(1);
+  document.getElementById('tyLuokka').innerHTML = RYHMAT.map(([r, lista]) => {
+    const l = lista.filter(tl => TIETOPANKKI.rivit[tl] && SUOS_LUOKKA_NIMI[tl]);
+    return l.length ? '<optgroup label="' + r + '">' + l.map(tl => '<option value="' + tl + '"' + (tl === TY.tl ? ' selected' : '') + '>' + esc(iso(SUOS_LUOKKA_NIMI[tl])) + '</option>').join('') + '</optgroup>' : '';
+  }).join('');
   const luokka = MAT_LUOKKA[TY.mat];
   const laji = TIETOPANKKI.laji[TY.tl] || '';
   const halk = laji === 'fpD' || laji === 'fzD';
   document.getElementById('tyHalkRivi').style.display = halk ? '' : 'none';
+  { const ed = document.getElementById('tyHalkRivi').previousElementSibling; if (ed) ed.style.borderBottom = halk ? '' : 'none'; }
   const D = num(TY.D);
   const s = tySuositus(TY.tl, luokka, D);
   const mi = TIETOPANKKI.materiaalit[TY.mat] || {};
@@ -11407,6 +11413,7 @@ window.addEventListener('scroll', () => { const el = document.getElementById('ku
   });
   v.addEventListener('change', e => {
     if (e.target.id === 'tyMat') { TY.mat = e.target.value; tallennaTy(); tyPiirraArvot(); }
+    if (e.target.id === 'tyLuokka') { TY.tl = e.target.value; tallennaTy(); tyPiirraArvot(); }
   });
   document.getElementById('tyAvaaTp').addEventListener('click', () => {
     tpValittu = TY.tl;
