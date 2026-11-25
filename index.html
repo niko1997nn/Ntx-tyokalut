@@ -3233,6 +3233,7 @@ document.addEventListener('click', e => {
   try { localStorage.setItem(K_KAAVAT, kaavatNakyvissa ? '1' : '0'); } catch (err) {}
   kaytaKaavat();
   if (typeof calculateJaw === 'function') calculateJaw();
+  if (typeof kuPaivita === 'function') kuPaivita();
 });
 kaytaKaavat();
 
@@ -10567,7 +10568,8 @@ function kuPaivita() {
     tila = '<div class="ku-tila virhe"><b>' + (3000 + o.halytys) + ' ' + esc(hh[0]) + '</b><span>' + esc(hh[2]) + '</span></div>';
   }
   const kEl = document.getElementById('kuKorjaus');
-  if (kEl) kEl.innerHTML = (KU.korjaus && KU.korjaus.length) ? '<div class="ku-korjaus">' + KU.korjaus.map(x => '<div' + (x[0] === 'huom' ? ' class="huom"' : '') + '>' + x[1] + '</div>').join('') + '</div>'
+  const korjNak = (KU.korjaus || []).filter(x => x[0] === 'huom' || kaavatNakyvissa);
+  if (kEl) kEl.innerHTML = korjNak.length ? '<div class="ku-korjaus">' + korjNak.map(x => '<div' + (x[0] === 'huom' ? ' class="huom"' : '') + '>' + x[1] + '</div>').join('') + '</div>'
     : '';
   const xInp = document.querySelector('#viewKiilaura input[data-ku="X"]');
   if (xInp) xInp.placeholder = isFinite(KU.xLaskettu) ? '= ' + kuMm(KU.xLaskettu, 3).replace(',', '.') : '= Ø − työvara';
