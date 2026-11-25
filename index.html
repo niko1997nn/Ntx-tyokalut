@@ -10344,17 +10344,29 @@ function kuLaske(v) {
   const yAsemat = 2 * ny + 1;
   const pistotUra = (nVedot + V) * yAsemat;
   const viistevedot = viiste ? 2 * viiste.vedot : 0;
-  /* kesto: G01 lähtötasolta R+K Z:aan, pikaliike takaisin 30 m/min, ~0,01 s/lause */
-  const pikaliike = 30000;
+  /* kesto: jokainen liike kiihtyy ja hidastuu (trapetsi), lauseen vaihto ~0,03 s.
+     Veto: G00 X syvyyteen · G01 Z · G00 X turvatasolle · G00 Z lähtötasolle */
+  const pika = (n('pika') > 0 ? n('pika') : 50000) / 60;            /* mm/s */
+  const kiiht = (n('kiiht') > 0 ? n('kiiht') : 2) * 1000;           /* mm/s² */
+  const liike = (d, vmax) => {
+    d = Math.abs(d); if (!(d > 0)) return 0;
+    const v = Math.min(vmax, pika);
+    return d >= v * v / kiiht ? d / v + v / kiiht : 2 * Math.sqrt(d / kiiht);
+  };
+  const LAUSE = 0.03;
+  const vetoAika = (zPaa, rSyv) => {
+    const L = R + K - zPaa, dx = Math.max(0, rSyv - (b1 - 0.25));
+    return liike(dx, pika) + liike(L, F / 60) + liike(dx, pika) + liike(L, pika) + 4 * LAUSE;
+  };
   let aikaS = 0;
-  const vetoAika = zPaa => (R + K - zPaa) / F * 60 + (R + K - zPaa) / pikaliike * 60 + 4 * 0.01;
   for (let i = 1; i <= nVedot + V; i++) {
     const r = b1 + Math.min(i, nVedot) * q;
     const zPaa = k > 0 ? R - (r - b1) / k : Z;
-    aikaS += vetoAika(zPaa) * yAsemat;
+    aikaS += vetoAika(zPaa, r) * yAsemat + (yAsemat > 1 ? yAsemat * (liike(dy, pika) + LAUSE) : 0);
   }
-  aikaS += viistevedot * vetoAika(Z);
+  aikaS += viistevedot * vetoAika(Z, rb);
   aikaS *= M;
+  aikaS += M * (liike(R + K + 50, pika) + 3 * LAUSE + 1);   /* C-indeksointi ja lähestyminen uraa kohden */
   Object.assign(o.arvot, {
     c, a, b, b1, rb, Xaloitus: 2 * b1, Xturva: 2 * b1 - 0.5, Xpohja: 2 * rb,
     vedot: nVedot, q, V, e, ny, dy, yAsemat, pistotUra, pistot: pistotUra * M,
@@ -10543,6 +10555,9 @@ function renderKiilaura() {
     kuRivi('K', 'K', 'Lähtötaso', 'mm', '10') +
     kuRivi('S', 'S', 'Turvaväli', 'mm', '0.2') +
     kuRivi('B', 'B', 'Y-askel', 'mm', '') +
+    '<div class="nv-alaotsikko">Kone (kestoarvio)</div>' +
+    kuRivi('pika', 'G00', 'Pikaliike', 'mm/min', '50000') +
+    kuRivi('kiiht', 'a', 'Kiihtyvyys', 'm/s²', '2') +
     '<div class="nv-alaotsikko">Makro</div>' +
     kuRivi('v28', '#28', 'Viisteen kulma', '°', '0') +
     '<div class="nv-alaotsikko">T kutsuun</div>' + kuSeg('tKutsu', KU.tKutsu, [['ei', 'Ei'], ['kylla', 'Kyllä']]) +
@@ -10858,7 +10873,7 @@ window.addEventListener('scroll', () => { const el = document.getElementById('ku
     if (seg) { KU[seg.getAttribute('data-kuseg')] = seg.getAttribute('data-arvo'); kuTallenna(); renderKiilaura(); return; }
     const esim = t.closest('[data-kuesim]');
     if (esim) { const x = KU_ESIMERKIT[Number(esim.getAttribute('data-kuesim'))]; KU.tyyppi = x[1]; KU.vinoTapa = x[2].W ? 'W' : 'E'; KU.v = Object.assign({}, x[2]); KU.osio = 'kutsu'; kuTallenna(); renderKiilaura(); window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
-    if (t.closest('#kuTyhjenna')) { KU.v = {}; kuTallenna(); renderKiilaura(); return; }
+    if (t.closest('#kuTyhjenna')) { const p = {}; ['pika', 'kiiht', 'v28'].forEach(k => { if (KU.v[k]) p[k] = KU.v[k]; }); KU.v = p; kuTallenna(); renderKiilaura(); return; }
     if (t.closest('#kuKopioi') || t.closest('#kuKutsu')) { if (window.__kuKutsu) copyText(window.__kuKutsu); return; }
   });
   const syote = e => {
