@@ -1841,6 +1841,7 @@
   .ku-kutsu-rivi .section-label { margin: 0; }
   .ku-kutsu { display: block; flex: 1; font-family: var(--mono); font-size: 15px; font-weight: 600; line-height: 1.45; color: var(--accent);
     word-break: break-word; cursor: pointer; background: transparent; padding: 0; }
+  .numpad .np-miinus { font-size: 26px; font-weight: 600; }
   .ku-akt { color: var(--orange); background: color-mix(in srgb, var(--orange) 14%, transparent); border-radius: 4px; padding: 0 3px; }
   .ku-akt.tyhja { opacity: .85; outline: 1px dashed var(--orange); outline-offset: -1px; }
   .ku-tila { margin-top: 8px; font-size: 13px; line-height: 1.4; border-radius: 8px; padding: 7px 10px; }
@@ -3120,7 +3121,7 @@
   <button type="button" data-np="4">4</button><button type="button" data-np="5">5</button><button type="button" data-np="6">6</button>
   <button type="button" data-np="tyhja" class="toiminto" aria-label="Tyhjennä kenttä">C</button>
   <button type="button" data-np="7">7</button><button type="button" data-np="8">8</button><button type="button" data-np="9">9</button>
-  <button type="button" data-np="pm" class="toiminto" aria-label="Vaihda etumerkki">±</button>
+  <button type="button" data-np="pm" class="toiminto np-miinus" aria-label="Miinus">−</button>
   <button type="button" data-np="piste" aria-label="Desimaalipiste">.</button><button type="button" data-np="0">0</button>
   <button type="button" data-np="seur" class="toiminto" aria-label="Seuraava kenttä">Seur.</button>
   <button type="button" data-np="ok" class="ok" aria-label="Valmis">✓</button>
@@ -12328,6 +12329,12 @@ function npPoista(el) {
   npAseta(el, v.slice(0, a) + v.slice(b), a);
 }
 function npEtumerkki(el) {
+  /* miinus: ensimmäisenä painalluksena aloittaa uuden negatiivisen luvun, muuten vaihtaa etumerkin */
+  if (el.dataset.npKorvaa === '1') {
+    el.dataset.npKorvaa = ''; el.dataset.npEka = '';
+    npAseta(el, '-', 1);
+    return;
+  }
   const v = el.value.trim();
   const uusi = v.charAt(0) === '-' ? v.slice(1) : '-' + v;
   npAseta(el, uusi, uusi.length);
