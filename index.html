@@ -2446,6 +2446,7 @@
           <button type="button" class="seg-btn" data-tytila="sorvaus"><span class="seg-name">Sorvaus</span></button>
           <button type="button" class="seg-btn" data-tytila="poraus"><span class="seg-name">Poraus</span></button>
           <button type="button" class="seg-btn" data-tytila="jyrsinta"><span class="seg-name">Jyrsintä</span></button>
+          <button type="button" class="seg-btn" data-tytila="spiraali"><span class="seg-name">Spiraali</span></button>
         </div>
         <div class="section-card" id="tyKentat"></div>
         <button class="add-btn ty-tallenna" id="tyTallennaTyokalulle">Tallenna työkalulle…</button>
@@ -9369,8 +9370,8 @@ kaytaTeema();
    ================================================================= */
 const K_TYOSTO = 'ntx_tyosto';
 const TY_OLETUS = {
-  osio: 'laskin', tila: 'sorvaus', ohjaa: 'vc', ohjaaF: 'syotto', linkki: null,
-  k: { sorvaus: {}, poraus: {}, jyrsinta: {} },
+  osio: 'laskin', tila: 'sorvaus', ohjaa: 'vc', ohjaaF: 'syotto', ohjaaP: 'P', linkki: null,
+  k: { sorvaus: {}, poraus: {}, jyrsinta: {}, spiraali: {} },
   tl: 'sorvaus', mat: '1.4462', D: '10', ksarja: 'karkea', kD: '', kP: ''
 };
 var TY = (function () {
@@ -9378,7 +9379,7 @@ var TY = (function () {
   const t = JSON.parse(JSON.stringify(TY_OLETUS));
   if (d && typeof d === 'object') {
     Object.keys(t).forEach(k => { if (d[k] != null && k !== 'k') t[k] = d[k]; });
-    if (d.k && typeof d.k === 'object') ['sorvaus', 'poraus', 'jyrsinta'].forEach(m => { if (d.k[m]) t.k[m] = d.k[m]; });
+    if (d.k && typeof d.k === 'object') ['sorvaus', 'poraus', 'jyrsinta', 'spiraali'].forEach(m => { if (d.k[m]) t.k[m] = d.k[m]; });
   }
   return t;
 })();
@@ -9387,7 +9388,8 @@ function tallennaTy() { store.setJSON(K_TYOSTO, TY); }
 /* ---- laskin ---- */
 /* Kentät ryhmittäin: [tunniste, symboli (HTML), nimi, yksikkö] */
 const TY_SYM = { D: 'D<sub>c</sub>', Dm: 'D<sub>m</sub>', z: 'z', vc: 'v<sub>c</sub>', n: 'n', f: 'f<sub>n</sub>', fz: 'f<sub>z</sub>',
-  vf: 'V<sub>f</sub>', ap: 'a<sub>p</sub>', ae: 'a<sub>e</sub>', r: 'r<sub>ε</sub>', L: 'L', Dw: 'D<sub>w</sub>' };
+  vf: 'V<sub>f</sub>', ap: 'a<sub>p</sub>', ae: 'a<sub>e</sub>', r: 'r<sub>ε</sub>', L: 'L', Dw: 'D<sub>w</sub>',
+  P: 'P', a: 'α', H: 'H' };
 const TY_RYHMAT = {
   sorvaus: [
     ['Kappale ja terä', '', [['D', 'Dm', 'Halkaisija', 'mm'], ['r', 'r', 'Nirkon säde', 'mm']]],
@@ -9407,18 +9409,37 @@ const TY_RYHMAT = {
     ['Syöttö', 'anna toinen, toinen lasketaan', [['fz', 'fz', 'Syöttö / terä', 'mm'], ['vf', 'vf', 'Pöytäsyöttö', 'mm/min']]],
     ['Lastuaminen', '', [['ap', 'ap', 'Lastuamissyvyys', 'mm'], ['ae', 'ae', 'Lastuamisleveys', 'mm'], ['L', 'L', 'Työstöpituus', 'mm']]],
     ['Ympyräinterpolointi', 'valinnainen', [['Dw', 'Dw', 'Halkaisija', 'mm']]]
+  ],
+  spiraali: [
+    ['Työkalu', '', [['D', 'D', 'Halkaisija', 'mm'], ['z', 'z', 'Terien määrä', 'kpl']]],
+    ['Reikä', '', [['Dw', 'Dw', 'Reiän halkaisija', 'mm'], ['H', 'H', 'Syvyys', 'mm']]],
+    ['Nopeus', 'anna toinen, toinen lasketaan', [['vc', 'vc', 'Lastuamisnopeus', 'm/min'], ['n', 'n', 'Kierrosluku', 'r/min']]],
+    ['Syöttö', 'reunan syöttö · anna toinen', [['fz', 'fz', 'Syöttö / terä', 'mm'], ['vf', 'vf', 'Pöytäsyöttö', 'mm/min']]],
+    ['Nousu', 'anna toinen, toinen lasketaan', [['P', 'P', 'Nousu / kierros', 'mm'], ['a', 'a', 'Nousukulma', '°']]]
   ]
 };
+/* Spiraalin suurin nousukulma kovametallijyrsimellä (keskiradalla) materiaaliryhmittäin.
+   Harvey Performance: kovat/rautametallit 1–3°, pehmeät/ei-rautametallit 3–10°.
+   Seco: varovainen 0,5–1°. Ruostumaton/Ti/Ni: alumiinin kulmasta −30…50 %. */
+const TY_SPIRAALI_RYHMAT = [
+  ['teras', 'Teräs / valurauta', 1, 2, 3, 'Teräs, VR'],
+  ['rst', 'RST / Ti / Ni', 0.5, 1.5, 2, 'RST, Ti, Ni'],
+  ['al', 'Alumiini / messinki', 2, 3, 5, 'Al, Cu'],
+  ['kark', 'Karkaistu', 0.5, 1, 1, 'Karkaistu']
+];
+function tySpiraaliRyhma(k) { return TY_SPIRAALI_RYHMAT.find(r => r[0] === (k && k.ryhma)) || TY_SPIRAALI_RYHMAT[0]; }
+function tyJyrsinnat(m) { return m === 'jyrsinta' || m === 'spiraali'; }
 /* yhteensopivuus: kenttälista tilaa kohden */
 const TY_KENTAT = {};
 Object.keys(TY_RYHMAT).forEach(m => { TY_KENTAT[m] = []; TY_RYHMAT[m].forEach(r => r[2].forEach(k => TY_KENTAT[m].push([k[0], k[2], k[3]]))); });
 /* Kaksi kytkettyä paria: vc ↔ n ja syöttö (f tai fz) ↔ Vf.
    Parista viimeksi muokattu on annettu arvo, toinen lasketaan. */
-function tySyottoKentta() { return TY.tila === 'jyrsinta' ? 'fz' : 'f'; }
+function tySyottoKentta() { return tyJyrsinnat(TY.tila) ? 'fz' : 'f'; }
 function tyAnnettu(id) {
   if (id === 'vc' || id === 'n') return TY.ohjaa === id;
   if (id === 'vf') return TY.ohjaaF === 'vf';
   if (id === 'f' || id === 'fz') return TY.ohjaaF !== 'vf';
+  if (id === 'P' || id === 'a') return (TY.ohjaaP || 'P') === id;
   return true;
 }
 
@@ -9428,17 +9449,48 @@ function tyLaske() {
   let vc = num(k.vc), n = num(k.n);
   if (TY.ohjaa === 'n') vc = (D > 0 && n > 0) ? Math.PI * D * n / 1000 : NaN;
   else n = (D > 0 && vc > 0) ? vc * 1000 / (Math.PI * D) : NaN;
-  const kierrosSyotto = m === 'jyrsinta' ? (z > 0 ? z : NaN) : 1;   /* mm/r = fz × z jyrsinnässä */
+  const kierrosSyotto = tyJyrsinnat(m) ? (z > 0 ? z : NaN) : 1;   /* mm/r = fz × z jyrsinnässä */
   let syotto = num(k[tySyottoKentta()]), vf = num(k.vf);
   if (TY.ohjaaF === 'vf') syotto = (vf > 0 && n > 0 && kierrosSyotto > 0) ? vf / (n * kierrosSyotto) : NaN;
   else vf = (syotto > 0 && n > 0 && kierrosSyotto > 0) ? syotto * kierrosSyotto * n : NaN;
   const out = { vc, n, vf, syotto };
-  const f = m === 'jyrsinta' ? NaN : syotto, fz = m === 'jyrsinta' ? syotto : NaN;
+  const f = tyJyrsinnat(m) ? NaN : syotto, fz = tyJyrsinnat(m) ? syotto : NaN;
   if (m === 'sorvaus') {
     out.q = (vc > 0 && ap > 0 && f > 0) ? vc * ap * f : NaN;
     out.ra = (f > 0 && r > 0) ? f * f / r * 50 : NaN;
   } else if (m === 'poraus') {
     out.q = (D > 0 && vf > 0) ? Math.PI * D * D / 4 * vf / 1000 : NaN;
+  } else if (m === 'spiraali') {
+    /* Spiraali (helix) reikään: keskipiste kulkee halkaisijalla Dw − D.
+       Nousukulma keskiradalla: tan α = P / (π·(Dw − D)). Fanucin F on kaaren (XY) syöttö, Z seuraa. */
+    const Dw = num(k.Dw), H = num(k.H), rata = Dw - D;
+    const ryhma = tySpiraaliRyhma(k);
+    out.ryhma = ryhma; out.varoitukset = []; out.rata = rata;
+    if (D > 0 && Dw > 0 && rata <= 0) out.virhe = 'Jyrsin on yhtä suuri tai suurempi kuin reikä – spiraali ei ole mahdollinen.';
+    else if (D > 0 && Dw > 0) {
+      const kehä = Math.PI * rata;
+      let P = num(k.P), a = num(k.a);
+      if ((TY.ohjaaP || 'P') === 'a') P = a > 0 && a < 45 ? kehä * Math.tan(a * Math.PI / 180) : NaN;
+      else a = P > 0 ? Math.atan(P / kehä) * 180 / Math.PI : NaN;
+      out.P = P; out.a = a;
+      out.Pmax = kehä * Math.tan(ryhma[4] * Math.PI / 180);
+      out.Psuos = kehä * Math.tan(ryhma[3] * Math.PI / 180);
+      out.aSeina = P > 0 ? Math.atan(P / (Math.PI * Dw)) * 180 / Math.PI : NaN;
+      out.kerroin = rata / Dw;
+      out.vfKeski = vf > 0 ? vf * out.kerroin : NaN;
+      out.kierrokset = (H > 0 && P > 0) ? H / P : NaN;
+      out.vz = (out.vfKeski > 0 && P > 0) ? out.vfKeski / kehä * P : NaN;
+      out.aikaS = (out.kierrokset > 0 && out.vfKeski > 0) ? out.kierrokset * kehä / out.vfKeski : NaN;
+      out.q = (out.vz > 0) ? Math.PI * Dw * Dw / 4 * out.vz / 1000 : NaN;
+      const suhde = Dw / D;
+      out.suhde = suhde;
+      if (suhde < 1.1) out.varoitukset.push(['virhe', 'Reikä on alle 1,1 × D: lastut eivät mahdu pois ja jyrsin käytännössä syöksyy. Valmistajat suosittelevat Dw ≥ 1,1–1,2 × D.']);
+      else if (suhde < 1.2) out.varoitukset.push(['huom', 'Reikä on alle 1,2 × D: lastunpoisto on ahdas. Käytä paineilmaa tai sisäjäähdytystä ja pientä nousua.']);
+      if (suhde > 2) out.varoitukset.push(['huom', 'Reikä on yli 2 × D: keskelle jää tappi, joka pitää poistaa erikseen. Teräpalajyrsimellä tarkista valmistajan suurin Dw.']);
+      if (a > ryhma[4]) out.varoitukset.push(['virhe', 'Nousukulma ' + lyhyt(Math.round(a * 10) / 10) + '° ylittää ryhmän ' + ryhma[1] + ' ohjearvon ' + lyhyt(ryhma[4]) + '°. Käytä vain jos työkalun valmistaja sallii (esim. ramppaukseen tehdyt jyrsimet 15–45°).']);
+      else if (a > ryhma[3]) out.varoitukset.push(['huom', 'Nousukulma on ohjealueen yläpäässä. Pitkällä ulkonemalla tai heikossa kiinnityksessä pienennä.']);
+      if (H > 0 && H > 1.5 * D) out.varoitukset.push(['huom', 'Syvyys yli 1,5 × D: lastunpoisto vaikeutuu. Esim. Kennametal HARVI II TE: teräs 1,25 × D, ruostumaton 1,0 × D, titaani 0,5–0,75 × D.']);
+    }
   } else {
     out.q = (ap > 0 && ae > 0 && vf > 0) ? ap * ae * vf / 1000 : NaN;
     if (fz > 0 && D > 0 && ae > 0 && ae <= D) {
@@ -9462,6 +9514,14 @@ function tyLaske() {
   return out;
 }
 
+/* työstöaika kahdessa osassa tuloskorttia varten: [arvo, yksikkö] – lyhyt muoto mahtuu kapeaan sarakkeeseen */
+function tyAikaOsat(min) {
+  if (!isFinite(min) || min <= 0) return ['—', ''];
+  const s = Math.round(min * 60);
+  if (s < 60) return [String(s), 's'];
+  if (s < 3600) return [Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'), 'min'];
+  return [Math.floor(s / 3600) + ':' + String(Math.floor(s / 60) % 60).padStart(2, '0'), 'h'];
+}
 function tyAikaTeksti(min) {
   if (!isFinite(min)) return '—';
   const s = Math.round(min * 60);
@@ -9480,15 +9540,35 @@ function tyPaivitaTulokset() {
     '<div class="ty-tulos-nimi">' + nimi + '</div>' +
     '<div class="ty-tulos-arvo">' + arvo + (yks && arvo !== '—' ? '<span>' + yks + '</span>' : '') + '</div></div>';
   let h = TY.ohjaa === 'n' ? solu('Lastuamisnopeus', fmt(o.vc, 0), 'm/min', 'vc') : solu('Kierrosluku', fmt(o.n, 0), 'r/min', 'n');
-  if (TY.ohjaaF === 'vf') h += solu(m === 'jyrsinta' ? 'Syöttö / terä' : 'Syöttö / kierros', (tySyottoTeksti(o.syotto) || '—').replace('.', ','), m === 'jyrsinta' ? 'mm' : 'mm/r', 'syotto');
+  if (TY.ohjaaF === 'vf') h += solu(tyJyrsinnat(m) ? 'Syöttö / terä' : 'Syöttö / kierros', (tySyottoTeksti(o.syotto) || '—').replace('.', ','), tyJyrsinnat(m) ? 'mm' : 'mm/r', 'syotto');
   else h += solu('Pöytäsyöttö', fmt(o.vf, 0), 'mm/min', 'vf');
   if (m === 'jyrsinta' && (isFinite(o.kehaKerroin) || o.kehaVirhe)) {
     h += solu('Syöttö ohjelmaan', o.kehaVirhe ? '—' : fmt(o.vfKeski, 0), 'mm/min', 'vfKeski', 'korostus');
   }
+  if (m === 'spiraali') {
+    h += solu('Syöttö ohjelmaan', o.virhe ? '—' : fmt(o.vfKeski, 0), 'mm/min', 'vfKeski', 'korostus');
+    h += (TY.ohjaaP || 'P') === 'a' ? solu('Nousu / kierros', isFinite(o.P) ? lyhyt(Math.round(o.P * 100) / 100) : '—', 'mm', 'P')
+      : solu('Nousukulma', isFinite(o.a) ? lyhyt(Math.round(o.a * 10) / 10) : '—', '°');
+    h += solu('Kierroksia', isFinite(o.kierrokset) ? lyhyt(Math.round(o.kierrokset * 10) / 10) : '—', '');
+    h += solu('Työstöaika', tyAikaOsat(o.aikaS)[0], tyAikaOsat(o.aikaS)[1]);
+    document.getElementById('tyTulokset').innerHTML = h;
+    tyPiirraSpiraaliInfo(o);
+    const aseta2 = (id, teksti) => {
+      const el = document.querySelector('#tyKentat input[data-tyk="' + id + '"]');
+      if (el && document.activeElement !== el && el.value !== teksti) { el.value = teksti; el.dataset.ed = teksti; }
+    };
+    const kok2 = v => (isFinite(v) && v > 0) ? String(Math.round(v)) : '';
+    if (TY.ohjaa === 'n') aseta2('vc', kok2(o.vc)); else aseta2('n', kok2(o.n));
+    if (TY.ohjaaF === 'vf') aseta2('fz', tySyottoTeksti(o.syotto)); else aseta2('vf', kok2(o.vf));
+    if ((TY.ohjaaP || 'P') === 'a') aseta2('P', isFinite(o.P) && o.P > 0 ? String(Math.round(o.P * 100) / 100) : '');
+    else aseta2('a', isFinite(o.a) && o.a > 0 ? String(Math.round(o.a * 100) / 100) : '');
+    window.__tyTulos = o;
+    return;
+  }
   h += solu('Ainepoisto', fmt(o.q, 1), 'cm³/min');
   if (m === 'sorvaus') h += solu('Pinnankarheus', fmt(o.ra, 2), 'µm');
   else if (m === 'jyrsinta') h += solu('Lastun paksuus', fmt(o.hm, 3), 'mm');
-  h += solu('Työstöaika', tyAikaTeksti(o.aika), '');
+  h += solu('Työstöaika', tyAikaOsat(o.aika)[0], tyAikaOsat(o.aika)[1]);
   document.getElementById('tyTulokset').innerHTML = h;
   const kv = document.getElementById('tyKehaInfo');
   if (kv) {
@@ -9514,6 +9594,24 @@ function tyPaivitaTulokset() {
   window.__tyTulos = o;
 }
 
+function tyPiirraSpiraaliInfo(o) {
+  const el = document.getElementById('tySpiraaliInfo');
+  if (!el) return;
+  if (o.virhe) { el.innerHTML = '<div class="ty-keha-viesti virhe">' + esc(o.virhe) + '</div>'; return; }
+  if (!isFinite(o.rata) || !(o.rata > 0)) { el.innerHTML = '<div class="nv-tyhja">Anna jyrsimen ja reiän halkaisija.</div>'; return; }
+  const r = o.ryhma, pyor = v => lyhyt(Math.round(v * 100) / 100);
+  let h = '';
+  h += tyRiviHTML('', 'V<sub>f</sub>', 'Syöttö ohjelmaan<span class="tyr-lisa">keskipisteen rata Ø' + pyor(o.rata) + ' · −' + Math.round((1 - o.kerroin) * 100) + ' %</span>', 'mm/min',
+    '<span class="tyr-arvo">' + (isFinite(o.vfKeski) ? fmt(o.vfKeski, 0) : '—') + '</span>', 'korostus copyable" data-tykopio="vfKeski');
+  h += tyRiviHTML('', 'V<sub>z</sub>', 'Z-syöttö<span class="tyr-lisa">tunkeutuminen alaspäin</span>', 'mm/min', '<span class="tyr-arvo">' + (isFinite(o.vz) ? fmt(o.vz, 0) : '—') + '</span>', 'laskettu');
+  if (isFinite(o.aSeina)) h += tyRiviHTML('', 'α', 'Kulma reiän seinällä', '°', '<span class="tyr-arvo">' + pyor(o.aSeina) + '</span>', 'laskettu');
+  h += '<div class="nv-suositus"><div class="nv-suositus-rivit"><div><span>Suositus α (' + esc(r[1]) + ')</span><b>' + lyhyt(r[2]) + '–' + lyhyt(r[3]) + '°</b><em>enintään ' + lyhyt(r[4]) + '°</em></div>' +
+    '<div><span>Vastaava nousu P</span><b>' + pyor(o.Psuos) + ' mm</b><em>enintään ' + pyor(o.Pmax) + ' mm</em></div></div>' +
+    '<span class="nv-suositus-huom">Kovametallijyrsimen ohjearvo keskiradalla. Teräpalajyrsimellä käytä valmistajan suurinta ramppauskulmaa. Reiän sisällä kosketus on lähes täysi ura, joten käytä uran (ae = D) syöttöä.</span></div>';
+  if (o.varoitukset.length) h += '<ul class="nv-varoitukset">' + o.varoitukset.map(w => '<li class="' + w[0] + '">' + esc(w[1]) + '</li>').join('') + '</ul>';
+  el.innerHTML = h;
+}
+
 function tyRiviHTML(id, sym, nimi, yks, kentta, luokka) {
   return '<div class="tyr' + (luokka ? ' ' + luokka : '') + '"' + (id ? ' data-rivi="' + id + '"' : '') + '>' +
     '<span class="tyr-sym">' + sym + '</span>' +
@@ -9533,12 +9631,18 @@ function tyPiirraKentat() {
     let h = '<div class="tyg"><div class="tyg-otsikko"><span>' + esc(otsikko) + '</span>' + (vihje ? '<span class="tyg-vihje">' + esc(vihje) + '</span>' : '') + '</div>';
     h += kentat.map(([id, sym, nimi, yks]) => tyRiviHTML(id, TY_SYM[sym] || esc(sym), esc(nimi), yks,
       '<input type="text" inputmode="decimal" autocomplete="off" data-tyk="' + id + '" value="' + esc(k[id] || '') + '" data-ed="' + esc(k[id] || '') + '" aria-label="' + esc(nimi) + '">')).join('');
-    if (kentat.some(x => x[0] === 'Dw')) {
+    if (TY.tila === 'jyrsinta' && kentat.some(x => x[0] === 'Dw')) {
       const ulko = k.keha === 'ulko';
       h += '<div class="ty-keha"><div class="seg-row">' +
         '<button type="button" class="seg-btn' + (ulko ? '' : ' active') + '" data-tykeha="sisa"><span class="seg-name">Reikä (sisäpuoli)</span></button>' +
         '<button type="button" class="seg-btn' + (ulko ? ' active' : '') + '" data-tykeha="ulko"><span class="seg-name">Tappi (ulkopuoli)</span></button>' +
         '</div></div><div class="ty-keha-info" id="tyKehaInfo"></div>';
+    }
+    if (TY.tila === 'spiraali' && kentat.some(x => x[0] === 'P')) {
+      const ry = tySpiraaliRyhma(k)[0];
+      h += '<div class="nv-alaotsikko">Materiaaliryhmä</div><div class="seg-row nv-seg">' + TY_SPIRAALI_RYHMAT.map(r =>
+        '<button type="button" class="seg-btn' + (r[0] === ry ? ' active' : '') + '" data-tyspryhma="' + r[0] + '"><span class="seg-name">' + esc(r[5]) + '</span></button>').join('') + '</div>' +
+        '<div class="ty-keha-info" id="tySpiraaliInfo"></div>';
     }
     return h + '</div>';
   }).join('');
@@ -9546,9 +9650,10 @@ function tyPiirraKentat() {
   const kaavat = {
     sorvaus: 'n = vc × 1000 / (π × D) · Vf = f × n · Q = vc × ap × f · Ra ≈ f² / r × 50 (µm, Sandvik)',
     poraus: 'n = vc × 1000 / (π × D) · Vf = f × n · Q = π × D² / 4 × Vf / 1000',
-    jyrsinta: 'n = vc × 1000 / (π × D) · Vf = fz × z × n · Q = ap × ae × Vf / 1000 · hm = 360 × ae × fz / (π × D × arccos(1 − 2·ae/D)°) · ympyräinterpolointi: Vf ohjelmaan = Vf × (Dw − D) / Dw reiässä, × (Dw + D) / Dw tapissa'
+    jyrsinta: 'n = vc × 1000 / (π × D) · Vf = fz × z × n · Q = ap × ae × Vf / 1000 · hm = 360 × ae × fz / (π × D × arccos(1 − 2·ae/D)°) · ympyräinterpolointi: Vf ohjelmaan = Vf × (Dw − D) / Dw reiässä, × (Dw + D) / Dw tapissa',
+    spiraali: 'n = vc × 1000 / (π × D) · Vf (reuna) = fz × z × n · F ohjelmaan = Vf × (Dw − D) / Dw · tan α = P / (π × (Dw − D)) · kierroksia = H / P · Vz = F / (π × (Dw − D)) × P · aika = kierroksia × π × (Dw − D) / F. Fanucin helix-interpoloinnissa F on kaaren (XY) syöttö.'
   };
-  document.getElementById('tyKaavat').innerHTML = '<strong>Kaavat:</strong><br>' + esc(kaavat[TY.tila]) + '<br>t = L / Vf';
+  document.getElementById('tyKaavat').innerHTML = '<strong>Kaavat:</strong><br>' + esc(kaavat[TY.tila]) + (TY.tila === 'spiraali' ? '' : '<br>t = L / Vf');
   document.querySelectorAll('#tyTila .seg-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-tytila') === TY.tila));
   tyPaivitaTulokset();
   tyPiirraLinkki();
@@ -9565,6 +9670,7 @@ function tyKenttaMuuttui(t) {
   if ((kentta === 'vc' || kentta === 'n') && TY.ohjaa !== kentta) { TY.ohjaa = kentta; vaihtui = true; }
   if (kentta === 'vf' && TY.ohjaaF !== 'vf') { TY.ohjaaF = 'vf'; vaihtui = true; }
   if ((kentta === 'f' || kentta === 'fz') && TY.ohjaaF === 'vf') { TY.ohjaaF = 'syotto'; vaihtui = true; }
+  if ((kentta === 'P' || kentta === 'a') && (TY.ohjaaP || 'P') !== kentta) { TY.ohjaaP = kentta; vaihtui = true; }
   if (vaihtui) tyMerkitseLasketut();
   tallennaTy();
   tyPaivitaTulokset();
@@ -9807,6 +9913,8 @@ function tyValitseOsio(osio) {
     if (sarja) { TY.ksarja = sarja.getAttribute('data-tyksarja'); tallennaTy(); return tyPiirraKierteet(); }
     const keha = t.closest('[data-tykeha]');
     if (keha) { const k = TY.k[TY.tila] = TY.k[TY.tila] || {}; k.keha = keha.getAttribute('data-tykeha'); tallennaTy(); return tyPiirraKentat(); }
+    const spr = t.closest('[data-tyspryhma]');
+    if (spr) { const k = TY.k[TY.tila] = TY.k[TY.tila] || {}; k.ryhma = spr.getAttribute('data-tyspryhma'); tallennaTy(); return tyPiirraKentat(); }
     if (t.closest('#tyTyhjenna')) { TY.k[TY.tila] = {}; tallennaTy(); return tyPiirraKentat(); }
   });
   ['keyup', 'change', 'compositionend', 'paste'].forEach(tapahtuma => v.addEventListener(tapahtuma, e => {
@@ -10793,7 +10901,7 @@ function tyArvotRiville() {
   if (TY.ohjaa === 'n') { uusi.rpm = has(k.n) ? String(k.n) : ''; uusi.vc = ''; }
   else { uusi.vc = has(k.vc) ? String(k.vc) : ''; uusi.rpm = ''; }
   const syotto = TY.ohjaaF === 'vf' ? tySyottoTeksti(o.syotto) : String(k[tySyottoKentta()] || '');
-  if (m === 'jyrsinta') { uusi.fz = syotto; uusi.f = ''; }
+  if (tyJyrsinnat(m)) { uusi.fz = syotto; uusi.f = ''; }
   else { uusi.f = syotto; uusi.fz = ''; }
   if (has(k.ap)) uusi.ap = String(k.ap);
   if (m === 'jyrsinta' && has(k.ae)) uusi.ae = String(k.ae);
