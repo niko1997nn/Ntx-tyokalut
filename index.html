@@ -1884,6 +1884,7 @@
   .ku-palat { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin: 12px 0 8px; }
   .ku-pala { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 10px; padding: 8px 8px 7px; min-width: 0; }
   .ku-pala span { display: block; font-size: 11.5px; color: var(--text-dim); }
+  .ku-pala b small { font-size: 11px; color: var(--text-dim); font-weight: 500; }
   .ku-pala b { display: block; font-family: var(--mono); font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .ku-laskenta { margin-bottom: 12px; }
   .ku-laskenta > summary { cursor: pointer; font-size: 13.5px; color: var(--text-dim); padding: 6px 2px 8px; }
@@ -10398,20 +10399,20 @@ function kuSyotteet() {
   KU.xLaskettu = !(Xm > 0) && X > 0 ? X : NaN;
   if (Xm > 0 && tvD > 0 && Xv > 0 && Math.abs(Xv - tvD - Xm) > 0.005) korj.push(['huom', 'Käytössä mitattu X' + m(Xm) + ' (työvarasta laskettuna olisi ' + m(Xv - tvD) + ').']);
   if (Xv > 0 && X > 0) {
-    if (Xv < X) korj.push(['huom', 'Valmis Ø on pienempi kuin nykyinen reikä – tarkista.']);
+    if (Xv < X) korj.push(['huom', 'Työvara on negatiivinen.']);
     else if (Xv > X) {
       const tv = (Xv - X) / 2;
       const Ud = kuLuku(v.U);
-      korj.unshift(['X', 'X ' + m(Xv) + ' − ' + m(tvD) + ' = <b>X' + m(X) + '</b>']);
-      if (isFinite(Ud)) { v.U = String(r3(Ud - tv)); korj.push(['U', 'U ' + m(Ud) + ' − ' + m(tv) + ' (säteen työvara) = <b>U' + m(Ud - tv) + '</b>']); }
+      korj.unshift(['X', 'X ' + m(Xv) + ' − ' + m(tvD) + ' = <b>' + m(X) + '</b>']);
+      if (isFinite(Ud)) { v.U = String(r3(Ud - tv)); korj.push(['U', 'U ' + m(Ud) + ' − ' + m(tv) + ' = <b>' + m(Ud - tv) + '</b>']); }
       const Cv = kuLuku(v.C);
       if (KU.tyyppi !== 'vino' && Cv > 0) {
         const Aa = kuLuku(v.A) > 0 ? kuLuku(v.A) : kuLuku(v.T);
         if (Aa > 0 && Aa / 2 < X / 2) {
           const a = Aa / 2, lisa = Math.sqrt(Xv * Xv / 4 - a * a) - Math.sqrt(X * X / 4 - a * a);
           v.C = String(r3(Cv + lisa));
-          korj.push(['C', 'C ' + m(Cv) + ' + ' + m(lisa) + ' = <b>' + m(Cv + lisa) + '</b> (jää ' + m(Cv) + ' valmiina)']);
-        } else korj.push(['huom', 'Viisteen korjaukseen tarvitaan uran leveys A tai terän leveys T.']);
+          korj.push(['C', 'C ' + m(Cv) + ' + ' + m(lisa) + ' = <b>' + m(Cv + lisa) + '</b>']);
+        } else korj.push(['huom', 'Viiste: anna A tai T.']);
       }
       if (KU.tyyppi === 'vino' && KU.vinoTapa === 'W' && isFinite(kuLuku(v.W)) && isFinite(Ud)) {
         const Rd = isFinite(kuLuku(KU.v.R)) ? kuLuku(KU.v.R) : 0;
@@ -10420,7 +10421,7 @@ function kuSyotteet() {
           /* pohjaviiva pysyy paikallaan; pienemmässä reiässä se nousee pintaan syvemmällä */
           const Wd = kuLuku(v.W), Wn = Wd - tv / kk;
           v.W = String(r3(Wn));
-          korj.push(['W', 'W ' + m(Wd) + ' − ' + m(tv) + ' / tan ' + kuMm(Math.atan(kk) / KU_RAD, 2) + '° = <b>W' + m(Wn) + '</b> (pohja nousee nykyiseen reikään syvemmällä)']);
+          korj.push(['W', 'W ' + m(Wd) + ' → <b>' + m(Wn) + '</b>']);
         }
       }
     }
@@ -10429,12 +10430,12 @@ function kuSyotteet() {
     if (KU.z0 === 'nyky') {
       const Rd = isFinite(kuLuku(v.R)) ? kuLuku(v.R) : 0;
       v.R = String(r3(Rd - Rv));
-      korj.push(['R', 'Z0 nykyisessä otsassa → R' + m(Rd) + ' − ' + m(Rv) + ' = <b>R' + m(Rd - Rv) + '</b>']);
+      korj.push(['R', 'R ' + m(Rd) + ' − ' + m(Rv) + ' = <b>' + m(Rd - Rv) + '</b>']);
       ['Z', 'J', 'W'].forEach(kir => {
         const x = kuLuku(v[kir]);
-        if (isFinite(x)) { v[kir] = String(r3(x - Rv)); korj.push([kir, kir + ' ' + m(x) + ' − ' + m(Rv) + ' = <b>' + kir + m(x - Rv) + '</b>']); }
+        if (isFinite(x)) { v[kir] = String(r3(x - Rv)); korj.push([kir, kir + ' ' + m(x) + ' − ' + m(Rv) + ' = <b>' + m(x - Rv) + '</b>']); }
       });
-    } else korj.push(['R', 'Z0 valmiissa otsassa → R0 ja Z-arvot piirustuksesta sellaisenaan. Lähtötaso R + K on nykyisen otsan yläpuolella.']);
+    }
   }
   KU.korjaus = korj;
   return v;
@@ -10465,7 +10466,7 @@ function renderKiilaura() {
   if (!juuri) return;
   document.querySelectorAll('#kuOsiot [data-kuosio]').forEach(b => b.classList.toggle('active', b.getAttribute('data-kuosio') === KU.osio));
   if (KU.osio === 'ohjeet') {
-    juuri.innerHTML = KU_OHJE_HTML + '<div class="section-label">Kokeile oppaan esimerkkejä</div><div class="ku-esim">' +
+    juuri.innerHTML = KU_OHJE_HTML + '<div class="section-label">Esimerkit</div><div class="ku-esim">' +
       KU_ESIMERKIT.map((x, i) => '<button type="button" class="filter-chip" data-kuesim="' + i + '">' + esc(x[0]) + '</button>').join('') + '</div>';
     return;
   }
@@ -10474,45 +10475,45 @@ function renderKiilaura() {
   let h = '';
   h += '<div class="tulos-yla"><div class="result-card ku-yla" id="kuYla"></div><div class="ku-ohjekuva-paneeli" id="kuOhjeKuva" hidden></div></div>';
   h += '<div class="section-card" id="kuKentat">';
-  h += '<div class="tyg"><div class="tyg-otsikko"><span>Ura</span><span class="tyg-vihje">napauta kenttää → kuva</span></div>' +
+  h += '<div class="tyg"><div class="tyg-otsikko"><span>Ura</span></div>' +
     kuSeg('tyyppi', KU.tyyppi, [['suora', 'Suora'], ['vino', 'Vinoura'], ['kartio', 'Kartio']]) +
-    kuRivi('Xv', 'Ø', KU.tyyppi === 'kartio' ? 'Valmis reiän Ø alkupäässä' : 'Valmis reiän Ø (kuvasta)', 'mm', '') +
-    kuRivi('U', 'U', 'Vastaseinästä pohjaan (piir.)', 'mm', '');
+    kuRivi('Xv', 'Ø', KU.tyyppi === 'kartio' ? 'Reiän Ø alkupäässä' : 'Reiän Ø', 'mm', '') +
+    kuRivi('U', 'U', 'Vastaseinä – pohja', 'mm', '');
   if (KU.tyyppi === 'vino') {
     h += kuSeg('vinoTapa', KU.vinoTapa, [['E', 'Kulma E'], ['W', 'Pintakohta W']]) +
-      (KU.vinoTapa === 'E' ? kuRivi('E', 'E', 'Pohjan kulma', '°', '3…60') : kuRivi('W', 'W', 'Pohja pinnassa Z', 'mm', '')) +
-      kuRivi('Z', 'Z', 'Raja (valinnainen)', 'mm', 'laskettu');
+      (KU.vinoTapa === 'E' ? kuRivi('E', 'E', 'Pohjan kulma', '°', '') : kuRivi('W', 'W', 'Pohja pinnassa', 'mm', '')) +
+      kuRivi('Z', 'Z', 'Raja', 'mm', '');
   } else if (KU.tyyppi === 'kartio') {
-    h += kuRivi('ks', '1:', 'Kartio 1:x', '', 'esim. 10') +
-      kuRivi('D', 'D', 'Kulma akselista', '°', '') +
+    h += kuRivi('ks', '1:', 'Kartio 1:x', '', '') +
+      kuRivi('D', 'D', 'Kartion kulma', '°', '') +
       kuRivi('Z', 'Z', 'Uran loppu', 'mm', '');
   } else {
     h += kuRivi('Z', 'Z', 'Uran loppu', 'mm', '');
   }
   h += kuRivi('A', 'A', 'Uran leveys', 'mm', '') +
-    (KU.tyyppi === 'vino' ? '' : kuRivi('C', 'C', 'Viiste (valmiina)', 'mm', '0')) + '</div>';
-  h += '<div class="tyg"><div class="tyg-otsikko"><span>Työvarat</span><span class="tyg-vihje">tyhjä = ei työvaraa</span></div>' +
-    kuRivi('tv', 'Ø', 'Reiän työvara halkaisijassa', 'mm', '0') +
-    kuRivi('Rv', 'Z', 'Otsan työvara', 'mm', '0') +
-    '<div class="nv-alaotsikko">Z0 on</div>' + kuSeg('z0', KU.z0 || 'valmis', [['valmis', 'Valmiissa otsassa'], ['nyky', 'Nykyisessä otsassa']]) +
+    (KU.tyyppi === 'vino' ? '' : kuRivi('C', 'C', 'Viiste', 'mm', '0')) + '</div>';
+  h += '<div class="tyg"><div class="tyg-otsikko"><span>Työvarat</span></div>' +
+    kuRivi('tv', 'Ø', 'Reikä', 'mm', '0') +
+    kuRivi('Rv', 'Z', 'Otsa', 'mm', '0') +
+    '<div class="nv-alaotsikko">Z0</div>' + kuSeg('z0', KU.z0 || 'valmis', [['valmis', 'Valmis otsa'], ['nyky', 'Nykyinen otsa']]) +
     '<div id="kuKorjaus"></div></div>';
   h += '<div class="tyg"><div class="tyg-otsikko"><span>Lastu ja terä</span></div>' +
     kuRivi('Q', 'Q', 'Lastu säteellä', 'mm', '') +
     kuRivi('F', 'F', 'Syöttö', 'mm/min', '') +
-    kuRivi('T', 'T', 'Terän leveys (UA1)', 'mm', '') + '</div>';
-  h += '<details class="tyg ku-lisa"' + (lisaAuki ? ' open' : '') + '><summary class="tyg-otsikko"><span>Lisää</span><span class="tyg-vihje">oletukset riittävät yleensä</span></summary>' +
+    kuRivi('T', 'T', 'Terän leveys', 'mm', '') + '</div>';
+  h += '<details class="tyg ku-lisa"' + (lisaAuki ? ' open' : '') + '><summary class="tyg-otsikko"><span>Lisää</span></summary>' +
     kuRivi('V', 'V', 'Viimeistelyvedot', 'kpl', '2') +
     kuRivi('M', 'M', 'Urien määrä', 'kpl', '1') +
     kuRivi('H', 'H', '1. uran kulma', '°', '0') +
-    (KU.tyyppi !== 'vino' ? kuRivi('J', 'J', 'Kaaripoistuminen Z', 'mm', 'ei') : '') +
-    kuRivi('R', 'R', 'Otsa / uran alku Z', 'mm', '0') +
-    kuRivi('K', 'K', 'Lähtötaso R + K', 'mm', '10') +
+    (KU.tyyppi !== 'vino' ? kuRivi('J', 'J', 'Kaaripoistuminen', 'mm', '') : '') +
+    kuRivi('R', 'R', 'Otsa Z', 'mm', '0') +
+    kuRivi('K', 'K', 'Lähtötaso', 'mm', '10') +
     kuRivi('S', 'S', 'Turvaväli', 'mm', '0.2') +
-    kuRivi('B', 'B', 'Y-askel', 'mm', '0,9 × T') +
-    kuRivi('Dr', 'D', 'Rungon Ø (UA2)', 'mm', 'tarkistus') +
-    kuRivi('Lr', 'L', 'Runko–särmä (UA3)', 'mm', 'tarkistus') +
-    kuRivi('v28', '#28', 'Viisteen kulma (makrossa)', '°', '0') +
-    '<div class="nv-alaotsikko">T kutsuun</div>' + kuSeg('tKutsu', KU.tKutsu, [['ei', 'Ei – UA1'], ['kylla', 'Kyllä (CIMCO)']]) +
+    kuRivi('B', 'B', 'Y-askel', 'mm', '') +
+    kuRivi('Dr', 'D', 'Rungon Ø', 'mm', '') +
+    kuRivi('Lr', 'L', 'Runko – särmä', 'mm', '') +
+    kuRivi('v28', '#28', 'Viisteen kulma', '°', '0') +
+    '<div class="nv-alaotsikko">T kutsuun</div>' + kuSeg('tKutsu', KU.tKutsu, [['ei', 'Ei'], ['kylla', 'Kyllä']]) +
     '</details>';
   h += '</div>';
   h += '<div id="kuTulos"></div>';
@@ -10533,15 +10534,15 @@ function kuPaivita() {
   window.__kuKutsu = kutsu;
   const akt = KU_KENTTA_KIRJAIN[KU.aktiivi] || '';
   let tila;
-  if (o.ok) tila = '<div class="ku-tila ok">✓ Makro ei hälytä' + (o.runkoPuuttuu ? ' <small>(runkoa ei tarkistettu)</small>' : ' · runko mahtuu') + '</div>';
-  else if (o.halytys === 1 || o.halytys === 2) tila = '<div class="ku-tila odottaa">Täytä reiän Ø, U, ' + (KU.tyyppi === 'vino' ? '' : 'Z, ') + 'Q, F ja T</div>';
+  if (o.ok) tila = '<div class="ku-tila ok">✓ OK</div>';
+  else if (o.halytys === 1 || o.halytys === 2) tila = '<div class="ku-tila odottaa">Puuttuu: ' + ['Xv', 'U'].concat(KU.tyyppi === 'vino' ? [] : ['Z']).concat(['Q', 'F', 'T']).filter(k => !String(KU.v[k] || '').trim()).map(k => k === 'Xv' ? 'Ø' : k).join(', ') + '</div>';
   else {
     const hh = KU_HALYTYKSET[o.halytys] || ['?', '', ''];
     tila = '<div class="ku-tila virhe"><b>' + (3000 + o.halytys) + ' ' + esc(hh[0]) + '</b><span>' + esc(hh[2]) + '</span></div>';
   }
   const kEl = document.getElementById('kuKorjaus');
   if (kEl) kEl.innerHTML = (KU.korjaus && KU.korjaus.length) ? '<div class="ku-korjaus">' + KU.korjaus.map(x => '<div' + (x[0] === 'huom' ? ' class="huom"' : '') + '>' + x[1] + '</div>').join('') + '</div>'
-    : '<p class="ku-pieni">Ilman työvaraa kutsu tehdään kuvan mitoilla. Esim. reiän työvara 1 = halkaisijassa 1 mm, otsan työvara 0,5 = 0,5 mm Z-suunnassa.</p>';
+    : '';
   const xInp = document.querySelector('#viewKiilaura input[data-ku="X"]');
   if (xInp) xInp.placeholder = isFinite(KU.xLaskettu) ? '= ' + kuMm(KU.xLaskettu, 3).replace(',', '.') : '= Ø − työvara';
   yla.innerHTML = '<div class="ku-kutsu-rivi"><code class="ku-kutsu copyable" id="kuKutsu">' + kuKutsuHTML(v, KU.tKutsu === 'kylla', akt) + '</code><button type="button" class="nv-linkki" id="kuKopioi">Kopioi</button></div>' + tila;
@@ -10555,7 +10556,7 @@ function kuPaivita() {
     pala('Pohja', 'X' + kuMm(A.Xpohja, 2)) +
     pala('Vedot', A.vedot + ' + ' + A.V) +
     pala('Pistoja', String(A.pistot)) +
-    pala('Kesto', tyAikaOsat(A.aikaS / 60)[0] + ' ' + tyAikaOsat(A.aikaS / 60)[1]) + '</div>';
+    pala('Kesto', tyAikaOsat(A.aikaS / 60)[0] + '<small> ' + tyAikaOsat(A.aikaS / 60)[1] + '</small>') + '</div>';
   h += '<details class="ku-laskenta"><summary>Makron laskenta</summary><div class="result-card ku-lista">';
   h += rivi('Aloitus / turvataso', 'X' + kuMm(A.Xturva), 'b1 ' + kuMm(A.b1) + ' · b ' + kuMm(A.b));
   h += rivi('Uran pohja', 'X' + kuMm(A.Xpohja), 'rb ' + kuMm(A.rb) + (o.tyyppi === 'kartio' ? ' (perässä)' : ''));
@@ -10591,86 +10592,64 @@ function kuHalytysHTML() {
   return h;
 }
 
-const KU_OHJE_HTML = '<p class="ku-ohje-intro">O8990 v2.5 · NTX3000 kara 1 C-akselina · seisova pistoterä särmä X+ suuntaan. ' +
-  'Makro laskee ja tarkistaa kaiken ennen liikettä; jos jokin ei käy, se hälyttää ennen kuin yksikään akseli liikkuu.</p>' +
-  '<details class="ty-ryhma" open><summary><b>Ennen kutsua</b><span class="ty-pieni">tarkistuslista</span></summary><ul class="ku-lista-ohje">' +
-  '<li><b>G21 ja G40</b> voimassa. Makro asettaa G98:n itse ja palauttaa syöttötavan lopussa.</li>' +
-  '<li><b>Terän särmä X+ suuntaan</b>, työkalu otsan edessä Z yli R + K.</li>' +
-  '<li><b>User Area</b> (MAPPS työkalutiedot): UA1 = terän leveys T, UA2 = rungon Ø D, UA3 = rungon takapinnasta särmään L. Enintään 8 merkkiä desimaalipisteineen.</li>' +
-  '<li><b>Ei seuraavan työkalun T-kutsua ennen G65:tä.</b> Makro lukee viimeksi ohjelmoidun T:n (#4120) mitat – esivalinta antaisi väärän työkalun tiedot.</li>' +
-  '<li>Jos UA2 tai UA3 puuttuu, kone pysähtyy viestiin <code>UA2 UA3 PUUTTUU - START</code>. Cycle start jatkaa ilman rungon törmäystarkistusta.</li>' +
-  '<li><b>X</b> = reiän mitattu Ø, <b>U</b> = vastaseinästä uran pohjaan (piirustuksessa d + t2).</li></ul></details>' +
-  '<details class="ty-ryhma"><summary><b>Kutsun kirjaimet</b><span class="ty-pieni">G65 P8990</span></summary><div class="ty-taulu-kehys"><table class="ty-taulu ku-taulu"><thead><tr><th>Kirjain</th><th>Merkitys</th><th>Oletus</th></tr></thead><tbody>' +
-  [['X', 'Reiän mitattu halkaisija', 'pakollinen'], ['U', 'Vastaseinästä uran pohjaan (d + t2)', 'pakollinen'], ['Z', 'Uran loppu', 'suoralla ja kartiolla pakollinen, vinoralla laskettu'],
-   ['Q', 'Lastu säteellä', 'pakollinen'], ['F', 'Syöttö mm/min', 'pakollinen'], ['T', 'Terän leveys', 'User Area 1'], ['A', 'Uran leveys', 'T'], ['B', 'Y-askel kun A > T', '0,9 × T'],
-   ['R', 'Otsapinta / uran alku Z', '0'], ['K', 'Lähtötaso R + K', '10'], ['H', 'Ensimmäisen uran kulma', '0'], ['M', 'Urien määrä tasajaolla', '1'],
-   ['E', 'Vinouran kulma 3–60°', '–'], ['W', 'Vinouran pintakohta Z', '–'], ['D', 'Kartioreiän kulma akselista 0–45°', '–'], ['J', 'Kaaripoistumisen suurin Z', '–'],
-   ['V', 'Viimeistelyvedot', '2'], ['C', 'Viiste nurkkiin', '0'], ['S', 'Turvaväli säteellä', '0,2']]
+const KU_OHJE_HTML =
+  '<details class="ty-ryhma" open><summary><b>Ennen kutsua</b></summary><ul class="ku-lista-ohje">' +
+  '<li>G21 ja G40 voimassa</li>' +
+  '<li>Terän särmä X+, työkalu otsan edessä</li>' +
+  '<li>User Area: UA1 = T, UA2 = rungon Ø, UA3 = runko – särmä</li>' +
+  '<li>Ei seuraavan työkalun T-kutsua ennen G65:tä</li></ul></details>' +
+  '<details class="ty-ryhma"><summary><b>Kirjaimet</b></summary><div class="ty-taulu-kehys"><table class="ty-taulu ku-taulu"><thead><tr><th></th><th>Merkitys</th><th>Oletus</th></tr></thead><tbody>' +
+  [['X', 'Reiän Ø', '–'], ['U', 'Vastaseinä – uran pohja', '–'], ['Z', 'Uran loppu', '–'], ['Q', 'Lastu säteellä', '–'], ['F', 'Syöttö mm/min', '–'],
+   ['T', 'Terän leveys', 'UA1'], ['A', 'Uran leveys', 'T'], ['B', 'Y-askel', '0,9 × T'], ['R', 'Otsa Z', '0'], ['K', 'Lähtötaso R + K', '10'],
+   ['H', '1. uran kulma', '0'], ['M', 'Urien määrä', '1'], ['E', 'Vinouran kulma', '–'], ['W', 'Vinoura pinnassa Z', '–'], ['D', 'Kartion kulma', '–'],
+   ['J', 'Kaaripoistuminen Z', '–'], ['V', 'Viimeistelyvedot', '2'], ['C', 'Viiste', '0'], ['S', 'Turvaväli', '0,2']]
     .map(r => '<tr><td><b>' + r[0] + '</b></td><td>' + r[1] + '</td><td>' + r[2] + '</td></tr>').join('') +
-  '</tbody></table></div><p class="ku-pieni">Tyhjä kirjain on eri asia kuin nolla: tyhjälle makro käyttää oletusta.</p></details>' +
-  '<details class="ty-ryhma"><summary><b>Uratyypit</b><span class="ty-pieni">suora · vinoura · kartio · J</span></summary>' +
-  '<p><b>Suora ura.</b> Pituus Z:aan. Leveys on terän leveys tai leveämpi Y-levityksellä: kun A > T, terä ajetaan useaan Y-asemaan järjestyksessä 0, −1, +1, −2, +2… (ensin keskelle).</p>' +
-  '<p><b>Vinoura E / W.</b> Pohja kallistuu: ura on syvin otsalla ja nousee pintaan sisempänä. Anna joko kulma E (3–60°) tai piste W, jossa pohja nousee pintaan. Z on valinnainen raja; ilman Z:aa pituus saa olla enintään 80 mm. Vinourassa ei viistettä eikä kaaripoistumista.</p>' +
-  '<p><b>Kartioura D (v2.5).</b> Reikä kapenee kohti Z:aa ja ura tehdään koko matkalle niin, että syvyys on sama otsalla ja perässä. D on pinnan kulma akselista: kartio 1:10 = D2.862. X ja U mitataan otsalta R. Viiste ja J toimivat. Koneella vielä ajamatta.</p>' +
-  '<p><b>Kaaripoistuminen J.</b> Uran pää nousee kaarella pintaan (sokea ura, olake). J on syvemmällä kuin Z, ja Z − J:n pitää olla vähintään uran syvyys d, muuten kaari olisi yli neljännesympyrän.</p></details>' +
-  '<details class="ty-ryhma"><summary><b>Viisteet</b><span class="ty-pieni">C ja #28</span></summary>' +
-  '<p>Viiste poistaa purseen uran kyljen ja reiän pinnan väliltä. Kappaletta käännetään C:llä kulman ψ verran ja sama X-liike leikkaa viisteen. Kumpikin puoli tehdään erikseen.</p>' +
-  '<p><b>#28 (makron asetus):</b> 0 = symmetrinen viiste. Suurempi kulma = pidempi viiste reiän puolella ja pienempi terän Y-siirto, jolloin paksumpi runko mahtuu. Purseenpoistoon 50–60° on yleensä hyvä kompromissi.</p>' +
-  '<div class="ty-taulu-kehys"><table class="ty-taulu ku-taulu"><thead><tr><th>#28</th><th>Viiste kyljessä</th><th>Viiste reiässä</th><th>Terän Y-siirto</th></tr></thead><tbody>' +
-  [['0 (symm.)', '0,20', '0,20', '16,1'], ['45', '0,20', '0,25', '14,0'], ['50', '0,20', '0,31', '11,8'], ['55', '0,20', '0,39', '9,5'], ['60', '0,20', '0,51', '7,1'], ['65', '0,20', '0,71', '4,6'], ['70', '0,20', '1,16', '2,0']]
-    .map(r => '<tr><td>' + r.join('</td><td>') + '</td></tr>').join('') +
-  '</tbody></table></div><p class="ku-pieni">Ø60, A10, T8, C0.2. Terä on oltava viistettä 1 mm leveämpi. C-kierron suunta #12 = −1 (tarkistettu koneella).</p></details>' +
-  '<details class="ty-ryhma"><summary><b>Miten makro liikkuu</b><span class="ty-pieni">pistoveto</span></summary><ul class="ku-lista-ohje">' +
-  '<li>Aloitus: G98 · M05 · M45 (C-akseli) · G18 · G28H0 · C ensimmäiseen uraan · Z lähtötasolle R + K · M408 (neste).</li>' +
-  '<li>Jokainen veto: <b>G00 X</b> syvyyteen lähtötasolla → <b>G01 Z</b> uran loppuun → <b>G00 X</b> turvatasolle → <b>G00 Z</b> lähtötasolle. X palaa aina ennen Z:aa, joten terä ei laahaa kylkiä.</li>' +
-  '<li>Lastujako: matka rb − b1 jaetaan tasan niin, että lasku on enintään Q. Lisäksi V viimeistelyvetoa lopullisella syvyydellä.</li>' +
-  '<li>Urat tehdään valmiiksi viisteineen yksi kerrallaan; kara lukitaan jarrulla (M68) jokaisen uran ajaksi.</li>' +
-  '<li>Lopetus: Z lähtötasolle · M09 · M69 · C ensimmäiseen kulmaan · M46 · syöttötapa takaisin · M99.</li></ul></details>' +
-  '<details class="ty-ryhma"><summary><b>Työvarat</b><span class="ty-pieni">ura ennen viimeistelyä</span></summary><ul class="ku-lista-ohje">' +
-  '<li><b>X = reiän Ø nyt, mitattuna</b> – ei loppumittaa. Jos reikä on 69 ja kutsussa X70, makro aloittaa 35 mm:n säteeltä: 0,5 mm kerros jää urasta pois ja lähestyminen voi osua materiaaliin.</li>' +
-  '<li><b>U = U(piirustus) − (valmis Ø − X) / 2.</b> Halkaisijassa 1 mm on säteessä 0,5 mm. Esim. reikä 70 → nyt 69, U73.7 → <b>X69. U73.2</b>.</li>' +
-  '<li><b>Viiste:</b> nurkka nousee viimeistelyssä, joten C kasvatetaan etukäteen. Nyrkkisääntö C ≈ viiste + säteen työvara + 0,03; Työvarat-kohta laskee tarkan arvon (A10: C0.705 jättää 0,2). C0.75–0.8 jättää varaa karkaisun liikkeelle. Vinourassa ei viistettä.</li>' +
-  '<li><b>Otsa R:</b> R on valmiin otsan paikka. Z0 valmiissa otsassa → R0. Z0 nykyisessä otsassa (valmis Z-0.5) → R-0.5. Suorassa urassa R vaikuttaa vain vetojen alkuun, vinourassa pohjaan: 0,5 mm virhe = 0,5 · tan E (E10: 0,09 mm, E30: 0,29 mm).</li>' +
-  '<li><b>Vinoura:</b> E ei muutu työvarasta. W lasketaan uudelleen nykyiselle reiälle: W(nyt) = W − säteen työvara / tan E. Työvarat-kohta tekee tämän automaattisesti, joten W:n voi antaa piirustuksesta.</li>' +
-  '<li><b>Kartio:</b> X ja U alkupäästä (otsalta R), sama U-korjaus. D ei muutu.</li>' +
-  '<li><b>Edellytykset:</b> viimeistely samaan keskiöön (0,1 mm sivusiirtymä alkaa näkyä), karkaisu voi tehdä reiästä soikean, ja ensimmäinen kappale tarkistetaan työvarareiästä: pohja vastaseinästä = laskettu U.</li></ul></details>' +
-  '<details class="ty-ryhma"><summary><b>Keskeytys ja rajoitukset</b></summary><ul class="ku-lista-ohje">' +
-  '<li><b>RESET kesken makron:</b> kara voi jäädä C-tilaan ja jarru kiinni. Aja M69 ja M46 ennen seuraavaa ohjelmaa.</li>' +
-  '<li>Pituussuunnan törmäyksiä (istukka, olakkeet, kappaleen pohja, terän ulottuma) ei tarkisteta – Z:n ja J:n tilan pitää riittää.</li>' +
-  '<li>Runko mallinnetaan ympyränä ja terä suorakaiteena, kaulaa ei. Runko tarkistetaan vain ääriasemissa.</li>' +
-  '<li>Makro olettaa terän keskilinjan olevan Y0:ssa. Y-korjaimen virhe näkyy erikokoisina viisteinä ja sivussa olevana urana.</li>' +
-  '<li>Vain G21 (mm) ja G40. Kartio ei käy yhdessä vinouran kanssa.</li></ul></details>';
+  '</tbody></table></div></details>' +
+  '<details class="ty-ryhma"><summary><b>Työvarat</b></summary><ul class="ku-lista-ohje">' +
+  '<li>Reikä 1 = halkaisijassa 1 mm → X −1, U −0,5</li>' +
+  '<li>Otsa 0,5 = 0,5 mm. Z0 nykyisessä otsassa → R ja Z siirtyvät</li>' +
+  '<li>Viiste kasvatetaan automaattisesti</li>' +
+  '<li>Viimeistely samaan keskiöön</li></ul></details>' +
+  '<details class="ty-ryhma"><summary><b>Uratyypit</b></summary><ul class="ku-lista-ohje">' +
+  '<li><b>Vinoura:</b> E tai W, ei viistettä eikä J:tä</li>' +
+  '<li><b>Kartio:</b> 1:10 = D2.862, Ø ja U otsalta</li>' +
+  '<li><b>J:</b> syvemmällä kuin Z, väh. uran syvyyden päässä</li></ul></details>' +
+  '<details class="ty-ryhma"><summary><b>Viisteen kulma #28</b></summary><ul class="ku-lista-ohje">' +
+  '<li>0 = symmetrinen, 50–60 = runko mahtuu paremmin</li>' +
+  '<li>Terä vähintään viiste + 1 mm</li></ul></details>' +
+  '<details class="ty-ryhma"><summary><b>RESET kesken</b></summary><ul class="ku-lista-ohje">' +
+  '<li>Aja M69 ja M46 ennen seuraavaa ohjelmaa</li></ul></details>';
 
 
 /* ---------- kenttäkohtainen havainnekuva ---------- */
 /* ---------- kenttäkohtainen havainnekuva ---------- */
 const KU_KUVA_TEKSTI = {
-  X: ['poikki', 'X – reiän halkaisija kutsussa = valmis Ø − reiän työvara.'],
-  Xv: ['poikki', 'Valmis reiän halkaisija kuvasta. Kutsun X = tämä − reiän työvara.', 'X'],
-  tv: ['poikki', 'Reiän työvara halkaisijassa. Esim. Ø50 ja työvara 1 → X49, ja U:sta vähennetään 0,5.', 'X'],
-  Rv: ['sivu', 'Otsan työvara Z-suunnassa (0,5 = 0,5 mm). Jos Z0 on nykyisessä otsassa, R ja Z-arvot siirtyvät sen verran syvemmälle.', 'R'],
-  U: ['poikki', 'U – reiän vastaseinästä uran pohjaan (piirustuksessa d + t2).'],
-  A: ['poikki', 'A – uran leveys. Jos tyhjä, ura on terän levyinen. Leveämpi ura tehdään Y-levityksellä.'],
-  C: ['poikki', 'C – viiste uran kyljen ja reiän pinnan nurkkaan, molemmille puolille.'],
-  M: ['poikki', 'M – urien määrä tasajaolla.'],
-  H: ['poikki', 'H – ensimmäisen uran kulma C-akselilla.'],
-  Q: ['poikki', 'Q – lastu säteellä: jokainen veto menee enintään Q syvemmälle.'],
-  S: ['poikki', 'S – turvaväli: veto alkaa S verran reiän pinnan alta ja terä palaa tähän.'],
-  B: ['poikki', 'B – Y-askel, kun ura on terää leveämpi (oletus 0,9 × T).'],
-  v28: ['poikki', '#28 – viisteen kulma uran kyljestä (makron asetus). 0 = symmetrinen.'],
-  T: ['tera', 'T – terän leveys (User Area 1).'],
-  Dr: ['tera', 'D – rungon halkaisija (User Area 2).'],
-  Lr: ['tera', 'L – rungon takapinnasta (vastakkainen kehä) terän särmään (User Area 3). H = L − D/2.'],
-  R: ['sivu', 'R – otsapinta eli uran alku Z (oletus 0).'],
-  Z: ['sivu', 'Z – uran loppu. Veto ajetaan R:stä Z:aan.'],
-  K: ['sivu', 'K – lähtötaso R + K kappaleen edessä (oletus 10).'],
-  F: ['sivu', 'F – syöttö mm/min vedon aikana.'],
-  V: ['sivu', 'V – viimeistelyvedot lopullisella syvyydellä (oletus 2).'],
-  J: ['sivu', 'J – uran pää nousee kaarella pintaan; syvin veto päättyy J:hin.'],
-  E: ['sivu', 'E – vinouran pohjan kulma: syvin otsalla, nousee pintaan.'],
-  W: ['sivu', 'W – Z-kohta, jossa vinouran pohja nousee reiän pintaan.'],
-  D: ['sivu', 'D – kartioreiän pinnan kulma akselista. 1:10 = D2.862.'],
-  ks: ['sivu', 'Kartio 1:x – D = atan(1 / 2x). Esim. 1:10 → 2,862°.']
+  X: ['poikki', 'Reiän Ø'],
+  Xv: ['poikki', 'Reiän Ø valmiina', 'X'],
+  tv: ['poikki', 'Reiän työvara Ø: 1 → X ja U pienenevät', 'X'],
+  U: ['poikki', 'Vastaseinästä uran pohjaan'],
+  A: ['poikki', 'Uran leveys (tyhjä = terän leveys)'],
+  C: ['poikki', 'Viiste valmiina'],
+  M: ['poikki', 'Urien määrä'],
+  H: ['poikki', '1. uran kulma'],
+  Q: ['poikki', 'Lastu per veto'],
+  S: ['poikki', 'Turvaväli'],
+  B: ['poikki', 'Y-askel'],
+  v28: ['poikki', 'Viisteen kulma kyljestä'],
+  T: ['tera', 'Terän leveys'],
+  Dr: ['tera', 'Rungon Ø'],
+  Lr: ['tera', 'Rungon takapinta – särmä'],
+  R: ['sivu', 'Otsa'],
+  Rv: ['sivu', 'Otsan työvara: 0,5 = 0,5 mm', 'R'],
+  Z: ['sivu', 'Uran loppu'],
+  K: ['sivu', 'Lähtötaso otsan edessä'],
+  F: ['sivu', 'Syöttö'],
+  V: ['sivu', 'Viimeistelyvedot'],
+  J: ['sivu', 'Uran pää kaarella pintaan'],
+  E: ['sivu', 'Pohjan kulma'],
+  W: ['sivu', 'Pohja nousee pintaan'],
+  D: ['sivu', 'Kartion kulma'],
+  ks: ['sivu', 'Kartio 1:x → kulma D']
 };
 /* mittaviiva nuolilla + teksti valkoisella taustalla */
 function kkM(x1, y1, x2, y2, teksti, tx, ty, anchor) {
@@ -10702,12 +10681,10 @@ const KU_KUVA_TERA = '<svg class="ku-ohjekuva" viewBox="0 0 320 180" role="img" 
   '<path d="M140 41.31 V34 H136 V24 H184 V34 H180 V41.31 A62 62 0 1 1 140 41.31 Z" class="kk-runko-kok"/>' +
   '<path d="M140 41.31 L157 80 A4 4 0 0 0 163 80 L180 41.31" class="kk-sauma"/>' +
   '<circle cx="160" cy="56" r="6" class="kk-sauma"/>' +
-  '<line x1="126" y1="24" x2="194" y2="24" class="kk-sarma"/><text x="198" y="30" class="kk-pieni">särmä X+</text>' +
-  '<text x="10" y="174" class="kk-pieni">pistoterä päädystä katsottuna</text>' +
-  '<g data-k="T" class="vain">' + kkA(136, 22, 136, 6) + kkA(184, 22, 184, 6) + kkM(136, 11, 184, 11, 'T', 192, 16) + '</g>' +
+  '<line x1="126" y1="24" x2="194" y2="24" class="kk-sarma"/>' +
+    '<g data-k="T" class="vain">' + kkA(136, 22, 136, 6) + kkA(184, 22, 184, 6) + kkM(136, 11, 184, 11, 'T', 192, 16) + '</g>' +
   '<g data-k="Dr" class="vain">' + kkM(98, 100, 222, 100, 'Ø D', 160, 128, 'middle') + '</g>' +
-  '<g data-k="Lr" class="vain">' + kkA(186, 24, 262, 24) + kkA(160, 162, 262, 162) + kkM(256, 24, 256, 162, 'L', 264, 97) +
-  kkA(134, 24, 70, 24) + kkA(98, 100, 70, 100) + '<line x1="76" y1="24" x2="76" y2="100" class="kk-mitta-ohut" marker-start="url(#kkN)" marker-end="url(#kkN)"/><text x="12" y="66" class="kk-pieni">H = L − D/2</text></g>' +
+  '<g data-k="Lr" class="vain">' + kkA(186, 24, 262, 24) + kkA(160, 162, 262, 162) + kkM(256, 24, 256, 162, 'L', 264, 97) + '</g>' +
   '</svg>';
 const KU_KUVA_SIVU = '<svg class="ku-ohjekuva" viewBox="0 0 320 180" role="img" aria-label="Sivukuva">' + KK_DEFS +
   '<rect x="0" y="0" width="320" height="180" class="kk-ilma"/>' +
@@ -10717,11 +10694,11 @@ const KU_KUVA_SIVU = '<svg class="ku-ohjekuva" viewBox="0 0 320 180" role="img" 
   '<g data-k="E W" class="vain"><path d="M240 64 L130 104 H240 Z" class="kk-ilma"/><path d="M240 64 L130 104" class="kk-korostus"/></g>' +
   '<g data-k="E" class="vain">' + kkA(240, 64, 186, 64) + '<path d="M204 64 A36 36 0 0 0 206 77" class="kk-mitta"/><text x="182" y="88" class="kk-teksti">E</text></g>' +
   '<g data-k="W" class="vain">' + kkA(130, 104, 130, 156) + '<circle cx="130" cy="104" r="3" class="kk-nuolenpaa"/><text x="130" y="170" class="kk-teksti" text-anchor="middle">W</text></g>' +
-  '<g data-k="J" class="vain"><path d="M96 64 A44 44 0 0 0 56 104 H96 Z" class="kk-ilma"/><path d="M96 64 A44 44 0 0 0 56 104" class="kk-korostus"/>' + kkA(56, 104, 56, 156) + '<circle cx="56" cy="104" r="3" class="kk-nuolenpaa"/><text x="56" y="170" class="kk-teksti" text-anchor="middle">J</text><text x="100" y="58" class="kk-pieni">Z</text></g>' +
+  '<g data-k="J" class="vain"><path d="M96 64 A44 44 0 0 0 56 104 H96 Z" class="kk-ilma"/><path d="M96 64 A44 44 0 0 0 56 104" class="kk-korostus"/>' + kkA(56, 104, 56, 156) + '<circle cx="56" cy="104" r="3" class="kk-nuolenpaa"/><text x="56" y="170" class="kk-teksti" text-anchor="middle">J</text></g>' +
   '<g data-k="D ks" class="vain"><path d="M0 0 H240 V104 L0 118 Z" class="kk-mat-sivu"/><path d="M0 118 L240 104 V180 H0 Z" class="kk-ilma"/><path d="M240 64 L96 72 V112 L240 104 Z" class="kk-ilma"/><path d="M240 64 L96 72 V112" class="kk-viiva"/><path d="M0 118 L240 104" class="kk-korostus"/>' + kkA(240, 104, 164, 104) + '<text x="176" y="128" class="kk-teksti">D</text></g>' +
   '<g data-k="R" class="vain"><line x1="240" y1="0" x2="240" y2="104" class="kk-korostus"/>' + kkA(240, 104, 240, 156) + '<text x="240" y="170" class="kk-teksti" text-anchor="middle">R</text></g>' +
   '<g data-k="Z" class="vain"><line x1="96" y1="64" x2="96" y2="104" class="kk-korostus"/>' + kkA(96, 104, 96, 156) + kkA(240, 104, 240, 156) + kkM(96, 150, 240, 150, 'Z', 168, 143, 'middle') + '</g>' +
-  '<g data-k="K" class="vain"><line x1="288" y1="10" x2="288" y2="172" class="kk-apu"/>' + kkM(240, 150, 288, 150, 'K', 264, 143, 'middle') + '<text x="272" y="10" class="kk-pieni">R+K</text></g>' +
+  '<g data-k="K" class="vain"><line x1="288" y1="10" x2="288" y2="172" class="kk-apu"/>' + kkM(240, 150, 288, 150, 'K', 264, 143, 'middle') + '</g>' +
   '<g data-k="F" class="vain"><line x1="300" y1="76" x2="100" y2="76" class="kk-mitta" marker-end="url(#kkN)"/><text x="196" y="70" class="kk-teksti">F</text></g>' +
   '<g data-k="V" class="vain"><line x1="96" y1="66" x2="240" y2="66" class="kk-korostus"/><line x1="96" y1="70" x2="240" y2="70" class="kk-korostus"/><text x="168" y="56" class="kk-teksti" text-anchor="middle">V vetoa pohjassa</text></g>' +
   '<text x="10" y="124" class="kk-pieni">reikä</text><text x="10" y="40" class="kk-pieni">kappale</text><text x="248" y="40" class="kk-pieni">otsan edessä</text>' +
