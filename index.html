@@ -10321,12 +10321,13 @@ function kuLaske(v) {
     let t31 = ps - kuAcos(((b1 + S + C) * kuCos(ps) + a * kuSin(ps)) / c);
     let t32 = c * kuCos(t31), t33 = c * kuSin(t31);
     if (T < Math.sqrt((b1 + S + C - t32) * (b1 + S + C - t32) + (t33 - a) * (t33 - a)) + 1.0) return halyta(15);
-    const r0 = c * kuCos(ps - fii) - S;
-    if (r0 - S - 0.25 < 0) return halyta(26);
+    const rKos = c * kuCos(ps - fii);          /* #31 nurkan kosketussäde (tarkistukset) */
+    const r0 = rKos - S;                        /* #27 viistevetojen aloitussäde */
+    if (rKos - S - 0.25 < 0) return halyta(26);
     const r1 = (b1 + S + C) * kuCos(ps) + a * kuSin(ps);
     const teraY = c * kuSin(ps - fii) + C * kuSin(ps) - T / 2 + 0.5;
     let nousu = 0;
-    if (Rk > 0) nousu = r1 - r0 + S;
+    if (Rk > 0) nousu = r1 - rKos + S;
     if (b1 + S + C + 0.5 * kuSin(ps) + nousu * (1 - kuCos(ps)) > rb - 0.1) return halyta(16);
     if (a - 0.5 * kuCos(ps) - nousu * kuSin(ps) < 0.1 - a) return halyta(16);
     if (r1 >= c || Math.abs(teraY - T / 2) > Math.sqrt(c * c - r1 * r1) - 0.1) return halyta(17);
@@ -10337,7 +10338,7 @@ function kuLaske(v) {
       if (vas > oik) return halyta(20);
     }
     if (!o.runkoPuuttuu) {
-      let u = r0 - S - 0.25 - Hr;
+      let u = rKos - S - 0.25 - Hr;
       if (!runkoOk(u * kuCos(ps) + teraY * kuSin(ps), u * kuSin(ps) - teraY * kuCos(ps))) return halyta(29);
       u = r1 - Hr;
       if (!runkoOk(u * kuCos(ps) + teraY * kuSin(ps), u * kuSin(ps) - teraY * kuCos(ps))) return halyta(29);
@@ -10519,7 +10520,7 @@ function renderKiilaura() {
   h += '<div class="section-card" id="kuKentat">';
   h += '<div class="tyg"><div class="tyg-otsikko"><span>Ura</span></div>' +
     kuSeg('tyyppi', KU.tyyppi, [['suora', 'Suora'], ['vino', 'Vinoura'], ['kartio', 'Kartio']]) +
-    kuRivi('Xv', 'Ø', KU.tyyppi === 'kartio' ? 'Reiän Ø alkupäässä' : 'Reiän Ø', 'mm', '') +
+    kuRivi('Xv', 'Ø', KU.tyyppi === 'kartio' ? 'Valmis Ø alkupäässä' : 'Valmis reiän Ø', 'mm', '') +
     kuRivi('U', 'U', 'Vastaseinä – pohja', 'mm', '');
   if (KU.tyyppi === 'vino') {
     h += kuSeg('vinoTapa', KU.vinoTapa, [['E', 'Kulma E'], ['W', 'Pintakohta W']]) +
