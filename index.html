@@ -1892,6 +1892,10 @@
   #kuSisalto > .section-label { margin-top: 18px; }
   .ku-ohje-intro { font-size: 14px; line-height: 1.5; color: var(--text-dim); margin: 0 0 6px; }
   .ty-ryhma p { font-size: 14px; line-height: 1.55; margin: 6px 0 10px; }
+  .ti-haku { width: 100%; margin: 0 0 6px; font-family: var(--sans) !important; }
+  #tiSisalto .section-label { margin-top: 16px; }
+  @media (min-width: 900px) and (pointer: fine) { #tiSisalto { column-count: 2; column-gap: 20px; } #tiSisalto > * { break-inside: avoid; } #tiSisalto > .section-label { break-after: avoid; } }
+  @media (max-width: 520px) { #tyOsiot { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; } #tyOsiot .filter-chip { padding: 8px 4px; } }
   .ku-lista-ohje { margin: 4px 0 8px; padding-left: 18px; font-size: 14px; line-height: 1.55; }
   .ku-lista-ohje li { margin-bottom: 6px; }
   .ku-taulu td, .ku-taulu th { vertical-align: top; }
@@ -2304,7 +2308,7 @@
 
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · LEUKALASKURI · v3.57</footer>
+    <footer><span class="machine-name">NTX3000</span> · LEUKALASKURI · v3.58</footer>
   </div>
 
   <!-- ===================== ASETUKSET: LEUKAKORJAIN ===================== -->
@@ -2441,7 +2445,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · SP2 &amp; G55 · v3.57</footer>
+    <footer><span class="machine-name">NTX3000</span> · SP2 &amp; G55 · v3.58</footer>
   </div>
 
   <!-- ===================== ASETUKSET: SP2 ===================== -->
@@ -2561,7 +2565,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · TYÖKALULISTA · v3.57</footer>
+    <footer><span class="machine-name">NTX3000</span> · TYÖKALULISTA · v3.58</footer>
   </div>
 
   <!-- ===================== ASETUKSET ===================== -->
@@ -2598,7 +2602,7 @@
       </div>
       <div id="kuSisalto"></div>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · KIILAURA · v3.57</footer>
+    <footer><span class="machine-name">NTX3000</span> · KIILAURA · v3.58</footer>
   </div>
 
   <div class="view" id="viewTyosto">
@@ -2636,6 +2640,7 @@
         <button type="button" class="filter-chip" data-tyosio="arvot">Arvot</button>
         <button type="button" class="filter-chip" data-tyosio="materiaalit">Materiaalit</button>
         <button type="button" class="filter-chip" data-tyosio="kierteet">Kierteet</button>
+        <button type="button" class="filter-chip" data-tyosio="tietoiskut">Tietoiskut</button>
       </div>
 
       <!-- NEUVOJA -->
@@ -2695,6 +2700,11 @@
       </div>
 
       <!-- KIERTEET -->
+      <div class="ty-osio" data-osio="tietoiskut">
+        <input type="text" enterkeyhint="search" id="tiHaku" class="ti-haku" placeholder="Hae: lovikuluma, värinä, CNMG…" autocomplete="off">
+        <div id="tiSisalto"></div>
+      </div>
+
       <div class="ty-osio" data-osio="kierteet">
         <div class="section-card">
           <div class="section-label">Oma kierre</div>
@@ -2718,7 +2728,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · TYÖSTÖ · v3.57</footer>
+    <footer><span class="machine-name">NTX3000</span> · TYÖSTÖ · v3.58</footer>
   </div>
 
   <!-- ===================== KAPPALEET: TYÖKORTIT PIIRUSTUSNUMEROITTAIN ===================== -->
@@ -2757,7 +2767,7 @@
       <div id="kpLista"></div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · KAPPALEET · v3.57</footer>
+    <footer><span class="machine-name">NTX3000</span> · KAPPALEET · v3.58</footer>
   </div>
 
   <div class="view" id="viewKappale">
@@ -2775,7 +2785,7 @@
       </div>
     </header>
     <main id="kpKortti"></main>
-    <footer><span class="machine-name">NTX3000</span> · KAPPALEKORTTI · v3.57</footer>
+    <footer><span class="machine-name">NTX3000</span> · KAPPALEKORTTI · v3.58</footer>
   </div>
 
   <div class="view" id="viewData">
@@ -2915,7 +2925,7 @@
       </section>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · ASETUKSET · v3.57</footer>
+    <footer><span class="machine-name">NTX3000</span> · ASETUKSET · v3.58</footer>
   </div>
 
   <!-- ===================== KONEET ===================== -->
@@ -2949,7 +2959,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · KONEET · v3.57</footer>
+    <footer><span class="machine-name">NTX3000</span> · KONEET · v3.58</footer>
   </div>
 
   <!-- ===================== TYÖKALUTYYPPIEN HALLINTA ===================== -->
@@ -2981,7 +2991,7 @@
       </section>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · TYÖKALUTYYPIT · v3.57</footer>
+    <footer><span class="machine-name">NTX3000</span> · TYÖKALUTYYPIT · v3.58</footer>
   </div>
 
   <!-- ===================== TUONTI: ESIKATSELU ===================== -->
@@ -3049,7 +3059,7 @@
         </div>
       </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TUONTI · v3.57</footer>
+    <footer><span class="machine-name">NTX3000</span> · TUONTI · v3.58</footer>
   </div>
 
   <!-- ===================== TYÖSTÖTIETOPANKKI JA OMAT SÄÄDÖT ===================== -->
@@ -3088,7 +3098,7 @@
         <div class="tp-rivit" id="tpRivit"></div>
       </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TIETOPANKKI · v3.57</footer>
+    <footer><span class="machine-name">NTX3000</span> · TIETOPANKKI · v3.58</footer>
   </div>
 
 <!-- ===================== TARKISTUS ===================== -->
@@ -3108,7 +3118,7 @@
         <div class="edit-list" id="qualityList"></div>
       </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TARKISTUS · v3.57</footer>
+    <footer><span class="machine-name">NTX3000</span> · TARKISTUS · v3.58</footer>
   </div>
 
 </div>
@@ -10175,6 +10185,7 @@ function renderTyosto() {
   else if (TY.osio === 'laskin') tyPiirraKentat();
   else if (TY.osio === 'arvot') { tyMateriaaliValinta(); document.getElementById('tyHalk').value = TY.D; tyPiirraArvot(); }
   else if (TY.osio === 'materiaalit') tyPiirraMateriaalit();
+  else if (TY.osio === 'tietoiskut') tiRender();
   else { document.getElementById('tyKD').value = TY.kD; document.getElementById('tyKP').value = TY.kP; tyPiirraKierteet(); }
 }
 function tyValitseOsio(osio) {
@@ -10183,6 +10194,160 @@ function tyValitseOsio(osio) {
   TY.osio = osio; tallennaTy(); renderTyosto(); window.scrollTo({ top: 0, behavior: 'instant' });
   if (vaihtuu && nykyinenNakyma() === 'viewTyosto') historiaLisaa('viewTyosto');
 }
+
+/* =================================================================
+   TIETOISKUT – lyhyet tietopaketit koneistuksesta
+   ================================================================= */
+const tiL = rivit => '<ul class="ku-lista-ohje">' + rivit.map(r => '<li>' + r + '</li>').join('') + '</ul>';
+const tiT = (otsikot, rivit) => '<div class="ty-taulu-kehys"><table class="ty-taulu ku-taulu"><thead><tr>' +
+  otsikot.map(o => '<th>' + o + '</th>').join('') + '</tr></thead><tbody>' +
+  rivit.map(r => '<tr>' + r.map((c, i) => '<td>' + (i === 0 ? '<b>' + c + '</b>' : c) + '</td>').join('') + '</tr>').join('') +
+  '</tbody></table></div>';
+const TI_AIHEET = [
+  ['Perusteet', 'ISO-materiaaliryhmät', tiT(['', 'Ryhmä', 'Esimerkit'], [
+    ['P', 'Teräs (sininen)', 'S355, C45, 42CrMo4'],
+    ['M', 'Ruostumaton (keltainen)', '1.4404 (316L), duplex 1.4462, superduplex 1.4410'],
+    ['K', 'Valurauta (punainen)', 'GJL, GJS'],
+    ['N', 'Ei-rautametallit (vihreä)', 'alumiini, messinki, kupari'],
+    ['S', 'Kuumalujat ja titaani (oranssi)', 'Inconel 718, Ti6Al4V'],
+    ['H', 'Karkaistut (harmaa)', 'yli 45 HRC']])],
+  ['Perusteet', 'Teräpalan koodi, esim. CNMG 120408', tiT(['', 'Merkitys'], [
+    ['C', 'Muoto: C 80°, D 55°, V 35°, W 80° kolmikko, T 60° kolmio, S 90° neliö, R pyöreä'],
+    ['N', 'Päästökulma: N 0° (negatiivinen pala, kaksipuolinen), B 5°, C 7°, P 11°'],
+    ['M', 'Mittatoleranssi (M = puristettu, G = hiottu tarkempi)'],
+    ['G', 'Kiinnitys ja lastunmurtaja: G = reikä, murtaja molemmin puolin'],
+    ['12', 'Särmän pituus mm'],
+    ['04', 'Paksuus: 03 = 3,18, 04 = 4,76, 06 = 6,35 mm'],
+    ['08', 'Kärjen säde: 04 = 0,4, 08 = 0,8, 12 = 1,2 mm']])],
+  ['Perusteet', 'Peruskaavat', tiT(['', 'Kaava'], [
+    ['n', 'vc × 1000 / (π × D) &nbsp; r/min'],
+    ['vc', 'π × D × n / 1000 &nbsp; m/min'],
+    ['Vf sorvaus, poraus', 'n × f &nbsp; mm/min'],
+    ['Vf jyrsintä', 'n × z × fz &nbsp; mm/min'],
+    ['Q sorvaus', 'vc × ap × f &nbsp; cm³/min'],
+    ['Q jyrsintä', 'ap × ae × Vf / 1000 &nbsp; cm³/min'],
+    ['Ra sorvaus', '≈ 50 × f² / rε &nbsp; µm (f mm/r, rε mm)']])],
+  ['Perusteet', 'Terämateriaalit', tiT(['', 'Milloin'], [
+    ['Pikateräs HSS', 'Sitkeä, halpa. Alhainen vc. Pienet porat, tapit, epävakaat olosuhteet.'],
+    ['Kovametalli CVD', 'Paksu pinnoite, kestää kuumuutta. Sorvaus, teräs ja valurauta.'],
+    ['Kovametalli PVD', 'Ohut pinnoite, terävä särmä. Jyrsintä, ruostumaton, kuumalujat, pisto.'],
+    ['Cermet', 'Viimeistely teräksessä, hyvä pinta ja mittapysyvyys.'],
+    ['Keramiikka', 'Kuumalujat ja valurauta suurella vc:llä. Ei iskuja.'],
+    ['CBN', 'Karkaistu teräs yli 45 HRC, valurauta.'],
+    ['PCD', 'Alumiini, komposiitit. Ei rautametalleille.']])],
+  ['Sorvaus', 'Lastunmurto', tiL([
+    'Pitkä vyyhti: <b>nosta syöttöä</b> tai vaihda tiukempaan murtajaan. Vc:n muutos auttaa vähän.',
+    'Murskaantuva, sinertävä lastu: syöttö liian suuri tai murtaja liian tiukka.',
+    'Lastuamissyvyys vähintään noin ⅔ × kärjen säde, muuten lastu ei murru.',
+    'Rouhinnan syöttö enintään noin ½ × kärjen säde.',
+    'Ruostumaton ja superduplex: sitkeä lastu, käytä niille tehtyä murtajaa ja korkeapainejäähdytystä.'])],
+  ['Sorvaus', 'Kulumismuodot ja korjaus', tiT(['Kuluma', 'Syy → korjaus'], [
+    ['Viistekuluma', 'Normaali. Jos nopea: pienennä vc, kulutuskestävämpi laatu.'],
+    ['Kraatteri', 'Kuumuus: pienennä vc ja f, paksumpi CVD-pinnoite.'],
+    ['Lovikuluma ap:n kohdalla', 'Muokkauslujittuminen (ruostumaton, kuumalujat): vaihtele ap, pienempi asetuskulma tai pyöreä pala.'],
+    ['Kertymä (BUE)', 'Vc liian alhainen: nosta vc, terävä positiivinen särmä, jäähdytys.'],
+    ['Lohkeilu', 'Isku tai värinä: sitkeämpi laatu, vahvempi särmä, jäykempi kiinnitys.'],
+    ['Plastinen muodonmuutos', 'Liian kuuma: pienennä vc ja f, kovempi laatu.'],
+    ['Kampahalkeamat', 'Lämpövaihtelu: jäähdytys kunnolla päälle tai kokonaan pois.'],
+    ['Palan murtuma', 'Kuorma liian suuri: pienennä f ja ap, paksumpi tai vahvempi pala.']])],
+  ['Sorvaus', 'Kiinnitys ja ulkonema', tiL([
+    'Kappaleen ulkonema enintään noin 3 × D pelkillä leuoilla.',
+    '3–10 × D: vastakärki. Yli 10 × D: lisäksi tukilaakeri.',
+    'Ohut seinä: pehmeät leuat, pienempi puristus viimeistelyssä, suuri asetuskulma vähentää radiaalivoimaa.',
+    'Sisäsorvaus: teräsvarsi noin 4 × D, kovametalli noin 6 × D, vaimennettu jopa 10 × D.'])],
+  ['Sorvaus', 'Kierteen sorvaus', tiL([
+    '<b>Kylkisyöttö 3–5°</b> (modifioitu): paras lastu useimmissa materiaaleissa.',
+    'Radiaalisyöttö: pienet nousut ja lyhytlastuiset materiaalit.',
+    'Ensimmäinen veto syvin, syvyys pienenee joka vedolla. Viimeinen 0,02–0,05 mm.',
+    'Ruostumaton: ei turhia kipinävetoja, ohut lastu lujittaa pintaa.',
+    'Fanuc G76: P(viimeistelyvedot, viiste, kulma) Q(pienin lastu) R(viimeistelyvara).'])],
+  ['Jyrsintä', 'Myötä- vai vastajyrsintä', tiL([
+    '<b>Myötäjyrsintä</b> ensisijaisesti: lastu paksusta ohueen, parempi pinta ja kesto.',
+    'Vastajyrsintä: valukuori tai hilse pinnalla, tai epäjäykkä kiinnitys.',
+    'Tasojyrsin hieman sivussa keskiöstä, niin sisääntulo on ohut ja isku pienempi.'])],
+  ['Jyrsintä', 'Lastunohennus', tiL([
+    'Kun ae < D/2, todellinen lastu on ohuempi kuin fz.',
+    'Korjattu fz = hm / (2 × √(ae/D × (1 − ae/D))).',
+    'Esim. D10, ae 1: kerroin noin 1,7.',
+    'Liian ohut lastu hiertää: kuumuus, kertymä ja nopea kuluma, varsinkin ruostumattomassa.',
+    'Avustaja tekee korjauksen automaattisesti.'])],
+  ['Jyrsintä', 'Sisääntulo ja nurkat', tiL([
+    'Aja materiaaliin kaarella, ei suoraan täydellä leveydellä.',
+    'Sisänurkassa ae kasvaa hetkellisesti: nurkkasäde ≥ 1,2 × työkalun säde tai syötön lasku.',
+    'Taskuun: ramppi tai spiraali. Pystysuora sukellus vain keskeltä leikkaavalla jyrsimellä.',
+    'Trokoidi: ae 5–15 % D, täysi ap, suuri syöttö. Hyvä ruostumattomassa ja kapeissa urissa.'])],
+  ['Poraus', 'Perusohjeet', tiL([
+    'Kärjen pituus: 140° ≈ 0,18 × D, 118° ≈ 0,30 × D.',
+    'Sisäjäähdytys aina kun mahdollista, kovametalliporalle vähintään noin 15–20 bar.',
+    'Syvä reikä (yli 5 × D): ensin pilottireikä 2–3 × D, poralla sisään hitaasti, sitten täysi.',
+    'Vino tai epätasainen aloituspinta: pienennä syöttöä noin puoleen ensimmäiset 1–2 mm.',
+    'Teräpalapora (U-pora) sorvissa: X-siirrolla saa halkaisijaa säädettyä.'])],
+  ['Poraus', 'Kierrereiän koko', tiL([
+    'Leikkaava tappi, metrinen: <b>pora ≈ D − P</b>, esim. M10 × 1,5 → 8,5.',
+    'Muovaava tappi: pora ≈ D − 0,45…0,5 × P. Tarkista valmistajalta.',
+    'Kierrejyrsintä: sama reikä kuin leikkaavalle, kierteen syvyyden voi säätää korjaimella.',
+    'Pohjareikä: kierteen pituus + tapin viiste + noin 1–2 × P varaa.'])],
+  ['Materiaalit', 'Austeniittinen ruostumaton', tiL([
+    'Muokkauslujittuu: <b>älä hiero</b>. Riittävä syöttö ja lastuamissyvyys.',
+    'Seuraava veto syvemmälle kuin edellisen lujittama kerros (noin 0,1–0,2 mm).',
+    'Terävä positiivinen särmä, PVD-pinnoite.',
+    'Ei viipymistä (G04) pohjassa, ei kipinävetoja.',
+    'Kertymä alhaisella vc:llä, kuumuus liian suurella vc:llä.'])],
+  ['Materiaalit', 'Duplex ja superduplex', tiL([
+    'Lujuus noin kaksinkertainen 316L:ään verrattuna.',
+    'Vc noin 20–30 % alempi kuin 316L:lle samalla terällä.',
+    'Tyypillinen kuluma on lovi ap:n kohdalla: vaihtele ap ja käytä pyöreää palaa tai pientä asetuskulmaa.',
+    'Korkeapainejäähdytys murtaa lastun ja pidentää kestoa.',
+    'PREN = %Cr + 3,3 × %Mo + 16 × %N. Superduplex (1.4410) yli 40.'])],
+  ['Materiaalit', 'Titaani', tiL([
+    'Alhainen vc, kovametallilla noin 40–70 m/min.',
+    'Lämpö jää terään, joten jäähdytys on tärkeää.',
+    'Pieni kimmokerroin: kappale joustaa, mikä aiheuttaa värinää ohuissa seinissä.',
+    'Hienot lastut voivat syttyä: pidä lastualue puhtaana.'])],
+  ['Ongelmat', 'Värinä', tiL([
+    'Lyhennä ulkonemaa. Ulkonema vaikuttaa jäykkyyteen kolmannessa potenssissa.',
+    'Muuta kierroslukua ±10–20 %.',
+    'Pienempi kärjen säde, positiivinen geometria, pienempi ap tai ae.',
+    'Jyrsin: vaihteleva jako tai vähemmän teriä.',
+    'Sorvaus: asetuskulma lähelle 90°, vastakärki pitkälle kappaleelle.'])],
+  ['Ongelmat', 'Huono pinnanlaatu', tiL([
+    'Ra ≈ 50 × f² / rε. Puolet pienempi syöttö = neljäsosa Ra:sta.',
+    'Wiper-pala: kaksinkertainen syöttö samalla Ra:lla.',
+    'Repivä pinta: kertymä, nosta vc ja käytä terävää särmää.',
+    'Rz on karkeasti 4–7 × Ra.',
+    'Raidat tai aaltoilu: värinä, katso Värinä.'])],
+  ['Ongelmat', 'Mitta heittää', tiL([
+    'Lämpö: kone ja kappale lämpenevät. Mittaa samassa lämpötilassa ja anna koneen lämmetä ennen tarkkaa työtä.',
+    'Terän kuluminen: kulumakorjaus säännöllisesti, ei yhdellä isolla muutoksella.',
+    'Taipuma: ohut työkalu tai pitkä kappale. Viimeistelyveto samalla ap:llä joka kerta.',
+    'Ohjelmoi toleranssin keskelle.'])],
+  ['Yleistä', 'Jäähdytysneste', tiL([
+    'Emulsion pitoisuus tyypillisesti 5–8 %. Mittaa refraktometrillä ja käytä valmistajan kerrointa.',
+    'Liian laimea: ruoste ja nopea kuluma. Liian väkevä: vaahtoaa ja ärsyttää ihoa.',
+    'Suuntaa suutin särmälle. Sisäjäähdytys on aina parempi kuin ulkoinen.',
+    'Kovametallijyrsintä valuraudassa ja kovassa teräksessä usein kuivana, jotta lämpöshokki ei halkaise särmää.'])],
+  ['Yleistä', 'Sovitteet (reikä H7)', tiT(['Sovite', 'Käyttö'], [
+    ['H7/g6', 'Liukusovite, pyörivä tai liukuva osa'],
+    ['H7/h6', 'Liuku-/paikoitussovite, käsin koottava'],
+    ['H7/k6', 'Siirtymäsovite, kevyt puristus, paikoitus'],
+    ['H7/p6', 'Ahdistussovite, puristetaan']]) +
+    '<p class="ku-ohje-intro">Esim. Ø50 H7 = 0…+0,025, g6 = −0,009…−0,025. Ohjelmoi toleranssin keskelle.</p>']
+];
+function tiRender() {
+  const el = document.getElementById('tiSisalto');
+  if (!el) return;
+  const haku = (document.getElementById('tiHaku') || {}).value || '';
+  const h = haku.trim().toLowerCase();
+  const nak = TI_AIHEET.filter(a => !h || (a[0] + ' ' + a[1] + ' ' + a[2].replace(/<[^>]+>/g, ' ')).toLowerCase().indexOf(h) !== -1);
+  if (!nak.length) { el.innerHTML = '<div class="empty-state">Ei osumia.</div>'; return; }
+  let out = '', ryhma = '';
+  nak.forEach(a => {
+    if (a[0] !== ryhma) { ryhma = a[0]; out += '<div class="section-label">' + ryhma + '</div>'; }
+    out += '<details class="ty-ryhma"' + (h ? ' open' : '') + '><summary><b>' + a[1] + '</b></summary>' + a[2] + '</details>';
+  });
+  el.innerHTML = out;
+}
+document.addEventListener('input', e => { if (e.target && e.target.id === 'tiHaku') tiRender(); });
 
 /* =================================================================
    KIILAURA – O8990 v2.5 (NTX3000 kara 1, seisova pistoterä)
