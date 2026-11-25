@@ -10289,31 +10289,11 @@ function kuKutsu(v, tKutsuun) {
   return osat.join(' ');
 }
 
-/* DIN 6885-1 sovitekiila: reiän nimellis-Ø → kiilan b×h, akselin t1, navan t2 ja t2:n toleranssi */
-const KU_DIN6885 = [
-  [6, 8, 2, 2, 1.2, 1.0, 0.1], [8, 10, 3, 3, 1.8, 1.4, 0.1], [10, 12, 4, 4, 2.5, 1.8, 0.1],
-  [12, 17, 5, 5, 3.0, 2.3, 0.1], [17, 22, 6, 6, 3.5, 2.8, 0.1], [22, 30, 8, 7, 4.0, 3.3, 0.2],
-  [30, 38, 10, 8, 5.0, 3.3, 0.2], [38, 44, 12, 8, 5.0, 3.3, 0.2], [44, 50, 14, 9, 5.5, 3.8, 0.2],
-  [50, 58, 16, 10, 6.0, 4.3, 0.2], [58, 65, 18, 11, 7.0, 4.4, 0.2], [65, 75, 20, 12, 7.5, 4.9, 0.2],
-  [75, 85, 22, 14, 9.0, 5.4, 0.2], [85, 95, 25, 14, 9.0, 5.4, 0.2], [95, 110, 28, 16, 10.0, 6.4, 0.2],
-  [110, 130, 32, 18, 11.0, 7.4, 0.2], [130, 150, 36, 20, 12.0, 8.4, 0.3], [150, 170, 40, 22, 13.0, 9.4, 0.3],
-  [170, 200, 45, 25, 15.0, 10.4, 0.3], [200, 230, 50, 28, 17.0, 11.4, 0.3]
-];
-/* ISO 286 navan uran leveys: IT9 ja P9 (µm) leveysalueittain */
-const KU_IT9 = [[3, 25, -6, -31], [6, 30, -12, -42], [10, 36, -15, -51], [18, 43, -18, -61], [30, 52, -22, -74], [50, 62, -26, -88]];
-function kuDin(d) {
-  if (!(d > 6) || d > 230) return null;
-  const r = KU_DIN6885.find(x => d > x[0] && d <= x[1]);
-  if (!r) return null;
-  const b = r[2];
-  const it = KU_IT9.find(x => b <= x[0]) || KU_IT9[KU_IT9.length - 1];
-  return { yli: r[0], asti: r[1], b, h: r[3], t1: r[4], t2: r[5], t2tol: r[6], js9: it[1] / 2 / 1000, p9: [it[2] / 1000, it[3] / 1000] };
-}
 
 /* ---------- tila ---------- */
 const K_KIILAURA = 'ntx_kiilaura';
 var KU = (function () {
-  const oletus = { osio: 'kutsu', tyyppi: 'suora', vinoTapa: 'E', tKutsu: 'ei', sovite: 'js9', v: {} };
+  const oletus = { osio: 'kutsu', tyyppi: 'suora', vinoTapa: 'E', tKutsu: 'ei', v: {} };
   try { const d = JSON.parse(localStorage.getItem(K_KIILAURA) || 'null'); if (d && typeof d === 'object') return Object.assign(oletus, d, { v: Object.assign({}, d.v || {}) }); } catch (e) {}
   return oletus;
 })();
@@ -10390,11 +10370,6 @@ function renderKiilaura() {
   let h = '';
   h += '<div class="tulos-yla"><div class="result-card ku-yla" id="kuYla"></div></div>';
   h += '<div class="section-card" id="kuKentat">';
-  /* mitoitus */
-  h += '<div class="tyg"><div class="tyg-otsikko"><span>Mitoitus piirustuksesta</span><span class="tyg-vihje">DIN 6885 · valinnainen</span></div>' +
-    kuRivi('dNim', 'd', 'Reiän nimellis-Ø', 'mm', 'esim. 50') +
-    kuSeg('sovite', KU.sovite, [['js9', 'Normaali JS9'], ['p9', 'Tiukka P9']]) +
-    '<div id="kuDin"></div></div>';
   /* reikä ja ura */
   h += '<div class="tyg"><div class="tyg-otsikko"><span>Reikä ja ura</span><span class="tyg-vihje">mitattu reikä</span></div>' +
     kuSeg('tyyppi', KU.tyyppi, [['suora', 'Suora'], ['vino', 'Vinoura'], ['kartio', 'Kartio']]) +
@@ -10462,23 +10437,6 @@ function kuPaivita() {
   if (o.viisteOhitettu) tila += '<div class="ku-tila huom">Vinourassa makro ohittaa viisteen (C = 0).</div>';
   yla.innerHTML = '<div class="ku-kutsu-rivi"><span class="section-label">G65-kutsu</span><button type="button" class="nv-linkki" id="kuKopioi">Kopioi</button></div>' +
     '<code class="ku-kutsu copyable" id="kuKutsu">' + esc(kutsu) + '</code>' + tila;
-  /* DIN */
-  const dinEl = document.getElementById('kuDin');
-  if (dinEl) {
-    const d = kuLuku(KU.v.dNim), din = kuDin(d);
-    if (!String(KU.v.dNim || '').trim()) dinEl.innerHTML = '';
-    else if (!din) dinEl.innerHTML = '<div class="nv-tyhja">DIN 6885 -taulukko kattaa Ø 6–230 mm.</div>';
-    else {
-      const lev = KU.sovite === 'p9' ? [din.b + din.p9[1], din.b + din.p9[0]] : [din.b - din.js9, din.b + din.js9];
-      const Unim = d + din.t2, Ukesk = d + din.t2 + din.t2tol / 2;
-      dinEl.innerHTML = '<div class="nv-suositus"><div class="nv-suositus-rivit">' +
-        '<div><span>Kiila (Ø' + din.yli + '–' + din.asti + ')</span><b>' + din.b + ' × ' + din.h + '</b><em>navan t2 ' + kuMm(din.t2, 1) + ' +' + kuMm(din.t2tol, 1) + '</em></div>' +
-        '<div><span>Uran leveys ' + (KU.sovite === 'p9' ? 'P9' : 'JS9') + '</span><b>' + kuMm(lev[0], 3) + '–' + kuMm(lev[1], 3) + '</b><em>keskellä ' + kuMm((lev[0] + lev[1]) / 2, 3) + '</em></div>' +
-        '<div><span>U = d + t2</span><b>' + kuMm(Unim, 2) + '–' + kuMm(Unim + din.t2tol, 2) + '</b><em>keskellä ' + kuMm(Ukesk, 2) + '</em></div></div>' +
-        '<button type="button" class="nv-linkki" data-kudin="1">Käytä: A ' + kuMm((lev[0] + lev[1]) / 2, 3) + ', U ' + kuMm(Ukesk, 2) + '</button>' +
-        '<span class="nv-suositus-huom">Tarkista aina piirustus: t2:n toleranssi on tyypillinen arvo. Jos terä on yhtä leveä kuin ura, jätä A tyhjäksi.</span></div>';
-    }
-  }
   /* tulos */
   const tEl = document.getElementById('kuTulos');
   if (!tEl) return;
@@ -10582,17 +10540,6 @@ const KU_OHJE_HTML = '<p class="ku-ohje-intro">O8990 v2.5 · NTX3000 kara 1 C-ak
     const esim = t.closest('[data-kuesim]');
     if (esim) { const x = KU_ESIMERKIT[Number(esim.getAttribute('data-kuesim'))]; KU.tyyppi = x[1]; KU.vinoTapa = x[2].W ? 'W' : 'E'; KU.v = Object.assign({}, x[2]); kuTallenna(); renderKiilaura(); window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
     if (t.closest('#kuTyhjenna')) { KU.v = {}; kuTallenna(); renderKiilaura(); return; }
-    if (t.closest('[data-kudin]')) {
-      const d = kuLuku(KU.v.dNim), din = kuDin(d);
-      if (din) {
-        const lev = KU.sovite === 'p9' ? [din.b + din.p9[1], din.b + din.p9[0]] : [din.b - din.js9, din.b + din.js9];
-        KU.v.A = String(Math.round((lev[0] + lev[1]) / 2 * 1000) / 1000);
-        KU.v.U = String(Math.round((d + din.t2 + din.t2tol / 2) * 1000) / 1000);
-        if (!String(KU.v.X || '').trim()) KU.v.X = String(d);
-        kuTallenna(); renderKiilaura();
-      }
-      return;
-    }
     if (t.closest('#kuKopioi') || t.closest('#kuKutsu')) { const el = document.getElementById('kuKutsu'); if (el) copyText(el.textContent); return; }
   });
   const syote = e => {
