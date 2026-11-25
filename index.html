@@ -9982,8 +9982,22 @@ const NV_E = { vhm: 600000, hss: 210000, pala: 210000 };   /* N/mm² */
 const NV_OLETUS = {
   op: 'jyrsinta', jt: 'sivu', st: 'rouhinta', tmat: 'vhm', toolUid: '',
   D: '10', z: '4', L: '', r: '0.8', kr: '', mat: '1.4462', kara: '',
-  jaykkyys: 'normaali', tavoite: 'normaali', ap: '', ae: '', ra: '1.6', Dw: '', lo: 'on', hb: '', H: '', a: ''
+  jaykkyys: 'normaali', tavoite: 'normaali', ap: '', ae: '', ra: '1.6', Dw: '', lo: 'on', hb: '', H: '', a: '', wiper: 'off', rk: '', beta: ''
 };
+/* Pinnanlaatu. Sandvik: Ra ≈ f² × 50 / rε ja Rmax = f² × 125 / rε → Ra ≈ 0,4 × harjan korkeus h.
+   Samaa suhdetta käytetään jyrsinnän harjoille (pallopään askel, kulmasäde, kehäjyrsinnän terähuiput).
+   Wiper-palalla Sandvik lupaa saman pinnan kaksinkertaisella syötöllä. */
+const NV_RA_PORTAAT = [['0.4', '0,4 N5'], ['0.8', '0,8 N6'], ['1.6', '1,6 N7'], ['3.2', '3,2 N8'], ['6.3', '6,3 N9']];
+function nvOnPallo(v) { return v.op === 'jyrsinta' && v.jt === 'pallo'; }
+function nvPinnanlaatuKaytossa(v) {
+  return v.st === 'viimeistely' && (v.op === 'sorvaus' || (v.op === 'jyrsinta' && ['sivu', 'taso', 'pallo'].indexOf(v.jt) !== -1));
+}
+/* pallopään tehollinen halkaisija: Deff = D · sin(β + arccos(1 − 2·ap/D)), enintään D */
+function nvPalloDeff(D, ap, betaAste) {
+  if (!(D > 0) || !(ap > 0)) return NaN;
+  const k = Math.acos(Math.max(-1, 1 - 2 * Math.min(ap, D / 2) / D)) + (betaAste > 0 ? betaAste * Math.PI / 180 : 0);
+  return k >= Math.PI / 2 ? D : D * Math.sin(k);
+}
 /* Spiraalin (helix) nousukulma keskiradalla materiaaliryhmittäin: [alaraja, tyypillinen, enintään], kovametallijyrsin.
    Harvey Performance: kovat/rautametallit 1–3°, pehmeät 3–10°. Seco: varovainen 0,5–1°.
    Ruostumaton/Ti/Ni: 30–50 % pienempi. Teräpalajyrsin 1,5–2° ellei valmistaja salli enempää.
@@ -10028,6 +10042,7 @@ function nvEhdotus(v, luokka, D) {
   /* yleiset aloitusohjeet (valmistajien ja HSMAdvisorin tyypilliset lähtöarvot) */
   const vaikea = ['M', 'D', 'SD', 'Ti', 'Ni', 'H'].indexOf(luokka) !== -1;
   if (v.op === 'jyrsinta') {
+    if (v.jt === 'pallo') return v.st === 'viimeistely' ? { ap: Math.max(0.1, Math.round(0.03 * D * 10) / 10), ae: 0.05 * D } : { ap: 0.1 * D, ae: 0.3 * D };
     if (v.tmat === 'pala' || v.jt === 'taso') return { ap: 2, ae: 0.7 * D };
     if (v.jt === 'ura') return { ap: (vaikea ? 0.25 : 0.5) * D, ae: D };
     if (v.jt === 'trokoidi') return { ap: 2 * D, ae: (vaikea ? 0.05 : 0.08) * D };
@@ -10040,6 +10055,8 @@ function nvEhdotus(v, luokka, D) {
 function nvSuositusAlue(v, luokka, D) {
   const vaikea = ['M', 'D', 'SD', 'Ti', 'Ni', 'H'].indexOf(luokka) !== -1;
   if (v.op === 'jyrsinta') {
+    if (v.jt === 'pallo') return v.st === 'viimeistely' ? { ap: [0.1, Math.max(0.3, 0.05 * D)], ae: [NaN, NaN], apT: 'työvara 0,1–0,3 mm', aeT: 'tavoite-Ra:sta' }
+      : { ap: [0.05 * D, 0.15 * D], ae: [0.2 * D, 0.4 * D], apT: '5–15 % D', aeT: '20–40 % D' };
     if (v.tmat === 'pala' && v.jt !== 'ura') {
       return v.jt === 'taso' ? { ap: [0.5, 3], ae: [0.6 * D, 0.8 * D], apT: '0,5–3 mm (palan mukaan)', aeT: '60–80 % D' }
         : { ap: [0.5, 6], ae: [(vaikea ? 0.1 : 0.2) * D, (vaikea ? 0.3 : 0.5) * D], apT: 'palan särmän mukaan', aeT: (vaikea ? '10–30' : '20–50') + ' % D' };
@@ -10139,6 +10156,17 @@ function nvLaske(apPakko, aPakko) {
   if (!sp && !(ap > 0) && eh.ap) ap = Math.round(eh.ap * jayk * 100) / 100;
   if (!sp && apPakko > 0) ap = apPakko;
   if (v.op === 'jyrsinta' && !(ae > 0)) ae = Math.round(Math.min(D, eh.ae * (eh.ae >= D ? 1 : jayk)) * 100) / 100;
+  const pallo = nvOnPallo(v), raT = num(v.ra), raKaytossa = nvPinnanlaatuKaytossa(v) && raT > 0;
+  if (pallo && raKaytossa) {
+    /* askel tavoitekarheudesta: h = Ra / 0,4, ae = 2·√(R² − (R − h)²) */
+    const R = D / 2, h = Math.min(R, raT / 0.4 / 1000);
+    out.aeRa = Math.round(2 * Math.sqrt(R * R - (R - h) * (R - h)) * 1000) / 1000;
+  }
+  if (pallo && raKaytossa && !(num(v.ae) > 0)) {
+    const R = D / 2, h = Math.min(R, raT / 0.4 / 1000);
+    ae = out.aeRa;
+    out.perusteet.push('Askel (ae) tavoitekarheudesta Ra ' + lyhyt(raT) + ': harjan korkeus h = Ra / 0,4 = ' + lyhyt(Math.round(h * 10000) / 10) + ' µm → ae = 2·√(R² − (R − h)²) = ' + lyhyt(ae) + ' mm.');
+  }
   if (v.op === 'jyrsinta' && ae > D) { out.varoitukset.push({ taso: 'info', teksti: 'ae ' + lyhyt(ae) + ' mm on suurempi kuin halkaisija; laskettu täysurana (ae = D).' }); ae = D; }
   out.ap = ap; out.ae = ae;
 
@@ -10164,30 +10192,48 @@ function nvLaske(apPakko, aPakko) {
   if (rivi.vc[0]) vc = Math.max(vc, rivi.vc[0] * mkk.k * Math.min(1, kr.vcK) * Math.min(1, kk) * 0.9);
   if (vcSyy) out.perusteet.push('Nopeus: ' + vcSyy + ' (rajattu tietopankin haarukkaan).');
 
-  /* kierrosluku ja karan raja */
-  let n = vc * 1000 / (Math.PI * D);
+  /* kierrosluku ja karan raja (pallopäällä tehollisella halkaisijalla) */
+  let Dn = D;
+  if (pallo) {
+    const beta = num(v.beta) > 0 ? num(v.beta) : 0;
+    const Deff = nvPalloDeff(D, ap, beta);
+    if (Deff > 0) {
+      Dn = Deff; out.Deff = Deff; out.beta = beta;
+      out.perusteet.push('Pallopää: tehollinen halkaisija Deff = D · sin(β + arccos(1 − 2·ap/D)) = ' + lyhyt(Math.round(Deff * 100) / 100) + ' mm (ap ' + lyhyt(ap) + ', kallistus ' + lyhyt(beta) + '°). Kierrosluku lasketaan Deff:llä.');
+      if (!(beta > 0)) out.varoitukset.push({ taso: 'info', teksti: 'Ilman kallistusta pallon kärki leikkaa nopeudella ≈ 0, mikä huonontaa pintaa tasaisella pinnalla. Kallista 10–15° tai jyrsi kaltevaa pintaa, jos mahdollista.' });
+    }
+  }
+  let n = vc * 1000 / (Math.PI * Dn);
   if (nmax > 0 && n > nmax) {
-    n = nmax; vc = Math.PI * D * n / 1000;
+    n = nmax; vc = Math.PI * Dn * n / 1000;
     out.varoitukset.push({ taso: 'info', teksti: 'Kierrosluku rajattu karan maksimiin ' + fmt(nmax, 0) + ' r/min. vc laskee arvoon ' + fmt(vc, 0) + ' m/min, syöttö per terä pidetään.' });
   }
   out.vc = vc; out.n = n;
 
   /* syöttö, lastunohennus, lastun paksuus */
-  const krad = (num(v.kr) > 0 ? num(v.kr) : (v.op === 'poraus' ? 70 : (v.op === 'sorvaus' ? 95 : (v.tmat === 'pala' && v.jt === 'taso' ? 45 : 90)))) * Math.PI / 180;
+  let krad = (num(v.kr) > 0 ? num(v.kr) : (v.op === 'poraus' ? 70 : (v.op === 'sorvaus' ? 95 : (v.tmat === 'pala' && v.jt === 'taso' ? 45 : 90)))) * Math.PI / 180;
+  if (pallo && out.Deff > 0) krad = Math.asin(Math.min(1, out.Deff / D));
   out.kr = Math.round(krad * 180 / Math.PI);
   let hm, Pc, F;
   if (v.op === 'jyrsinta') {
     let hex = fPerus * kr.fK * tav.f;
     if (v.jt === 'ura' || ae >= 0.99 * D) { hex *= 0.8; out.perusteet.push('Täysura: syöttö ×0,8.'); }
     let rctf = 1;
-    if (!sp && ae < D / 2 && ae > 0 && v.lo === 'off') {
+    if (!sp && !pallo && ae < D / 2 && ae > 0 && v.lo === 'off') {
       out.perusteet.push('Lastunohennuksen kompensointi pois: syöttö = tavoitepaksuus ' + lyhyt(Math.round(hex * 1000) / 1000) + ' mm. Todellinen lastu jää ohuemmaksi.');
     }
-    if (ae < D / 2 && ae > 0 && v.lo !== 'off') {
+    if (!pallo && ae < D / 2 && ae > 0 && v.lo !== 'off') {
       rctf = Math.min(3, D / (2 * Math.sqrt(ae * (D - ae))));
       out.perusteet.push('Lastunohennus: ae ' + lyhyt(ae) + ' mm = ' + Math.round(ae / D * 100) + ' % D → syöttöä nostetaan ×' + rctf.toFixed(2) + ' (max ×3), jotta lastu pysyy tavoitepaksuudessa ' + lyhyt(Math.round(hex * 1000) / 1000) + ' mm.');
     }
-    if (Math.sin(krad) < 0.98) { hex = hex / Math.sin(krad); out.perusteet.push('Asetuskulma ' + out.kr + '°: syöttö ÷ sin κr.'); }
+    let kAks = 1;
+    if (pallo && Math.sin(krad) < 0.98) { const k = Math.min(2, 1 / Math.sin(krad)); kAks = k; hex = hex * k; out.perusteet.push('Pallopään lastunohennus matalalla ap:llä: syöttö × D / Deff = ×' + k.toFixed(2) + (k >= 2 ? ' (rajattu ×2)' : '') + '.'); }
+    else if (Math.sin(krad) < 0.98) { hex = hex / Math.sin(krad); out.perusteet.push('Asetuskulma ' + out.kr + '°: syöttö ÷ sin κr.'); }
+    if (pallo && out.Deff > 0 && ae > 0 && ae < out.Deff / 2 && v.lo !== 'off') {
+      /* pallopään säteittäinen ohennus tehollisella halkaisijalla; kokonaiskompensointi enintään ×3 */
+      rctf = Math.max(1, Math.min(2 / kAks, out.Deff / (2 * Math.sqrt(ae * (out.Deff - ae)))));
+      if (rctf > 1.01) out.perusteet.push('Pallopään säteittäinen lastunohennus (askel ' + lyhyt(ae) + ' mm / Deff ' + lyhyt(Math.round(out.Deff * 100) / 100) + ' mm): ×' + rctf.toFixed(2) + ', yhteensä enintään ×2 (pallopää, varovainen).');
+    }
     let fz = hex * rctf;
     /* spiraali ruostumattomassa: lastu ei saa ohentua alle 0,03 mm (muokkauslujittuminen), jos tietopankin yläraja sallii */
     if (sp && ['M', 'D', 'SD'].indexOf(luokka) !== -1 && fz < 0.03) {
@@ -10195,16 +10241,54 @@ function nvLaske(apPakko, aPakko) {
       if (!isFinite(fzYla) || fzYla >= 0.03) { fz = 0.03; out.perusteet.push('Syöttö nostettu 0,03 mm:iin: ruostumattomassa liian ohut lastu muokkauslujittaa reiän pohjaa.'); }
     }
     /* kompensoitu syöttö ei saa kasvaa yli 1,5 × tietopankin maksimin (terän särmän kestävyys) */
-    const fzMax = rivi.f && rivi.f[2] ? 1.5 * rivi.f[2] * ((laji === 'fzD') ? D : 1) * Math.max(1, kr.fK) / (Math.sin(krad) < 0.98 ? Math.sin(krad) : 1) : NaN;
+    const fzMax = rivi.f && rivi.f[2] ? 1.5 * rivi.f[2] * ((laji === 'fzD') ? D : 1) * Math.max(1, kr.fK) * (pallo ? 1 : (Math.sin(krad) < 0.98 ? 1 / Math.sin(krad) : 1)) : NaN;
     if (isFinite(fzMax) && fz > fzMax) {
       out.perusteet.push('Syöttö per terä rajattu ' + lyhyt(Math.round(fzMax * 1000) / 1000) + ' mm:iin (1,5 × tietopankin maksimi), vaikka lastunohennus sallisi enemmän.');
       out.varoitukset.push({ taso: 'info', teksti: 'Hyvin kapea ae: syöttö rajattiin särmän kestävyyden vuoksi, joten lastu jää tavoitetta ohuemmaksi. Harkitse leveämpää ae:tä.' });
       fz = fzMax;
     }
+    /* pinnanlaatu jyrsinnässä */
+    if (!sp && nvPinnanlaatuKaytossa(v)) {
+      const R = D / 2;
+      if (pallo) {
+        const hAe = R - Math.sqrt(Math.max(0, R * R - ae * ae / 4));
+        let hF = R - Math.sqrt(Math.max(0, R * R - fz * fz / 4));
+        if (raKaytossa) {
+          const h = raT / 0.4 / 1000, fzRa = 2 * Math.sqrt(R * R - (R - Math.min(R, h)) * (R - Math.min(R, h)));
+          if (fz > fzRa) { out.perusteet.push('Syöttö rajattu Ra-tavoitteen mukaan: syöttösuunnan harja ≤ askeleen harja → fz ' + lyhyt(Math.round(fzRa * 1000) / 1000) + ' mm.'); fz = fzRa; hF = R - Math.sqrt(R * R - fz * fz / 4); }
+        }
+        out.harja = Math.max(hAe, hF) * 1000; out.ra = 0.4 * out.harja; out.raLaji = 'askel ja syöttö';
+      } else if (v.jt === 'taso') {
+        const rk = num(v.rk) > 0 ? num(v.rk) : (v.tmat === 'pala' ? 0.8 : NaN);
+        if (rk > 0) {
+          if (!(num(v.rk) > 0)) out.perusteet.push('Kulmasädettä ei annettu: oletetaan palan rε 0,8 mm.');
+          if (raKaytossa) {
+            const fzRa = Math.sqrt(raT * rk / 50);
+            if (fz > fzRa) { out.perusteet.push('Pohjan pinta: fz tavoite-Ra:sta √(Ra · rε / 50) = ' + lyhyt(Math.round(fzRa * 1000) / 1000) + ' mm (Sandvikin kaava terää kohti).'); fz = fzRa; }
+          }
+          out.ra = fz * fz / rk * 50; out.raLaji = 'pohja, rε ' + lyhyt(rk);
+        } else {
+          out.varoitukset.push({ taso: 'info', teksti: 'Terävänurkkaisella jyrsimellä pohjan pinta riippuu otsahampaiden geometriasta ja heitosta, ei syötöstä. Anna kulmasäde, jos jyrsimessä on sellainen.' });
+        }
+      } else {
+        /* sivuseinä: terähuippujen harja h ≈ fz² / (4·D) → Ra ≈ 100 · fz² / D (µm) */
+        if (raKaytossa) {
+          const fzRa = Math.sqrt(raT * D / 100);
+          if (fz > fzRa) { out.perusteet.push('Seinän pinta: fz rajattu ' + lyhyt(Math.round(fzRa * 1000) / 1000) + ' mm (harja fz² / 4D).'); fz = fzRa; }
+        }
+        out.ra = 100 * fz * fz / D; out.raLaji = 'seinä, teoreettinen';
+        if (raKaytossa && raT <= 0.8) out.varoitukset.push({ taso: 'info', teksti: 'Seinän Ra ' + lyhyt(raT) + ': syöttö ei yleensä rajoita, vaan heitto (alle 0,01 mm), taipuma ja tärinä. Käytä myötäjyrsintää, kapeaa ae:tä (0,1–0,3 mm) ja jyrsintä, jossa on enemmän teriä.' });
+      }
+    }
+    if (raKaytossa && out.ra > raT * 1.05) out.varoitukset.push({ taso: 'varoitus', teksti: 'Annetuilla arvoilla Ra ≈ ' + lyhyt(Math.round(out.ra * 100) / 100) + ' µm, yli tavoitteen ' + lyhyt(raT) + '. ' + (pallo ? 'Pienennä askelta (ae) noin ' + lyhyt(out.aeRa) + ' mm:iin.' : 'Pienennä syöttöä tai suurenna kulmasädettä.') });
     out.fz = fz;
     out.kulma = Math.acos(1 - 2 * Math.min(1, ae / D)) * 180 / Math.PI;
     out.aePros = ae / D * 100;
     out.alue = sp ? null : nvSuositusAlue(v, luokka, D);
+    if (pallo && out.alue && v.st === 'viimeistely') {
+      if (out.aeRa > 0) { out.alue.ae = [out.aeRa, out.aeRa]; out.alue.aeT = 'askel Ra ' + lyhyt(raT) + ' µm:lle'; }
+      else { out.alue.ae = [0.02 * D, 0.1 * D]; out.alue.aeT = '2–10 % D'; }
+    }
     out.vf = fz * z * n;
     /* keskimääräinen lastunpaksuus: tasojyrsintä keskitettynä (Sandvik) tai sivujyrsintä toiselta puolelta */
     const s_ = Math.min(1, ae / D);
@@ -10212,7 +10296,8 @@ function nvLaske(apPakko, aPakko) {
     else hm = 360 * ae * fz * Math.sin(krad) / (Math.PI * D * (Math.acos(1 - 2 * s_) * 180 / Math.PI));
     out.hm = hm;
     /* suurin lastunpaksuus */
-    out.hex = v.jt === 'taso' ? fz * Math.sin(krad) * Math.min(1, ae / D)
+    out.hex = (pallo && out.Deff > 0) ? fz * Math.sin(krad) * (ae >= out.Deff / 2 ? 1 : Math.sin(Math.acos(1 - 2 * Math.min(1, ae / out.Deff))))
+      : v.jt === 'taso' ? fz * Math.sin(krad) * Math.min(1, ae / D)
       : fz * Math.sin(krad) * (ae >= D / 2 ? 1 : Math.sin(Math.acos(1 - 2 * s_)));
     out.q = ap * ae * out.vf / 1000;
     if (kc) {
@@ -10276,15 +10361,21 @@ function nvLaske(apPakko, aPakko) {
   } else {
     let f = fPerus * kr.fK * tav.f;
     const r = num(v.r);
+    const wiper = v.st === 'viimeistely' && v.wiper === 'on';
     if (v.st === 'viimeistely' && r > 0 && num(v.ra) > 0) {
-      const fRa = Math.sqrt(num(v.ra) * r / 50);
-      out.perusteet.push('Viimeistely: syöttö tavoite-Ra:sta f = √(Ra · r / 50) = ' + lyhyt(Math.round(fRa * 1000) / 1000) + ' mm/r.');
-      f = Math.min(f, fRa);
+      const fRa = Math.sqrt(num(v.ra) * r / 50) * (wiper ? 2 : 1);
+      out.perusteet.push('Viimeistely: syöttö tavoite-Ra:sta f = √(Ra · r / 50)' + (wiper ? ' × 2 (wiper)' : '') + ' = ' + lyhyt(Math.round(fRa * 1000) / 1000) + ' mm/r.');
+      if (wiper) {
+        const fMax = rivi.f && rivi.f[2] ? rivi.f[2] * kr.fK : NaN;
+        f = isFinite(fMax) ? Math.min(fRa, Math.max(f, fMax)) : fRa;
+      } else f = Math.min(f, fRa);
     }
     out.f = f; out.vf = f * n;
     hm = f * Math.sin(krad); out.hm = hm;
     out.q = vc * ap * f;
-    out.ra = r > 0 ? f * f / r * 50 : NaN;
+    out.ra = r > 0 ? (wiper ? (f / 2) * (f / 2) / r * 50 : f * f / r * 50) : NaN;
+    out.raLaji = wiper ? 'wiper' : 'teoreettinen';
+    if (wiper) out.varoitukset.push({ taso: 'info', teksti: 'Wiper-pala toimii vain suorilla ja loivilla pinnoilla (ei profiilissa/kartiossa) ja nostaa säteisvoimaa: ohuilla tai pitkillä kappaleilla värinäriski.' });
     if (kc) {
       const kcArvo = kc.kc1 * Math.pow(hm, -kc.mc);
       out.kc = kcArvo;
@@ -10335,7 +10426,9 @@ function nvLaske(apPakko, aPakko) {
     out.varoitukset.push({ taso: 'info', teksti: 'ae ' + lyhyt(ae) + ' mm on yli suositusalueen (' + out.alue.aeT + ').' });
   if (v.op === 'jyrsinta' && v.jt === 'trokoidi' && ap > 0 && ap > 3 * D) out.varoitukset.push({ taso: 'varoitus', teksti: 'ap on yli 3 × D. Tarkista terän pituus.' });
   const ohut = v.op === 'jyrsinta' ? out.hex : hm;
-  if (['SD', 'D', 'M'].indexOf(luokka) !== -1 && ohut > 0 && ohut < 0.03 && v.op !== 'sorvaus')
+  if (['SD', 'D', 'M'].indexOf(luokka) !== -1 && ohut > 0 && ohut < 0.03 && nvOnPallo(v) && v.st === 'viimeistely')
+    out.varoitukset.push({ taso: 'info', teksti: 'Pallopään viimeistelyssä lastu jää ohueksi (' + lyhyt(Math.round(ohut * 1000) / 1000) + ' mm) pienen askeleen takia. Jätä työvaraa vähintään 0,1 mm, aja pinta yhdellä kertaa äläkä hankaa samaa kohtaa uudelleen.' });
+  else if (['SD', 'D', 'M'].indexOf(luokka) !== -1 && ohut > 0 && ohut < 0.03 && v.op !== 'sorvaus')
     out.varoitukset.push({ taso: 'varoitus', teksti: 'Lastu on ohut (suurin paksuus ' + lyhyt(Math.round(ohut * 1000) / 1000) + ' mm). Ruostumattomassa ja duplexissa liian ohut lastu muokkauslujittaa pintaa; pidä lastu vähintään 0,03–0,05 mm.' });
   if (!(pmax > 0)) out.perusteet.push('Karan rajoja ei ole annettu: tehoa, vääntöä ja kierroslukua ei verrata koneeseen.');
   if (!(nmax > 0) && n > 12000) out.varoitukset.push({ taso: 'varoitus', teksti: 'Kierrosluku ' + fmt(n, 0) + ' r/min on suuri. Anna karan maksimikierrokset (Kone ja olosuhteet), niin avustaja rajaa kierrokset ja laskee nopeuden uudelleen.' });
@@ -10407,10 +10500,18 @@ function renderNeuvoja() {
   h += '<div class="tyg"><div class="tyg-otsikko"><span>Operaatio</span></div>' +
     nvSeg('op', v.op, [['jyrsinta', 'Jyrsintä'], ['poraus', 'Poraus'], ['sorvaus', 'Sorvaus']]);
   const sp = nvOnSpiraali(v);
-  if (v.op === 'jyrsinta') h += nvSeg('jt', v.jt, [['sivu', 'Sivu'], ['ura', 'Ura'], ['trokoidi', 'Trokoidi'], ['taso', 'Taso'], ['spiraali', 'Spiraali']]);
+  if (v.op === 'jyrsinta') h += nvSeg('jt', v.jt, [['sivu', 'Sivu'], ['ura', 'Ura'], ['trokoidi', 'Trokoidi'], ['taso', 'Taso'], ['pallo', 'Pallopää'], ['spiraali', 'Spiraali']]);
   if (v.op !== 'poraus' && !sp) h += nvSeg('st', v.st, [['rouhinta', 'Rouhinta'], ['viimeistely', 'Viimeistely']]);
-  if (v.op === 'sorvaus' && v.st === 'viimeistely') h += nvRivi('ra', 'R<sub>a</sub>', 'Tavoitekarheus', 'µm', v.ra);
   h += '</div>';
+  if (nvPinnanlaatuKaytossa(v)) {
+    h += '<div class="tyg"><div class="tyg-otsikko"><span>Pinnanlaatu</span><span class="tyg-vihje">tavoite R<sub>a</sub> µm</span></div>' +
+      nvSeg('ra', String(num(v.ra)), NV_RA_PORTAAT) +
+      nvRivi('ra', 'R<sub>a</sub>', 'Tavoitekarheus', 'µm', v.ra);
+    if (v.op === 'sorvaus') h += '<div class="nv-alaotsikko">Pala</div>' + nvSeg('wiper', v.wiper || 'off', [['off', 'Tavallinen'], ['on', 'Wiper']]);
+    if (v.op === 'jyrsinta' && v.jt === 'taso') h += nvRivi('rk', 'r<sub>ε</sub>', 'Kulmasäde', 'mm', v.rk, v.tmat === 'pala' ? '0.8' : 'terävä');
+    if (sp === false && nvOnPallo(v)) h += nvRivi('beta', 'β', 'Kallistus', '°', v.beta, '0');
+    h += '</div>';
+  }
   h += '<div class="tyg"><div class="tyg-otsikko"><span>Työkalu</span><span class="tyg-vihje">valitse listasta tai anna käsin</span></div>' +
     '<label class="nv-valinta"><select data-nv="toolUid">' + nvTyokaluvaihtoehdot(v) + '</select></label>' +
     (v.op !== 'sorvaus' ? nvSeg('tmat', v.tmat, [['vhm', 'Kovametalli'], ['hss', 'HSS'], ['pala', v.op === 'poraus' ? 'U-pora' : 'Teräpala']]) : '');
@@ -10447,6 +10548,7 @@ function renderNeuvoja() {
   if (v.op === 'jyrsinta' && !sp) tark += nvRivi('Dw', 'D<sub>w</sub>', 'Interpolointi Ø', 'mm', v.Dw, 'ei');
   if (MAT_LUOKKA[v.mat] !== 'H') tark += nvRivi('hb', 'HB', 'Kovuus', 'HB', v.hb, isFinite(nvTyypillinenHB(v.mat)) ? 'n. ' + nvTyypillinenHB(v.mat) : '');
   if (v.op === 'sorvaus') tark += nvRivi('kr', 'κ<sub>r</sub>', 'Asetuskulma', '°', v.kr, '95');
+  if (nvOnPallo(v) && !nvPinnanlaatuKaytossa(v)) tark += nvRivi('beta', 'β', 'Kallistus', '°', v.beta, '0');
   if (v.op === 'jyrsinta' && v.tmat === 'pala') tark += nvRivi('kr', 'κ<sub>r</sub>', 'Asetuskulma', '°', v.kr, v.jt === 'taso' ? '45' : '90');
   if (v.op === 'jyrsinta' && !sp) tark += '<div class="nv-alaotsikko">Lastunohennuksen kompensointi</div>' + nvSeg('lo', v.lo, [['on', 'Päällä'], ['off', 'Pois']]);
   if (tark) h += '<div class="tyg"><div class="tyg-otsikko"><span>Tarkennukset</span><span class="tyg-vihje">valinnainen</span></div>' + tark + '</div>';
@@ -10497,7 +10599,13 @@ function nvPaivitaTulos() {
   if (isFinite(o.Ff)) h += nvMittari('Syöttövoima', fmt(o.Ff, 0), 'N', NaN, '');
   h += nvMittari('Lastun paksuus h<sub>m</sub>', String(Math.round(o.hm * 1000) / 1000).replace('.', ','), 'mm', NaN, '');
   h += nvMittari('Ainepoisto', lyhyt(Math.round(o.q * 10) / 10), 'cm³/min', NaN, '');
-  if (isFinite(o.ra)) h += nvMittari('Pinnankarheus R<sub>a</sub>', String(Math.round(o.ra * 100) / 100).replace('.', ','), 'µm', NaN, 'teoreettinen');
+  if (isFinite(o.ra)) {
+    const raTav = nvPinnanlaatuKaytossa(v) ? num(v.ra) : NaN;
+    h += nvMittari('Pinnankarheus R<sub>a</sub>', String(Math.round(o.ra * 100) / 100).replace('.', ','), 'µm', NaN,
+      (o.raLaji || 'teoreettinen') + (isFinite(raTav) && raTav > 0 ? ' · tavoite ' + lyhyt(raTav) : ''));
+  }
+  if (isFinite(o.harja)) h += nvMittari('Harjan korkeus h', String(Math.round(o.harja * 10) / 10).replace('.', ','), 'µm', NaN, 'pallopää');
+  if (isFinite(o.Deff)) h += nvMittari('Tehollinen Ø D<sub>eff</sub>', String(Math.round(o.Deff * 100) / 100).replace('.', ','), 'mm', NaN, 'kierrosluku tällä');
   h += '</div>';
   if (o.varoitukset.length) h += '<ul class="nv-varoitukset">' + o.varoitukset.map(w => '<li class="' + w.taso + '">' + esc(w.teksti) + '</li>').join('') + '</ul>';
   else h += '<div class="nv-kunnossa">Ei huomautettavaa annetuilla tiedoilla.</div>';
@@ -10517,7 +10625,7 @@ function nvPaivitaTulos() {
   if (su) {
     const al = o.alue;
     if (al) {
-      const mm = x => lyhyt(Math.round(x * 10) / 10);
+      const mm = x => lyhyt(x < 1 ? Math.round(x * 100) / 100 : Math.round(x * 10) / 10);
       su.innerHTML = '<div class="nv-suositus-rivit">' +
         '<div><span>Suositus a<sub>p</sub></span><b>' + mm(al.ap[0]) + '–' + mm(al.ap[1]) + ' mm</b><em>' + esc(al.apT) + '</em></div>' +
         (al.ae ? '<div><span>Suositus a<sub>e</sub></span><b>' + (al.ae[0] === al.ae[1] ? mm(al.ae[0]) : mm(al.ae[0]) + '–' + mm(al.ae[1])) + ' mm</b><em>' + esc(al.aeT) + '</em></div>' : '') +
@@ -10591,6 +10699,8 @@ function nvVieLaskimeen(jaTallenna) {
   if (o.ap > 0 && tila !== 'spiraali') k.ap = String(o.ap);
   if (tila === 'sorvaus') k.r = String(v.r);
   TY.tila = tila; TY.ohjaa = 'vc'; TY.ohjaaF = 'syotto';
+  /* pallopää: kierrosluku on laskettu tehollisella halkaisijalla, joten viedään n (laskin näyttää vc:n nimellishalkaisijalla) */
+  if (nvOnPallo(v) && o.Deff > 0) { k.n = String(Math.round(o.n)); k.vc = ''; TY.ohjaa = 'n'; }
   if (v.toolUid) {
     const x = TOOLS.find(t => t.uid === v.toolUid);
     const c = x && (x.cuts || []).find(r => r.mat === v.mat);
