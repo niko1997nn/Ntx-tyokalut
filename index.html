@@ -272,7 +272,7 @@
     line-height: 1.25;
   }
   .seg-btn.active { border-color: var(--accent); background: var(--accent-dim); color: var(--accent); }
-  #themeRow .seg-btn { flex: 1 1 0; text-align: center; padding: 11px 6px; }
+  #themeRow .seg-btn, #tpAutoRow .seg-btn { flex: 1 1 0; text-align: center; padding: 11px 6px; }
   #themeRow .seg-name { font-size: 12.5px; }
   #kaavaRow .seg-btn { flex: 1 1 0; text-align: center; padding: 11px 6px; }
   #kaavaRow .seg-name { font-size: 12.5px; }
@@ -1875,6 +1875,7 @@
   .ku-kaula { stroke: var(--accent); stroke-width: 3; opacity: .45; }
   .ku-mitta { font-family: var(--mono); font-size: 11px; fill: var(--text-dim); }
   .ku-esim { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  #kuSisalto > .section-label { margin-top: 18px; }
   .ku-ohje-intro { font-size: 14px; line-height: 1.5; color: var(--text-dim); margin: 0 0 6px; }
   .ty-ryhma p { font-size: 14px; line-height: 1.55; margin: 6px 0 10px; }
   .ku-lista-ohje { margin: 4px 0 8px; padding-left: 18px; font-size: 14px; line-height: 1.55; }
@@ -2286,19 +2287,19 @@
 
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · LEUKAKORJAIN · v3.0</footer>
+    <footer><span class="machine-name">NTX3000</span> · LEUKALASKURI · v3.54</footer>
   </div>
 
   <!-- ===================== ASETUKSET: LEUKAKORJAIN ===================== -->
   <div class="view" id="viewJawSettings">
     <header>
       <div class="header-left">
-        <button class="back-btn" id="closeJawSettings">
+        <button class="back-btn" id="closeJawSettings" aria-label="Takaisin">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M19 12H5M12 19l-7-7 7-7"></path>
           </svg>
-          Takaisin
         </button>
+        <div class="title">Pakat ja leuat</div>
       </div>
     </header>
 
@@ -2423,19 +2424,19 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · SP2 LASKURI · v3.0</footer>
+    <footer><span class="machine-name">NTX3000</span> · SP2 &amp; G55 · v3.54</footer>
   </div>
 
   <!-- ===================== ASETUKSET: SP2 ===================== -->
   <div class="view" id="viewSP2Settings">
     <header>
       <div class="header-left">
-        <button class="back-btn" id="closeSP2Settings">
+        <button class="back-btn" id="closeSP2Settings" aria-label="Takaisin">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M19 12H5M12 19l-7-7 7-7"></path>
           </svg>
-          Takaisin
         </button>
+        <div class="title">SP2 ja G55</div>
       </div>
     </header>
 
@@ -2543,7 +2544,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · TYÖKALULISTA · v3.0</footer>
+    <footer><span class="machine-name">NTX3000</span> · TYÖKALULISTA · v3.54</footer>
   </div>
 
   <!-- ===================== ASETUKSET ===================== -->
@@ -2554,7 +2555,7 @@
         <div class="logo-mark machine-abbr">NTX</div>
         <div>
           <div class="title">Kiilaura</div>
-          <div class="subtitle">O8990 pisto · G65-kutsu ja ohjeet</div>
+          <div class="subtitle">O8990 v2.5 · G65-kutsu ja ohjeet</div>
         </div>
       </div>
     </header>
@@ -2580,7 +2581,7 @@
       </div>
       <div id="kuSisalto"></div>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · KIILAURA · O8990 v2.5</footer>
+    <footer><span class="machine-name">NTX3000</span> · KIILAURA · v3.54</footer>
   </div>
 
   <div class="view" id="viewTyosto">
@@ -2700,7 +2701,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · TYÖSTÖ · v3.0</footer>
+    <footer><span class="machine-name">NTX3000</span> · TYÖSTÖ · v3.54</footer>
   </div>
 
   <!-- ===================== KAPPALEET: TYÖKORTIT PIIRUSTUSNUMEROITTAIN ===================== -->
@@ -2739,7 +2740,7 @@
       <div id="kpLista"></div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · KAPPALEET · v3.0</footer>
+    <footer><span class="machine-name">NTX3000</span> · KAPPALEET · v3.54</footer>
   </div>
 
   <div class="view" id="viewKappale">
@@ -2757,7 +2758,7 @@
       </div>
     </header>
     <main id="kpKortti"></main>
-    <footer><span class="machine-name">NTX3000</span> · KAPPALEKORTTI · v3.0</footer>
+    <footer><span class="machine-name">NTX3000</span> · KAPPALEKORTTI · v3.54</footer>
   </div>
 
   <div class="view" id="viewData">
@@ -2897,19 +2898,19 @@
       </section>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · ASETUKSET · v3.0</footer>
+    <footer><span class="machine-name">NTX3000</span> · ASETUKSET · v3.54</footer>
   </div>
 
   <!-- ===================== KONEET ===================== -->
   <div class="view" id="viewMachines">
     <header>
       <div class="header-left">
-        <button class="back-btn" id="closeMachines">
+        <button class="back-btn" id="closeMachines" aria-label="Takaisin">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M19 12H5M12 19l-7-7 7-7"></path>
           </svg>
-          Takaisin
         </button>
+        <div class="title">Koneet ja välilehdet</div>
       </div>
     </header>
 
@@ -2931,19 +2932,19 @@
       </div>
     </main>
 
-    <footer>KONEET · v3.0</footer>
+    <footer><span class="machine-name">NTX3000</span> · KONEET · v3.54</footer>
   </div>
 
   <!-- ===================== TYÖKALUTYYPPIEN HALLINTA ===================== -->
   <div class="view" id="viewToolTypes">
     <header>
       <div class="header-left">
-        <button class="back-btn" id="closeTypes">
+        <button class="back-btn" id="closeTypes" aria-label="Takaisin">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M19 12H5M12 19l-7-7 7-7"></path>
           </svg>
-          Takaisin
         </button>
+        <div class="title">Työkalutyypit</div>
       </div>
     </header>
 
@@ -2954,7 +2955,6 @@
       </div>
 
       <section>
-        <div class="section-label">Työkalutyypit</div>
         <div class="edit-list" id="typeList"></div>
         <button class="add-btn" id="addTypeBtn" style="margin-top:10px;">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
@@ -2964,19 +2964,19 @@
       </section>
     </main>
 
-    <footer>NTX3000 · TYÖKALUTYYPIT · v3.0</footer>
+    <footer><span class="machine-name">NTX3000</span> · TYÖKALUTYYPIT · v3.54</footer>
   </div>
 
   <!-- ===================== TUONTI: ESIKATSELU ===================== -->
   <div class="view" id="viewImport">
     <header>
       <div class="header-left">
-        <button class="back-btn" id="closeImport">
+        <button class="back-btn" id="closeImport" aria-label="Takaisin">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M19 12H5M12 19l-7-7 7-7"></path>
           </svg>
-          Takaisin
         </button>
+        <div class="title">Tuonti</div>
       </div>
     </header>
     <main>
@@ -3032,7 +3032,7 @@
         </div>
       </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TUONTI · v3.0</footer>
+    <footer><span class="machine-name">NTX3000</span> · TUONTI · v3.54</footer>
   </div>
 
   <!-- ===================== TYÖSTÖTIETOPANKKI JA OMAT SÄÄDÖT ===================== -->
@@ -3071,28 +3071,27 @@
         <div class="tp-rivit" id="tpRivit"></div>
       </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TIETOPANKKI · v3.0</footer>
+    <footer><span class="machine-name">NTX3000</span> · TIETOPANKKI · v3.54</footer>
   </div>
 
 <!-- ===================== TARKISTUS ===================== -->
   <div class="view" id="viewQuality">
     <header>
       <div class="header-left">
-        <button class="back-btn" id="closeQuality">
+        <button class="back-btn" id="closeQuality" aria-label="Takaisin">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M19 12H5M12 19l-7-7 7-7"></path>
           </svg>
-          Takaisin
         </button>
+        <div class="title">Listan tarkistus</div>
       </div>
     </header>
     <main>
       <section>
-        <div class="section-label">Listan tarkistus</div>
         <div class="edit-list" id="qualityList"></div>
       </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TARKISTUS · v3.0</footer>
+    <footer><span class="machine-name">NTX3000</span> · TARKISTUS · v3.54</footer>
   </div>
 
 </div>
@@ -5301,6 +5300,7 @@ function pyoristaSyotto(v) {
   return String(r);
 }
 function syottoKentta(laji) { return (laji === 'fz' || laji === 'fzD') ? 'fz' : ((laji === 'f' || laji === 'fpD') ? 'f' : ''); }
+function pilkku(t) { return String(t).replace('.', ','); }
 function lukuTeksti(v) { return (isFinite(v) && v > 0) ? String(Math.round(v)) : ''; }
 
 /* 1. Oma arvo toiselta saman luokan terältä samassa materiaalissa */
@@ -6288,7 +6288,7 @@ function lukutilaHTML(x) {
     '<div class="spec-grid">' + kone.join('') + '</div>' +
     (ruudut.length ? '<div class="luku-otsikko"><span>Mitat</span></div><div class="spec-grid">' + ruudut.join('') + '</div>' : '') +
     ((has(x.ua1) || has(x.ua2) || has(x.ua3)) ? '<div class="luku-otsikko"><span>User Area</span></div><div class="spec-grid">' +
-      arvoRuutu('UA1 leveys', x.ua1) + arvoRuutu('UA2 runko Ø', x.ua2) + arvoRuutu('UA3 runko–särmä', x.ua3) + '</div>' : '') +
+      arvoRuutu('UA1 · terän leveys', x.ua1) + arvoRuutu('UA2 · rungon Ø', x.ua2) + arvoRuutu('UA3 · runko–särmä', x.ua3) + '</div>' : '') +
     '<div class="luku-otsikko"><span>Teräpalat' + (palat.length ? ' <b>' + palat.length + '</b>' : '') + '</span>' +
       '<button type="button" class="pieni-btn" data-action="add-pala" data-uid="' + uid + '">+ Lisää</button></div>' +
     (palat.length ? '<div class="pala-lista">' + palaRivit + '</div>'
@@ -6491,7 +6491,7 @@ function renderTools() {
         '<div class="field-grid ua-grid">' +
           '<label>UA1 · terän leveys' + inputHTML(x.uid, 'ua1', x.ua1, 'number') + '</label>' +
           '<label>UA2 · rungon Ø' + inputHTML(x.uid, 'ua2', x.ua2, 'number') + '</label>' +
-          '<label>UA3 · runko – särmä' + inputHTML(x.uid, 'ua3', x.ua3, 'number') + '</label>' +
+          '<label>UA3 · runko–särmä' + inputHTML(x.uid, 'ua3', x.ua3, 'number') + '</label>' +
         '</div>' +
 
         '<div class="group-label">Mitat</div>' +
@@ -8394,7 +8394,7 @@ function renderTietopankki() {
     const f0 = r.f && r.f[0] ? (halk ? r.f[0] * 10 : r.f[0]) : NaN;
     const vali = (a, b) => (a && b) ? ' (' + lukuTeksti(a) + '\u2013' + lukuTeksti(b) + ')' : '';
     const perus = 'Vc ' + lukuTeksti(r.vc[1]) + vali(r.vc[0], r.vc[2]) +
-      (f0 > 0 ? ' \u00B7 ' + syottoNimi + (halk ? ' \u00D810 ' : ' ') + pyoristaSyotto(f0) : '');
+      (f0 > 0 ? ' \u00B7 ' + syottoNimi + (halk ? ' \u00D810 ' : ' ') + pilkku(pyoristaSyotto(f0)) : '');
     /* sama rajaus kuin työkalukortin suosituksessa */
     let vcNyt = r.vc[1] * kr.vcK, fNyt = f0 * kr.fK;
     if (kr.lahde === 'luokka') {
@@ -8405,7 +8405,7 @@ function renderTietopankki() {
       if (r.f && r.f[2]) fNyt = Math.min(fNyt, r.f[2] * k);
     }
     const kaytossa = 'Vc ' + lukuTeksti(vcNyt) +
-      (f0 > 0 ? ' \u00B7 ' + syottoNimi + (halk ? ' \u00D810 ' : ' ') + pyoristaSyotto(fNyt) : '');
+      (f0 > 0 ? ' \u00B7 ' + syottoNimi + (halk ? ' \u00D810 ' : ' ') + pilkku(pyoristaSyotto(fNyt)) : '');
     const muutettu = Math.abs(kr.vcK - 1) > 0.005 || Math.abs(kr.fK - 1) > 0.005;
     const lahdeTeksti = kr.lahde === 'oma' ? 'oma säätö'
       : (kr.lahde === 'auto' ? 'omista arvoista (' + kr.n + ')'
@@ -9959,7 +9959,7 @@ function tyPiirraArvot() {
     h += '<div class="note">Tietopankissa ei ole suositusta tälle yhdistelmälle' +
       (s && s.r && s.r.peruste ? ': ' + esc(s.r.peruste) : '.') + '</div>';
   } else {
-    const vali = (a, b, d) => (isFinite(a) && isFinite(b) && a > 0 && b > 0) ? (d ? pyoristaSyotto(a) + '–' + pyoristaSyotto(b) : lukuTeksti(a) + '–' + lukuTeksti(b)) : '';
+    const vali = (a, b, d) => (isFinite(a) && isFinite(b) && a > 0 && b > 0) ? (d ? pilkku(pyoristaSyotto(a)) + '–' + pilkku(pyoristaSyotto(b)) : lukuTeksti(a) + '–' + lukuTeksti(b)) : '';
     const muutettu = Math.abs(s.kr.vcK - 1) > 0.005 || Math.abs(s.kr.fK - 1) > 0.005;
     h += '<div class="ty-suos">' +
       '<div class="ty-suos-yla"><span class="ty-merkki">SUOSITUS ' + esc(s.r.luot || '') + '</span>' +
@@ -9968,12 +9968,12 @@ function tyPiirraArvot() {
         '<div><div class="result-label">vc</div><div class="result-value"><span>' + lukuTeksti(s.vc) + '</span><span class="unit">m/min</span></div>' +
           '<div class="ty-vali">' + (vali(s.vcMin, s.vcMax) ? 'tietopankki ' + vali(s.vcMin, s.vcMax) : '') + '</div></div>' +
         (s.syottoNimi && isFinite(s.f) ? '<div><div class="result-label">' + syottoNimi + (s.halk ? ' (Ø' + fmt(D, D % 1 ? 1 : 0) + ')' : '') + '</div>' +
-          '<div class="result-value"><span>' + pyoristaSyotto(s.f) + '</span><span class="unit">' + syottoYks + '</span></div>' +
+          '<div class="result-value"><span>' + pilkku(pyoristaSyotto(s.f)) + '</span><span class="unit">' + syottoYks + '</span></div>' +
           '<div class="ty-vali">' + (vali(s.fMin, s.fMax, true) ? 'tietopankki ' + vali(s.fMin, s.fMax, true) : '') + '</div></div>'
           : (s.halk && !(D > 0) ? '<div><div class="result-label">' + syottoNimi + '</div><div class="ty-vali">anna halkaisija</div></div>' : '')) +
       '</div>' +
       (muutettu ? '<div class="ty-saato">Hienosäädetty omien arvojen mukaan: tietopankissa vc ' + lukuTeksti(s.vcPerus) +
-        (isFinite(s.fPerus) ? ', ' + syottoNimi + ' ' + pyoristaSyotto(s.fPerus) : '') + '</div>' : '') +
+        (isFinite(s.fPerus) ? ', ' + syottoNimi + ' ' + pilkku(pyoristaSyotto(s.fPerus)) : '') + '</div>' : '') +
       (s.r.peruste ? '<div class="ty-peruste">' + esc(s.r.peruste) + '</div>' : '') +
       (s.r.lahde ? '<div class="ty-lahde">Lähde: ' + s.r.lahde.split(/,\s*/).map(k => esc((TIETOPANKKI.lahteet && TIETOPANKKI.lahteet[k]) || k)).join('; ') + '</div>' : '') +
       '<button type="button" class="add-btn ty-vie" id="tyVieLaskimeen">Vie laskimeen</button>' +
@@ -10520,7 +10520,7 @@ function renderKiilaura() {
     kuRivi('F', 'F', 'Syöttö', 'mm/min', '') +
     kuRivi('T', 'T', 'Terän leveys', 'mm', '') +
     kuRivi('Dr', 'D', 'Rungon Ø', 'mm', '') +
-    kuRivi('Lr', 'L', 'Runko – särmä', 'mm', '') + '</div>';
+    kuRivi('Lr', 'L', 'Runko–särmä', 'mm', '') + '</div>';
   h += '<details class="tyg ku-lisa"' + (lisaAuki ? ' open' : '') + '><summary class="tyg-otsikko"><span>Lisää</span></summary>' +
     kuRivi('V', 'V', 'Viimeistelyvedot', 'kpl', '2') +
     kuRivi('M', 'M', 'Urien määrä', 'kpl', '1') +
@@ -10535,7 +10535,7 @@ function renderKiilaura() {
     '</details>';
   h += '</div>';
   h += '<div id="kuTulos"></div>';
-  h += '<button type="button" class="add-btn" id="kuTyhjenna">Tyhjennä</button>';
+  h += '<button type="button" class="add-btn" id="kuTyhjenna">Tyhjennä kentät</button>';
   juuri.innerHTML = h;
   kuPaivita();
   const kuva = document.getElementById('kuOhjeKuva');
@@ -10614,7 +10614,7 @@ const KU_OHJE_HTML =
   '<details class="ty-ryhma" open><summary><b>Ennen kutsua</b></summary><ul class="ku-lista-ohje">' +
   '<li>G21 ja G40 voimassa</li>' +
   '<li>Terän särmä X+, työkalu otsan edessä</li>' +
-  '<li>User Area: UA1 = T, UA2 = rungon Ø, UA3 = runko – särmä</li>' +
+  '<li>User Area: UA1 = T, UA2 = rungon Ø, UA3 = runko–särmä</li>' +
   '<li>Ei seuraavan työkalun T-kutsua ennen G65:tä</li></ul></details>' +
   '<details class="ty-ryhma"><summary><b>Kirjaimet</b></summary><div class="ty-taulu-kehys"><table class="ty-taulu ku-taulu"><thead><tr><th></th><th>Merkitys</th><th>Oletus</th></tr></thead><tbody>' +
   [['X', 'Reiän Ø', '–'], ['U', 'Vastaseinä – uran pohja', '–'], ['Z', 'Uran loppu', '–'], ['Q', 'Lastu säteellä', '–'], ['F', 'Syöttö mm/min', '–'],
