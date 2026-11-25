@@ -1939,6 +1939,9 @@
   .ku-ohjekuva-teksti span { flex: 1; }
   .ku-ohjekuva-sulje { border: none; background: transparent; color: var(--text-dim); font-size: 20px; line-height: 1; padding: 0 4px; cursor: pointer; }
   .kk-mat { fill: color-mix(in srgb, var(--text) 14%, var(--bg)); }
+  .kk-tyovara { fill: color-mix(in srgb, var(--orange) 45%, var(--bg)); }
+  .kk-reuna { stroke: var(--text-dim); stroke-width: 1.2; }
+  .kk-valmis { fill: none; stroke: var(--text); stroke-width: 1.2; stroke-dasharray: 5 3; }
   .kk-ilma, .kk-reika-sivu { fill: var(--bg); }
   .kk-mat-sivu { fill: color-mix(in srgb, var(--text) 14%, var(--bg)); }
   .kk-viiva { stroke: var(--text-dim); stroke-width: 1.4; fill: none; }
@@ -10649,7 +10652,7 @@ const KU_OHJE_HTML =
 const KU_KUVA_TEKSTI = {
   X: ['poikki', 'Reiän Ø'],
   Xv: ['poikki', 'Reiän Ø valmiina', 'X'],
-  tv: ['poikki', 'Reiän työvara Ø: 1 → X ja U pienenevät', 'X'],
+  tv: ['tvr', 'Reiän työvara'],
   U: ['poikki', 'Vastaseinästä uran pohjaan'],
   A: ['poikki', 'Uran leveys (tyhjä = terän leveys)'],
   C: ['poikki', 'Viiste valmiina'],
@@ -10663,7 +10666,7 @@ const KU_KUVA_TEKSTI = {
   Dr: ['tera', 'Rungon Ø'],
   Lr: ['tera', 'Rungon takapinta – särmä'],
   R: ['sivu', 'Otsa'],
-  Rv: ['sivu', 'Otsan työvara: 0,5 = 0,5 mm', 'R'],
+  Rv: ['tvo', 'Otsan työvara'],
   Z: ['sivu', 'Uran loppu'],
   K: ['sivu', 'Lähtötaso otsan edessä'],
   F: ['sivu', 'Syöttö'],
@@ -10698,6 +10701,26 @@ const KU_KUVA_POIKKI = '<svg class="ku-ohjekuva" viewBox="0 0 320 180" role="img
   '<g data-k="U" class="vain">' + kkA(160, 164, 56, 164) + kkA(143, 22, 56, 22) + kkM(62, 22, 62, 164, 'U', 46, 98) + '</g>' +
   '<g data-k="A" class="vain">' + kkA(144, 21, 144, 4) + kkA(176, 21, 176, 4) + kkM(144, 9, 176, 9, 'A', 184, 13) + '</g>' +
   '</svg>';
+const KU_KUVA_TVR = '<svg class="ku-ohjekuva" viewBox="0 0 320 180" role="img" aria-label="Reiän työvara">' + KK_DEFS +
+  '<rect x="0" y="0" width="320" height="180" class="kk-mat"/>' +
+  '<path d="M98 104 a62 62 0 1 0 124 0 a62 62 0 1 0 -124 0 M110 104 a50 50 0 1 0 100 0 a50 50 0 1 0 -100 0" fill-rule="evenodd" class="kk-tyovara"/>' +
+  '<path d="M176 56.6 L176 22 L144 22 L144 56.6 A50 50 0 1 0 176 56.6 Z" class="kk-reika"/>' +
+  '<circle cx="160" cy="104" r="62" class="kk-valmis"/>' +
+  '<line x1="160" y1="14" x2="160" y2="172" class="kk-keski"/>' +
+  '<line x1="216" y1="104" x2="236" y2="104" class="kk-mitta"/><text x="240" y="109" class="kk-teksti">työvara</text>' +
+  '<text x="86" y="174" class="kk-pieni">valmis Ø</text>' +
+  '</svg>';
+const KU_KUVA_TVO = '<svg class="ku-ohjekuva" viewBox="0 0 320 180" role="img" aria-label="Otsan työvara">' + KK_DEFS +
+  '<rect x="0" y="0" width="320" height="180" class="kk-ilma"/>' +
+  '<rect x="40" y="36" width="190" height="120" class="kk-mat kk-reuna"/>' +
+  '<rect x="206" y="36" width="24" height="120" class="kk-tyovara"/>' +
+  '<rect x="38" y="76" width="194" height="40" class="kk-reika-sivu"/>' +
+  '<line x1="40" y1="76" x2="230" y2="76" class="kk-viiva"/><line x1="40" y1="116" x2="230" y2="116" class="kk-viiva"/>' +
+  '<line x1="206" y1="26" x2="206" y2="166" class="kk-valmis"/>' +
+  '<text x="218" y="24" class="kk-teksti" text-anchor="middle">työvara</text>' +
+  '<text x="200" y="176" class="kk-pieni" text-anchor="end">valmis otsa</text>' +
+  '<text x="50" y="101" class="kk-pieni">reikä</text>' +
+  '</svg>';
 const KU_KUVA_TERA = '<svg class="ku-ohjekuva" viewBox="0 0 320 180" role="img" aria-label="Pistoterä päädystä">' + KK_DEFS +
   '<rect x="0" y="0" width="320" height="180" class="kk-ilma"/>' +
   /* yksi kappale: pyöreä runko, josta palan leikkaava pää ulottuu kehän yli */
@@ -10731,7 +10754,7 @@ function kuNaytaKuva(k) {
   if (!el) return;
   const m = KU_KUVA_TEKSTI[k];
   if (!m) { el.hidden = true; return; }
-  el.innerHTML = (m[0] === 'poikki' ? KU_KUVA_POIKKI : m[0] === 'tera' ? KU_KUVA_TERA : KU_KUVA_SIVU) +
+  el.innerHTML = ({ poikki: KU_KUVA_POIKKI, tera: KU_KUVA_TERA, tvr: KU_KUVA_TVR, tvo: KU_KUVA_TVO }[m[0]] || KU_KUVA_SIVU) +
     '<div class="ku-ohjekuva-teksti"><span>' + esc(m[1]) + '</span><button type="button" class="ku-ohjekuva-sulje" aria-label="Sulje kuva">×</button></div>';
   const kk = m[2] || k;
   el.querySelectorAll('[data-k]').forEach(g => g.classList.toggle('kor', g.getAttribute('data-k').split(' ').indexOf(kk) !== -1));
