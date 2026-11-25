@@ -1240,6 +1240,18 @@
     }
   }
 
+  /* Työstö tietokoneella: avustajan syötteet vasemmalla, tulos oikealla aina näkyvissä;
+     laskimen kenttäryhmät kahteen sarakkeeseen, jotta nimi ja kenttä ovat lähellä toisiaan */
+  @media (min-width: 900px) and (pointer: fine) {
+    .ty-osio[data-osio="neuvoja"].auki { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+    .ty-osio[data-osio="neuvoja"] > .tulos-yla { display: none; }
+    .ty-osio[data-osio="neuvoja"] > #nvSyotteet { grid-column: 1; margin: 0; }
+    .ty-osio[data-osio="neuvoja"] > .nv-tulos-osio { grid-column: 2; margin: 0; position: sticky; top: calc(var(--tabbar-h, 52px) + 62px);
+      max-height: calc(100vh - var(--tabbar-h, 52px) - 74px); overflow-y: auto; padding-right: 2px; }
+    .ty-osio[data-osio="neuvoja"] > .nv-tulos-osio > .section-label { margin-top: 0; }
+    #tyKentat { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 32px; align-items: start; }
+  }
+  #tyTyhjenna { margin-top: 8px; }
   .vain-tietokone { display: none; }
   @media (min-width: 900px) and (pointer: fine) {
     .vain-tietokone { display: block; }
@@ -1805,6 +1817,15 @@
     .tulos-yla { top: 0; }
   }
 
+  /* asetusten pitkät luettelot avautuvat vain tarvittaessa */
+  .aset-avattava { margin-top: 10px; padding: 0; }
+  .aset-avattava > summary { list-style: none; display: flex; align-items: center; gap: 10px; padding: 12px 14px; cursor: pointer; }
+  .aset-avattava > summary::-webkit-details-marker { display: none; }
+  .aset-avattava > summary .aset-teksti { flex: 1; }
+  .aset-avattava > summary .aset-chev { width: 18px; height: 18px; color: var(--text-dim); transition: transform .15s; flex-shrink: 0; }
+  .aset-avattava[open] > summary .aset-chev { transform: rotate(90deg); }
+  .aset-avattava[open] { padding-bottom: 12px; }
+  .aset-avattava > .mat-list, .aset-avattava > .add-cut-btn { margin-left: 14px; margin-right: 14px; width: auto; }
   /* ═══ TYÖSTÖ-välilehti ═══ */
   .ty-osio { display: none; }
   .ty-osio.auki { display: block; }
@@ -2596,26 +2617,6 @@
           <button type="button" class="aset-rivi" id="goMachinesBtn"><span class="aset-teksti"><b>Koneet ja välilehdet</b><span>Koneiden nimet ja näkyvät välilehdet</span></span><span class="scope kaikki">KAIKKI</span><svg class="aset-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button>
         </div>
       </section>
-
-      <section>
-        <div class="section-label">Luettelot</div>
-        <div class="aset-ryhma">
-          <button type="button" class="aset-rivi" id="goTypesBtn"><span class="aset-teksti"><b>Työkalutyypit</b><span>Tyypit ja niiden mittakentät</span></span><span class="scope kaikki">KAIKKI</span><svg class="aset-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button>
-          <button type="button" class="aset-rivi" id="asetTpBtn"><span class="aset-teksti"><b>Työstötietopankki ja omat säädöt</b><span id="tpVersio"></span></span><span class="scope kaikki">KAIKKI</span><svg class="aset-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button>
-        </div>
-        <div class="edit-card" style="margin-top:12px;">
-          <div class="edit-header"><span class="edit-id">Materiaalit</span><span class="scope kaikki">KAIKKI</span></div>
-          <div class="mat-list" id="matList"></div>
-          <button class="add-cut-btn" id="addMatBtn" style="margin-top:10px;">+ Lisää materiaali</button>
-        </div>
-        <div class="edit-card" style="margin-top:12px;">
-          <div class="edit-header"><span class="edit-id">Valmistajat</span><span class="scope kaikki">KAIKKI</span></div>
-          <div class="mat-list" id="brandList"></div>
-          <button class="add-cut-btn" id="addBrandBtn" style="margin-top:10px;">+ Lisää valmistaja</button>
-        </div>
-        <div class="save-toast" id="dataToast" style="margin-top:10px;"></div>
-      </section>
-
       <section>
         <div class="section-label">Synkronointi <span class="scope laite">LAITE</span></div>
         <div class="edit-card">
@@ -2655,7 +2656,6 @@
           Synkronointi ei silti korvaa varmuuskopiota.
         </div>
       </section>
-
       <section>
         <div class="section-label">Varmuuskopio ja siirto</div>
         <div class="aset-ala-otsikko">Koko sovellus (JSON) <span class="scope kone machine-abbr">NTX</span><span class="scope kaikki">KAIKKI</span></div>
@@ -2682,7 +2682,24 @@
           tietoja tuonti täydentäisi. Oletustapa <strong>Päivitä</strong> ei koskaan tee tuplia.
         </div>
       </section>
-
+      <section>
+        <div class="section-label">Luettelot</div>
+        <div class="aset-ryhma">
+          <button type="button" class="aset-rivi" id="goTypesBtn"><span class="aset-teksti"><b>Työkalutyypit</b><span>Tyypit ja niiden mittakentät</span></span><span class="scope kaikki">KAIKKI</span><svg class="aset-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button>
+          <button type="button" class="aset-rivi" id="asetTpBtn"><span class="aset-teksti"><b>Työstötietopankki ja omat säädöt</b><span id="tpVersio"></span></span><span class="scope kaikki">KAIKKI</span><svg class="aset-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button>
+        </div>
+        <details class="edit-card aset-avattava">
+          <summary><span class="aset-teksti"><b>Materiaalit</b><span>Materiaalinimet työkalukortteihin · lisää tai muokkaa</span></span><span class="scope kaikki">KAIKKI</span><svg class="aset-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></summary>
+          <div class="mat-list" id="matList"></div>
+          <button class="add-cut-btn" id="addMatBtn" style="margin-top:10px;">+ Lisää materiaali</button>
+        </details>
+        <details class="edit-card aset-avattava">
+          <summary><span class="aset-teksti"><b>Valmistajat</b><span>Työkaluvalmistajien lista · lisää tai muokkaa</span></span><span class="scope kaikki">KAIKKI</span><svg class="aset-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></summary>
+          <div class="mat-list" id="brandList"></div>
+          <button class="add-cut-btn" id="addBrandBtn" style="margin-top:10px;">+ Lisää valmistaja</button>
+        </details>
+        <div class="save-toast" id="dataToast" style="margin-top:10px;"></div>
+      </section>
       <section>
         <div class="section-label">Ulkoasu <span class="scope laite">LAITE</span></div>
         <div class="seg-row" id="themeRow">
