@@ -1374,6 +1374,26 @@
     --bar: #131921;
   }
   body { -webkit-font-smoothing: antialiased; }
+  /* tablettitila: kaikki suuremmaksi */
+  body.tabletti { zoom: 1.2; }
+  /* yleishaku */
+  .header-left { position: relative; }
+  .yh-btn { flex: none; width: 36px; height: 36px; border: none; border-radius: 10px; background: transparent; color: var(--text-dim); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; margin-left: 2px; }
+  .yh-btn svg, .yh-rivi svg { width: 19px; height: 19px; }
+  .yh-btn:active { background: var(--panel-2); }
+  .yleishaku { position: fixed; inset: 0; z-index: 290; background: rgba(0,0,0,.45); display: none; padding: calc(12px + env(safe-area-inset-top)) 12px 12px; }
+  .yleishaku.auki { display: block; }
+  .yh-laatikko { max-width: 560px; margin: 0 auto; background: var(--panel); border-radius: 14px; overflow: hidden; box-shadow: 0 12px 40px rgba(0,0,0,.3); }
+  .yh-rivi { display: flex; align-items: center; gap: 8px; padding: 6px 8px 6px 14px; color: var(--text-dim); border-bottom: 1px solid var(--panel-border); }
+  .yh-rivi input { flex: 1; border: none !important; background: transparent !important; padding: 10px 4px; font-family: var(--sans); }
+  .yh-sulje { border: none; background: transparent; color: var(--text-dim); font-size: 24px; width: 40px; height: 40px; cursor: pointer; }
+  .yh-tulokset { max-height: 60vh; overflow-y: auto; }
+  .yh-tulos { display: block; width: 100%; text-align: left; border: none; background: transparent; color: var(--text); padding: 11px 14px; font: 500 14.5px var(--sans); border-bottom: 1px solid var(--panel-border); cursor: pointer; }
+  .yh-tulos span { display: inline-block; min-width: 72px; font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: .04em; }
+  .yh-tulos:active { background: var(--panel-2); }
+  .yh-vihje { padding: 14px; font-size: 13px; color: var(--text-dim); }
+  /* avustajan tallennusnappi */
+  .nv-tallenna-btn { width: 100%; margin-top: 10px; padding: 10px; border-radius: 10px; border: 1px solid var(--accent); background: var(--accent-dim); color: var(--accent-text); font: 600 14px var(--sans); cursor: pointer; }
   /* viivakoodiskanneri */
   .skanneri { position: fixed; inset: 0; z-index: 300; background: var(--bg); display: none; flex-direction: column; padding: calc(12px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom)); overflow-y: auto; }
   .skanneri.auki { display: flex; }
@@ -2337,7 +2357,7 @@
 
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · LEUKALASKURI · v3.67</footer>
+    <footer><span class="machine-name">NTX3000</span> · LEUKALASKURI · v3.68</footer>
   </div>
 
   <!-- ===================== ASETUKSET: LEUKAKORJAIN ===================== -->
@@ -2474,7 +2494,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · SP2 &amp; G55 · v3.67</footer>
+    <footer><span class="machine-name">NTX3000</span> · SP2 &amp; G55 · v3.68</footer>
   </div>
 
   <!-- ===================== ASETUKSET: SP2 ===================== -->
@@ -2597,7 +2617,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · TYÖKALULISTA · v3.67</footer>
+    <footer><span class="machine-name">NTX3000</span> · TYÖKALULISTA · v3.68</footer>
   </div>
 
   <!-- ===================== ASETUKSET ===================== -->
@@ -2634,7 +2654,7 @@
       </div>
       <div id="kuSisalto"></div>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · KIILAURA · v3.67</footer>
+    <footer><span class="machine-name">NTX3000</span> · KIILAURA · v3.68</footer>
   </div>
 
   <div class="view" id="viewTyosto">
@@ -2760,7 +2780,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · TYÖSTÖ · v3.67</footer>
+    <footer><span class="machine-name">NTX3000</span> · TYÖSTÖ · v3.68</footer>
   </div>
 
   <!-- ===================== KAPPALEET: TYÖKORTIT PIIRUSTUSNUMEROITTAIN ===================== -->
@@ -2799,7 +2819,7 @@
       <div id="kpLista"></div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · KAPPALEET · v3.67</footer>
+    <footer><span class="machine-name">NTX3000</span> · KAPPALEET · v3.68</footer>
   </div>
 
   <div class="view" id="viewKappale">
@@ -2817,7 +2837,7 @@
       </div>
     </header>
     <main id="kpKortti"></main>
-    <footer><span class="machine-name">NTX3000</span> · KAPPALEKORTTI · v3.67</footer>
+    <footer><span class="machine-name">NTX3000</span> · KAPPALEKORTTI · v3.68</footer>
   </div>
 
   <div class="view" id="viewData">
@@ -2954,10 +2974,24 @@
           <button class="seg-btn" data-numpad="0"><span class="seg-name">Puhelimen oma</span></button>
         </div>
         <div class="kentta-vihje" style="margin-top:6px;">Oma näppäimistö avautuu numerokenttiin puhelimella ja tabletilla. Tekstikentissä aukeaa aina puhelimen näppäimistö.</div>
+        <div class="aset-ala-otsikko" style="margin-top:14px;">Tablettitila</div>
+        <div class="seg-row" id="tablettiRow">
+          <button class="seg-btn" data-tabletti="0"><span class="seg-name">Pois</span></button>
+          <button class="seg-btn" data-tabletti="1"><span class="seg-name">Isot napit (tabletti)</span></button>
+        </div>
+      </section>
+      <section>
+        <div class="section-label">Lukitus <span class="scope laite">LAITE</span></div>
+        <div class="seg-row" id="lukitusRow">
+          <button class="seg-btn" data-lukitus="0"><span class="seg-name">Muokkaus sallittu</span></button>
+          <button class="seg-btn" data-lukitus="1"><span class="seg-name">Lukittu</span></button>
+        </div>
+        <button type="button" class="add-btn" id="lkPinBtn" style="margin-top:10px;">Aseta PIN</button>
+        <div class="kentta-vihje" style="margin-top:6px;">Lukittuna laskimet, kiilaura ja kappalekortit toimivat, mutta työkalujen, leukojen, SP2-arvon ja tietopankin muokkaus sekä asetukset vaativat PIN-koodin.</div>
       </section>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · ASETUKSET · v3.67</footer>
+    <footer><span class="machine-name">NTX3000</span> · ASETUKSET · v3.68</footer>
   </div>
 
   <!-- ===================== KONEET ===================== -->
@@ -2991,7 +3025,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · KONEET · v3.67</footer>
+    <footer><span class="machine-name">NTX3000</span> · KONEET · v3.68</footer>
   </div>
 
   <!-- ===================== TYÖKALUTYYPPIEN HALLINTA ===================== -->
@@ -3023,7 +3057,7 @@
       </section>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · TYÖKALUTYYPIT · v3.67</footer>
+    <footer><span class="machine-name">NTX3000</span> · TYÖKALUTYYPIT · v3.68</footer>
   </div>
 
   <!-- ===================== TUONTI: ESIKATSELU ===================== -->
@@ -3091,7 +3125,7 @@
         </div>
       </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TUONTI · v3.67</footer>
+    <footer><span class="machine-name">NTX3000</span> · TUONTI · v3.68</footer>
   </div>
 
   <!-- ===================== TYÖSTÖTIETOPANKKI JA OMAT SÄÄDÖT ===================== -->
@@ -3134,7 +3168,7 @@
         <div class="tp-rivit" id="tpRivit"></div>
       </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TIETOPANKKI · v3.67</footer>
+    <footer><span class="machine-name">NTX3000</span> · TIETOPANKKI · v3.68</footer>
   </div>
 
 <!-- ===================== TARKISTUS ===================== -->
@@ -3154,7 +3188,7 @@
         <div class="edit-list" id="qualityList"></div>
       </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TARKISTUS · v3.67</footer>
+    <footer><span class="machine-name">NTX3000</span> · TARKISTUS · v3.68</footer>
   </div>
 
 </div>
@@ -4028,7 +4062,7 @@ function applyJawDefaults() {
     return;
   }
   const f = loadFields();
-  const useLast = f.jawUid === jaw.uid && f.halkaisija != null && f.halkaisija !== '';
+  const useLast = f.halkaisija != null && f.halkaisija !== '';   /* viimeksi haettu halkaisija säilyy myös leukaa vaihdettaessa */
   halkaisijaInput.value = useLast ? f.halkaisija : jaw.halkaisija;
   halkaisijaHint.textContent = jaw.type === 'Sisäleuka' ? 'reiän halkaisija' : 'ulkohalkaisija';
 }
@@ -10558,6 +10592,7 @@ document.addEventListener('input', e => {
 });
 document.addEventListener('click', e => {
   if (e.target && e.target.id === 'nvSaatoNollaa') { nvTila().vcSaato = '0'; tallennaTy(); nvPaivitaTulos(); }
+  if (e.target && e.target.id === 'nvTallennaKorttiin') nvTallennaKorttiin();
 });
 
 /* =================================================================
@@ -12113,7 +12148,7 @@ function nvPaivitaTulos() {
   if (o.varoitukset.length) h += '<ul class="nv-varoitukset">' + o.varoitukset.map(w => '<li class="' + w.taso + '">' + esc(w.teksti) + '</li>').join('') + '</ul>';
   else h += '<div class="nv-kunnossa">Ei huomautettavaa annetuilla tiedoilla.</div>';
   h += '<div class="btn-row nv-napit"><button type="button" class="add-cut-btn kp-kayta" data-nvvie="1">Vie laskimeen</button>' +
-    (v.toolUid ? '<button type="button" class="add-cut-btn" data-nvtallenna="1">Tallenna työkalulle</button>' : '') + '</div>';
+    '<button type="button" class="add-cut-btn" data-nvtallenna="1">Tallenna korttiin</button></div>';
   h += '<details class="ty-vinkit nv-perusteet"><summary>Miten tämä laskettiin</summary><ul>' + o.perusteet.map(p => '<li>' + esc(p) + '</li>').join('') +
     '<li>Arvot ovat aloitusarvoja julkisista lähteistä ja omasta tietopankistasi. Tarkista työkaluvalmistajan suositus ja kuuntele lastua.</li></ul></details>';
   el.innerHTML = h;
@@ -12155,7 +12190,8 @@ function nvPaivitaTulos() {
         '<div class="nv-saato-rivi"><span>v<sub>c</sub> <b id="nvSaatoVc"></b> m/min <em id="nvSaatoPros"></em></span>' +
         '<span>Särmän kesto <b id="nvSaatoKesto"></b> <em id="nvSaatoMuutos"></em></span></div>' +
         '<input type="range" id="nvVcSaato" min="-50" max="50" step="5" aria-label="Lastuamisnopeuden säätö">' +
-        '<div class="nv-saato-asteikko"><span>−50 %</span><button type="button" class="nv-linkki" id="nvSaatoNollaa">Suositus</button><span>+50 %</span></div></div>';
+        '<div class="nv-saato-asteikko"><span>−50 %</span><button type="button" class="nv-linkki" id="nvSaatoNollaa">Suositus</button><span>+50 %</span></div></div>' +
+        '<button type="button" class="nv-tallenna-btn" id="nvTallennaKorttiin"></button>';
     }
     yla.querySelector('.nv-yla-arvot').innerHTML = y + (pahin ? '<div class="nv-yla-tila ' + pahin + '">' + o.varoitukset.length + ' huomautusta alla</div>' : '');
     const liuku = document.getElementById('nvVcSaato');
@@ -12169,6 +12205,8 @@ function nvPaivitaTulos() {
     mEl.textContent = Math.abs(muutos) >= 1 ? (muutos > 0 ? '+' : '−') + Math.abs(muutos) + ' %' : '';
     mEl.className = muutos > 0 ? 'pidempi' : muutos < 0 ? 'lyhyempi' : '';
     document.getElementById('nvSaatoNollaa').hidden = !o.vcSaato;
+    const tx = v.toolUid && TOOLS.find(t => t.uid === v.toolUid);
+    document.getElementById('nvTallennaKorttiin').textContent = tx ? 'Tallenna T' + tx.t + ':n korttiin' : 'Tallenna työkalun korttiin…';
   }
 }
 
@@ -12246,7 +12284,7 @@ function nvVieLaskimeen(jaTallenna) {
     if (e.target.closest('[data-nvkarat]')) { nvMuokkaaKaraa(); return; }
     if (e.target.closest('[data-nvehdotus]')) { const v = nvTila(); v.ap = ''; v.ae = ''; v.a = ''; tallennaTy(); renderNeuvoja(); return; }
     if (e.target.closest('[data-nvvie]')) { nvVieLaskimeen(false); return; }
-    if (e.target.closest('[data-nvtallenna]')) { nvVieLaskimeen(true); return; }
+    if (e.target.closest('[data-nvtallenna]')) { nvTallennaKorttiin(); return; }
   });
   juuri.addEventListener('input', e => {
     const k = e.target.getAttribute && e.target.getAttribute('data-nv');
@@ -12977,9 +13015,180 @@ document.addEventListener('click', e => {
 });
 kaytaNumpad();
 
+
+/* =================================================================
+   TABLETTITILA, MUOKKAUSLUKITUS (PIN) JA YLEISHAKU
+   ================================================================= */
+const K_TABLETTI = 'ntx_tabletti', K_LUKITUS = 'ntx_lukitus';
+function tablettiPaalla() { try { return localStorage.getItem(K_TABLETTI) === '1'; } catch (e) { return false; } }
+function kaytaTabletti() {
+  document.body.classList.toggle('tabletti', tablettiPaalla());
+  document.querySelectorAll('#tablettiRow .seg-btn').forEach(b => b.classList.toggle('active', (b.getAttribute('data-tabletti') === '1') === tablettiPaalla()));
+}
+/* PIN ei ole tietoturvaa vaan tahattoman muokkauksen esto: tallennetaan tiivisteenä tälle laitteelle */
+function lkTiiviste(t) { let h = 2166136261; const s = 'kt-' + t; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return (h >>> 0).toString(36); }
+function lkTila() { try { return JSON.parse(localStorage.getItem(K_LUKITUS) || 'null') || {}; } catch (e) { return {}; } }
+function lkTallenna(t) { try { localStorage.setItem(K_LUKITUS, JSON.stringify(t)); } catch (e) {} lkPaivitaUi(); }
+let lkAvattuAsti = 0;
+function lkLukittu() { const t = lkTila(); return !!(t.paalla && t.pin) && Date.now() > lkAvattuAsti; }
+function lkPaivitaUi() {
+  const t = lkTila();
+  document.querySelectorAll('#lukitusRow .seg-btn').forEach(b => b.classList.toggle('active', (b.getAttribute('data-lukitus') === '1') === !!(t.paalla && t.pin)));
+  const p = document.getElementById('lkPinBtn'); if (p) p.textContent = t.pin ? 'Vaihda PIN' : 'Aseta PIN';
+  document.body.classList.toggle('lukittu', lkLukittu());
+}
+async function lkAvaa() {
+  const pin = await kysyTeksti('Muokkaus on lukittu', '', 'Anna PIN-koodi.');
+  if (pin === null) return false;
+  if (lkTiiviste(pin.trim()) !== lkTila().pin) { toast('Väärä PIN'); return false; }
+  lkAvattuAsti = Date.now() + 15 * 60 * 1000;
+  lkPaivitaUi();
+  toast('Muokkaus avattu 15 minuutiksi');
+  return true;
+}
+/* Lukittuna nämä vaativat PIN-koodin: asetukset, työkalujen muokkaus, leuat, SP2-arvo, tietopankin säätö, tarkistus */
+const LK_SUOJATUT = '[data-nav="asetukset"], [data-nav="tarkistus"], #openJawSettings, #openSP2Settings, #tyAvaaTp, #addToolBtn, ' +
+  '[data-action="edit-tool"], [data-action="add-cut-edit"], [data-action="copy-tool"], [data-action="copy-machine"], ' +
+  '#tyTallennaTyokalulle, [data-nvtallenna], #nvTallennaKorttiin, [data-action="del-mat"], [data-action="del-brand"], [data-kutera-tallenna]';
+document.addEventListener('click', e => {
+  if (!lkLukittu()) return;
+  const el = e.target.closest && e.target.closest(LK_SUOJATUT);
+  if (!el) return;
+  e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
+  lkAvaa().then(ok => { if (ok) el.click(); });
+}, true);
+/* muut reitit (pikahaku uuteen T-numeroon, muokkaus suoraan) */
+(function () {
+  const alkLisaa = lisaaTyokalu, alkMuokkaa = aloitaMuokkaus;
+  window.lisaaTyokalu = lisaaTyokalu = function () { if (lkLukittu()) { toast('Muokkaus on lukittu (Asetukset → Lukitus)'); return null; } return alkLisaa.apply(this, arguments); };
+  window.aloitaMuokkaus = aloitaMuokkaus = function () { if (lkLukittu()) { toast('Muokkaus on lukittu'); return; } return alkMuokkaa.apply(this, arguments); };
+})();
+document.addEventListener('click', async e => {
+  const tb = e.target.closest && e.target.closest('#tablettiRow .seg-btn');
+  if (tb) { try { localStorage.setItem(K_TABLETTI, tb.getAttribute('data-tabletti')); } catch (er) {} kaytaTabletti(); return; }
+  if (e.target.closest && e.target.closest('#lkPinBtn')) {
+    const t = lkTila();
+    if (t.pin) { const vanha = await kysyTeksti('Vaihda PIN', '', 'Anna nykyinen PIN.'); if (vanha === null) return; if (lkTiiviste(vanha.trim()) !== t.pin) { toast('Väärä PIN'); return; } }
+    const uusi = await kysyTeksti(t.pin ? 'Uusi PIN' : 'Aseta PIN', '', '4–8 numeroa.');
+    if (uusi === null) return;
+    if (!/^\d{4,8}$/.test(uusi.trim())) { toast('PIN: 4–8 numeroa'); return; }
+    const toisto = await kysyTeksti('Vahvista PIN', '', 'Anna sama PIN uudelleen.');
+    if (toisto === null || toisto.trim() !== uusi.trim()) { toast('PIN-koodit eivät täsmää'); return; }
+    t.pin = lkTiiviste(uusi.trim()); lkTallenna(t); toast('PIN tallennettu');
+    return;
+  }
+  const lb = e.target.closest && e.target.closest('#lukitusRow .seg-btn');
+  if (lb) {
+    const t = lkTila(), paalle = lb.getAttribute('data-lukitus') === '1';
+    if (paalle && !t.pin) { toast('Aseta ensin PIN'); return; }
+    t.paalla = paalle; lkTallenna(t);
+    if (paalle) { lkAvattuAsti = 0; lkPaivitaUi(); toast('Muokkaus lukittu'); showView('viewJawCalc'); }
+  }
+});
+kaytaTabletti(); lkPaivitaUi();
+setInterval(() => { if (lkTila().paalla) lkPaivitaUi(); }, 30000);
+
+/* ---------- Avustaja: arvot työkalun korttiin yhdellä napilla ---------- */
+async function nvTallennaKorttiin() {
+  const o = window.__nv, v = nvTila();
+  if (!o || !o.ok) return;
+  let x = v.toolUid && TOOLS.find(t => t.uid === v.toolUid);
+  if (!x) {
+    const tNro = await kysyTeksti('Tallenna korttiin', '', 'Anna työkalun T-numero (' + (activeMachine().name || 'tämä kone') + ').');
+    if (tNro === null) return;
+    x = TOOLS.find(t => String(t.t).trim() === String(tNro).trim().replace(/^t/i, ''));
+    if (!x) { toast('Työkalua T' + tNro + ' ei löydy tältä koneelta'); return; }
+  }
+  const sp = nvOnSpiraali(v), jyr = v.op === 'jyrsinta';
+  const uusi = { vc: String(Math.round(o.vc)), rpm: '' };
+  if (nvOnPallo(v) && o.Deff > 0) { uusi.rpm = String(Math.round(o.n)); uusi.vc = ''; }
+  if (jyr) { uusi.fz = tySyottoTeksti(o.fz); uusi.f = ''; } else { uusi.f = tySyottoTeksti(o.f); uusi.fz = ''; }
+  if (!sp && o.ap > 0) uusi.ap = String(o.ap);
+  if (!sp && jyr && o.ae > 0) uusi.ae = String(o.ae);
+  if (!Array.isArray(x.cuts)) x.cuts = [];
+  let c = x.cuts.find(r => r.mat === v.mat);
+  const nimet = { vc: 'vc', rpm: 'n', f: 'f', fz: 'fz', ap: 'ap', ae: 'ae' };
+  if (c) {
+    const muutokset = Object.keys(uusi).filter(k => has(c[k]) && String(c[k]) !== String(uusi[k]))
+      .map(k => nimet[k] + ' ' + c[k] + ' → ' + (has(uusi[k]) ? uusi[k] : 'tyhjä'));
+    if (muutokset.length && !(await kysyVahvistus('Korvataanko arvot?', 'T' + x.t + ' · ' + c.mat + ':\n' + muutokset.join('\n'), 'Korvaa', 'Peruuta'))) return;
+  } else {
+    c = { uid: newUid('c'), mat: v.mat, vc: '', rpm: '', f: '', fz: '', ap: '', ae: '', life: '' };
+    x.cuts.push(c);
+  }
+  Object.keys(uusi).forEach(k => { c[k] = uusi[k]; });
+  delete c.src; delete c.srcLuot; delete c.srcT;
+  x.mod = new Date().toISOString();
+  saveTools(); renderTools();
+  toastAction('Tallennettu: T' + x.t + ' · ' + c.mat, 'Näytä', () => avaaTyokalu(x.uid));
+}
+
+/* ---------- Yleishaku: pieni suurennuslasi otsikossa ---------- */
+const YH_IKONI = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>';
+document.querySelectorAll('.view > header .header-left').forEach(h => {
+  const b = document.createElement('button');
+  b.type = 'button'; b.className = 'yh-btn'; b.setAttribute('aria-label', 'Hae sovelluksesta'); b.innerHTML = YH_IKONI;
+  h.appendChild(b);
+});
+function yhAvaa() {
+  let el = document.getElementById('yleishaku');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'yleishaku'; el.className = 'yleishaku';
+    el.innerHTML = '<div class="yh-laatikko"><div class="yh-rivi">' + YH_IKONI +
+      '<input type="text" id="yhSyote" placeholder="Työkalu, kappale, tietoisku, hälytys…" autocomplete="off" enterkeyhint="search">' +
+      '<button type="button" class="yh-sulje" aria-label="Sulje">×</button></div><div class="yh-tulokset" id="yhTulokset"></div></div>';
+    document.body.appendChild(el);
+    el.addEventListener('click', e => { if (e.target === el || e.target.closest('.yh-sulje')) yhSulje(); });
+    el.querySelector('#yhSyote').addEventListener('input', yhHae);
+  }
+  el.classList.add('auki');
+  if (typeof historiaKerros === 'function') historiaKerros();
+  const i = el.querySelector('#yhSyote'); i.value = ''; yhHae();
+  setTimeout(() => i.focus(), 30);
+}
+function yhSulje() { const el = document.getElementById('yleishaku'); if (el) el.classList.remove('auki'); }
+function yhAuki() { const el = document.getElementById('yleishaku'); return !!(el && el.classList.contains('auki')); }
+function yhHae() {
+  const q = document.getElementById('yhSyote').value.trim().toLowerCase();
+  const out = document.getElementById('yhTulokset');
+  if (q.length < 2) { out.innerHTML = '<div class="yh-vihje">Kirjoita vähintään kaksi merkkiä.</div>'; return; }
+  const osuu = t => String(t || '').toLowerCase().indexOf(q) !== -1;
+  const qT = q.replace(/^t/, '');
+  const rivit = [];
+  TOOLS.forEach(x => {
+    const tOsuu = /^\d+$/.test(qT) && String(x.t) === qT;
+    if (tOsuu || [x.name, x.insert, x.brand, x.notes, x.holder].concat((x.muutPalat || []).map(p => p.code)).some(osuu))
+      rivit.push([tOsuu ? 0 : 1, 'Työkalu', 'T' + (x.t || '?') + ' · ' + (x.name || 'Nimetön'), 'tyokalu', x.uid]);
+  });
+  (typeof KAPPALEET !== 'undefined' ? KAPPALEET : []).forEach(k => {
+    if ([k.piirustus, k.nimi, k.asiakas, k.muistio, k.ohjelma, k.mat].some(osuu)) rivit.push([1, 'Kappale', [k.piirustus, k.nimi].filter(Boolean).join(' · ') || 'Kappalekortti', 'kappale', k.uid]);
+  });
+  TI_AIHEET.forEach(a => { if (osuu(a[1]) || osuu(a[2].replace(/<[^>]+>/g, ' '))) rivit.push([osuu(a[1]) ? 1 : 2, 'Tietoisku', a[1], 'tieto', a[1]]); });
+  Object.keys(KU_HALYTYKSET).forEach(n => { const h = KU_HALYTYKSET[n]; if (q === String(3000 + Number(n)) || q === String(n) || osuu(h[0]) || osuu(h[1])) rivit.push([1, 'Kiilaura', (3000 + Number(n)) + ' ' + h[0], 'halytys', n]); });
+  rivit.sort((a, b) => a[0] - b[0]);
+  out.innerHTML = rivit.length ? rivit.slice(0, 30).map(r => '<button type="button" class="yh-tulos" data-yh="' + r[3] + '" data-yhid="' + esc(r[4]) + '"><span>' + r[1] + '</span>' + esc(r[2]) + '</button>').join('')
+    : '<div class="yh-vihje">Ei osumia.</div>';
+}
+document.addEventListener('click', e => {
+  if (e.target.closest && e.target.closest('.yh-btn')) { yhAvaa(); return; }
+  const r = e.target.closest && e.target.closest('[data-yh]');
+  if (!r) return;
+  const laji = r.getAttribute('data-yh'), id = r.getAttribute('data-yhid');
+  yhSulje();
+  if (laji === 'tyokalu') avaaTyokalu(id);
+  else if (laji === 'kappale') kpAvaa(id);
+  else if (laji === 'tieto') { showView('viewTyosto'); tyValitseOsio('tietoiskut'); const i = document.getElementById('tiHaku'); if (i) { i.value = id; tiRender(); } }
+  else if (laji === 'halytys') { showView('viewKiilaura'); KU.osio = 'halytykset'; renderKiilaura(); }
+});
+
 (function palautaNakyma() {
   const tila = store.getJSON(K_NAKYMA);
   nakymaPalautettu = true;
+  /* uusi käynnistys aukeaa leukalaskuriin; saman istunnon uudelleenlataus palaa samaan kohtaan */
+  let uusiIstunto = true;
+  try { uusiIstunto = !sessionStorage.getItem('ntx_istunto'); sessionStorage.setItem('ntx_istunto', '1'); } catch (e) {}
+  if (uusiIstunto && tabNakyy(activeMachine(), 'jaw')) { showView('viewJawCalc', true); return; }
   if (!tila || !tila.view || VIEWS.indexOf(tila.view) === -1) return;
   if (tila.view === 'viewImport') tila.view = 'viewToolList';
   if (tila.view === 'viewQuality') renderQuality();
@@ -13220,10 +13429,11 @@ document.addEventListener('click', e => {
 
 function skAuki() { const e = document.getElementById('skanneri'); return !!(e && e.classList.contains('auki')); }
 function avoinKerros() {
-  return !!(npKentta || pikahakuEl.classList.contains('show') || modalBack.classList.contains('show') || skAuki());
+  return !!(npKentta || pikahakuEl.classList.contains('show') || modalBack.classList.contains('show') || skAuki() || (typeof yhAuki === 'function' && yhAuki()));
 }
 function suljeKerrokset() {
   if (skAuki()) skSulje();
+  if (typeof yhAuki === 'function' && yhAuki()) yhSulje();
   if (modalBack.classList.contains('show')) suljeModal(null);
   if (pikahakuEl.classList.contains('show')) suljePikahaku();
   if (npKentta) { const el = npKentta; el.blur(); npSulje(); }
