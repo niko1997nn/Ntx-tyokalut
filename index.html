@@ -1857,6 +1857,17 @@
   .tulos-yla .result-value { font-size: 20px; flex-wrap: nowrap; white-space: nowrap; gap: 5px; }
   .tulos-yla .result-value .unit { font-size: 12px; }
   .tulos-yla .result-row .copy-hint { font-size: 10.5px; }
+
+  /* Leukalaskurin halkaisija: otsikko kuten muut osiot, iso arvo, rajat samalla rivillä */
+  .halk-osio .input-block { gap: 10px; }
+  .halk-osio .input-label { flex-direction: row; align-items: baseline; gap: 8px;
+    font: 600 11px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim); }
+  .halk-osio .input-hint { font: 400 12px var(--sans, inherit); letter-spacing: 0; text-transform: none; }
+  .halk-osio .range-note { margin: 0 0 0 auto; font: 500 12px var(--mono); letter-spacing: 0; text-transform: none; color: var(--text-dim); white-space: nowrap; }
+  .halk-osio .range-note.range-warn { color: var(--red); font-weight: 700; }
+  .halk-osio #halkaisijaInput { height: 64px; font: 600 30px var(--mono); text-align: left; padding-left: 18px; }
+  .halk-osio .yks { font-size: 14px; }
+  #halkaisijaInput.yli-rajojen, #halkaisijaInput.yli-rajojen:focus { border-color: var(--red); }
   .halk-osio { margin-top: 0; }
   .tulos-yla + .halk-osio { padding-top: 4px; }
   @media (min-width: 700px) {
@@ -2331,13 +2342,13 @@
         <div class="input-row">
           <label class="input-block">
             <span class="input-label">
-              Kappaleen halkaisija (mm)
+              Halkaisija (mm)
               <span class="input-hint" id="halkaisijaHint">ulkohalkaisija</span>
+              <span class="range-note" id="rangeNote" style="display:none;"></span>
             </span>
             <input type="number" id="halkaisijaInput" inputmode="decimal" step="0.01">
           </label>
         </div>
-        <div class="range-note" id="rangeNote" style="display:none;"></div>
       </section>
 
       <section>
@@ -2357,7 +2368,7 @@
 
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · LEUKALASKURI · v3.68</footer>
+    <footer><span class="machine-name">NTX3000</span> · LEUKALASKURI · v3.69</footer>
   </div>
 
   <!-- ===================== ASETUKSET: LEUKAKORJAIN ===================== -->
@@ -2494,7 +2505,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · SP2 &amp; G55 · v3.68</footer>
+    <footer><span class="machine-name">NTX3000</span> · SP2 &amp; G55 · v3.69</footer>
   </div>
 
   <!-- ===================== ASETUKSET: SP2 ===================== -->
@@ -2617,7 +2628,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · TYÖKALULISTA · v3.68</footer>
+    <footer><span class="machine-name">NTX3000</span> · TYÖKALULISTA · v3.69</footer>
   </div>
 
   <!-- ===================== ASETUKSET ===================== -->
@@ -2654,7 +2665,7 @@
       </div>
       <div id="kuSisalto"></div>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · KIILAURA · v3.68</footer>
+    <footer><span class="machine-name">NTX3000</span> · KIILAURA · v3.69</footer>
   </div>
 
   <div class="view" id="viewTyosto">
@@ -2780,7 +2791,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · TYÖSTÖ · v3.68</footer>
+    <footer><span class="machine-name">NTX3000</span> · TYÖSTÖ · v3.69</footer>
   </div>
 
   <!-- ===================== KAPPALEET: TYÖKORTIT PIIRUSTUSNUMEROITTAIN ===================== -->
@@ -2819,7 +2830,7 @@
       <div id="kpLista"></div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · KAPPALEET · v3.68</footer>
+    <footer><span class="machine-name">NTX3000</span> · KAPPALEET · v3.69</footer>
   </div>
 
   <div class="view" id="viewKappale">
@@ -2837,7 +2848,7 @@
       </div>
     </header>
     <main id="kpKortti"></main>
-    <footer><span class="machine-name">NTX3000</span> · KAPPALEKORTTI · v3.68</footer>
+    <footer><span class="machine-name">NTX3000</span> · KAPPALEKORTTI · v3.69</footer>
   </div>
 
   <div class="view" id="viewData">
@@ -2991,7 +3002,7 @@
       </section>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · ASETUKSET · v3.68</footer>
+    <footer><span class="machine-name">NTX3000</span> · ASETUKSET · v3.69</footer>
   </div>
 
   <!-- ===================== KONEET ===================== -->
@@ -3025,7 +3036,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · KONEET · v3.68</footer>
+    <footer><span class="machine-name">NTX3000</span> · KONEET · v3.69</footer>
   </div>
 
   <!-- ===================== TYÖKALUTYYPPIEN HALLINTA ===================== -->
@@ -3057,7 +3068,7 @@
       </section>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · TYÖKALUTYYPIT · v3.68</footer>
+    <footer><span class="machine-name">NTX3000</span> · TYÖKALUTYYPIT · v3.69</footer>
   </div>
 
   <!-- ===================== TUONTI: ESIKATSELU ===================== -->
@@ -3125,7 +3136,7 @@
         </div>
       </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TUONTI · v3.68</footer>
+    <footer><span class="machine-name">NTX3000</span> · TUONTI · v3.69</footer>
   </div>
 
   <!-- ===================== TYÖSTÖTIETOPANKKI JA OMAT SÄÄDÖT ===================== -->
@@ -3168,7 +3179,7 @@
         <div class="tp-rivit" id="tpRivit"></div>
       </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TIETOPANKKI · v3.68</footer>
+    <footer><span class="machine-name">NTX3000</span> · TIETOPANKKI · v3.69</footer>
   </div>
 
 <!-- ===================== TARKISTUS ===================== -->
@@ -3188,7 +3199,7 @@
         <div class="edit-list" id="qualityList"></div>
       </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TARKISTUS · v3.68</footer>
+    <footer><span class="machine-name">NTX3000</span> · TARKISTUS · v3.69</footer>
   </div>
 
 </div>
@@ -4085,6 +4096,7 @@ function calculateJaw() {
     readoutValue.classList.remove('negative');
     readout.classList.remove('warning');
     rangeNote.style.display = 'none';
+    halkaisijaInput.classList.remove('yli-rajojen');
     saveFields();
     return;
   }
@@ -4103,11 +4115,12 @@ function calculateJaw() {
     const minTxt = jaw.min != null ? jaw.min + ' mm' : '—';
     const maxTxt = jaw.max != null ? jaw.max + ' mm' : '—';
     rangeNote.style.display = 'block';
-    rangeNote.innerHTML = 'Sallittu alue: <strong>' + esc(minTxt) + ' \u2013 ' + esc(maxTxt) + '</strong>' +
-      (outOfRange ? ' <span class="range-warn">\u00B7 ARVO RAJOJEN ULKOPUOLELLA</span>' : '');
+    rangeNote.textContent = (outOfRange ? '\u26A0 ' : '') + 'Rajat ' + minTxt.replace(' mm','') + '\u2013' + maxTxt;
+    rangeNote.classList.toggle('range-warn', outOfRange);
   } else {
     rangeNote.style.display = 'none';
   }
+  halkaisijaInput.classList.toggle('yli-rajojen', outOfRange);
 
   if (result != null) {
     readoutValue.innerHTML = fmt(result, 2) + '<span class="readout-unit">mm</span>';
