@@ -1839,6 +1839,11 @@
   .tulos-yla .ku-yla { display: block; padding: 10px 14px; }
   .ku-kutsu-rivi { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
   .ku-kutsu-rivi .section-label { margin: 0; }
+  .ku-kopioi { flex: none; display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border: 1px solid var(--panel-border); border-radius: 10px;
+    background: var(--panel); color: var(--text); font: 600 13px var(--sans); cursor: pointer; }
+  .ku-kopioi svg { width: 15px; height: 15px; }
+  .ku-sana, .ku-akt { white-space: nowrap; }
+  .ku-kopioi:active { background: var(--chip); }
   .ku-kutsu { display: block; flex: 1; font-family: var(--mono); font-size: 15px; font-weight: 600; line-height: 1.45; color: var(--accent);
     word-break: break-word; cursor: pointer; background: transparent; padding: 0; }
   .numpad .np-miinus { font-size: 26px; font-weight: 600; }
@@ -10369,7 +10374,7 @@ function kuKutsuHTML(v, tKutsuun, aktiivi) {
     const x = kuLuku(v[kir]);
     const nakyy = !(kir === 'T' && !tKutsuun) && isFinite(x);
     if (kir === aktiivi) osat.push('<span class="ku-akt' + (nakyy ? '' : ' tyhja') + '">' + kir + (nakyy ? kuNc(x) : '…') + '</span>');
-    else if (nakyy) osat.push(kir + kuNc(x));
+    else if (nakyy) osat.push('<span class="ku-sana">' + kir + kuNc(x) + '</span>');
   });
   return osat.join(' ');
 }
@@ -10563,7 +10568,7 @@ function kuPaivita() {
     : '';
   const xInp = document.querySelector('#viewKiilaura input[data-ku="X"]');
   if (xInp) xInp.placeholder = isFinite(KU.xLaskettu) ? '= ' + kuMm(KU.xLaskettu, 3).replace(',', '.') : '= Ø − työvara';
-  yla.innerHTML = '<div class="ku-kutsu-rivi"><code class="ku-kutsu copyable" id="kuKutsu">' + kuKutsuHTML(v, KU.tKutsu === 'kylla', akt) + '</code><button type="button" class="nv-linkki" id="kuKopioi">Kopioi</button></div>' + tila;
+  yla.innerHTML = '<div class="ku-kutsu-rivi"><code class="ku-kutsu copyable" id="kuKutsu">' + kuKutsuHTML(v, KU.tKutsu === 'kylla', akt) + '</code><button type="button" class="ku-kopioi" id="kuKopioi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>Kopioi</button></div>' + tila;
   const tEl = document.getElementById('kuTulos');
   if (!tEl) return;
   if (!o.ok) { tEl.innerHTML = ''; return; }
