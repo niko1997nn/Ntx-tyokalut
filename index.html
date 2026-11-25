@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<meta name="theme-color" content="#F3F5F7">
+<meta name="theme-color" content="#F5F7FA">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -1330,17 +1330,17 @@
   :root {
     --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Roboto Mono', monospace;
-    --bg: #F3F5F7;
+    --bg: #F5F7FA;
     --panel: #FFFFFF;
-    --panel-2: #EEF1F4;
-    --panel-border: #DFE4E9;
-    --steel: #7D8894;
-    --steel-light: #4E5A66;
-    --text: #14191E;
-    --text-dim: #5B6773;
-    --accent: #0F8C80;
-    --accent-dim: #E2F4F2;
-    --accent-text: #0B6B62;
+    --panel-2: #EEF2F7;
+    --panel-border: #E1E7EF;
+    --steel: #7B8796;
+    --steel-light: #475569;
+    --text: #0F172A;
+    --text-dim: #5B6678;
+    --accent: #2563EB;
+    --accent-dim: #E7EEFE;
+    --accent-text: #1D4ED8;
     --on-accent: #FFFFFF;
     --green: #1B9A5A;
     --green-dim: #E3F5EA;
@@ -1348,32 +1348,38 @@
     --orange: #9A5A00;
     --orange-dim: #FFF4E0;
     --orange-line: #F1D29A;
-    --chip: #EEF1F4;
+    --chip: #EEF2F7;
     --bar: #FFFFFF;
   }
   body.dark {
-    --bg: #0F1215;
-    --panel: #171B20;
-    --panel-2: #1F252C;
-    --panel-border: #262D35;
-    --steel: #6B7682;
-    --steel-light: #B4BEC8;
-    --text: #E8ECEF;
-    --text-dim: #9AA5B0;
-    --accent: #4FD1C5;
-    --accent-dim: #0F2A28;
-    --accent-text: #4FD1C5;
-    --on-accent: #0B1F1D;
+    --bg: #10151C;
+    --panel: #171D26;
+    --panel-2: #1E2631;
+    --panel-border: #222B37;
+    --steel: #6E7B8B;
+    --steel-light: #B7C2CF;
+    --text: #E8EEF5;
+    --text-dim: #A0AEBF;
+    --accent: #60A5FA;
+    --accent-dim: #172A42;
+    --accent-text: #8EC0FC;
+    --on-accent: #0A1626;
     --green: #5BD68A;
     --green-dim: #14301F;
     --red: #FF7A70;
     --orange: #F2A93B;
     --orange-dim: #2A2012;
     --orange-line: #4A3618;
-    --chip: #222930;
-    --bar: #13171B;
+    --chip: #1E2631;
+    --bar: #131921;
   }
   body { -webkit-font-smoothing: antialiased; }
+  /* tumma: vähemmän viivoja – kortit ja kentät erottuvat sävyllä, ei reunoilla */
+  body.dark select, body.dark input[type=text], body.dark input[type=number], body.dark input[type=search], body.dark textarea {
+    background-color: var(--panel-2); border-color: transparent; }
+  body.dark select:focus, body.dark input:focus, body.dark textarea:focus { border-color: var(--accent); }
+  body.dark .section-card, body.dark .tool-card { border-color: transparent; }
+  body.dark .seg-btn:not(.active) { border-color: transparent; background: var(--panel-2); }
 
   /* yläosa */
   header { border-bottom: none; padding: 18px 18px 10px; }
@@ -1596,8 +1602,8 @@
     height: 56px; border: none; border-radius: 12px; background: var(--panel); color: var(--text);
     font-family: var(--mono); font-size: 22px; font-weight: 600;
   }
-  body.dark .pikahaku-nappaimet { background: #1B2026; }
-  body.dark .pikahaku-nappaimet button { background: #2A3139; }
+  body.dark .pikahaku-nappaimet { background: #151B23; }
+  body.dark .pikahaku-nappaimet button { background: #26303D; }
   .pikahaku-nappaimet button.toiminto, body.dark .pikahaku-nappaimet button.toiminto { background: transparent; color: var(--text-dim); }
   .pikahaku-nappaimet button.ok, body.dark .pikahaku-nappaimet button.ok { background: var(--accent); color: var(--on-accent); }
   .pikahaku-nappaimet button:active { filter: brightness(1.15); }
@@ -1647,9 +1653,9 @@
 
   /* ilmoitus */
   .toast { border-radius: 14px; padding: 12px 16px; background: #1F252C; color: #E8ECEF; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-  .toast .toast-btn { color: #4FD1C5; }
-  body.dark .toast { background: #E8ECEF; color: #0F1215; }
-  body.dark .toast .toast-btn { color: #0B6B62; }
+  .toast .toast-btn { color: #8EC0FC; }
+  body.dark .toast { background: #E8EEF5; color: #10151C; }
+  body.dark .toast .toast-btn { color: #1D4ED8; }
 
   /* asetukset */
   .tallennus-tila {
@@ -2053,9 +2059,9 @@
   .numpad button.ok { background: var(--accent); color: var(--on-accent); font-size: 22px; }
   .numpad button:active { filter: brightness(1.15); transform: scale(0.97); }
   .numpad button:disabled { opacity: 0.35; }
-  body.dark .numpad { background: #1B2026; }
-  body.dark .numpad button { background: #2A3139; }
-  body.dark .numpad button.toiminto { background: #232930; }
+  body.dark .numpad { background: #151B23; }
+  body.dark .numpad button { background: #26303D; }
+  body.dark .numpad button.toiminto { background: #1E2631; }
   body.dark .numpad button.ok { background: var(--accent); color: var(--on-accent); }
   body.numpad-auki { padding-bottom: var(--numpad-h, 260px); }
   body.numpad-auki .tabbar { display: none; }
@@ -3203,7 +3209,7 @@ function kaytaTeema() {
   const tumma = tummaKaytossa();
   document.body.classList.toggle('dark', tumma);
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.setAttribute('content', tumma ? '#0F1215' : '#F3F5F7');
+  if (meta) meta.setAttribute('content', tumma ? '#10151C' : '#F5F7FA');
   document.querySelectorAll('#themeRow .seg-btn').forEach(b => {
     b.classList.toggle('active', b.getAttribute('data-theme') === teema);
   });
