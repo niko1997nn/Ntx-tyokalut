@@ -1626,6 +1626,15 @@
       color: var(--text-dim); font-size: 10.5px; font-weight: 600; letter-spacing: -0.01em; white-space: nowrap;
     }
     .tab-btn span { overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+    /* kapealla puhelimella pitkät nimet lyhyinä, jotta kaikki välilehdet mahtuvat ilman katkaisua */
+    @media (max-width: 460px) {
+      .tab-btn span[data-lyhyt] { font-size: 0; }
+      .tab-btn span[data-lyhyt]::after { content: attr(data-lyhyt); font-size: 10.5px; }
+    }
+    @media (max-width: 375px) {
+      .tab-btn { font-size: 9.5px; letter-spacing: -0.02em; }
+      .tab-btn span[data-lyhyt]::after { font-size: 9.5px; }
+    }
     .tab-btn.active { border: none; background: transparent; color: var(--accent-text); }
     .tab-btn svg { width: 22px; height: 22px; }
     .tab-badge { position: absolute; top: 3px; left: calc(50% + 5px); }
@@ -1826,6 +1835,63 @@
   .aset-avattava[open] > summary .aset-chev { transform: rotate(90deg); }
   .aset-avattava[open] { padding-bottom: 12px; }
   .aset-avattava > .mat-list, .aset-avattava > .add-cut-btn { margin-left: 14px; margin-right: 14px; width: auto; }
+  /* ═══ KIILAURA ═══ */
+  .tulos-yla .ku-yla { display: block; padding: 10px 14px; }
+  .ku-kutsu-rivi { display: flex; justify-content: space-between; align-items: center; }
+  .ku-kutsu-rivi .section-label { margin: 0; }
+  .ku-kutsu { display: block; margin-top: 6px; font-family: var(--mono); font-size: 15px; font-weight: 600; line-height: 1.45; color: var(--accent);
+    word-break: break-word; cursor: pointer; background: transparent; padding: 0; }
+  .ku-tila { margin-top: 8px; font-size: 13px; line-height: 1.4; border-radius: 8px; padding: 7px 10px; }
+  .ku-tila.ok { color: var(--green); background: color-mix(in srgb, var(--green) 10%, transparent); }
+  .ku-tila.virhe { color: var(--red); background: color-mix(in srgb, var(--red) 10%, transparent); display: flex; flex-direction: column; gap: 2px; }
+  .ku-tila.virhe span { color: var(--text); font-size: 12.5px; }
+  .ku-tila.huom { color: var(--orange); background: color-mix(in srgb, var(--orange) 10%, transparent); }
+  .ku-lisa > summary { list-style: none; cursor: pointer; }
+  .ku-lisa > summary::-webkit-details-marker { display: none; }
+  .ku-lisa > summary span:first-child::after { content: ' ›'; color: var(--text-dim); }
+  .ku-lisa[open] > summary span:first-child::after { content: ' ⌄'; }
+  .ku-pieni { font-size: 12px; color: var(--text-dim); margin: 6px 0 0; line-height: 1.45; }
+  #kuTulos { margin-bottom: 14px; }
+  #kuKentat + .section-label { margin-top: 18px; }
+  .ku-tulos-grid { display: grid; gap: 10px; }
+  .ku-lista { padding: 6px 14px; }
+  .ku-rivi { display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; padding: 8px 0; border-bottom: 1px solid var(--panel-border); }
+  .ku-rivi:last-child { border-bottom: none; }
+  .ku-rivi span { font-size: 13px; color: var(--text-dim); }
+  .ku-rivi b { font-family: var(--mono); font-size: 15px; text-align: right; }
+  .ku-rivi em { grid-column: 1 / -1; font-style: normal; font-size: 12px; color: var(--text-dim); font-family: var(--mono); }
+  .ku-kuva { text-align: center; }
+  .ku-svg { width: 100%; max-width: 300px; height: auto; border-radius: 12px; border: 1px solid var(--panel-border); }
+  .ku-materiaali { fill: var(--panel-2); }
+  .ku-reika { fill: var(--bg); stroke: var(--text); stroke-width: 1.4; }
+  .ku-keskilinja { stroke: var(--text-dim); stroke-width: 0.8; stroke-dasharray: 6 3 1 3; }
+  .ku-tera { fill: color-mix(in srgb, var(--accent) 35%, transparent); stroke: var(--accent); stroke-width: 1.2; }
+  .ku-tera.haamu { fill: none; stroke-dasharray: 3 2; }
+  .ku-runko { fill: color-mix(in srgb, var(--accent) 12%, transparent); stroke: var(--accent); stroke-width: 1; }
+  .ku-runko.osuu { stroke: var(--red); fill: color-mix(in srgb, var(--red) 12%, transparent); }
+  .ku-kaula { stroke: var(--accent); stroke-width: 3; opacity: .45; }
+  .ku-mitta { font-family: var(--mono); font-size: 11px; fill: var(--text-dim); }
+  .ku-esim { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .ku-ohje-intro { font-size: 14px; line-height: 1.5; color: var(--text-dim); margin: 0 0 6px; }
+  .ty-ryhma p { font-size: 14px; line-height: 1.55; margin: 6px 0 10px; }
+  .ku-lista-ohje { margin: 4px 0 8px; padding-left: 18px; font-size: 14px; line-height: 1.55; }
+  .ku-lista-ohje li { margin-bottom: 6px; }
+  .ku-taulu td, .ku-taulu th { vertical-align: top; }
+  .ku-hal-lista { display: grid; gap: 8px; margin-bottom: 14px; }
+  .ku-hal { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 12px; padding: 10px 14px; }
+  .ku-hal-otsikko { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; }
+  .ku-hal-otsikko b { font-family: var(--mono); font-size: 14px; }
+  .ku-hal-otsikko code { font-family: var(--mono); font-size: 12.5px; color: var(--red); }
+  .ku-hal-milloin { font-size: 13.5px; margin-top: 4px; line-height: 1.45; }
+  .ku-hal-korjaus { font-size: 13px; color: var(--accent-text, var(--accent)); margin-top: 3px; line-height: 1.45; }
+  .ku-hal-korjaus::before { content: '→ '; }
+  @media (min-width: 900px) and (pointer: fine) { .ku-hal-lista { grid-template-columns: 1fr 1fr; } }
+  .ku-taulu code { font-size: 12px; white-space: nowrap; }
+  @media (min-width: 900px) and (pointer: fine) {
+    .ku-tulos-grid { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); align-items: start; }
+    #kuKentat { column-count: 2; column-gap: 32px; }
+    #kuKentat > .tyg { break-inside: avoid; }
+  }
   /* ═══ TYÖSTÖ-välilehti ═══ */
   .ty-osio { display: none; }
   .ty-osio.auki { display: block; }
@@ -2099,9 +2165,10 @@
       <button class="tab-btn active" data-tool="viewJawCalc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg><span>Leuka</span></button>
       <button class="tab-btn" data-tool="viewSP2Calc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="4"/></svg><span>SP2</span></button>
       <button class="tab-btn" data-tool="viewTyosto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.3 19a9 9 0 1 1 17.4 0"/><path d="M12 14l4.5-4.5"/><circle cx="12" cy="14" r="1.5"/></svg><span>Työstö</span></button>
-      <button class="tab-btn" data-tool="viewKappaleet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg><span>Kappaleet</span></button>
-      <button class="tab-btn" data-nav="tarkistus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg><span>Tarkistus</span><span class="tab-badge"></span></button>
-      <button class="tab-btn" data-nav="asetukset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Asetukset</span></button>
+      <button class="tab-btn" data-tool="viewKappaleet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg><span data-lyhyt="Kappale">Kappaleet</span></button>
+      <button class="tab-btn" data-tool="viewKiilaura"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 4.3A8 8 0 1 0 14 4.3V2h-4z"/></svg><span>Kiilaura</span></button>
+      <button class="tab-btn" data-nav="tarkistus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg><span data-lyhyt="Tarkista">Tarkistus</span><span class="tab-badge"></span></button>
+      <button class="tab-btn" data-nav="asetukset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span data-lyhyt="Asetus">Asetukset</span></button>
     </nav>
 
     <div class="machine-bar"></div>
@@ -2223,9 +2290,10 @@
       <button class="tab-btn" data-tool="viewJawCalc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg><span>Leuka</span></button>
       <button class="tab-btn active" data-tool="viewSP2Calc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="4"/></svg><span>SP2</span></button>
       <button class="tab-btn" data-tool="viewTyosto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.3 19a9 9 0 1 1 17.4 0"/><path d="M12 14l4.5-4.5"/><circle cx="12" cy="14" r="1.5"/></svg><span>Työstö</span></button>
-      <button class="tab-btn" data-tool="viewKappaleet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg><span>Kappaleet</span></button>
-      <button class="tab-btn" data-nav="tarkistus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg><span>Tarkistus</span><span class="tab-badge"></span></button>
-      <button class="tab-btn" data-nav="asetukset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Asetukset</span></button>
+      <button class="tab-btn" data-tool="viewKappaleet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg><span data-lyhyt="Kappale">Kappaleet</span></button>
+      <button class="tab-btn" data-tool="viewKiilaura"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 4.3A8 8 0 1 0 14 4.3V2h-4z"/></svg><span>Kiilaura</span></button>
+      <button class="tab-btn" data-nav="tarkistus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg><span data-lyhyt="Tarkista">Tarkistus</span><span class="tab-badge"></span></button>
+      <button class="tab-btn" data-nav="asetukset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span data-lyhyt="Asetus">Asetukset</span></button>
     </nav>
 
     <div class="machine-bar"></div>
@@ -2340,9 +2408,10 @@
       <button class="tab-btn" data-tool="viewJawCalc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg><span>Leuka</span></button>
       <button class="tab-btn" data-tool="viewSP2Calc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="4"/></svg><span>SP2</span></button>
       <button class="tab-btn" data-tool="viewTyosto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.3 19a9 9 0 1 1 17.4 0"/><path d="M12 14l4.5-4.5"/><circle cx="12" cy="14" r="1.5"/></svg><span>Työstö</span></button>
-      <button class="tab-btn" data-tool="viewKappaleet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg><span>Kappaleet</span></button>
-      <button class="tab-btn" data-nav="tarkistus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg><span>Tarkistus</span><span class="tab-badge"></span></button>
-      <button class="tab-btn" data-nav="asetukset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Asetukset</span></button>
+      <button class="tab-btn" data-tool="viewKappaleet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg><span data-lyhyt="Kappale">Kappaleet</span></button>
+      <button class="tab-btn" data-tool="viewKiilaura"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 4.3A8 8 0 1 0 14 4.3V2h-4z"/></svg><span>Kiilaura</span></button>
+      <button class="tab-btn" data-nav="tarkistus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg><span data-lyhyt="Tarkista">Tarkistus</span><span class="tab-badge"></span></button>
+      <button class="tab-btn" data-nav="asetukset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span data-lyhyt="Asetus">Asetukset</span></button>
     </nav>
 
     <div class="machine-bar"></div>
@@ -2409,6 +2478,41 @@
 
   <!-- ===================== ASETUKSET ===================== -->
   <!-- ===================== TYÖSTÖ: LASTUAMISARVOT JA KONEISTUSTIETO ===================== -->
+  <div class="view" id="viewKiilaura">
+    <header>
+      <div class="header-left">
+        <div class="logo-mark machine-abbr">NTX</div>
+        <div>
+          <div class="title">Kiilaura</div>
+          <div class="subtitle">O8990 pisto · G65-kutsu ja ohjeet</div>
+        </div>
+      </div>
+    </header>
+
+    <nav class="tabbar" aria-label="Päävalikko">
+      <button class="tab-btn" data-tool="viewToolList"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg><span>Työkalut</span></button>
+      <button class="tab-btn" data-tool="viewJawCalc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg><span>Leuka</span></button>
+      <button class="tab-btn" data-tool="viewSP2Calc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="4"/></svg><span>SP2</span></button>
+      <button class="tab-btn" data-tool="viewTyosto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.3 19a9 9 0 1 1 17.4 0"/><path d="M12 14l4.5-4.5"/><circle cx="12" cy="14" r="1.5"/></svg><span>Työstö</span></button>
+      <button class="tab-btn" data-tool="viewKappaleet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg><span data-lyhyt="Kappale">Kappaleet</span></button>
+      <button class="tab-btn active" data-tool="viewKiilaura"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 4.3A8 8 0 1 0 14 4.3V2h-4z"/></svg><span>Kiilaura</span></button>
+      <button class="tab-btn" data-nav="tarkistus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg><span data-lyhyt="Tarkista">Tarkistus</span><span class="tab-badge"></span></button>
+      <button class="tab-btn" data-nav="asetukset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span data-lyhyt="Asetus">Asetukset</span></button>
+    </nav>
+
+    <div class="machine-bar"></div>
+
+    <main>
+      <div class="filter-row ty-osiot" id="kuOsiot">
+        <button type="button" class="filter-chip" data-kuosio="kutsu">Kutsu</button>
+        <button type="button" class="filter-chip" data-kuosio="ohjeet">Ohjeet</button>
+        <button type="button" class="filter-chip" data-kuosio="halytykset">Hälytykset</button>
+      </div>
+      <div id="kuSisalto"></div>
+    </main>
+    <footer><span class="machine-name">NTX3000</span> · KIILAURA · O8990 v2.5</footer>
+  </div>
+
   <div class="view" id="viewTyosto">
     <header>
       <div class="header-left">
@@ -2429,9 +2533,10 @@
       <button class="tab-btn" data-tool="viewJawCalc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg><span>Leuka</span></button>
       <button class="tab-btn" data-tool="viewSP2Calc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="4"/></svg><span>SP2</span></button>
       <button class="tab-btn active" data-tool="viewTyosto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.3 19a9 9 0 1 1 17.4 0"/><path d="M12 14l4.5-4.5"/><circle cx="12" cy="14" r="1.5"/></svg><span>Työstö</span></button>
-      <button class="tab-btn" data-tool="viewKappaleet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg><span>Kappaleet</span></button>
-      <button class="tab-btn" data-nav="tarkistus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg><span>Tarkistus</span><span class="tab-badge"></span></button>
-      <button class="tab-btn" data-nav="asetukset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Asetukset</span></button>
+      <button class="tab-btn" data-tool="viewKappaleet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg><span data-lyhyt="Kappale">Kappaleet</span></button>
+      <button class="tab-btn" data-tool="viewKiilaura"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 4.3A8 8 0 1 0 14 4.3V2h-4z"/></svg><span>Kiilaura</span></button>
+      <button class="tab-btn" data-nav="tarkistus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg><span data-lyhyt="Tarkista">Tarkistus</span><span class="tab-badge"></span></button>
+      <button class="tab-btn" data-nav="asetukset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span data-lyhyt="Asetus">Asetukset</span></button>
     </nav>
 
     <div class="machine-bar"></div>
@@ -2549,9 +2654,10 @@
       <button class="tab-btn" data-tool="viewJawCalc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg><span>Leuka</span></button>
       <button class="tab-btn" data-tool="viewSP2Calc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="4"/></svg><span>SP2</span></button>
       <button class="tab-btn" data-tool="viewTyosto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.3 19a9 9 0 1 1 17.4 0"/><path d="M12 14l4.5-4.5"/><circle cx="12" cy="14" r="1.5"/></svg><span>Työstö</span></button>
-      <button class="tab-btn active" data-tool="viewKappaleet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg><span>Kappaleet</span></button>
-      <button class="tab-btn" data-nav="tarkistus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg><span>Tarkistus</span><span class="tab-badge"></span></button>
-      <button class="tab-btn" data-nav="asetukset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Asetukset</span></button>
+      <button class="tab-btn active" data-tool="viewKappaleet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg><span data-lyhyt="Kappale">Kappaleet</span></button>
+      <button class="tab-btn" data-tool="viewKiilaura"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 4.3A8 8 0 1 0 14 4.3V2h-4z"/></svg><span>Kiilaura</span></button>
+      <button class="tab-btn" data-nav="tarkistus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg><span data-lyhyt="Tarkista">Tarkistus</span><span class="tab-badge"></span></button>
+      <button class="tab-btn" data-nav="asetukset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span data-lyhyt="Asetus">Asetukset</span></button>
     </nav>
 
     <div class="machine-bar"></div>
@@ -3067,7 +3173,7 @@ const K_TILANNE     = 'ntx_tilannekuvat';     /* paikalliset palautuspisteet */
 const K_SYNC_VERSIO = 'ntx_sync_versio';      /* viimeksi tiedossa ollut palvelimen versio */
 const K_LAHETYS_PYYNTO = 'ntx_lahetys_pyynto';/* lähetä heti seuraavassa käynnistyksessä */
 let alustusKesken = true;   /* käynnistyksen migraatiot eivät ole käyttäjän muutoksia */
-const META_AVAIMET = ['ntx_muokattu', 'ntx_sync', 'ntx_teema', 'ntx_kaavat', 'ntx_viimeksi', 'ntx_varmuuskopio_pvm',
+const META_AVAIMET = ['ntx_kiilaura', 'ntx_muokattu', 'ntx_sync', 'ntx_teema', 'ntx_kaavat', 'ntx_viimeksi', 'ntx_varmuuskopio_pvm',
                       'ntx_sync_haettu', 'ntx_nakyma', 'ntx_tyosto', 'ntx_kappale_auki',
                       K_POISTOT, K_TILANNE, K_SYNC_VERSIO, K_LAHETYS_PYYNTO];
 
@@ -3265,7 +3371,8 @@ const TAB_DEFS = [
   ['jaw',   'viewJawCalc',  'Leuka'],
   ['sp2',   'viewSP2Calc',  'SP2 & G55'],
   ['tyosto', 'viewTyosto',  'Työstö'],
-  ['kappaleet', 'viewKappaleet', 'Kappaleet']
+  ['kappaleet', 'viewKappaleet', 'Kappaleet'],
+  ['kiilaura', 'viewKiilaura', 'Kiilaura']
 ];
 function tabNakyy(kone, avain) {
   if (!kone || !kone.tabs) return true;
@@ -3498,7 +3605,7 @@ document.addEventListener('input', e => {
    ================================================================= */
 const VIEWS = ['viewToolList', 'viewJawCalc', 'viewJawSettings', 'viewSP2Calc',
                'viewSP2Settings', 'viewToolTypes', 'viewData', 'viewMachines',
-               'viewImport', 'viewQuality', 'viewTietopankki', 'viewTyosto', 'viewKappaleet', 'viewKappale'];
+               'viewImport', 'viewQuality', 'viewTietopankki', 'viewTyosto', 'viewKappaleet', 'viewKappale', 'viewKiilaura'];
 
 /* Näkymä, vieritys ja avatut kortit säilyvät sivun päivityksen yli */
 const K_NAKYMA = 'ntx_nakyma';
@@ -3579,6 +3686,7 @@ function showView(id, sailytaVieritys) {
   if (!sailytaVieritys) window.scrollTo({ top: 0, behavior: 'instant' });
   if (id === 'viewTyosto' && typeof TY !== 'undefined') renderTyosto();
   if (id === 'viewKappaleet' && typeof renderKappaleet === 'function' && typeof KAPPALEET !== 'undefined') renderKappaleet();
+  if (id === 'viewKiilaura' && typeof renderKiilaura === 'function' && typeof KU !== 'undefined') renderKiilaura();
   if (typeof paivitaTabbarKorkeus === 'function') paivitaTabbarKorkeus();
   tallennaNakyma();
   if (vaihtuu) historiaLisaa(id);
@@ -9885,6 +9993,624 @@ function tyValitseOsio(osio) {
   TY.osio = osio; tallennaTy(); renderTyosto(); window.scrollTo({ top: 0, behavior: 'instant' });
   if (vaihtuu && nykyinenNakyma() === 'viewTyosto') historiaLisaa('viewTyosto');
 }
+
+/* =================================================================
+   KIILAURA – O8990 v2.5 (NTX3000 kara 1, seisova pistoterä)
+   Laskentavaihe käännetty makrosta riveittäin: samat oletukset, samat
+   tarkistukset samassa järjestyksessä. Ensimmäinen hälytys pysäyttää
+   kuten koneessa (#3000). Liikkeitä ei simuloida, vain ääriasemat.
+   ================================================================= */
+const KU_HALYTYKSET = {
+  1: ['PAKOLLINEN X U Z Q F', 'X, U, Q tai F puuttuu; suoralla uralla ja kartiolla myös Z.', 'Täytä puuttuva arvo.'],
+  2: ['T PUUTTUU TAI UA1 0', 'T ei ole kutsussa eikä User Area 1:ssä.', 'Täytä UA1 työkalun tietoihin tai anna T kutsussa.'],
+  3: ['URA KAPEAMPI KUIN TERA', 'A < T.', 'Tarkista uran leveys A tai terän leveys T (UA1).'],
+  4: ['B 0 TAI YLI T', 'Y-askel ≤ 0 tai > T.', 'Jätä B tyhjäksi (0,9 × T) tai anna 0 < B ≤ T.'],
+  5: ['Q TAI F EI YLI 0', 'Q ≤ 0 tai F ≤ 0.', 'Anna positiivinen lastu ja syöttö.'],
+  6: ['R EI OLE YLI Z', 'Z ei ole R:n alapuolella.', 'Z on uran loppu: sen pitää olla pienempi kuin R (yleensä negatiivinen).'],
+  7: ['U LIIAN PIENI', 'rb ≤ b (ei uraa) tai vinoura U ≤ X.', 'U mitataan vastaseinästä uran pohjaan: d + t2.'],
+  8: ['URA LIIAN LEVEA REIKAAN', 'a ≥ c (uran puolikas ≥ reiän säde).', 'Tarkista X ja A.'],
+  9: ['K S V TAI C NEGATIIVINEN', 'Negatiivinen arvo.', 'Anna K, S, V ja C nollana tai positiivisena.'],
+  10: ['G21 PUUTTUU', '#4006 ≠ 21 (tuumatila).', 'Aja G21 ennen kutsua.'],
+  11: ['G40 PUUTTUU', '#4007 ≠ 40 (terän sädekorjaus päällä).', 'Aja G40 ennen kutsua.'],
+  13: ['UA3 L ALLE PUOLET D', 'L − D/2 ≤ 0.', 'Tarkista UA2 (rungon Ø) ja UA3 (takapinta–särmä).'],
+  14: ['RUNKO EI MAHDU REIKAAN', 'Rungon tarkistus urassa (aloitus tai syvin veto).', 'Pienempi runko, tai tarkista UA2/UA3 ja ettei T-kutsua ole ennen G65:tä.'],
+  15: ['VIISTE TERA LIIAN KAPEA', 'T < viiste + 1.', 'Pienempi C tai leveämpi terä.'],
+  16: ['VIISTE TERA OSUU POHJAAN', 'Terän pää uran pohjassa tai kyljessä viisteen aikana.', 'Pienempi C tai kasvata #28.'],
+  17: ['VIISTE TERA OSUU REIKAAN', 'Terän pää reiän pinnan yli.', 'Pienempi C tai kapeampi terä.'],
+  18: ['M JA V OLTAVA KOKONAISLUKU', 'M < 1 tai desimaali, V desimaali.', 'Anna kokonaisluvut.'],
+  19: ['J PITAA OLLA ALLE Z', 'J ≥ Z.', 'J on syvemmällä kuin Z (pienempi luku).'],
+  20: ['J LIIAN LAHELLA Z', 'Z − J < d (kaari olisi yli neljännesympyrän) tai viisteen kaari menisi J:n yli.', 'Siirrä J kauemmas Z:sta.'],
+  21: ['E JA W YHTA AIKAA', 'Molemmat annettu.', 'Anna vinouralle joko kulma E tai pintakohta W.'],
+  22: ['J EI KAY VINOURAAN', 'J ja E/W annettu.', 'Vinourassa ei kaaripoistumista.'],
+  23: ['VINOURA YLI Z', 'Syvin veto ohittaisi Z:n.', 'Siirrä Z syvemmälle, suurenna E tai jätä Z pois.'],
+  24: ['E ALLE MINIMIN TAI 60 TAI YLI', 'E < 3° tai E ≥ 60°.', 'Anna 3 ≤ E < 60.'],
+  25: ['W OLTAVA ALLE R', 'W ≥ R.', 'W on syvemmällä kuin R.'],
+  26: ['S LIIAN SUURI', 'Turvataso keskiön yli.', 'Pienempi S.'],
+  27: ['VINOURA YLI MAX PITUUDEN', 'Ilman Z:aa pituus > 80 mm.', 'Anna Z tai suurempi E.'],
+  28: ['K ALLE MINIMIN', 'K < 0,5.', 'Lähtötason pitää olla vähintään 0,5 mm otsan edessä.'],
+  29: ['RUNKO EI MAHDU VIISTEESSA', 'Rungon tarkistus viisteessä.', 'Kasvata #28 (esim. 50) tai pienempi C.'],
+  30: ['VIISTEEN KULMA LIIAN SUURI', '#28 ≥ 90 tai viiste ei osu reikään.', 'Pienennä makron asetusta #28.'],
+  31: ['D JA E TAI W YHTA AIKAA', 'Kartio ja vinoura eivät käy yhdessä.', 'Valitse joko kartio D tai vinoura E/W.'],
+  32: ['D OLTAVA YLI 0 JA ALLE 45', 'D ≤ 0 tai D ≥ 45.', 'Anna kartion kulma 0 < D < 45.'],
+  34: ['J LIIAN KAUKANA KARTIOSSA', 'd·cos D ≤ (Z − J)·sin D.', 'Siirrä J lähemmäs Z:aa.']
+};
+
+function kuLuku(s) {
+  if (s === undefined || s === null) return NaN;
+  const t = String(s).trim().replace(',', '.');
+  return t === '' ? NaN : Number(t);
+}
+const KU_RAD = Math.PI / 180;
+function kuSin(a) { return Math.sin(a * KU_RAD); }
+function kuCos(a) { return Math.cos(a * KU_RAD); }
+function kuTan(a) { return Math.tan(a * KU_RAD); }
+function kuAsin(x) { return Math.asin(x) / KU_RAD; }
+function kuAcos(x) { return Math.acos(x) / KU_RAD; }
+/* Fanucin kahden argumentin ATAN[y]/[x] → 0…360° */
+function kuAtan2(y, x) { let a = Math.atan2(y, x) / KU_RAD; if (a < 0) a += 360; return a; }
+const kuFup = x => Math.ceil(x - 1e-9);
+
+/* v = syötteet merkkijonoina; työkalu: T (UA1), Dr (UA2), Lr (UA3); asetukset: v28 (#28), suunta (#12) */
+function kuLaske(v) {
+  const o = { arvot: {}, huom: [] };
+  const tyhja = k => !(String(v[k] == null ? '' : v[k]).trim());
+  const n = k => kuLuku(v[k]);
+  const halyta = nro => { o.halytys = nro; return o; };
+
+  let X = n('X'), U = n('U'), Z = n('Z'), Q = n('Q'), F = n('F');
+  let T = n('T'), A = n('A'), B = n('B'), R = n('R'), K = n('K'), H = n('H'), M = n('M');
+  let E = n('E'), W = n('W'), J = n('J'), V = n('V'), C = n('C'), S = n('S'), Dk = n('D');
+  const Dr = n('Dr'), Lr = n('Lr');
+  const v28 = isFinite(n('v28')) ? n('v28') : 0;
+  const suunta = n('suunta') === 1 ? 1 : -1;
+
+  /* ===== KARTIO D – luettava ennen taulukkoa ===== */
+  let k = 0;
+  if (!tyhja('D')) {
+    if (!tyhja('E') || !tyhja('W')) return halyta(31);
+    if (Dk <= 0 || Dk >= 45) return halyta(32);
+    k = -kuTan(Dk);
+  }
+  /* ===== OLETUSTAULUKKO ===== */
+  if (tyhja('R')) R = 0;
+  if (tyhja('K')) K = 10;
+  if (tyhja('H')) H = 0;
+  if (tyhja('M')) M = 1;
+  if (tyhja('V')) V = 2;
+  if (tyhja('C')) C = 0;
+  if (tyhja('S')) S = 0.2;
+  const kerroinB = 0.9, maxPituus = 80, kMin = 0.5, eMin = 3;
+  o.oletukset = { R, K, H, M, V, C, S };
+
+  /* ===== PAKOLLISET ===== */
+  if (tyhja('X') || tyhja('U') || tyhja('Q') || tyhja('F')) return halyta(1);
+  /* ===== VINOURA ===== */
+  if (k >= 0) {
+    if (!tyhja('E')) {
+      if (!tyhja('W')) return halyta(21);
+      if (E < eMin || E >= 60) return halyta(24);
+      k = kuTan(E);
+    } else {
+      k = 0;
+      if (!tyhja('W')) {
+        if (W >= R) return halyta(25);
+        if (U <= X) return halyta(7);
+        k = (U - X) / (R - W);
+      }
+    }
+  }
+  if (!(k > 0) && tyhja('Z')) return halyta(1);
+  if (k > 0) {
+    if (!tyhja('J')) return halyta(22);
+    C = 0; o.viisteOhitettu = !tyhja('C') && n('C') > 0;
+  }
+  o.tyyppi = k > 0 ? 'vino' : (k < 0 ? 'kartio' : 'suora');
+  o.k = k;
+
+  /* ===== TERÄN LEVEYS T ===== */
+  if (!(T > 0)) return halyta(2);
+  /* ===== RUNKO D JA L ===== */
+  let Hr = NaN;
+  if (Dr > 0 && Lr > 0) {
+    Hr = Lr - Dr / 2;
+    if (Hr <= 0) return halyta(13);
+  } else o.runkoPuuttuu = true;
+
+  /* ===== URAN LEVEYS JA Y-ASKEL ===== */
+  if (tyhja('A')) A = T;
+  if (A < T) return halyta(3);
+  let e = (A - T) / 2;
+  if (e < 0.001) e = 0;
+  let ny = 0, dy = 0;
+  if (e !== 0) {
+    if (tyhja('B')) B = kerroinB * T;
+    if (B <= 0) return halyta(4);
+    if (B > T) return halyta(4);
+    ny = kuFup(e / B);
+    dy = e / ny;
+  }
+
+  /* ===== ARVOJEN TARKISTUS ===== */
+  if (Q <= 0) return halyta(5);
+  if (F <= 0) return halyta(5);
+  if (!tyhja('Z') && R <= Z) return halyta(6);
+  if (K < 0) return halyta(9);
+  if (K < kMin) return halyta(28);
+  if (S < 0) return halyta(9);
+  if (V < 0) return halyta(9);
+  if (C < 0) return halyta(9);
+  if (M < 1) return halyta(18);
+  if (M !== Math.trunc(M)) return halyta(18);
+  if (V !== Math.trunc(V)) return halyta(18);
+
+  /* ===== GEOMETRIA ===== */
+  let c = X / 2;
+  const a = A / 2;
+  if (k < 0) c = c + k * (R - Z);          /* kartio: reiän säde perässä */
+  if (a >= c) return halyta(8);
+  const b = Math.sqrt(c * c - a * a);
+  const b1 = b - S;
+  if (b1 - 0.25 < 0) return halyta(26);
+  let rb = U - c;
+  if (k < 0) rb = rb + 2 * k * (R - Z);    /* kartio: uran pohja perässä */
+  if (rb <= b1 + S) return halyta(7);
+  /* viisteen kiertokulma ψ */
+  let psi = 0;
+  if (C > 0) {
+    if (v28 > 0) {
+      if (v28 >= 90) return halyta(30);
+      psi = 90 - v28;
+      if ((b1 + S + C) * kuCos(psi) + a * kuSin(psi) >= c - 0.001) return halyta(30);
+    } else {
+      const th2 = kuAsin(a / c) + C / c * 57.29578;
+      psi = kuAtan2(b1 + S + C - c * kuCos(th2), c * kuSin(th2) - a);
+    }
+  }
+  const psiC = suunta * psi;
+  const nVedot = kuFup((rb - b1) / Q);
+  const q = (rb - b1) / nVedot;
+
+  /* ===== VINOURAN LOPPU ===== */
+  if (k > 0) {
+    const zLoppu = R - (rb - b1) / k;
+    if (tyhja('Z')) {
+      if (R - zLoppu > maxPituus) return halyta(27);
+      Z = zLoppu; o.zLaskettu = true;
+    }
+    if (zLoppu < Z - 0.001) return halyta(23);
+    o.zLoppu = zLoppu;
+  }
+
+  /* ===== KAARIPOISTUMINEN ===== */
+  let Rk = 0;
+  if (!tyhja('J')) {
+    if (J >= Z) return halyta(19);
+    const Lj = Z - J, d = rb - b1;
+    if (k >= 0) {
+      if (Lj < d) return halyta(20);
+      Rk = (Lj * Lj + d * d) / (2 * d);
+    } else {
+      const ca = 1 / Math.sqrt(1 + k * k), sa = -k * ca;
+      if (d * ca - Lj * sa <= 0) return halyta(34);
+      Rk = (Lj * Lj + d * d) / (2 * (d * ca - Lj * sa));
+    }
+  }
+
+  /* ===== RUNGON TARKISTUS (N95) ===== */
+  const runkoOk = (gx, gy) => {
+    const p = Math.sqrt(gx * gx + gy * gy);
+    if (p + Dr / 2 <= c - 0.2) return true;
+    if (gx <= 0) return false;
+    if (Math.sqrt(gx * gx + Math.pow(Math.abs(gy) + Dr / 2, 2)) > c - 0.2) return false;
+    if (p - Dr / 2 >= c) return false;
+    if (p + Dr / 2 < c) return false;
+    const t30 = (p * p + c * c - Dr * Dr / 4) / (2 * p);
+    const t24 = Math.sqrt(c * c - t30 * t30);
+    const yMax = Math.abs(t30 * gy) / p + t24 * gx / p;
+    return !(yMax > a - 0.2);
+  };
+  if (!o.runkoPuuttuu) {
+    if (!runkoOk(b1 - 0.25 - Hr, e)) return halyta(14);
+    if (!runkoOk(rb - Hr, e)) return halyta(14);
+  }
+
+  /* ===== VIISTEEN TARKISTUS ===== */
+  let viiste = null;
+  if (C > 0) {
+    const fii = kuAsin(a / c);
+    const ps = Math.abs(psiC);
+    let t31 = ps - kuAcos(((b1 + S + C) * kuCos(ps) + a * kuSin(ps)) / c);
+    let t32 = c * kuCos(t31), t33 = c * kuSin(t31);
+    if (T < Math.sqrt((b1 + S + C - t32) * (b1 + S + C - t32) + (t33 - a) * (t33 - a)) + 1.0) return halyta(15);
+    const r0 = c * kuCos(ps - fii) - S;
+    if (r0 - S - 0.25 < 0) return halyta(26);
+    const r1 = (b1 + S + C) * kuCos(ps) + a * kuSin(ps);
+    const teraY = c * kuSin(ps - fii) + C * kuSin(ps) - T / 2 + 0.5;
+    let nousu = 0;
+    if (Rk > 0) nousu = r1 - r0 + S;
+    if (b1 + S + C + 0.5 * kuSin(ps) + nousu * (1 - kuCos(ps)) > rb - 0.1) return halyta(16);
+    if (a - 0.5 * kuCos(ps) - nousu * kuSin(ps) < 0.1 - a) return halyta(16);
+    if (r1 >= c || Math.abs(teraY - T / 2) > Math.sqrt(c * c - r1 * r1) - 0.1) return halyta(17);
+    if (k < 0 && Rk > 0) {
+      const ca = 1 / Math.sqrt(1 + k * k), d = rb - b1;
+      const vas = Math.sqrt(2 * Rk * nousu - nousu * nousu);
+      const oik = Math.sqrt(Rk * Rk - Math.pow(Rk * ca - d, 2)) + Rk * k * ca;
+      if (vas > oik) return halyta(20);
+    }
+    if (!o.runkoPuuttuu) {
+      let u = r0 - S - 0.25 - Hr;
+      if (!runkoOk(u * kuCos(ps) + teraY * kuSin(ps), u * kuSin(ps) - teraY * kuCos(ps))) return halyta(29);
+      u = r1 - Hr;
+      if (!runkoOk(u * kuCos(ps) + teraY * kuSin(ps), u * kuSin(ps) - teraY * kuCos(ps))) return halyta(29);
+    }
+    const nV = kuFup((r1 - r0) / Q);
+    viiste = { psi: ps, psiC, fii, r0, r1, teraY, vedot: nV, lastu: (r1 - r0) / nV };
+  }
+
+  /* ===== tulokset ===== */
+  const yAsemat = 2 * ny + 1;
+  const pistotUra = (nVedot + V) * yAsemat;
+  const viistevedot = viiste ? 2 * viiste.vedot : 0;
+  /* kesto: G01 lähtötasolta R+K Z:aan, pikaliike takaisin 30 m/min, ~0,01 s/lause */
+  const pikaliike = 30000;
+  let aikaS = 0;
+  const vetoAika = zPaa => (R + K - zPaa) / F * 60 + (R + K - zPaa) / pikaliike * 60 + 4 * 0.01;
+  for (let i = 1; i <= nVedot + V; i++) {
+    const r = b1 + Math.min(i, nVedot) * q;
+    const zPaa = k > 0 ? R - (r - b1) / k : Z;
+    aikaS += vetoAika(zPaa) * yAsemat;
+  }
+  aikaS += viistevedot * vetoAika(Z);
+  aikaS *= M;
+  Object.assign(o.arvot, {
+    c, a, b, b1, rb, Xaloitus: 2 * b1, Xturva: 2 * b1 - 0.5, Xpohja: 2 * rb,
+    vedot: nVedot, q, V, e, ny, dy, yAsemat, pistotUra, pistot: pistotUra * M,
+    H: Hr, psi, psiC, viiste, viistevedot: viistevedot * M, Rk, Z, k, M, T, A, aikaS
+  });
+  o.ok = true;
+  return o;
+}
+
+/* G65-kutsu: kirjaimet makron dokumentaation järjestyksessä, vain annetut */
+const KU_KIRJAIMET = ['X', 'U', 'Z', 'Q', 'F', 'T', 'A', 'B', 'R', 'K', 'H', 'M', 'E', 'W', 'D', 'J', 'V', 'C', 'S'];
+function kuNc(x) {
+  if (!isFinite(x)) return '';
+  const r = Math.round(x * 10000) / 10000;
+  if (r === Math.trunc(r)) return String(r) + '.';
+  return String(r);
+}
+function kuKutsu(v, tKutsuun) {
+  const osat = ['G65', 'P8990'];
+  KU_KIRJAIMET.forEach(kir => {
+    if (kir === 'T' && !tKutsuun) return;
+    const x = kuLuku(v[kir]);
+    if (isFinite(x)) osat.push(kir + kuNc(x));
+  });
+  return osat.join(' ');
+}
+
+/* DIN 6885-1 sovitekiila: reiän nimellis-Ø → kiilan b×h, akselin t1, navan t2 ja t2:n toleranssi */
+const KU_DIN6885 = [
+  [6, 8, 2, 2, 1.2, 1.0, 0.1], [8, 10, 3, 3, 1.8, 1.4, 0.1], [10, 12, 4, 4, 2.5, 1.8, 0.1],
+  [12, 17, 5, 5, 3.0, 2.3, 0.1], [17, 22, 6, 6, 3.5, 2.8, 0.1], [22, 30, 8, 7, 4.0, 3.3, 0.2],
+  [30, 38, 10, 8, 5.0, 3.3, 0.2], [38, 44, 12, 8, 5.0, 3.3, 0.2], [44, 50, 14, 9, 5.5, 3.8, 0.2],
+  [50, 58, 16, 10, 6.0, 4.3, 0.2], [58, 65, 18, 11, 7.0, 4.4, 0.2], [65, 75, 20, 12, 7.5, 4.9, 0.2],
+  [75, 85, 22, 14, 9.0, 5.4, 0.2], [85, 95, 25, 14, 9.0, 5.4, 0.2], [95, 110, 28, 16, 10.0, 6.4, 0.2],
+  [110, 130, 32, 18, 11.0, 7.4, 0.2], [130, 150, 36, 20, 12.0, 8.4, 0.3], [150, 170, 40, 22, 13.0, 9.4, 0.3],
+  [170, 200, 45, 25, 15.0, 10.4, 0.3], [200, 230, 50, 28, 17.0, 11.4, 0.3]
+];
+/* ISO 286 navan uran leveys: IT9 ja P9 (µm) leveysalueittain */
+const KU_IT9 = [[3, 25, -6, -31], [6, 30, -12, -42], [10, 36, -15, -51], [18, 43, -18, -61], [30, 52, -22, -74], [50, 62, -26, -88]];
+function kuDin(d) {
+  if (!(d > 6) || d > 230) return null;
+  const r = KU_DIN6885.find(x => d > x[0] && d <= x[1]);
+  if (!r) return null;
+  const b = r[2];
+  const it = KU_IT9.find(x => b <= x[0]) || KU_IT9[KU_IT9.length - 1];
+  return { yli: r[0], asti: r[1], b, h: r[3], t1: r[4], t2: r[5], t2tol: r[6], js9: it[1] / 2 / 1000, p9: [it[2] / 1000, it[3] / 1000] };
+}
+
+/* ---------- tila ---------- */
+const K_KIILAURA = 'ntx_kiilaura';
+var KU = (function () {
+  const oletus = { osio: 'kutsu', tyyppi: 'suora', vinoTapa: 'E', tKutsu: 'ei', sovite: 'js9', v: {} };
+  try { const d = JSON.parse(localStorage.getItem(K_KIILAURA) || 'null'); if (d && typeof d === 'object') return Object.assign(oletus, d, { v: Object.assign({}, d.v || {}) }); } catch (e) {}
+  return oletus;
+})();
+function kuTallenna() { try { localStorage.setItem(K_KIILAURA, JSON.stringify(KU)); } catch (e) {} }
+
+/* uratyypin mukaan vain asiaan kuuluvat kirjaimet laskentaan ja kutsuun */
+function kuSyotteet() {
+  const v = Object.assign({}, KU.v);
+  if (KU.tyyppi !== 'vino') { v.E = ''; v.W = ''; }
+  if (KU.tyyppi !== 'kartio') v.D = '';
+  if (KU.tyyppi === 'vino') { if (KU.vinoTapa === 'E') v.W = ''; else v.E = ''; v.J = ''; }
+  if (KU.tKutsu !== 'kylla') { /* T luetaan UA1:stä: laskentaan työkalun tiedoista, kutsuun ei */ }
+  return v;
+}
+const KU_ESIMERKIT = [
+  ['Suora ura viisteellä', 'suora', { X: '50', U: '53.3', Z: '-20', Q: '0.1', F: '6000', A: '10', C: '0.2', T: '8', Dr: '20', Lr: '28' }],
+  ['Kaaripoistuminen J', 'suora', { X: '32.02', U: '35.3', Z: '-25', Q: '0.05', F: '6000', J: '-31', T: '8' }],
+  ['Vinoura E10', 'vino', { X: '32.02', U: '35.3', Q: '0.05', F: '6000', E: '10', T: '8' }],
+  ['Kartio 1:10', 'kartio', { X: '32.02', U: '35.3', Z: '-40', Q: '0.05', F: '6000', D: '2.862', C: '0.5', T: '8' }]
+];
+
+/* ---------- apufunktiot ---------- */
+function kuRivi(id, sym, nimi, yks, ph, luokka) {
+  const arvo = KU.v[id] == null ? '' : KU.v[id];
+  return tyRiviHTML('', sym, nimi, yks, '<input type="text" inputmode="decimal" autocomplete="off" data-ku="' + id + '" value="' + esc(arvo) + '"' +
+    (ph ? ' placeholder="' + esc(ph) + '"' : '') + ' aria-label="' + esc(String(nimi).replace(/<[^>]+>/g, '')) + '">', luokka || '');
+}
+function kuSeg(kentta, arvo, vaihtoehdot) {
+  return '<div class="seg-row nv-seg">' + vaihtoehdot.map(([a, nimi]) =>
+    '<button type="button" class="seg-btn' + (a === arvo ? ' active' : '') + '" data-kuseg="' + kentta + '" data-arvo="' + a + '"><span class="seg-name">' + nimi + '</span></button>').join('') + '</div>';
+}
+const kuMm = (x, d) => isFinite(x) ? String(Math.round(x * Math.pow(10, d == null ? 3 : d)) / Math.pow(10, d == null ? 3 : d)).replace('.', ',') : '—';
+
+/* ---------- piirros: poikkileikkaus syvimmässä vedossa ---------- */
+function kuPiirros(o, v) {
+  const A = o.arvot;
+  if (!o.ok && !(A && A.c > 0)) return '';
+  const c = A.c, a = A.a, rb = A.rb, T = A.T, e = A.e || 0;
+  const Dr = kuLuku(v.Dr), Lr = kuLuku(v.Lr);
+  const koko = Math.max(c, rb) * 1.12, W = 300, s = W / 2 / koko;
+  const px = x => W / 2 + x * s, py = y => W / 2 - y * s;
+  /* reikä + ura: kaari b:stä toiseen kylkeen, ura ylöspäin */
+  const b = A.b;
+  let path = 'M' + px(a) + ' ' + py(b) + ' L' + px(a) + ' ' + py(rb) + ' L' + px(-a) + ' ' + py(rb) + ' L' + px(-a) + ' ' + py(b) +
+    ' A' + (c * s) + ' ' + (c * s) + ' 0 1 0 ' + px(a) + ' ' + py(b) + ' Z';
+  let h = '<svg class="ku-svg" viewBox="0 0 ' + W + ' ' + W + '" role="img" aria-label="Uran poikkileikkaus">' +
+    '<rect x="0" y="0" width="' + W + '" height="' + W + '" class="ku-materiaali"/>' +
+    '<path d="' + path + '" class="ku-reika"/>' +
+    '<line x1="' + px(0) + '" y1="' + py(-c * 1.05) + '" x2="' + px(0) + '" y2="' + py(rb * 1.05) + '" class="ku-keskilinja"/>';
+  /* terä syvimmässä asemassa (keskellä) ja Y-levityksen ääriasemat katkoviivalla */
+  const teraK = Math.min(T * 0.45, (rb - A.b1) + 2);
+  const tera = (y0, luokka) => '<rect x="' + px(y0 - T / 2) + '" y="' + py(rb) + '" width="' + (T * s) + '" height="' + (teraK * s) + '" class="' + luokka + '"/>';
+  if (e > 0) { h += tera(-e, 'ku-tera haamu'); h += tera(e, 'ku-tera haamu'); }
+  h += tera(0, 'ku-tera');
+  if (Dr > 0 && Lr > 0 && isFinite(A.H)) {
+    const cy = rb - A.H;
+    h += '<line x1="' + px(0) + '" y1="' + py(rb - teraK) + '" x2="' + px(0) + '" y2="' + py(cy) + '" class="ku-kaula"/>';
+    h += '<circle cx="' + px(0) + '" cy="' + py(cy) + '" r="' + (Dr / 2 * s) + '" class="ku-runko' + (o.halytys === 14 ? ' osuu' : '') + '"/>';
+  }
+  /* mitat */
+  h += '<text x="' + px(0) + '" y="' + (py(rb) - 6) + '" class="ku-mitta" text-anchor="middle">A ' + kuMm(A.A, 2) + '</text>';
+  h += '<text x="' + px(0) + '" y="' + (py(-c) + 16) + '" class="ku-mitta" text-anchor="middle">Ø' + kuMm(c * 2, 2) + (o.tyyppi === 'kartio' ? ' (perä)' : '') + '</text>';
+  h += '</svg>';
+  return h;
+}
+
+/* ---------- näkymä ---------- */
+function renderKiilaura() {
+  const juuri = document.getElementById('kuSisalto');
+  if (!juuri) return;
+  document.querySelectorAll('#kuOsiot [data-kuosio]').forEach(b => b.classList.toggle('active', b.getAttribute('data-kuosio') === KU.osio));
+  if (KU.osio === 'ohjeet') { juuri.innerHTML = KU_OHJE_HTML; return; }
+  if (KU.osio === 'halytykset') { juuri.innerHTML = kuHalytysHTML(); return; }
+  let h = '';
+  h += '<div class="tulos-yla"><div class="result-card ku-yla" id="kuYla"></div></div>';
+  h += '<div class="section-card" id="kuKentat">';
+  /* mitoitus */
+  h += '<div class="tyg"><div class="tyg-otsikko"><span>Mitoitus piirustuksesta</span><span class="tyg-vihje">DIN 6885 · valinnainen</span></div>' +
+    kuRivi('dNim', 'd', 'Reiän nimellis-Ø', 'mm', 'esim. 50') +
+    kuSeg('sovite', KU.sovite, [['js9', 'Normaali JS9'], ['p9', 'Tiukka P9']]) +
+    '<div id="kuDin"></div></div>';
+  /* reikä ja ura */
+  h += '<div class="tyg"><div class="tyg-otsikko"><span>Reikä ja ura</span><span class="tyg-vihje">mitattu reikä</span></div>' +
+    kuSeg('tyyppi', KU.tyyppi, [['suora', 'Suora'], ['vino', 'Vinoura'], ['kartio', 'Kartio']]) +
+    kuRivi('X', 'X', 'Reiän Ø (mitattu)', 'mm', 'pakollinen') +
+    kuRivi('U', 'U', 'Vastaseinästä uran pohjaan', 'mm', 'pakollinen');
+  if (KU.tyyppi === 'vino') {
+    h += kuSeg('vinoTapa', KU.vinoTapa, [['E', 'Kulma E'], ['W', 'Pintakohta W']]) +
+      (KU.vinoTapa === 'E' ? kuRivi('E', 'E', 'Pohjan kulma', '°', '3…60') : kuRivi('W', 'W', 'Pohja nousee pintaan Z', 'mm', '')) +
+      kuRivi('Z', 'Z', 'Uran loppu (raja)', 'mm', 'laskettu');
+  } else if (KU.tyyppi === 'kartio') {
+    h += kuRivi('ks', '1:', 'Kartio 1:x (laskee D:n)', '', 'esim. 10') +
+      kuRivi('D', 'D', 'Kartion kulma akselista', '°', '0…45') +
+      kuRivi('Z', 'Z', 'Uran loppu', 'mm', 'pakollinen');
+  } else {
+    h += kuRivi('Z', 'Z', 'Uran loppu', 'mm', 'pakollinen');
+  }
+  h += kuRivi('A', 'A', 'Uran leveys', 'mm', 'tyhjä = T') +
+    (KU.tyyppi === 'vino' ? '' : kuRivi('C', 'C', 'Viiste', 'mm', '0')) +
+    kuRivi('M', 'M', 'Urien määrä', 'kpl', '1') +
+    kuRivi('H', 'H', '1. uran kulma', '°', '0') + '</div>';
+  /* lastuaminen */
+  h += '<div class="tyg"><div class="tyg-otsikko"><span>Lastuaminen</span></div>' +
+    kuRivi('Q', 'Q', 'Lastu säteellä', 'mm', 'pakollinen') +
+    kuRivi('F', 'F', 'Syöttö', 'mm/min', 'pakollinen') +
+    kuRivi('V', 'V', 'Viimeistelyvedot', 'kpl', '2') + '</div>';
+  /* työkalu */
+  h += '<div class="tyg"><div class="tyg-otsikko"><span>Pistoterä · User Area</span><span class="tyg-vihje">MAPPS työkalutiedot</span></div>' +
+    kuRivi('T', 'T', 'Terän leveys (UA1)', 'mm', 'UA1') +
+    '<div class="nv-alaotsikko">T kutsuun</div>' + kuSeg('tKutsu', KU.tKutsu, [['ei', 'Ei – luetaan UA1'], ['kylla', 'Kyllä (CIMCO)']]) +
+    kuRivi('Dr', 'D', 'Rungon Ø (UA2)', 'mm', 'rungon tarkistus') +
+    kuRivi('Lr', 'L', 'Takapinnasta särmään (UA3)', 'mm', 'rungon tarkistus') + '</div>';
+  /* lisäasetukset */
+  h += '<details class="tyg ku-lisa"' + (['R', 'K', 'S', 'B', 'J', 'v28'].some(k => String(KU.v[k] || '').trim()) ? ' open' : '') + '><summary class="tyg-otsikko"><span>Lisäasetukset</span><span class="tyg-vihje">R K S B J · #28</span></summary>' +
+    kuRivi('R', 'R', 'Otsapinta / uran alku Z', 'mm', '0') +
+    kuRivi('K', 'K', 'Lähtötaso R + K', 'mm', '10') +
+    kuRivi('S', 'S', 'Turvaväli säteellä', 'mm', '0.2') +
+    (KU.tyyppi !== 'vino' ? kuRivi('J', 'J', 'Kaaripoistumisen Z', 'mm', 'ei kaarta') : '') +
+    kuRivi('B', 'B', 'Y-askel (A > T)', 'mm', '0,9 × T') +
+    kuRivi('v28', '#28', 'Viisteen kulma (makron asetus)', '°', '0 = symm.') +
+    '<p class="ku-pieni">#28 ei ole kutsun kirjain: se on makron oletustaulukossa. Kirjoita tähän sama arvo kuin koneen makrossa, niin tarkistus vastaa konetta.</p></details>';
+  h += '</div>';
+  /* laskenta */
+  h += '<div class="section-label">Makron laskenta</div><div id="kuTulos"></div>';
+  h += '<div class="section-label">Esimerkit oppaasta</div><div class="ku-esim">' +
+    KU_ESIMERKIT.map((x, i) => '<button type="button" class="filter-chip" data-kuesim="' + i + '">' + esc(x[0]) + '</button>').join('') + '</div>' +
+    '<button type="button" class="add-btn" id="kuTyhjenna">Tyhjennä</button>';
+  juuri.innerHTML = h;
+  kuPaivita();
+}
+
+function kuPaivita() {
+  const yla = document.getElementById('kuYla');
+  if (!yla) return;
+  const v = kuSyotteet();
+  const o = kuLaske(v);
+  window.__ku = o;
+  const kutsu = kuKutsu(v, KU.tKutsu === 'kylla');
+  let tila;
+  if (o.ok) tila = '<div class="ku-tila ok">✓ Makro ei hälytä' + (o.runkoPuuttuu ? '' : ' · runko mahtuu') + '</div>';
+  else if (o.halytys) {
+    const hh = KU_HALYTYKSET[o.halytys] || ['?', '', ''];
+    tila = '<div class="ku-tila virhe"><b>Hälytys ' + (3000 + o.halytys) + ' · ' + esc(hh[0]) + '</b><span>' + esc(hh[1]) + ' ' + esc(hh[2]) + '</span></div>';
+  }
+  if (o.ok && o.runkoPuuttuu) tila += '<div class="ku-tila huom">UA2/UA3 puuttuu: kone pysähtyy viestiin "UA2 UA3 PUUTTUU - START" ja jatkaa ilman rungon tarkistusta.</div>';
+  if (o.viisteOhitettu) tila += '<div class="ku-tila huom">Vinourassa makro ohittaa viisteen (C = 0).</div>';
+  yla.innerHTML = '<div class="ku-kutsu-rivi"><span class="section-label">G65-kutsu</span><button type="button" class="nv-linkki" id="kuKopioi">Kopioi</button></div>' +
+    '<code class="ku-kutsu copyable" id="kuKutsu">' + esc(kutsu) + '</code>' + tila;
+  /* DIN */
+  const dinEl = document.getElementById('kuDin');
+  if (dinEl) {
+    const d = kuLuku(KU.v.dNim), din = kuDin(d);
+    if (!String(KU.v.dNim || '').trim()) dinEl.innerHTML = '';
+    else if (!din) dinEl.innerHTML = '<div class="nv-tyhja">DIN 6885 -taulukko kattaa Ø 6–230 mm.</div>';
+    else {
+      const lev = KU.sovite === 'p9' ? [din.b + din.p9[1], din.b + din.p9[0]] : [din.b - din.js9, din.b + din.js9];
+      const Unim = d + din.t2, Ukesk = d + din.t2 + din.t2tol / 2;
+      dinEl.innerHTML = '<div class="nv-suositus"><div class="nv-suositus-rivit">' +
+        '<div><span>Kiila (Ø' + din.yli + '–' + din.asti + ')</span><b>' + din.b + ' × ' + din.h + '</b><em>navan t2 ' + kuMm(din.t2, 1) + ' +' + kuMm(din.t2tol, 1) + '</em></div>' +
+        '<div><span>Uran leveys ' + (KU.sovite === 'p9' ? 'P9' : 'JS9') + '</span><b>' + kuMm(lev[0], 3) + '–' + kuMm(lev[1], 3) + '</b><em>keskellä ' + kuMm((lev[0] + lev[1]) / 2, 3) + '</em></div>' +
+        '<div><span>U = d + t2</span><b>' + kuMm(Unim, 2) + '–' + kuMm(Unim + din.t2tol, 2) + '</b><em>keskellä ' + kuMm(Ukesk, 2) + '</em></div></div>' +
+        '<button type="button" class="nv-linkki" data-kudin="1">Käytä: A ' + kuMm((lev[0] + lev[1]) / 2, 3) + ', U ' + kuMm(Ukesk, 2) + '</button>' +
+        '<span class="nv-suositus-huom">Tarkista aina piirustus: t2:n toleranssi on tyypillinen arvo. Jos terä on yhtä leveä kuin ura, jätä A tyhjäksi.</span></div>';
+    }
+  }
+  /* tulos */
+  const tEl = document.getElementById('kuTulos');
+  if (!tEl) return;
+  const A = o.arvot;
+  if (!o.ok) {
+    tEl.innerHTML = '<div class="nv-tyhja">' + (o.halytys === 1 ? 'Täytä X, U, Q, F' + (KU.tyyppi === 'vino' ? '' : ' ja Z') + ' sekä terän leveys T.' : 'Korjaa hälytyksen syy, niin laskenta näkyy tässä.') + '</div>' +
+      (A && A.c > 0 ? kuPiirros(o, v) : '');
+    return;
+  }
+  const rivi = (nimi, arvo, lisa) => '<div class="ku-rivi"><span>' + nimi + '</span><b>' + arvo + '</b>' + (lisa ? '<em>' + lisa + '</em>' : '') + '</div>';
+  let h = '<div class="ku-tulos-grid"><div class="result-card ku-lista">';
+  h += rivi('Aloitus (turvataso)', 'X' + kuMm(A.Xturva), 'b1 ' + kuMm(A.b1) + ' · kylki kohtaa pinnan b ' + kuMm(A.b));
+  h += rivi('Uran pohja', 'X' + kuMm(A.Xpohja), 'rb ' + kuMm(A.rb) + (o.tyyppi === 'kartio' ? ' (perässä)' : ''));
+  if (o.tyyppi === 'vino') h += rivi('Syvin veto päättyy', 'Z' + kuMm(o.zLoppu), o.zLaskettu ? 'Z laskettu (ei annettu)' : 'raja Z' + kuMm(A.Z));
+  else h += rivi('Uran pituus', kuMm(Math.abs((kuLuku(v.R) || 0) - A.Z), 2) + ' mm', 'R → Z' + kuMm(A.Z, 2));
+  h += rivi('Vedot / syvyys', A.vedot + ' + ' + A.V, 'toteutuva lastu q ' + kuMm(A.q, 4));
+  h += rivi('Y-asemat', A.yAsemat === 1 ? '1 (keskellä)' : A.yAsemat + ' (±' + A.ny + ')', A.e > 0 ? 'levitys ' + kuMm(A.e) + ' / puoli · askel ' + kuMm(A.dy) : 'A = T');
+  h += rivi('Pistoja', String(A.pistot), A.M > 1 ? A.M + ' uraa × ' + A.pistotUra : '');
+  if (A.viiste) h += rivi('Viiste ψ', kuMm(A.viiste.psi, 1) + '°', 'C-kierto ' + kuMm(A.viiste.psiC, 1) + '° · terän Y ' + kuMm(A.viiste.teraY) + ' · ' + A.viiste.vedot + ' vetoa / puoli');
+  if (A.Rk > 0) h += rivi('Kaaren säde', 'R' + kuMm(A.Rk), 'kaaripoistuminen J' + kuMm(kuLuku(v.J), 2));
+  if (isFinite(A.H)) h += rivi('Rungon särmäetäisyys', 'H ' + kuMm(A.H, 2), 'L − D/2 · runko tarkistettu');
+  h += rivi('Kesto (arvio)', tyAikaOsat(A.aikaS / 60)[0] + ' ' + tyAikaOsat(A.aikaS / 60)[1], 'työliike F' + kuMm(kuLuku(v.F), 0) + ', pikaliike 30 m/min');
+  h += '</div><div class="ku-kuva">' + kuPiirros(o, v) + '<p class="ku-pieni">Poikkileikkaus syvimmässä vedossa: terä keskellä' + (A.e > 0 ? ', Y-levityksen ääriasemat katkoviivalla' : '') + (isFinite(A.H) ? ', runko ympyränä' : '') + '.</p></div></div>';
+  tEl.innerHTML = h;
+}
+
+function kuHalytysHTML() {
+  let h = '<p class="ku-ohje-intro">Makro tekee kaikki tarkistukset ennen kuin yksikään akseli liikkuu. Hälytysnumero näytöllä on 3000 + numero.</p>';
+  h += '<div class="ku-hal-lista">' + Object.keys(KU_HALYTYKSET).map(n => { const x = KU_HALYTYKSET[n];
+    return '<div class="ku-hal"><div class="ku-hal-otsikko"><b>' + (3000 + Number(n)) + '</b><code>' + esc(x[0]) + '</code></div><div class="ku-hal-milloin">' + esc(x[1]) + '</div><div class="ku-hal-korjaus">' + esc(x[2]) + '</div></div>'; }).join('') + '</div>';
+  h += '<div class="section-label">Vianetsintä</div><div class="ku-hal-lista">' +
+    [['Viisteet eri kokoiset', 'Terän keskilinja ei ole Y0:ssa – ura ja viisteet sivussa', 'Y-korjain e = (iso − pieni) / 2 isomman viisteen suuntaan'],
+     ['Viiste osuu reiän pintaan, ei nurkkaan', 'C-kierron suunta väärä', '#12 merkki toiseksi (NTX3000: −1)'],
+     ['Viiste tulee yhdellä vedolla', 'Q on suuri – viiste käyttää samaa lastua', 'Pienempi Q'],
+     ['Ura liian syvä tai matala', 'U tai X väärin, tai terän X-korjain', 'Mittaa U vastaseinästä; korjaa U tai X-kuluma'],
+     ['Ura liian leveä tai kapea', 'Todellinen terän leveys ≠ T (UA1)', 'Mittaa terä, päivitä UA1 tai anna A'],
+     ['Ura sivussa reiän keskeltä', 'Y-korjain', 'Kuten viisteet eri kokoiset'],
+     ['Hälytys 3002', 'T puuttuu kutsusta ja UA1 tyhjä', 'Täytä UA1 tai anna T'],
+     ['Hälytys 3014, vaikka runko näyttää mahtuvan', 'Väärät D/L User Areassa tai väärän työkalun tiedot (T-kutsu ennen G65)', 'Tarkista UA2/UA3 ja ettei T-kutsua ole ennen G65:tä'],
+     ['Hälytys 3029', 'Runko ei mahdu viisteen Y-siirron takia', 'Kasvata #28 (esim. 50) tai pienempi C'],
+     ['Pysähdys "UA2 UA3 PUUTTUU - START"', 'UA2 tai UA3 tyhjä tai 0', 'Täytä D ja L. Cycle start jatkaa ilman rungon tarkistusta'],
+     ['Pitkä ajoaika, paljon ilmavetoja', 'S suuri pieneen Q:hun nähden (viisteessä)', 'Pienempi S tai suurempi Q'],
+     ['Ajo keskeytyi, kara C-tilassa', 'RESET kesken makron', 'M69 ja M46 ennen seuraavaa ohjelmaa'],
+     ['Seuraava työkalu väärällä syöttötavalla', 'G#23-palautus ei toiminut', 'Tarkista #4005; aseta G98/G99 pääohjelmassa']]
+      .map(r => '<div class="ku-hal"><div class="ku-hal-otsikko"><b>' + esc(r[0]) + '</b></div><div class="ku-hal-milloin">' + esc(r[1]) + '</div><div class="ku-hal-korjaus">' + esc(r[2]) + '</div></div>').join('') + '</div>';
+  return h;
+}
+
+const KU_OHJE_HTML = '<p class="ku-ohje-intro">O8990 v2.5 · NTX3000 kara 1 C-akselina · seisova pistoterä särmä X+ suuntaan. ' +
+  'Makro laskee ja tarkistaa kaiken ennen liikettä; jos jokin ei käy, se hälyttää ennen kuin yksikään akseli liikkuu.</p>' +
+  '<details class="ty-ryhma" open><summary><b>Ennen kutsua</b><span class="ty-pieni">tarkistuslista</span></summary><ul class="ku-lista-ohje">' +
+  '<li><b>G21 ja G40</b> voimassa. Makro asettaa G98:n itse ja palauttaa syöttötavan lopussa.</li>' +
+  '<li><b>Terän särmä X+ suuntaan</b>, työkalu otsan edessä Z yli R + K.</li>' +
+  '<li><b>User Area</b> (MAPPS työkalutiedot): UA1 = terän leveys T, UA2 = rungon Ø D, UA3 = rungon takapinnasta särmään L. Enintään 8 merkkiä desimaalipisteineen.</li>' +
+  '<li><b>Ei seuraavan työkalun T-kutsua ennen G65:tä.</b> Makro lukee viimeksi ohjelmoidun T:n (#4120) mitat – esivalinta antaisi väärän työkalun tiedot.</li>' +
+  '<li>Jos UA2 tai UA3 puuttuu, kone pysähtyy viestiin <code>UA2 UA3 PUUTTUU - START</code>. Cycle start jatkaa ilman rungon törmäystarkistusta.</li>' +
+  '<li><b>X</b> = reiän mitattu Ø, <b>U</b> = vastaseinästä uran pohjaan (piirustuksessa d + t2).</li></ul></details>' +
+  '<details class="ty-ryhma"><summary><b>Kutsun kirjaimet</b><span class="ty-pieni">G65 P8990</span></summary><div class="ty-taulu-kehys"><table class="ty-taulu ku-taulu"><thead><tr><th>Kirjain</th><th>Merkitys</th><th>Oletus</th></tr></thead><tbody>' +
+  [['X', 'Reiän mitattu halkaisija', 'pakollinen'], ['U', 'Vastaseinästä uran pohjaan (d + t2)', 'pakollinen'], ['Z', 'Uran loppu', 'suoralla ja kartiolla pakollinen, vinoralla laskettu'],
+   ['Q', 'Lastu säteellä', 'pakollinen'], ['F', 'Syöttö mm/min', 'pakollinen'], ['T', 'Terän leveys', 'User Area 1'], ['A', 'Uran leveys', 'T'], ['B', 'Y-askel kun A > T', '0,9 × T'],
+   ['R', 'Otsapinta / uran alku Z', '0'], ['K', 'Lähtötaso R + K', '10'], ['H', 'Ensimmäisen uran kulma', '0'], ['M', 'Urien määrä tasajaolla', '1'],
+   ['E', 'Vinouran kulma 3–60°', '–'], ['W', 'Vinouran pintakohta Z', '–'], ['D', 'Kartioreiän kulma akselista 0–45°', '–'], ['J', 'Kaaripoistumisen suurin Z', '–'],
+   ['V', 'Viimeistelyvedot', '2'], ['C', 'Viiste nurkkiin', '0'], ['S', 'Turvaväli säteellä', '0,2']]
+    .map(r => '<tr><td><b>' + r[0] + '</b></td><td>' + r[1] + '</td><td>' + r[2] + '</td></tr>').join('') +
+  '</tbody></table></div><p class="ku-pieni">Tyhjä kirjain on eri asia kuin nolla: tyhjälle makro käyttää oletusta.</p></details>' +
+  '<details class="ty-ryhma"><summary><b>Uratyypit</b><span class="ty-pieni">suora · vinoura · kartio · J</span></summary>' +
+  '<p><b>Suora ura.</b> Pituus Z:aan. Leveys on terän leveys tai leveämpi Y-levityksellä: kun A > T, terä ajetaan useaan Y-asemaan järjestyksessä 0, −1, +1, −2, +2… (ensin keskelle).</p>' +
+  '<p><b>Vinoura E / W.</b> Pohja kallistuu: ura on syvin otsalla ja nousee pintaan sisempänä. Anna joko kulma E (3–60°) tai piste W, jossa pohja nousee pintaan. Z on valinnainen raja; ilman Z:aa pituus saa olla enintään 80 mm. Vinourassa ei viistettä eikä kaaripoistumista.</p>' +
+  '<p><b>Kartioura D (v2.5).</b> Reikä kapenee kohti Z:aa ja ura tehdään koko matkalle niin, että syvyys on sama otsalla ja perässä. D on pinnan kulma akselista: kartio 1:10 = D2.862. X ja U mitataan otsalta R. Viiste ja J toimivat. Koneella vielä ajamatta.</p>' +
+  '<p><b>Kaaripoistuminen J.</b> Uran pää nousee kaarella pintaan (sokea ura, olake). J on syvemmällä kuin Z, ja Z − J:n pitää olla vähintään uran syvyys d, muuten kaari olisi yli neljännesympyrän.</p></details>' +
+  '<details class="ty-ryhma"><summary><b>Viisteet</b><span class="ty-pieni">C ja #28</span></summary>' +
+  '<p>Viiste poistaa purseen uran kyljen ja reiän pinnan väliltä. Kappaletta käännetään C:llä kulman ψ verran ja sama X-liike leikkaa viisteen. Kumpikin puoli tehdään erikseen.</p>' +
+  '<p><b>#28 (makron asetus):</b> 0 = symmetrinen viiste. Suurempi kulma = pidempi viiste reiän puolella ja pienempi terän Y-siirto, jolloin paksumpi runko mahtuu. Purseenpoistoon 50–60° on yleensä hyvä kompromissi.</p>' +
+  '<div class="ty-taulu-kehys"><table class="ty-taulu ku-taulu"><thead><tr><th>#28</th><th>Viiste kyljessä</th><th>Viiste reiässä</th><th>Terän Y-siirto</th></tr></thead><tbody>' +
+  [['0 (symm.)', '0,20', '0,20', '16,1'], ['45', '0,20', '0,25', '14,0'], ['50', '0,20', '0,31', '11,8'], ['55', '0,20', '0,39', '9,5'], ['60', '0,20', '0,51', '7,1'], ['65', '0,20', '0,71', '4,6'], ['70', '0,20', '1,16', '2,0']]
+    .map(r => '<tr><td>' + r.join('</td><td>') + '</td></tr>').join('') +
+  '</tbody></table></div><p class="ku-pieni">Ø60, A10, T8, C0.2. Terä on oltava viistettä 1 mm leveämpi. C-kierron suunta #12 = −1 (tarkistettu koneella).</p></details>' +
+  '<details class="ty-ryhma"><summary><b>Miten makro liikkuu</b><span class="ty-pieni">pistoveto</span></summary><ul class="ku-lista-ohje">' +
+  '<li>Aloitus: G98 · M05 · M45 (C-akseli) · G18 · G28H0 · C ensimmäiseen uraan · Z lähtötasolle R + K · M408 (neste).</li>' +
+  '<li>Jokainen veto: <b>G00 X</b> syvyyteen lähtötasolla → <b>G01 Z</b> uran loppuun → <b>G00 X</b> turvatasolle → <b>G00 Z</b> lähtötasolle. X palaa aina ennen Z:aa, joten terä ei laahaa kylkiä.</li>' +
+  '<li>Lastujako: matka rb − b1 jaetaan tasan niin, että lasku on enintään Q. Lisäksi V viimeistelyvetoa lopullisella syvyydellä.</li>' +
+  '<li>Urat tehdään valmiiksi viisteineen yksi kerrallaan; kara lukitaan jarrulla (M68) jokaisen uran ajaksi.</li>' +
+  '<li>Lopetus: Z lähtötasolle · M09 · M69 · C ensimmäiseen kulmaan · M46 · syöttötapa takaisin · M99.</li></ul></details>' +
+  '<details class="ty-ryhma"><summary><b>Keskeytys ja rajoitukset</b></summary><ul class="ku-lista-ohje">' +
+  '<li><b>RESET kesken makron:</b> kara voi jäädä C-tilaan ja jarru kiinni. Aja M69 ja M46 ennen seuraavaa ohjelmaa.</li>' +
+  '<li>Pituussuunnan törmäyksiä (istukka, olakkeet, kappaleen pohja, terän ulottuma) ei tarkisteta – Z:n ja J:n tilan pitää riittää.</li>' +
+  '<li>Runko mallinnetaan ympyränä ja terä suorakaiteena, kaulaa ei. Runko tarkistetaan vain ääriasemissa.</li>' +
+  '<li>Makro olettaa terän keskilinjan olevan Y0:ssa. Y-korjaimen virhe näkyy erikokoisina viisteinä ja sivussa olevana urana.</li>' +
+  '<li>Vain G21 (mm) ja G40. Kartio ei käy yhdessä vinouran kanssa.</li></ul></details>';
+
+/* ---------- tapahtumat ---------- */
+(function kuKuuntelijat() {
+  const nak = document.getElementById('viewKiilaura');
+  if (!nak) return;
+  nak.addEventListener('click', e => {
+    const t = e.target;
+    const os = t.closest('[data-kuosio]');
+    if (os) { KU.osio = os.getAttribute('data-kuosio'); kuTallenna(); renderKiilaura(); window.scrollTo({ top: 0, behavior: 'instant' }); return; }
+    const seg = t.closest('[data-kuseg]');
+    if (seg) { KU[seg.getAttribute('data-kuseg')] = seg.getAttribute('data-arvo'); kuTallenna(); renderKiilaura(); return; }
+    const esim = t.closest('[data-kuesim]');
+    if (esim) { const x = KU_ESIMERKIT[Number(esim.getAttribute('data-kuesim'))]; KU.tyyppi = x[1]; KU.vinoTapa = x[2].W ? 'W' : 'E'; KU.v = Object.assign({}, x[2]); kuTallenna(); renderKiilaura(); window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+    if (t.closest('#kuTyhjenna')) { KU.v = {}; kuTallenna(); renderKiilaura(); return; }
+    if (t.closest('[data-kudin]')) {
+      const d = kuLuku(KU.v.dNim), din = kuDin(d);
+      if (din) {
+        const lev = KU.sovite === 'p9' ? [din.b + din.p9[1], din.b + din.p9[0]] : [din.b - din.js9, din.b + din.js9];
+        KU.v.A = String(Math.round((lev[0] + lev[1]) / 2 * 1000) / 1000);
+        KU.v.U = String(Math.round((d + din.t2 + din.t2tol / 2) * 1000) / 1000);
+        if (!String(KU.v.X || '').trim()) KU.v.X = String(d);
+        kuTallenna(); renderKiilaura();
+      }
+      return;
+    }
+    if (t.closest('#kuKopioi') || t.closest('#kuKutsu')) { const el = document.getElementById('kuKutsu'); if (el) copyText(el.textContent); return; }
+  });
+  const syote = e => {
+    const inp = e.target.closest('input[data-ku]');
+    if (!inp) return;
+    const k = inp.getAttribute('data-ku');
+    KU.v[k] = inp.value;
+    if (k === 'ks') {
+      const x = kuLuku(inp.value);
+      KU.v.D = x > 0 ? String(Math.round(Math.atan(1 / (2 * x)) / KU_RAD * 1000) / 1000) : KU.v.D;
+      const dI = nak.querySelector('input[data-ku="D"]'); if (dI && x > 0) dI.value = KU.v.D;
+    }
+    if (k === 'D') KU.v.ks = '';
+    kuTallenna(); kuPaivita();
+  };
+  nak.addEventListener('input', syote);
+  nak.addEventListener('change', syote);
+})();
 
 (function tyKuuntelijat() {
   const v = document.getElementById('viewTyosto');
