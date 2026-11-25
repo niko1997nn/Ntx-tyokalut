@@ -10204,44 +10204,46 @@ function renderNeuvoja() {
   const karaOpt = karat.map(k => '<option value="' + esc(k.uid) + '"' + (k.uid === kara.uid ? ' selected' : '') + '>' + esc(k.nimi) + '</option>').join('');
   const rajat = [kara.nmax ? fmt(num(kara.nmax), 0) + ' r/min' : '', kara.kw ? lyhyt(num(kara.kw)) + ' kW' : '', kara.nm ? lyhyt(num(kara.nm)) + ' Nm' : ''].filter(Boolean).join(' · ');
   let h = '';
+  // Järjestys: 1) mitä tehdään 2) millä 3) mihin materiaaliin 4) kone 5) ehdotuskentät 6) valinnaiset tarkennukset
   h += '<div class="tyg"><div class="tyg-otsikko"><span>Operaatio</span></div>' +
     nvSeg('op', v.op, [['jyrsinta', 'Jyrsintä'], ['poraus', 'Poraus'], ['sorvaus', 'Sorvaus']]);
   if (v.op === 'jyrsinta') h += nvSeg('jt', v.jt, [['sivu', 'Sivu'], ['ura', 'Ura'], ['trokoidi', 'Trokoidi'], ['taso', 'Taso']]);
-  if (v.op === 'sorvaus') h += nvSeg('st', v.st, [['rouhinta', 'Rouhinta'], ['viimeistely', 'Viimeistely']]);
-  if (v.op === 'jyrsinta') h += nvSeg('st', v.st, [['rouhinta', 'Rouhinta'], ['viimeistely', 'Viimeistely']]);
+  if (v.op !== 'poraus') h += nvSeg('st', v.st, [['rouhinta', 'Rouhinta'], ['viimeistely', 'Viimeistely']]);
+  if (v.op === 'sorvaus' && v.st === 'viimeistely') h += nvRivi('ra', 'R<sub>a</sub>', 'Tavoitekarheus', 'µm', v.ra);
   h += '</div>';
   h += '<div class="tyg"><div class="tyg-otsikko"><span>Työkalu</span><span class="tyg-vihje">valitse listasta tai anna käsin</span></div>' +
     '<label class="nv-valinta"><select data-nv="toolUid">' + nvTyokaluvaihtoehdot(v) + '</select></label>' +
     (v.op !== 'sorvaus' ? nvSeg('tmat', v.tmat, [['vhm', 'Kovametalli'], ['hss', 'HSS'], ['pala', v.op === 'poraus' ? 'U-pora' : 'Teräpala']]) : '');
   if (v.op === 'sorvaus') {
-    h += nvRivi('D', 'D<sub>m</sub>', 'Työstöhalkaisija', 'mm', v.D) + nvRivi('r', 'r<sub>ε</sub>', 'Nirkon säde', 'mm', v.r) +
-      nvRivi('kr', 'κ<sub>r</sub>', 'Asetuskulma', '°', v.kr, '95');
+    h += nvRivi('D', 'D<sub>m</sub>', 'Työstöhalkaisija', 'mm', v.D) + nvRivi('r', 'r<sub>ε</sub>', 'Nirkon säde', 'mm', v.r);
   } else {
     h += nvRivi('D', 'D<sub>c</sub>', 'Halkaisija', 'mm', v.D);
     if (v.op === 'jyrsinta') h += nvRivi('z', 'z', 'Terien määrä', 'kpl', v.z);
     h += nvRivi('L', 'L', 'Ulkonema', 'mm', v.L, v.op === 'jyrsinta' ? 'anna' : '');
-    if (v.op === 'jyrsinta' && v.tmat === 'pala') h += nvRivi('kr', 'κ<sub>r</sub>', 'Asetuskulma', '°', v.kr, v.jt === 'taso' ? '45' : '90');
   }
   h += '</div>';
   h += '<div class="tyg"><div class="tyg-otsikko"><span>Materiaali</span></div>' +
-    '<label class="nv-valinta"><select data-nv="mat">' + matOpt + '</select></label>' +
-    (MAT_LUOKKA[v.mat] !== 'H' ? nvRivi('hb', 'HB', 'Kovuus', 'HB', v.hb, isFinite(nvTyypillinenHB(v.mat)) ? 'n. ' + nvTyypillinenHB(v.mat) : '') : '') +
-    '</div>';
-  h += '<div class="tyg"><div class="tyg-otsikko"><span>Lastuaminen</span><span class="tyg-vihje">tyhjä = neuvojan ehdotus</span></div>' +
-    nvRivi('ap', 'a<sub>p</sub>', v.op === 'jyrsinta' ? 'Syvyys' : 'Lastuamissyvyys', 'mm', v.ap, 'ehdotus') +
-    (v.op === 'jyrsinta' ? nvRivi('ae', 'a<sub>e</sub>', 'Leveys', 'mm', v.ae, 'ehdotus') : '') +
-    (v.op === 'sorvaus' && v.st === 'viimeistely' ? nvRivi('ra', 'R<sub>a</sub>', 'Tavoitekarheus', 'µm', v.ra) : '') +
-    (v.op === 'jyrsinta' ? nvRivi('Dw', 'D<sub>w</sub>', 'Interpolointi Ø', 'mm', v.Dw, 'ei') : '') +
-    (v.op !== 'poraus' ? '<div class="nv-suositus" id="nvSuositus"></div>' : '') +
-    (v.op === 'jyrsinta' ? '<div class="nv-alaotsikko">Lastunohennuksen kompensointi</div>' +
-      nvSeg('lo', v.lo, [['on', 'Päällä'], ['off', 'Pois']]) : '') +
-    '</div>';
+    '<label class="nv-valinta"><select data-nv="mat">' + matOpt + '</select></label></div>';
   h += '<div class="tyg"><div class="tyg-otsikko"><span>Kone ja olosuhteet</span></div>' +
     '<label class="nv-valinta"><select data-nv="kara">' + karaOpt + '</select></label>' +
     '<div class="nv-rajat"><span>' + (rajat || 'Rajoja ei ole annettu') + '</span><button type="button" class="nv-linkki" data-nvkarat="1">' + (rajat ? 'Muokkaa' : 'Anna rajat') + '</button></div>' +
     '<div class="nv-alaotsikko">Kiinnityksen jäykkyys</div>' + nvSeg('jaykkyys', v.jaykkyys, [['jaykka', 'Jäykkä'], ['normaali', 'Normaali'], ['heikko', 'Heikko']]) +
     '<div class="nv-alaotsikko">Tavoite</div>' + nvSeg('tavoite', v.tavoite, [['varovainen', 'Varovainen'], ['normaali', 'Tasapaino'], ['tuottava', 'Tuottava']]) +
     '</div>';
+  if (v.op !== 'poraus') {
+    h += '<div class="tyg"><div class="tyg-otsikko"><span>Lastuaminen</span><span class="tyg-vihje">tyhjä = neuvojan ehdotus</span></div>' +
+      nvRivi('ap', 'a<sub>p</sub>', v.op === 'jyrsinta' ? 'Syvyys' : 'Lastuamissyvyys', 'mm', v.ap, 'ehdotus') +
+      (v.op === 'jyrsinta' ? nvRivi('ae', 'a<sub>e</sub>', 'Leveys', 'mm', v.ae, 'ehdotus') : '') +
+      '<div class="nv-suositus" id="nvSuositus"></div></div>';
+  }
+  // Valinnaiset tarkennukset: oletukset toimivat, mutta tarkentavat tulosta
+  let tark = '';
+  if (v.op === 'jyrsinta') tark += nvRivi('Dw', 'D<sub>w</sub>', 'Interpolointi Ø', 'mm', v.Dw, 'ei');
+  if (MAT_LUOKKA[v.mat] !== 'H') tark += nvRivi('hb', 'HB', 'Kovuus', 'HB', v.hb, isFinite(nvTyypillinenHB(v.mat)) ? 'n. ' + nvTyypillinenHB(v.mat) : '');
+  if (v.op === 'sorvaus') tark += nvRivi('kr', 'κ<sub>r</sub>', 'Asetuskulma', '°', v.kr, '95');
+  if (v.op === 'jyrsinta' && v.tmat === 'pala') tark += nvRivi('kr', 'κ<sub>r</sub>', 'Asetuskulma', '°', v.kr, v.jt === 'taso' ? '45' : '90');
+  if (v.op === 'jyrsinta') tark += '<div class="nv-alaotsikko">Lastunohennuksen kompensointi</div>' + nvSeg('lo', v.lo, [['on', 'Päällä'], ['off', 'Pois']]);
+  if (tark) h += '<div class="tyg"><div class="tyg-otsikko"><span>Tarkennukset</span><span class="tyg-vihje">valinnainen</span></div>' + tark + '</div>';
   el.innerHTML = h;
   nvPaivitaTulos();
 }
