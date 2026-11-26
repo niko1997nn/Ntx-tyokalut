@@ -2368,7 +2368,7 @@
 
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · LEUKALASKURI · v3.69</footer>
+    <footer><span class="machine-name">NTX3000</span> · LEUKALASKURI · v3.70</footer>
   </div>
 
   <!-- ===================== ASETUKSET: LEUKAKORJAIN ===================== -->
@@ -2505,7 +2505,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · SP2 &amp; G55 · v3.69</footer>
+    <footer><span class="machine-name">NTX3000</span> · SP2 &amp; G55 · v3.70</footer>
   </div>
 
   <!-- ===================== ASETUKSET: SP2 ===================== -->
@@ -2628,7 +2628,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · TYÖKALULISTA · v3.69</footer>
+    <footer><span class="machine-name">NTX3000</span> · TYÖKALULISTA · v3.70</footer>
   </div>
 
   <!-- ===================== ASETUKSET ===================== -->
@@ -2665,7 +2665,7 @@
       </div>
       <div id="kuSisalto"></div>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · KIILAURA · v3.69</footer>
+    <footer><span class="machine-name">NTX3000</span> · KIILAURA · v3.70</footer>
   </div>
 
   <div class="view" id="viewTyosto">
@@ -2791,7 +2791,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · TYÖSTÖ · v3.69</footer>
+    <footer><span class="machine-name">NTX3000</span> · TYÖSTÖ · v3.70</footer>
   </div>
 
   <!-- ===================== KAPPALEET: TYÖKORTIT PIIRUSTUSNUMEROITTAIN ===================== -->
@@ -2830,7 +2830,7 @@
       <div id="kpLista"></div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · KAPPALEET · v3.69</footer>
+    <footer><span class="machine-name">NTX3000</span> · KAPPALEET · v3.70</footer>
   </div>
 
   <div class="view" id="viewKappale">
@@ -2848,7 +2848,7 @@
       </div>
     </header>
     <main id="kpKortti"></main>
-    <footer><span class="machine-name">NTX3000</span> · KAPPALEKORTTI · v3.69</footer>
+    <footer><span class="machine-name">NTX3000</span> · KAPPALEKORTTI · v3.70</footer>
   </div>
 
   <div class="view" id="viewData">
@@ -3002,7 +3002,7 @@
       </section>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · ASETUKSET · v3.69</footer>
+    <footer><span class="machine-name">NTX3000</span> · ASETUKSET · v3.70</footer>
   </div>
 
   <!-- ===================== KONEET ===================== -->
@@ -3036,7 +3036,7 @@
       </div>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · KONEET · v3.69</footer>
+    <footer><span class="machine-name">NTX3000</span> · KONEET · v3.70</footer>
   </div>
 
   <!-- ===================== TYÖKALUTYYPPIEN HALLINTA ===================== -->
@@ -3068,7 +3068,7 @@
       </section>
     </main>
 
-    <footer><span class="machine-name">NTX3000</span> · TYÖKALUTYYPIT · v3.69</footer>
+    <footer><span class="machine-name">NTX3000</span> · TYÖKALUTYYPIT · v3.70</footer>
   </div>
 
   <!-- ===================== TUONTI: ESIKATSELU ===================== -->
@@ -3136,7 +3136,7 @@
         </div>
       </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TUONTI · v3.69</footer>
+    <footer><span class="machine-name">NTX3000</span> · TUONTI · v3.70</footer>
   </div>
 
   <!-- ===================== TYÖSTÖTIETOPANKKI JA OMAT SÄÄDÖT ===================== -->
@@ -3179,7 +3179,7 @@
         <div class="tp-rivit" id="tpRivit"></div>
       </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TIETOPANKKI · v3.69</footer>
+    <footer><span class="machine-name">NTX3000</span> · TIETOPANKKI · v3.70</footer>
   </div>
 
 <!-- ===================== TARKISTUS ===================== -->
@@ -3199,7 +3199,7 @@
         <div class="edit-list" id="qualityList"></div>
       </section>
     </main>
-    <footer><span class="machine-name">NTX3000</span> · TARKISTUS · v3.69</footer>
+    <footer><span class="machine-name">NTX3000</span> · TARKISTUS · v3.70</footer>
   </div>
 
 </div>
@@ -9540,17 +9540,12 @@ function renderMachineBars() {
     el.classList.toggle('xlong', lyhenne.length > 7);
   });
   document.querySelectorAll('.machine-bar').forEach(bar => {
-    const piilossa = TAB_DEFS.filter(([avain]) => !tabNakyy(activeMachine(), avain)).length;
     bar.innerHTML =
       '<span class="machine-label">Kone</span>' +
       '<select class="machine-select">' +
         MACHINES.map(m => '<option value="' + esc(m.id) + '"' +
           (m.id === activeMachineId ? ' selected' : '') + '>' + esc(m.name) + '</option>').join('') +
       '</select>' +
-      (piilossa
-        ? '<button type="button" class="restore-tabs" title="Näytä kaikki välilehdet">' +
-          piilossa + ' piilossa \u21BA</button>'
-        : '') +
       '<span class="sync-merkki" title="Synkronoidaan">\u21BB</span>' +
       '';
   });
